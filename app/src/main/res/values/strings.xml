@@ -1,3 +1,56 @@
 <resources>
-    <string name="app_name">GouiranLinkProject</string>
+    <string name="app_name">Gouiran Link</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."</string>
+    <!-- Strings related to first research homepage -->
+    <string name="welcome_user">"Bonjour %1$s,"</string>
+
+    <string name="my_recent_researches">"Mes recherches récentes"</string>
+    <string name="research_1">"%1$s"</string>
+    <string name="research_2">"%1$s"</string>
+    <string name="research_3">"%1$s"</string>
+    <string name="research_4">"%1$s"</string>
+    <string name="research_5">"%1$s"</string>
+    <string name="research_6">"%1$s"</string>
+    <string name="research_7">"%1$s"</string>
+    <string name="research_8">"%1$s"</string>
+    <string name="research_9">"%1$s"</string>
+
+    <string name="around_me">"Autour de moi"</string>
+    <string name="around_1_text">"Ninja H2R"</string>
+    <string name="around_2_text">"GSXR 1000"</string>
+    <string name="around_3_text">"ZZR 1400"</string>
+    <string name="around_4_text">"ER6N"</string>
+    <string name="around_5_text">"Kawasaki"</string>
+
+    <string name="gouiran_link_selection">"La sélection de Gouiran Link"</string>
+    <string name="selection_1">"%1$s"</string>
+    <string name="selection_2">"%1$s"</string>
+    <string name="selection_3">"%1$s"</string>
+    <string name="selection_4">"%1$s"</string>
+    <string name="selection_5">"%1$s"</string>
+    <string name="selection_6">"%1$s"</string>
+    <string name="selection_7">"%1$s"</string>
+    <string name="selection_8">"%1$s"</string>
+    <string name="selection_9">"%1$s"</string>
+
+    <string name="invite_your_friends">"Invitez des amis"</string>
+    <string name="invite_your_friends_button">"Invitez vos amis"</string>
+
+    <string name="text_textpopup">"Text popup"</string>
+    <string name="text_imagepopup">"Image popup"</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

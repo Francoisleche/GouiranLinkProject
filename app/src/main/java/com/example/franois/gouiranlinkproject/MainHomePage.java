@@ -2,8 +2,13 @@ package com.example.franois.gouiranlinkproject;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Typeface;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,6 +27,10 @@ public class MainHomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home_page);
         Resources res = getResources();
+        getAssets();
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/Acrom W00 Medium.ttf");
+        TextView textView;
+        textView = new TextView(this);
 
         /* Editing username */
         username = "XXXXXXXXXX";
@@ -29,8 +38,11 @@ public class MainHomePage extends AppCompatActivity {
         welcomeUser = new TextView(this);
         welcomeUser = (TextView)findViewById(R.id.welcome_user);
         welcomeUser.setText(text);
+        welcomeUser.setTypeface(font);
 
         /* Editing recent researches */
+        textView = (TextView)findViewById(R.id.my_recent_researches);
+        textView.setTypeface(font);
         getRecentResearches();
         recentResearchesText = new TextView[9];
         for (int i = 0; i < 9; i++)
@@ -43,9 +55,22 @@ public class MainHomePage extends AppCompatActivity {
             int resString = res.getIdentifier(researchString, "string", getPackageName());
             recentResearchesText[i] = (TextView)findViewById(resId);
             recentResearchesText[i].setText(String.format(res.getString(resString), recentResearches[i]));
+            recentResearchesText[i].setTypeface(font);
+        }
+
+        /* Around Me */
+        textView = (TextView)findViewById(R.id.around_me);
+        textView.setTypeface(font);
+        for (int i = 0; i < 5; i++) {
+            String around = "around_" + (i + 1) + "_text";
+            int resAround = res.getIdentifier(around, "id", getPackageName());
+            textView = (TextView)findViewById(resAround);
+            textView.setTypeface(font);
         }
 
         /* Editing Gouiran Link selections */
+        textView = (TextView)findViewById(R.id.gouiran_link_selection);
+        textView.setTypeface(font);
         getGouiranLinkSelection();
         gouiranLinkSelectionText = new TextView[9];
         for (int i = 0; i < 9; i++)
@@ -58,7 +83,12 @@ public class MainHomePage extends AppCompatActivity {
             int resString = res.getIdentifier(researchString, "string", getPackageName());
             gouiranLinkSelectionText[i] = (TextView)findViewById(resId);
             gouiranLinkSelectionText[i].setText(String.format(res.getString(resString), gouiranLinkSelection[i]));
+            gouiranLinkSelectionText[i].setTypeface(font);
         }
+
+        /* Invitez des amis */
+        textView = (TextView)findViewById(R.id.invite_your_friends);
+        textView.setTypeface(font);
     }
 
     private void getGouiranLinkSelection() {

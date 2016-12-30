@@ -2,13 +2,14 @@
 
 <ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/homepage"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+<!--    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/homepage"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -16,17 +17,17 @@
             android:orientation="horizontal"
             android:textSize="25sp"
             android:textColor="@color/black"
-            android:text="@string/welcome_user"/>
+            android:text="@string/welcome_user"/>-->
         <!-- Mes recherches récentes -->
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/my_recent_researches"
-        android:orientation="horizontal"
-        android:textSize="25sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="20dp"
-        android:text="@string/my_recent_researches"/>
+        <!--<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/my_recent_researches"
+            android:orientation="horizontal"
+            android:textSize="25sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            android:text="@string/my_recent_researches" />
         <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -156,9 +157,9 @@
                 android:onClick="onClick"
                 android:clickable="true" />
         </RelativeLayout>
-    </HorizontalScrollView>
+    </HorizontalScrollView>-->
         <!-- Autour de moi -->
-        <TextView
+        <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/around_me"
@@ -185,17 +186,12 @@
                 android:clickable="true"/>
             <TextView
                 android:id="@+id/around_1_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignStart="@id/around_1"
                 android:layout_alignTop="@id/around_1"
                 android:layout_alignEnd="@id/around_1"
                 android:layout_alignBottom="@id/around_1"
-                android:layout_margin="1dp"
-                android:gravity="center"
                 android:text="@string/around_1_text"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
+                style="@style/AroundMeProposals"/>
             <ImageView
                 android:id="@+id/around_2"
                 android:layout_width="100dp"
@@ -206,17 +202,12 @@
                 android:clickable="true"/>
             <TextView
                 android:id="@+id/around_2_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignStart="@id/around_2"
                 android:layout_alignTop="@id/around_2"
                 android:layout_alignEnd="@id/around_2"
                 android:layout_alignBottom="@id/around_2"
-                android:layout_margin="1dp"
-                android:gravity="center"
                 android:text="@string/around_2_text"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
+                style="@style/AroundMeProposals"/>
             <ImageView
                 android:id="@+id/around_3"
                 android:layout_width="100dp"
@@ -227,17 +218,12 @@
                 android:clickable="true"/>
             <TextView
                 android:id="@+id/around_3_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignStart="@id/around_3"
                 android:layout_alignTop="@id/around_3"
                 android:layout_alignEnd="@id/around_3"
                 android:layout_alignBottom="@id/around_3"
-                android:layout_margin="1dp"
-                android:gravity="center"
                 android:text="@string/around_3_text"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
+                style="@style/AroundMeProposals"/>
             <ImageView
                 android:id="@+id/around_4"
                 android:layout_width="100dp"
@@ -248,17 +234,12 @@
                 android:clickable="true"/>
             <TextView
                 android:id="@+id/around_4_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignStart="@id/around_4"
                 android:layout_alignTop="@id/around_4"
                 android:layout_alignEnd="@id/around_4"
                 android:layout_alignBottom="@id/around_4"
-                android:layout_margin="1dp"
-                android:gravity="center"
                 android:text="@string/around_4_text"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
+                style="@style/AroundMeProposals"/>
             <ImageView
                 android:id="@+id/around_5"
                 android:layout_width="100dp"
@@ -269,21 +250,16 @@
                 android:clickable="true"/>
             <TextView
                 android:id="@+id/around_5_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignStart="@id/around_5"
                 android:layout_alignTop="@id/around_5"
                 android:layout_alignEnd="@id/around_5"
                 android:layout_alignBottom="@id/around_5"
-                android:layout_margin="1dp"
-                android:gravity="center"
                 android:text="@string/around_5_text"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
+                style="@style/AroundMeProposals"/>
         </RelativeLayout>
-    </HorizontalScrollView>
+    </HorizontalScrollView>-->
         <!-- La sélection de Gouiran Link -->
-        <TextView
+        <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/gouiran_link_selection"
@@ -291,7 +267,8 @@
         android:textSize="25sp"
         android:textColor="@color/black"
         android:layout_marginTop="20dp"
-        android:text="@string/gouiran_link_selection"/>
+        android:text="@string/gouiran_link_selection"
+            style="@style/AcromMediumLightBlue"/>
         <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -421,9 +398,9 @@
                 android:onClick="onClick"
                 android:clickable="true" />
         </RelativeLayout>
-    </HorizontalScrollView>
+    </HorizontalScrollView>-->
         <!-- Invitez des amis -->
-        <TextView
+        <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/invite_your_friends"
@@ -439,5 +416,6 @@
             android:layout_height="100dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/invitez_des_amis" />
-    </LinearLayout>
+    </LinearLayout>-->
+
 </ScrollView>

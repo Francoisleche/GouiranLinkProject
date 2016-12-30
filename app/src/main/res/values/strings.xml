@@ -51,6 +51,19 @@
     <string name="text_textpopup">"Text popup"</string>
     <string name="text_imagepopup">"Image popup"</string>
 
+    <string name="appointmentText">"Rendez-vous"</string>
+
+    <string name="acromMedium">"fonts/Acrom W00 Medium.ttf</string>
+
+    <string name="home">"Accueil"</string>
+    <string name="research">"Recherche"</string>
+    <string name="myReservations">"Mes réservations"</string>
+    <string name="myFavourites">"Mes favoris"</string>
+    <string name="myGallery">"Ma galerie"</string>
+    <string name="myAccount">"Mon compte"</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_parent">ParentActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>

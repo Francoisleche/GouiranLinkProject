@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -334,7 +335,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Intent i = new Intent(LoginActivity.this, MainHomePage.class);
+                Log.d("CREATE", "zfqjlfzjljfqlzfjkqzjlfjzjfzklqfjklz");
+                Intent i = new Intent(LoginActivity.this, ParentActivity.class);
+                Log.d("CREATE", "zfqjlfzjljfqlzfjkqzjlfjzjfzklqfjklz");
                 startActivity(i);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

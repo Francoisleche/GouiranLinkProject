@@ -37,4 +37,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+
+    <style name="MyRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/GouiranLink</item>
+        <item name="colorControlActivated">@color/GouiranLink</item>
+    </style>
+
 </resources>

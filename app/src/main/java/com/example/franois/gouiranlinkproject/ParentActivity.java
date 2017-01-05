@@ -55,15 +55,17 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
     private final int TAB_RESERVATIONS = FragNavController.TAB3;
     private final int TAB_FAVOURITES = FragNavController.TAB4;
     private final int TAB_GALLERY = FragNavController.TAB5;
+    private final int TAB_ACCOUNT = 5;
+    private boolean compte = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent);
 
         mBottomBar = (BottomBar) findViewById(R.id.bottomBar);
         mBottomBar.selectTabAtPosition(TAB_HOME);
-        fragNavController = new FragNavController(savedInstanceState, getSupportFragmentManager(), R.id.contentContainer, this, 5, TAB_HOME);
+        fragNavController = new FragNavController(savedInstanceState, getSupportFragmentManager(), R.id.contentContainer, this, 6, TAB_HOME);
         fragNavController.setTransitionMode(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragNavController.setTransactionListener(this);
 
@@ -73,22 +75,42 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
                 switch (tabId) {
                     case R.id.tab_home:
                         fragNavController.switchTab(TAB_HOME);
+                        compte = false;
+                        System.out.println("Compte = "+compte);
                         break;
                     case R.id.tab_research:
                         fragNavController.switchTab(TAB_RESEARCH);
+                        compte = false;
+                        System.out.println("Compte = "+compte);
                         break;
                     case R.id.tab_reservations:
                         fragNavController.switchTab(TAB_RESERVATIONS);
+                        compte = false;
+                        System.out.println("Compte = "+compte);
                         break;
                     case R.id.tab_favourites:
                         fragNavController.switchTab(TAB_FAVOURITES);
+                        compte = false;
+                        System.out.println("Compte = "+compte);
                         break;
                     case R.id.tab_gallery:
                         fragNavController.switchTab(TAB_GALLERY);
+                        compte = false;
+                        System.out.println("Compte = "+compte);
+                        System.out.println("Compte = "+TAB_GALLERY);
+                        break;
+                    case R.id.tab_account:
+                        compte = true;
+                        fragNavController.switchTab(TAB_ACCOUNT);
+                        System.out.println("Compte = "+compte);
+                        System.out.println("TAB_ACCOUNT = "+TAB_ACCOUNT);
                         break;
                 }
             }
         });
+
+        Toast.makeText(this,"Compte = "+compte,Toast.LENGTH_SHORT).show();
+
 
         mBottomBar.setOnTabReselectListener(new OnTabReselectListener() {
             @Override
@@ -151,9 +173,15 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
                 return FavouritesFragment.newInstance(0);
             case TAB_GALLERY:
                 return GalleryFragment.newInstance(0);
+            case 5:
+                if(compte == true){
+                    Toast.makeText(this, "ça marche", Toast.LENGTH_SHORT).show();
+                    return AccountFragment.newInstance(0);
+                }
         }
         throw new IllegalStateException("Need to send an index that we know");
     }
+
 
     @Override
     public void onFragmentInteraction(Uri uri){

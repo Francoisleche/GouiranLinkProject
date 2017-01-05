@@ -25,6 +25,14 @@ public class ResearchFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    public static final String ENDPOINT = "http://bootprint.knappi.org/";
+
+    //@GET("/professional")
+    //List<String> list_professional(@Path("user") String user);
+
+    //@GET("/professional-customer/")
+    //List<String> list_professional_customer(@Path("user") String user);
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -105,4 +113,9 @@ public class ResearchFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void recuperation(){
+
+    }
+
 }

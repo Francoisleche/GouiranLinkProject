@@ -10,4 +10,63 @@
         android:layout_height="match_parent"
         android:text="THIS IS GALLERY" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1.0">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <ImageView
+                android:id="@+id/around_1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:src="@drawable/er6n" />
+
+            <ImageView
+                android:id="@+id/around_2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_toEndOf="@id/around_1"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:src="@drawable/er6n" />
+
+            <ImageView
+                android:id="@+id/around_3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_toEndOf="@id/around_2"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:src="@drawable/er6n" />
+
+            <ImageView
+                android:id="@+id/around_4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_toEndOf="@id/around_3"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:src="@drawable/er6n" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/selfie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selfie" />
+    </LinearLayout>
+
+
+
 </FrameLayout>

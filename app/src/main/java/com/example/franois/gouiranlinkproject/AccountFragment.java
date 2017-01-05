@@ -1,12 +1,15 @@
 package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
@@ -19,11 +22,12 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
  * Use the {@link AccountFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AccountFragment extends Fragment {
+public class AccountFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public Button button_settings;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,14 +63,37 @@ public class AccountFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        button_settings = (Button) inflater.inflate(R.layout.fragment_account, container, false).findViewById(R.id.settings_button);
+        button_settings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+                Toast.makeText(getActivity(),
+                        "Yes",
+                        Toast.LENGTH_SHORT).show();
+                //GalleryFragment.newInstance(0);
+            }
+        });
+
+        //Button imageView = (Button) view
+        View view = inflater.inflate(R.layout.fragment_account, container, false).findViewById(R.id.settings_button);
+        return view;
     }
+
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(getActivity(),
+                "Yes",
+                Toast.LENGTH_SHORT).show();
+        //GalleryFragment.newInstance(0);
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -106,4 +133,30 @@ public class AccountFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+
+
+    /*@Override
+    public Fragment getRootFragment(int index) {
+        switch (index) {
+            case 1:
+                return HomeFragment.newInstance(0);
+            case 2:
+                return ResearchFragment.newInstance(0);
+            case 3:
+                return ReservationFragment.newInstance(0);
+            case 4:
+                return FavouritesFragment.newInstance(0);
+            case 5:
+                return GalleryFragment.newInstance(0);
+            case 6:
+                if(compte == true){
+                    Toast.makeText(this, "ça marche", Toast.LENGTH_SHORT).show();
+                    return AccountFragment.newInstance(0);
+                }
+        }
+        throw new IllegalStateException("Need to send an index that we know");
+    }*/
+
 }

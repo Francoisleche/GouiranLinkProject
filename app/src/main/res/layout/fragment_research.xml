@@ -5,9 +5,151 @@
     tools:context="com.example.franois.gouiranlinkproject.ResearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="THIS IS RESEARCH" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="1.0">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Recherche"
+            android:gravity="center"/>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5px"
+            android:background="#FF909090" />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <TextView
+                android:id="@+id/upcoming_provider_name_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:gravity="start"
+                android:text="recherche_1"
+                android:paddingBottom="5dip"
+                android:paddingLeft="5dip"
+                android:paddingRight="5dip"
+                android:paddingTop="5dip"/>
+
+            <TextView
+                android:id="@+id/upcoming_service_name_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:gravity="end"
+                android:text="recherche_2"
+                android:paddingBottom="5dip"
+                android:paddingLeft="5dip"
+                android:paddingRight="5dip"
+                android:paddingTop="5dip"/>
+
+            <CheckBox
+                android:id="@+id/chkIos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A proximité" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5px"
+            android:background="#FF909090" />
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="870px"
+            android:orientation="vertical">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="1.0">
+
+                <ImageView
+                    android:id="@+id/around_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:clickable="true"
+                    android:onClick="onClick"
+                    android:src="@drawable/er6n" />
+
+                <ImageView
+                    android:id="@+id/around_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_toEndOf="@id/around_1"
+                    android:clickable="true"
+                    android:onClick="onClick"
+                    android:src="@drawable/er6n" />
+
+                <ImageView
+                    android:id="@+id/around_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_toEndOf="@id/around_2"
+                    android:clickable="true"
+                    android:onClick="onClick"
+                    android:src="@drawable/er6n" />
+
+                <ImageView
+                    android:id="@+id/around_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_toEndOf="@id/around_3"
+                    android:clickable="true"
+                    android:onClick="onClick"
+                    android:src="@drawable/er6n" />
+                <ImageView
+                    android:id="@+id/around_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_toEndOf="@id/around_3"
+                    android:clickable="true"
+                    android:onClick="onClick"
+                    android:src="@drawable/er6n" />
+                <ImageView
+                    android:id="@+id/around_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_toEndOf="@id/around_3"
+                    android:clickable="true"
+                    android:onClick="onClick"
+                    android:src="@drawable/er6n" />
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_marginBottom="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cartes" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="filtres" />
+
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>

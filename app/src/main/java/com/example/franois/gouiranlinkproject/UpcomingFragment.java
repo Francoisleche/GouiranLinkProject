@@ -1,86 +1,179 @@
 package com.example.franois.gouiranlinkproject;
 
-
+import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.Date;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
-import static com.example.franois.gouiranlinkproject.R.id.center;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class UpcomingFragment extends android.support.v4.app.Fragment {
-
-    Appointment[] appointments;
-    View view_a;
+public class UpcomingFragment extends Fragment{
 
     public UpcomingFragment() {
         // Required empty public constructor
     }
 
+    LinearLayout[] linearLayouts = new LinearLayout[10];
+    LinearLayout[] separatorParts = new LinearLayout[10];
+    LinearLayout[] firstParts = new LinearLayout[10];
+    LinearLayout[] secondParts = new LinearLayout[10];
+    LinearLayout[] thirdParts = new LinearLayout[10];
+    Button[] buttons = new Button[10];
+    RelativeLayout layout;
+    Typeface font;
+    TextView instituteName, type, date, hour, slash;
+    ImageView imageView;
+    LinearLayout.LayoutParams LLParams;
+    View separatorView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View root;
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_upcoming, container, false);
-        this.getUpcomingAppointments();
-        view = this.setUpcomingAppointmentsLayout(view);
-
-        return view;
-    }
-
-    public void getUpcomingAppointments() {
-        Date date;
-        date = new Date(2016, 12, 21, 14, 30);
-        this.appointments = new Appointment[7];
-        this.appointments[0] = new Appointment("Kawasaki", "NinjaH2R", date, "@drawable/h2r");
-        date = new Date(2017, 3, 3, 11, 0);
-        this.appointments[1] = new Appointment("Suzuki", "GSXR 1000", date, "@drawable/gsxr");
-        date = new Date(2017, 5, 18, 8, 30);
-        this.appointments[2] = new Appointment("Kawasaki", "Inconnue", date, "@drawable/kawa");
-        date = new Date(2017, 6, 30, 16, 0);
-        this.appointments[3] = new Appointment("Triumph", "Tiger", date, "@drawable/tiger");
-        date = new Date(2017, 7, 21, 11, 50);
-        this.appointments[4] = new Appointment("Kawasaki", "ER6N", date, "@drawable/er6n");
-        date = new Date(2017, 10, 13, 20, 0);
-        this.appointments[5] = new Appointment("Honda", "CB650F", date, "@drawable/cb650f");
-        date = new Date(2017, 11, 30, 14, 0);
-        this.appointments[6] = new Appointment("Kawasaki", "ZZR1400", date, "@drawable/zzr1400");
-    }
-
-    public LinearLayout setUpcomingAppointmentsLayout(View view) {
-        //LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.upcomingFragment);
-        LinearLayout linearLayout = new LinearLayout(getActivity());
-
-        for (int i = 0; i < 7; i++) {
-            TextView textViewProvider = new TextView(getActivity());
-            TextView textViewService = new TextView(getActivity());
-
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            textViewProvider.setLayoutParams(param);
-            textViewService.setLayoutParams(param);
-
-            textViewProvider.setText(this.appointments[i].getProviderName());
-            textViewProvider.setWidth(1);
-            textViewService.setText(this.appointments[i].getServiceName());
-            //textViewProvider.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-            textViewProvider.setTextSize(30);
-            textViewService.setTextSize(30);
-            //textViewService.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-            linearLayout.addView(textViewProvider, param);
-            linearLayout.addView(textViewService, param);
+        root = inflater.inflate(R.layout.fragment_upcoming, null);
+        for (int i = 0; i < 10; i++) {
+            int resID = getResources().getIdentifier("reservation" + (i + 1), "id", getActivity().getPackageName());
+            linearLayouts[i] = (LinearLayout)root.findViewById(resID);
+            resID = getResources().getIdentifier("reservation" + (i + 1) + "_part0", "id", getActivity().getPackageName());
+            separatorParts[i] = (LinearLayout)root.findViewById(resID);
+            resID = getResources().getIdentifier("reservation" + (i + 1) + "_part1", "id", getActivity().getPackageName());
+            firstParts[i] = (LinearLayout)root.findViewById(resID);
+            resID = getResources().getIdentifier("reservation" + (i + 1) + "_part2", "id", getActivity().getPackageName());
+            secondParts[i] = (LinearLayout)root.findViewById(resID);
+            resID = getResources().getIdentifier("reservation" + (i + 1) + "_part3", "id", getActivity().getPackageName());
+            thirdParts[i] = (LinearLayout)root.findViewById(resID);
+            buttons[i] = new Button(getActivity());
         }
-        return (linearLayout);
+        layout = (RelativeLayout) root.findViewById(R.id.upcoming_relative);
+        font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
+        LLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        return (root);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        String[] pictures = {"http://d1o5dtyz8r69kc.cloudfront.net/206_thumb.jpg",
+                "http://cdn.dealerspike.com/imglib/v1/400x300/imglib/trimsdb/3029321-3229921-10086451.jpg",
+                "http://www.cyclesofjacksonville.com/images/SEO/New-Motorcycle-For-Sale.jpg",
+                "http://www.snowcity.com/fckimages/toronto-gta-motorcycle-shops.jpg",
+                "http://d1o5dtyz8r69kc.cloudfront.net/206_thumb.jpg",
+                "http://cdn.dealerspike.com/imglib/v1/400x300/imglib/trimsdb/3029321-3229921-10086451.jpg",
+                "http://www.cyclesofjacksonville.com/images/SEO/New-Motorcycle-For-Sale.jpg",
+                "http://www.snowcity.com/fckimages/toronto-gta-motorcycle-shops.jpg",
+                "http://d1o5dtyz8r69kc.cloudfront.net/206_thumb.jpg",
+                "http://cdn.dealerspike.com/imglib/v1/400x300/imglib/trimsdb/3029321-3229921-10086451.jpg"};
+        String[] institute = {"Beauté Romaine", "Beauté Languedoc", "Beauté Héraultaise", "Coiffure Yannick", "Beauté Romaine", "Beauté Languedoc", "Beauté Héraultaise", "Coiffure Yannick", "Beauté Romaine", "Beauté Languedoc"};
+        String[] types = {"Epilation", "Epilation", "Epilation", "Lissage Brésilien", "Epilation", "Epilation", "Epilation", "Lissage Brésilien", "Epilation", "Epilation"};
+        String[] dates = {"Mardi 21 Décembre 2016", "Jeudi 03 Mars 2017", "Vendredi 18 Mai 2017", "Lundi 30 Juin 2017", "Mardi 21 Décembre 2016", "Jeudi 03 Mars 2017", "Vendredi 18 Mai 2017", "Lundi 30 Juin 2017", "Mardi 21 Décembre 2016", "Jeudi 03 Mars 2017"};
+        String[] hours = {"14h30", "11h00", "08h30", "16h00", "14h30", "11h00", "08h30", "16h00", "14h30", "11h30"};
+        for (int i = 0; i < 10; i++) {
+
+            LinearLayout.LayoutParams weightParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+            LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+            LinearLayout.LayoutParams noWeightParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(250, 250);
+            LinearLayout.LayoutParams hourParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+            LinearLayout.LayoutParams dateParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+
+            separatorView = new View(getActivity());
+            separatorView.setBackgroundColor(getResources().getColor(R.color.black));
+            separatorView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            separatorParts[i].addView(separatorView);
+
+            instituteName = new TextView(getActivity());
+            instituteName.setText(institute[i]);
+            instituteName.setTypeface(font);
+            instituteName.setTextSize(20);
+            instituteName.setGravity(Gravity.CENTER_HORIZONTAL);
+            instituteName.setPaintFlags(instituteName.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+            firstParts[i].addView(instituteName, weightParams);
+
+            slash = new TextView(getActivity());
+            slash.setText("/");
+            slash.setTypeface(font);
+            slash.setTextSize(20);
+            slash.setGravity(Gravity.CENTER_HORIZONTAL);
+            firstParts[i].addView(slash, weightParams);
+
+            type = new TextView(getActivity());
+            type.setText(types[i]);
+            type.setTypeface(font);
+            type.setTextSize(20);
+            type.setGravity(Gravity.CENTER_HORIZONTAL);
+            firstParts[i].addView(type, weightParams);
+
+            imageView = new ImageView(getActivity());
+            imageView.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
+            new DownloadImageTask(imageView).execute(pictures[i]);
+            imageViewParams.gravity = Gravity.CENTER_HORIZONTAL;
+            secondParts[i].addView(imageView, imageViewParams);
+
+            date = new TextView(getActivity());
+            date.setText(dates[i]);
+            date.setTypeface(font);
+            date.setTextSize(17);
+            date.setGravity(Gravity.CENTER_HORIZONTAL);
+            dateParams.setMargins(0, 50, 0, 25);
+            thirdParts[i].addView(date, dateParams);
+
+            hour = new TextView(getActivity());
+            hour.setText(hours[i]);
+            hour.setTypeface(font);
+            hour.setTextSize(17);
+            hour.setGravity(Gravity.CENTER_HORIZONTAL);
+            hourParams.setMargins(0, 25, 0, 50);
+            thirdParts[i].addView(hour, hourParams);
+
+            buttons[i].setText("Voir");
+            buttonParams.setMargins(20, 100, 0, 0);
+            secondParts[i].addView(buttons[i], buttonParams);
+
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
 }

@@ -12,4 +12,6 @@
     <color name="GouiranLightPink">#EE9CAA</color>
     <color name="GouiranDarkBlue">#7799A2</color>
     <color name="GouiranLightBlue">#9ABDBF</color>
+
+    <color name="navigationBarColor">#000000</color>
 </resources>

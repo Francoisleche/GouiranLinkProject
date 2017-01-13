@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "912405249984",
+    "project_id": "gouiranlink"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912405249984:android:418d2de3ed98e255",
+        "android_client_info": {
+          "package_name": "com.example.franois.gouiranlinkproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "912405249984-m49idh3da4dph1oa0vcgimm0hkbkgnpv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.franois.gouiranlinkproject",
+            "certificate_hash": "F45C1457CECE11D48180B061D7FE8C07B6CD1833"
+          }
+        },
+        {
+          "client_id": "912405249984-gc5dc7g2alj2c45978nt90pdo2rpb2t4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBawAKa0TkD1ROZ8yirrncpY62ryz0q7tU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -30,7 +30,7 @@ public class HomeFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
 
     TextView welcomeUser;
-    String username;
+    String username = "XXXXXXXXXX";
     String text;
     String[] recentResearches;
     TextView[] recentResearchesText;
@@ -56,9 +56,10 @@ public class HomeFragment extends BaseFragment {
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(int instance) {
+    public static HomeFragment newInstance(int instance, String username) {
         Bundle args = new Bundle();
         args.putInt(ARGS_INSTANCE, instance);
+        args.putString("username", username);
         HomeFragment firstFragment = new HomeFragment();
         firstFragment.setArguments(args);
         return firstFragment;
@@ -70,6 +71,7 @@ public class HomeFragment extends BaseFragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            username = getArguments().getString("username");
         }
         //Intent i = new Intent(getActivity(), MainHomePage.class);
         //startActivity(i);
@@ -120,7 +122,7 @@ public class HomeFragment extends BaseFragment {
         textView = new TextView(getActivity());
 
         /* Editing username */
-        username = "XXXXXXXXXX";
+        //username = "XXXXXXXXXX";
         text = String.format(res.getString(R.string.welcome_user), username);
         welcomeUser = new TextView(getActivity());
         welcomeUser = (TextView)getActivity().findViewById(R.id.welcome_user);

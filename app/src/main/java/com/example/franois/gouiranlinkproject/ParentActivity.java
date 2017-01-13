@@ -57,11 +57,20 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
     private final int TAB_GALLERY = FragNavController.TAB5;
     private final int TAB_ACCOUNT = 5;
     private boolean compte = false;
+    private String access_token = "";
+    private String mEmail = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent);
+
+        Bundle b = getIntent().getExtras();
+        if (b != null)
+        {
+            access_token = b.getString("access_token");
+            mEmail = b.getString("email");
+        }
 
         mBottomBar = (BottomBar) findViewById(R.id.bottomBar);
         mBottomBar.selectTabAtPosition(TAB_HOME);
@@ -164,7 +173,7 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
     public Fragment getRootFragment(int index) {
         switch (index) {
             case TAB_HOME:
-                return HomeFragment.newInstance(0);
+                return HomeFragment.newInstance(0, mEmail);
             case TAB_RESEARCH:
                 return ResearchFragment.newInstance(0);
             case TAB_RESERVATIONS:

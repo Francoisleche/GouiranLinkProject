@@ -85,4 +85,6 @@
     <string name="loading">Loading</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
     <string name="signed_out">Signed out</string>
+    <string name="mot_de_passe_oublie"><u>Mot de passe oublié</u></string>
+    <string name="ignorer_pour_l_instant"><u>Ignorer pour l\'instant</u></string>
 </resources>

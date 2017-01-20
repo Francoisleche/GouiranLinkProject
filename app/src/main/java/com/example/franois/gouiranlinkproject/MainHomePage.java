@@ -1,3 +1,9 @@
+/*
+*
+* Facultatif ??
+*
+* */
+
 package com.example.franois.gouiranlinkproject;
 
 import android.content.Intent;

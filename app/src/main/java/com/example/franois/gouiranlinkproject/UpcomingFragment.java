@@ -158,6 +158,7 @@ public class UpcomingFragment extends Fragment{
 
             buttons[i].setText("Voir");
             buttonParams.setMargins(20, 100, 0, 0);
+            buttons[i].setBackgroundColor(buttons[i].getContext().getResources().getColor(R.color.GouiranLightBlue));
             secondParts[i].addView(buttons[i], buttonParams);
 
         }

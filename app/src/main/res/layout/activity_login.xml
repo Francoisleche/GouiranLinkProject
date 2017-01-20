@@ -13,6 +13,14 @@
     tools:context="com.example.franois.gouiranlinkproject.LoginActivity">
 
     <!-- Login progress -->
+    <ImageView
+        android:layout_width="302dp"
+        android:layout_height="286dp"
+        android:src="@drawable/splash_image"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerInside"
+        android:id="@+id/progressImageView"
+        android:visibility="gone"/>
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -21,13 +29,6 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
-    <ImageView
-        android:layout_width="302dp"
-        android:layout_height="286dp"
-        android:src="@drawable/splash_image"
-        android:layout_gravity="center_horizontal"
-        android:scaleType="centerInside"
-        android:id="@+id/imageView" />
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -35,6 +36,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
     </LinearLayout>
+
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -45,6 +47,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="302dp"
+                android:layout_height="286dp"
+                android:src="@drawable/splash_image"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerInside"
+                android:id="@+id/imageView" />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -85,6 +94,29 @@
                 android:text="@string/signed_out"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mot_de_passe_oublie"
+                    android:text="@string/mot_de_passe_oublie"
+                    android:textColor="@color/com_facebook_messenger_blue"
+                    android:onClick="onClick"
+                    android:clickable="true"
+                    android:layout_alignParentStart="true"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ignorer_pour_l_instant"
+                    android:text="@string/ignorer_pour_l_instant"
+                    android:gravity="center"
+                    android:textColor="@color/com_facebook_messenger_blue"
+                    android:onClick="onClick"
+                    android:clickable="true"
+                    android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
             <Button
                 android:id="@+id/email_sign_in_button"
                 android:background="@color/GouiranLightBlue"
@@ -99,18 +131,18 @@
                 android:layout_width="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_height="fill_parent"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_gravity="center_horizontal">
                 <com.facebook.login.widget.LoginButton
                     xmlns:fb="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/facebook_login_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center_horizontal" />
                 <com.google.android.gms.common.SignInButton
                     android:id="@+id/sign_in_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
                     android:layout_centerInParent="true"
                     android:visibility="visible"
                     tools:visibility="gone" />

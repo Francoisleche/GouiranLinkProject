@@ -7,10 +7,12 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
@@ -30,7 +32,7 @@ public class HomeFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
 
     TextView welcomeUser;
-    String username = "XXXXXXXXXX";
+    String username = null;
     String text;
     String[] recentResearches;
     TextView[] recentResearchesText;
@@ -123,7 +125,10 @@ public class HomeFragment extends BaseFragment {
 
         /* Editing username */
         //username = "XXXXXXXXXX";
-        text = String.format(res.getString(R.string.welcome_user), username);
+        if (username != null && username != "")
+            text = String.format(res.getString(R.string.welcome_user), username);
+        else
+            text = "Bonjour,";
         welcomeUser = new TextView(getActivity());
         welcomeUser = (TextView)getActivity().findViewById(R.id.welcome_user);
         welcomeUser.setText(text);

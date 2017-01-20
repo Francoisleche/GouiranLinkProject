@@ -5,7 +5,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.io.IOException;
+import java.util.Scanner;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -42,7 +45,13 @@ public class PostRequest extends AsyncTask<String, Void, String>{
                 .build();
         Response response = client.newCall(request).execute();
         String res = response.body().string();
+        res = StringEscapeUtils.unescapeJava(res);
+        int ind = res.indexOf("\"");
+        res= new StringBuilder(res).replace(ind, ind + 1,"").toString();
+        ind = res.lastIndexOf("\"");
+        res= new StringBuilder(res).replace(ind, ind + 1,"").toString();
         Log.d("1 TESTTEST", res);
+
         return (res);
     }
 
@@ -54,7 +63,6 @@ public class PostRequest extends AsyncTask<String, Void, String>{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.d("2 TESTTEST", res);
         return (res);
     }
 }

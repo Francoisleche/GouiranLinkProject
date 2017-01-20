@@ -4,11 +4,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -35,6 +37,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -82,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
+    private View mImageLoginView;
     private View mLoginFormView;
 
     private static final int RC_SIGN_IN = 9001;
@@ -141,6 +146,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        mImageLoginView = findViewById(R.id.progressImageView);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -385,6 +391,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mImageLoginView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
@@ -396,6 +403,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mImageLoginView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
@@ -554,6 +562,47 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         switch (v.getId()) {
             case R.id.sign_in_button:
                 signIn();
+                break;
+            case R.id.ignorer_pour_l_instant:
+                Intent i = new Intent(LoginActivity.this, ParentActivity.class);
+                startActivity(i);
+                break;
+            case R.id.mot_de_passe_oublie:
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+                alert.setTitle("Mot de passe oublié");
+                alert.setMessage("Veuillez entrer l'adresse e-mail liée à votre compte.");
+                final EditText input = new EditText(this);
+                alert.setView(input);
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String email = input.getText().toString();
+                        String resp = null;
+                        String json = "{\n" +
+                                "\"public_key\":\"" + email + "\",\n" +
+                                "\"kind\":\"Customer\"\n" +
+                                "}\n";
+                        PostRequest postRequest = new PostRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/lost-password/", json);
+
+                        try {
+                            resp = postRequest.execute().get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_SHORT).show();
+                        System.out.println(resp);
+                    }
+                });
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+                alert.show();
+
                 break;
         }
     }

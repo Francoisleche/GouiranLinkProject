@@ -6,14 +6,19 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.Toast;
+
+import java.io.File;
 
 import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
@@ -32,10 +37,6 @@ public class GalleryFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     static final int REQUEST_IMAGE_CAPTURE = 1;
-
-
-
-
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -132,6 +133,24 @@ public class GalleryFragment extends Fragment {
             }
         });
         return view;
+    }
+
+
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter(getActivity()));
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(getActivity(), "" + position,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        File sdCard = Environment.getExternalStorageDirectory();
+        File dir = new File (sdCard.getAbsolutePath() + "/GouiranLink");
+        
     }
 
     // TODO: Rename method, update argument and hook method into UI event

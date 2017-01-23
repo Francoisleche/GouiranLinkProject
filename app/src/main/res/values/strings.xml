@@ -80,4 +80,8 @@
     <string name="camera_not_found">No camera harware found</string>
     <string name="take_photo_help">Touch anywhere on screen to take picture</string>
 
+    <string name="google_maps_key">AIzaSyAumlhPTG1tntBLxZ3TUX362SMy1aSbcAg</string>
+
+    <string name="take_picture">Take picture</string>
+
 </resources>

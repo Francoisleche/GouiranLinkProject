@@ -123,7 +123,7 @@ public class GalleryFragment extends Fragment {
                         "Yes",
                         Toast.LENGTH_SHORT).show();
                 CamTestActivity cam = new CamTestActivity();
-                Intent intent = new Intent(getActivity(),CamTestActivity.class);
+                Intent intent = new Intent(getActivity(),AndroidCameraApi.class);
                 getActivity().startActivity(intent);
                 //cam.open();
 

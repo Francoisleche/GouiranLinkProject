@@ -531,6 +531,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 Intent i = new Intent(LoginActivity.this, ParentActivity.class);
                 Bundle b = new Bundle();
+                b.putBoolean("connected", true);
                 b.putString("token_access", "token_access");
                 b.putString("email", mEmail);
                 i.putExtras(b);
@@ -564,8 +565,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 signIn();
                 break;
             case R.id.ignorer_pour_l_instant:
+                Bundle b = new Bundle();
+                b.putBoolean("connected", false);
+                b.putString("email", mEmail);
                 Intent i = new Intent(LoginActivity.this, ParentActivity.class);
+                i.putExtras(b);
                 startActivity(i);
+                finish();
                 break;
             case R.id.mot_de_passe_oublie:
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);

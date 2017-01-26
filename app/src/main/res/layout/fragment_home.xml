@@ -42,7 +42,7 @@
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/previous_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
                         android:textColor="@color/black"
                         android:text="@string/research_9"
                         android:onClick="onClick"
-                        android:clickable="true" />
+                        android:clickable="true" />-->
                 </RelativeLayout>
             </HorizontalScrollView>
             <!-- Autour de moi -->
@@ -184,9 +184,8 @@
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/around_1"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/h2r"
+                        android:layout_width="180dp"
+                        android:layout_height="160dp"
                         android:onClick="onClick"
                         android:clickable="true"/>
                     <TextView
@@ -195,14 +194,12 @@
                         android:layout_alignTop="@id/around_1"
                         android:layout_alignEnd="@id/around_1"
                         android:layout_alignBottom="@id/around_1"
-                        android:text="@string/around_1_text"
                         style="@style/AroundMeProposals"/>
                     <ImageView
                         android:id="@+id/around_2"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="180dp"
+                        android:layout_height="160dp"
                         android:layout_toEndOf="@id/around_1"
-                        android:src="@drawable/gsxr"
                         android:onClick="onClick"
                         android:clickable="true"/>
                     <TextView
@@ -211,14 +208,12 @@
                         android:layout_alignTop="@id/around_2"
                         android:layout_alignEnd="@id/around_2"
                         android:layout_alignBottom="@id/around_2"
-                        android:text="@string/around_2_text"
                         style="@style/AroundMeProposals"/>
                     <ImageView
                         android:id="@+id/around_3"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="180dp"
+                        android:layout_height="160dp"
                         android:layout_toEndOf="@id/around_2"
-                        android:src="@drawable/zzr1400"
                         android:onClick="onClick"
                         android:clickable="true"/>
                     <TextView
@@ -227,14 +222,12 @@
                         android:layout_alignTop="@id/around_3"
                         android:layout_alignEnd="@id/around_3"
                         android:layout_alignBottom="@id/around_3"
-                        android:text="@string/around_3_text"
                         style="@style/AroundMeProposals"/>
                     <ImageView
                         android:id="@+id/around_4"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="180dp"
+                        android:layout_height="160dp"
                         android:layout_toEndOf="@id/around_3"
-                        android:src="@drawable/er6n"
                         android:onClick="onClick"
                         android:clickable="true"/>
                     <TextView
@@ -243,14 +236,12 @@
                         android:layout_alignTop="@id/around_4"
                         android:layout_alignEnd="@id/around_4"
                         android:layout_alignBottom="@id/around_4"
-                        android:text="@string/around_4_text"
                         style="@style/AroundMeProposals"/>
                     <ImageView
                         android:id="@+id/around_5"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="180dp"
+                        android:layout_height="160dp"
                         android:layout_toEndOf="@id/around_4"
-                        android:src="@drawable/kawa"
                         android:onClick="onClick"
                         android:clickable="true"/>
                     <TextView
@@ -259,7 +250,6 @@
                         android:layout_alignTop="@id/around_5"
                         android:layout_alignEnd="@id/around_5"
                         android:layout_alignBottom="@id/around_5"
-                        android:text="@string/around_5_text"
                         style="@style/AroundMeProposals"/>
                 </RelativeLayout>
             </HorizontalScrollView>
@@ -283,7 +273,7 @@
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/selection_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -401,7 +391,7 @@
                         android:textColor="@color/black"
                         android:text="@string/selection_9"
                         android:onClick="onClick"
-                        android:clickable="true" />
+                        android:clickable="true" />-->
                 </RelativeLayout>
             </HorizontalScrollView>
             <!-- Invitez des amis -->
@@ -420,6 +410,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="400dp"
                 android:layout_marginTop="16dp"
+                android:onClick="onClick"
+                android:clickable="true"
                 android:background="@drawable/invitez_des_amis" />
         </LinearLayout>
 

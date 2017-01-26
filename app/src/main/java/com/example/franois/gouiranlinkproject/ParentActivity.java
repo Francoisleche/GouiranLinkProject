@@ -198,21 +198,4 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
     }
     //messageView = (TextView) findViewById(R.id.messageView);
 
-        /*BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelected(@IdRes int tabId) {
-                //if (tabId == R.id.tab_home)
-
-                //messageView.setText(TabMessage.get(tabId, false));
-            }
-        });
-
-        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
-            @Override
-            public void onTabReSelected(@IdRes int tabId) {
-                //Toast.makeText(getApplicationContext(), TabMessage.get(tabId, true), Toast.LENGTH_LONG).show();
-            }
-        });*/
-
 }

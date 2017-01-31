@@ -24,6 +24,10 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.ncapdevi.fragnav.FragNavController;
 import com.example.franois.gouiranlinkproject.HomeFragment;
 import com.example.franois.gouiranlinkproject.ResearchFragment;
@@ -56,18 +60,22 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
     private final int TAB_FAVOURITES = FragNavController.TAB4;
     private final int TAB_GALLERY = FragNavController.TAB5;
     private final int TAB_ACCOUNT = 5;
-    private boolean compte = false;
+    public boolean compte = false;
     private String access_token = "";
     private String mEmail = "";
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent);
 
         Bundle b = getIntent().getExtras();
-        if (b != null)
-        {
+        if (b != null) {
             access_token = b.getString("access_token");
             mEmail = b.getString("email");
         }
@@ -85,48 +93,51 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
                     case R.id.tab_home:
                         fragNavController.switchTab(TAB_HOME);
                         compte = false;
-                        System.out.println("Compte = "+compte);
+                        System.out.println("Compte = " + compte);
                         break;
                     case R.id.tab_research:
                         fragNavController.switchTab(TAB_RESEARCH);
                         compte = false;
-                        System.out.println("Compte = "+compte);
+                        System.out.println("Compte = " + compte);
                         break;
                     case R.id.tab_reservations:
                         fragNavController.switchTab(TAB_RESERVATIONS);
                         compte = false;
-                        System.out.println("Compte = "+compte);
+                        System.out.println("Compte = " + compte);
                         break;
                     case R.id.tab_favourites:
                         fragNavController.switchTab(TAB_FAVOURITES);
                         compte = false;
-                        System.out.println("Compte = "+compte);
+                        System.out.println("Compte = " + compte);
                         break;
                     case R.id.tab_gallery:
-                        fragNavController.switchTab(TAB_GALLERY);
                         compte = false;
-                        System.out.println("Compte = "+compte);
-                        System.out.println("Compte = "+TAB_GALLERY);
+                        fragNavController.switchTab(TAB_GALLERY);
+                        System.out.println("Compte = " + compte);
+                        System.out.println("Compte = " + TAB_GALLERY);
                         break;
                     case R.id.tab_account:
                         compte = true;
-                        fragNavController.switchTab(TAB_ACCOUNT);
-                        System.out.println("Compte = "+compte);
-                        System.out.println("TAB_ACCOUNT = "+TAB_ACCOUNT);
+                        fragNavController.switchTab(TAB_RESEARCH);
+                        System.out.println("Compte = " + compte);
+                        System.out.println("TAB_ACCOUNT = " + TAB_GALLERY);
                         break;
                 }
             }
         });
 
-        Toast.makeText(this,"Compte = "+compte,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Compte = " + compte, Toast.LENGTH_SHORT).show();
 
 
         mBottomBar.setOnTabReselectListener(new OnTabReselectListener() {
             @Override
-            public void onTabReSelected(@IdRes int tabId){
+            public void onTabReSelected(@IdRes int tabId) {
                 fragNavController.clearStack();
             }
         });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -155,7 +166,7 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
     @Override
     public void onTabTransaction(Fragment fragment, int index) {
         // If we have a backstack, show the back button
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(fragNavController.canPop());
         }
     }
@@ -164,7 +175,7 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
     public void onFragmentTransaction(Fragment fragment) {
         //do fragmentty stuff. Maybe change title, I'm not going to tell you how to live your life
         // If we have a backstack, show the back button
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(fragNavController.canPop());
         }
     }
@@ -173,28 +184,71 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
     public Fragment getRootFragment(int index) {
         switch (index) {
             case TAB_HOME:
+                System.out.println("COOOOOOOOOOOMPTE = "+compte);
                 return HomeFragment.newInstance(0, mEmail);
             case TAB_RESEARCH:
-                return ResearchFragment.newInstance(0);
-            case TAB_RESERVATIONS:
-                return ReservationFragment.newInstance(0);
-            case TAB_FAVOURITES:
-                return FavouritesFragment.newInstance(0);
-            case TAB_GALLERY:
-                return GalleryFragment.newInstance(0);
-            case 5:
-                if(compte == true){
+                System.out.println("COOOOOOOOOOOMPTE = "+compte);
+                if (compte == false) {
+                    return ResearchFragment.newInstance(0);
+                }
+                //case TAB_GALLERY:
+                else{
                     Toast.makeText(this, "ça marche", Toast.LENGTH_SHORT).show();
                     return AccountFragment.newInstance(0);
                 }
+            case TAB_RESERVATIONS:
+                System.out.println("COOOOOOOOOOOMPTE = "+compte);
+                return ReservationFragment.newInstance(0);
+            case TAB_FAVOURITES:
+                System.out.println("COOOOOOOOOOOMPTE = "+compte);
+                return FavouritesFragment.newInstance(0);
+            case TAB_GALLERY:
+                System.out.println("COOOOOOOOOOOMPTE = "+compte);
+                return GalleryFragment.newInstance(0);
         }
         throw new IllegalStateException("Need to send an index that we know");
     }
 
 
     @Override
-    public void onFragmentInteraction(Uri uri){
+    public void onFragmentInteraction(Uri uri) {
         //you can leave it empty
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Parent Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
     }
     //messageView = (TextView) findViewById(R.id.messageView);
 

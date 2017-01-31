@@ -21,7 +21,7 @@
         icon="@drawable/ic_camera_alt_black_24dp"
         title="@string/myGallery" />
     <tab
-        id="@+id/tab_accoount"
+        id="@+id/tab_account"
         icon="@drawable/ic_person_black_24dp"
         title="@string/myAccount" />
 </tabs>

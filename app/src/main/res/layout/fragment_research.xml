@@ -6,7 +6,7 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="870px"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <!-- TODO: Update blank fragment layout -->
@@ -101,8 +101,69 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/textView_1"
                         android:layout_weight="1"></TextView>
+                </LinearLayout>
 
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+                    <ImageView
+                        android:id="@+id/around_11"
+                        android:layout_width="50dp"
+                        android:layout_height="100dp"
+                        android:clickable="true"
+                        android:onClick="onClick"
+                        android:src="@drawable/er6n" />
 
+                    <TextView
+                        android:text="TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView_11"
+                        android:layout_weight="1"></TextView>
+                </LinearLayout>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+                    <ImageView
+                        android:id="@+id/around_12"
+                        android:layout_width="50dp"
+                        android:layout_height="100dp"
+                        android:clickable="true"
+                        android:onClick="onClick"
+                        android:src="@drawable/er6n" />
+
+                    <TextView
+                        android:text="TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView_12"
+                        android:layout_weight="1"></TextView>
+                </LinearLayout>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1.0">
+                    <ImageView
+                        android:id="@+id/around_13"
+                        android:layout_width="50dp"
+                        android:layout_height="100dp"
+                        android:clickable="true"
+                        android:onClick="onClick"
+                        android:src="@drawable/er6n" />
+
+                    <TextView
+                        android:text="TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView_13"
+                        android:layout_weight="1"></TextView>
                 </LinearLayout>
 
                 <ImageView

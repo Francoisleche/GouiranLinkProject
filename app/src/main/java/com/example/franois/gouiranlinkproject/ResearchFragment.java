@@ -155,6 +155,15 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                     startActivity(intent);
                 }
             });
+            Button button2 =(Button)v.findViewById(R.id.filtre_research);
+            button2.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), FilterActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
 
         // TODO: Rename method, update argument and hook method into UI event

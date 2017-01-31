@@ -2,25 +2,46 @@ package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadFactory;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationServices;
+
+import static com.example.franois.gouiranlinkproject.R.id.imageView;
 
 
 /**
@@ -31,25 +52,26 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class HomeFragment extends BaseFragment implements ConnectionCallbacks, OnConnectionFailedListener{
+
+    //The minimum distance to change updates in meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = -10; // 10 meters
+    //The minimum time beetwen updates in milliseconds
+    private static final long MIN_TIME_BW_UPDATES = 0;//1000 * 60 * 1; // 1 minute
+    private LocationManager locationManager = null;
+    private MyLocationListener locationListener = null;
+
+    GoogleApiClient mGoogleApiClient;
+    Location mLastLocation;
+
+    double lastLatitude = 0;
+    double lastLongitude = 0;
 
     Boolean connected;
     TextView welcomeUser;
     String username = null;
     String text;
-    String[] recentResearches;
-    TextView[] recentResearchesText;
-    String[] gouiranLinkSelection;
-    TextView[] gouiranLinkSelectionText;
     final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +87,6 @@ public class HomeFragment extends BaseFragment {
      //* @param param2 Parameter 2.
      * @return A new instance of fragment HomeFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(int instance, String username) {
         Bundle args = new Bundle();
         args.putInt(ARGS_INSTANCE, instance);
@@ -76,34 +97,170 @@ public class HomeFragment extends BaseFragment {
         return firstFragment;
     }
 
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult arg0) {
+        Toast.makeText(getActivity(), "Failed to connect...", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onConnected(Bundle arg0) {
+
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        lastLatitude = mLastLocation.getLatitude();
+        lastLongitude = mLastLocation.getLongitude();
+
+        /*Toast.makeText(getActivity(), "Latitude: " + String.valueOf(mLastLocation.getLatitude()) + "Longitude: " +
+                String.valueOf(mLastLocation.getLongitude()), Toast.LENGTH_SHORT).show();
+
+        Log.d("POSITION", "Latitude: " + String.valueOf(mLastLocation.getLatitude()) + "Longitude: " +
+                String.valueOf(mLastLocation.getLongitude()));*/
+
+        final Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
+
+        generateRecentResearches(font);
+        generateAroundMe(font);
+        generateGouiranLinkSelection(font);
+
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int arg0) {
+        Toast.makeText(getActivity(), "Connection suspended...", Toast.LENGTH_SHORT).show();
+
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
             username = getArguments().getString("username");
             connected = getArguments().getBoolean("connected");
         }
+        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new MyLocationListener();
+        buildGoogleApiClient();
+
+        if(mGoogleApiClient!= null){
+            mGoogleApiClient.connect();
+        }
+        else
+            Toast.makeText(getActivity(), "Not connected...", Toast.LENGTH_SHORT).show();
+
         //Intent i = new Intent(getActivity(), MainHomePage.class);
         //startActivity(i);
 
     }
 
-    private void generateRecentResearches(View root, Typeface font) {
-        RelativeLayout myRecentResearchesProposal = (RelativeLayout)root.findViewById(R.id.my_recent_researches_proposal);
+    /*---------Listener class to get coordinates ------------- */
+    private class MyLocationListener implements LocationListener {
 
-        TextView textView = (TextView)root.findViewById(R.id.my_recent_researches);
+        //LocationResult[] locationResult = new LocationResult[5];
+
+        @Override
+        public void onLocationChanged(Location loc) {
+
+            double longitude = loc.getLongitude();
+            double latitude = loc.getLatitude();
+            JSONObject obj;
+            JSONArray arr;
+
+    /*----------to get City-Name from coordinates ------------- */
+            Geocoder gcd = new Geocoder(getActivity().getBaseContext(),
+                    Locale.getDefault());
+            List<Address> addresses;
+            try {
+                addresses = gcd.getFromLocation(loc.getLatitude(), loc
+                        .getLongitude(), 1);
+                if (addresses.size() > 0)
+                    System.out.println(addresses.get(0).getLocality());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            /*String gps = "GPS:" + latitude + ", " + longitude;
+            Toast.makeText(getActivity(), gps, Toast.LENGTH_SHORT).show();
+            Log.d("GPS: ",latitude+", "+longitude);*/
+
+            /*String resp;
+            GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[geoloc][latitude]=" + String.valueOf((int)latitude)
+                    + "&query[geoloc][longitude]=" + String.valueOf((int)longitude));
+            Log.d("REQUEST", "https://www.gouiran-beaute.com/link/api/v1/professional/?query[geoloc][latitude]=" + String.valueOf((int)latitude)
+            + "&query[geoloc][longitude]=" + String.valueOf((int)longitude));
+            try {
+                resp = getRequest.execute().get();
+                obj = new JSONObject(resp);
+                arr = obj.getJSONArray("data");
+                Log.d("ARRAY=", String.valueOf(arr));
+                Log.d("TAG", resp);
+                int i = 0;
+                for (i = 0; i < arr.length() && i < 5; i++) {
+                    locationResult[i] = new LocationResult();
+
+
+                    locationResult[i].setShop_name(arr.getJSONObject(i).getString("shop_name"));
+                    locationResult[i].setLogo_image_url(arr.getJSONObject(i).getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("search").getString("url"));
+                    Log.d("TAG3", locationResult[i].getShop_name());
+                    Log.d("TAG3", locationResult[i].getLogo_image_url());
+                    //Log.d("TAG3", locationResult[i].getLogo_image_url());
+                    //Log.d("TAG3", locationResult[i].getShop_name());
+                }
+
+                Log.d("TAG4", String.valueOf(i));
+            } //catch (InterruptedException | ExecutionException | JSONException e) {
+            catch (JSONException | InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }*/
+
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+        }
+
+        @Override
+        public void onStatusChanged(String provider,
+                                    int status, Bundle extras) {
+        }
+
+        /*public LocationResult[] getLocationResult() {
+            return locationResult;
+        }
+
+        public void setLocationResult(LocationResult[] locationResult) {
+            this.locationResult = locationResult;
+        }*/
+    }
+
+    private void generateRecentResearches(Typeface font) {
+        RelativeLayout myRecentResearchesProposal = (RelativeLayout)getActivity().findViewById(R.id.my_recent_researches_proposal);
+
+        TextView textView = (TextView)getActivity().findViewById(R.id.my_recent_researches);
         textView.setTypeface(font);
         if (connected)
-            textView.setText("Top Recherche");
+            textView.setText(R.string.top_recherche);
 
         TextView textView1 = new TextView(getActivity());
         RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView1.setPadding(5, 0, 5, 0);
         textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         textView1.setTextColor(getResources().getColor(R.color.black));
-        textView1.setText("Curabitur suscipit quam");
+        textView1.setText(R.string.dynamic_recent_1);
         textView1.setLayoutParams(params1);
         textView1.setId(1);
         textView1.setTypeface(font);
@@ -114,7 +271,7 @@ public class HomeFragment extends BaseFragment {
         textView2.setPadding(5, 0, 5, 0);
         textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView2.setTextColor(getResources().getColor(R.color.black));
-        textView2.setText("Phasellus felis orci");
+        textView2.setText(R.string.dynamic_recent_2);
         params2.addRule(RelativeLayout.END_OF, 1);
         textView2.setLayoutParams(params2);
         textView2.setId(2);
@@ -126,7 +283,7 @@ public class HomeFragment extends BaseFragment {
         textView3.setPadding(5, 0, 5, 0);
         textView3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView3.setTextColor(getResources().getColor(R.color.black));
-        textView3.setText("Duis non ullamcorper");
+        textView3.setText(R.string.dynamic_recent_3);
         params3.addRule(RelativeLayout.END_OF, 1);
         params3.addRule(RelativeLayout.BELOW, 2);
         textView3.setLayoutParams(params3);
@@ -139,7 +296,7 @@ public class HomeFragment extends BaseFragment {
         textView4.setPadding(5, 0, 5, 0);
         textView4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         textView4.setTextColor(getResources().getColor(R.color.black));
-        textView4.setText("Quisque nisl ligula");
+        textView4.setText(R.string.dynamic_recent_4);
         params4.addRule(RelativeLayout.END_OF, 2);
         textView4.setLayoutParams(params4);
         textView4.setId(4);
@@ -151,7 +308,7 @@ public class HomeFragment extends BaseFragment {
         textView5.setPadding(5, 0, 5, 0);
         textView5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView5.setTextColor(getResources().getColor(R.color.black));
-        textView5.setText("Etiam nec quam");
+        textView5.setText(R.string.dynamic_recent_5);
         params5.addRule(RelativeLayout.END_OF, 4);
         textView5.setLayoutParams(params5);
         textView5.setId(5);
@@ -163,7 +320,7 @@ public class HomeFragment extends BaseFragment {
         textView6.setPadding(5, 0, 5, 0);
         textView6.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView6.setTextColor(getResources().getColor(R.color.black));
-        textView6.setText("Nam a sapien");
+        textView6.setText(R.string.dynamic_recent_6);
         params6.addRule(RelativeLayout.END_OF, 4);
         params6.addRule(RelativeLayout.BELOW, 5);
         textView6.setLayoutParams(params6);
@@ -176,7 +333,7 @@ public class HomeFragment extends BaseFragment {
         textView7.setPadding(5, 0, 5, 0);
         textView7.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         textView7.setTextColor(getResources().getColor(R.color.black));
-        textView7.setText("Integer at nisi");
+        textView7.setText(R.string.dynamic_recent_7);
         params7.addRule(RelativeLayout.END_OF, 5);
         textView7.setLayoutParams(params7);
         textView7.setId(7);
@@ -188,7 +345,7 @@ public class HomeFragment extends BaseFragment {
         textView8.setPadding(5, 0, 5, 0);
         textView8.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView8.setTextColor(getResources().getColor(R.color.black));
-        textView8.setText("Aenean tristique nisi");
+        textView8.setText(R.string.dynamic_recent_8);
         params8.addRule(RelativeLayout.END_OF, 7);
         textView8.setLayoutParams(params8);
         textView8.setId(8);
@@ -200,7 +357,7 @@ public class HomeFragment extends BaseFragment {
         textView9.setPadding(5, 0, 5, 0);
         textView9.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView9.setTextColor(getResources().getColor(R.color.black));
-        textView9.setText("Proin lobortis sollicitudin");
+        textView9.setText(R.string.dynamic_recent_9);
         params9.addRule(RelativeLayout.END_OF, 7);
         params9.addRule(RelativeLayout.BELOW, 8);
         textView9.setLayoutParams(params9);
@@ -210,42 +367,171 @@ public class HomeFragment extends BaseFragment {
 
     }
 
-    private void generateAroundMe(View root, Typeface font) {
+    private void generateAroundMe(Typeface font) {
 
-        TextView textView = (TextView)root.findViewById(R.id.around_me);
+
+
+        Toast.makeText(getActivity(), "Latitude: " + String.valueOf(lastLatitude) + "Longitude: " +
+                String.valueOf(lastLongitude), Toast.LENGTH_SHORT).show();
+
+
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //alertbox("Gps Status!!", "Your GPS is: OFF");
+            System.out.println("Your GPS is: OFF");
+        }
+
+        Log.d("TAG1", "avant");
+        /*locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                MIN_TIME_BW_UPDATES,
+                MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListener);*/
+        Log.d("TAG1", "après");
+
+        /*= new LocationResult[5];
+        locationResult = locationListener.getLocationResult();*/
+
+        TextView textView = (TextView) getActivity().findViewById(R.id.around_me);
         textView.setTypeface(font);
 
-        ImageView imageView = (ImageView) root.findViewById(R.id.around_1);
-        textView = (TextView) root.findViewById(R.id.around_1_text);
-        new DownloadImageTask(imageView).execute("http://polaris.hs.llnwd.net/o40/vic/2017/img/motorcycles/my17-motorcycles-page/cruisers-en-us.png");
-        textView.setText("Vivamus id pretium");
-        textView.setTypeface(font);
-        imageView = (ImageView) root.findViewById(R.id.around_2);
-        textView = (TextView) root.findViewById(R.id.around_2_text);
-        new DownloadImageTask(imageView).execute("http://i2.cdn.cnn.com/cnnnext/dam/assets/160201113353-modern-motorcycle-style-13-super-169.jpg");
-        textView.setText("Lorem ipsum dolor");
-        textView.setTypeface(font);
-        imageView = (ImageView) root.findViewById(R.id.around_3);
-        textView = (TextView) root.findViewById(R.id.around_3_text);
-        new DownloadImageTask(imageView).execute("http://t3.gstatic.com/images?q=tbn:ANd9GcRRq4kyBQRB-TiUZAW3oSBJ5Z6hRluE8qkGogx8VhrSEgUDB64tjXfnxHg");
-        textView.setText("Cras placerat pulvinar");
-        textView.setTypeface(font);
-        imageView = (ImageView) root.findViewById(R.id.around_4);
-        textView = (TextView) root.findViewById(R.id.around_4_text);
-        new DownloadImageTask(imageView).execute("https://i.ytimg.com/vi/Fw8agSotU-M/maxresdefault.jpg");
-        textView.setText("Curabitur a massa");
-        textView.setTypeface(font);
-        imageView = (ImageView) root.findViewById(R.id.around_5);
-        textView = (TextView) root.findViewById(R.id.around_5_text);
-        new DownloadImageTask(imageView).execute("https://i.ytimg.com/vi/VX3RXiEUuWw/hqdefault.jpg");
-        textView.setText("Proin viverra bibendum");
-        textView.setTypeface(font);
+        ImageView imageView;
+
+        /*if (locationResult != null) {
+            Log.d("TAGTAGTAG", String.valueOf(locationResult.length));
+            if (locationResult.length >= 1) {
+                imageView = (ImageView) getActivity().findViewById(R.id.around_1);
+                textView = (TextView) getActivity().findViewById(R.id.around_1_text);
+                //new DownloadImageTask(imageView).execute("http://polaris.hs.llnwd.net/o40/vic/2017/img/motorcycles/my17-motorcycles-page/cruisers-en-us.png");
+                if (locationResult[0].getLogo_image_url() != null) {
+                    new DownloadImageTask(imageView).execute(locationResult[0].getLogo_image_url());
+                }
+                //textView.setText(R.string.dynamic_around_1);
+                if (locationResult[0].getShop_name() != null) {
+                    textView.setText(locationResult[0].getShop_name());
+                }
+                textView.setTypeface(font);
+            }
+
+            if (locationResult.length >= 2) {
+                imageView = (ImageView) getActivity().findViewById(R.id.around_2);
+                textView = (TextView) getActivity().findViewById(R.id.around_2_text);
+                //new DownloadImageTask(imageView).execute("http://i2.cdn.cnn.com/cnnnext/dam/assets/160201113353-modern-motorcycle-style-13-super-169.jpg");
+                if (locationResult[0].getLogo_image_url() != null) {
+                    new DownloadImageTask(imageView).execute(locationResult[1].getLogo_image_url());
+                }
+                //textView.setText(R.string.dynamic_around_2);
+                if (locationResult[0].getShop_name() != null) {
+                    textView.setText(locationResult[1].getShop_name());
+                }
+                textView.setTypeface(font);
+            }
+
+            if (locationResult.length >= 3) {
+                imageView = (ImageView) getActivity().findViewById(R.id.around_3);
+                textView = (TextView) getActivity().findViewById(R.id.around_3_text);
+                //new DownloadImageTask(imageView).execute("http://t3.gstatic.com/images?q=tbn:ANd9GcRRq4kyBQRB-TiUZAW3oSBJ5Z6hRluE8qkGogx8VhrSEgUDB64tjXfnxHg");
+                if (locationResult[0].getLogo_image_url() != null) {
+                    new DownloadImageTask(imageView).execute(locationResult[2].getLogo_image_url());
+                }
+                //textView.setText(R.string.dynamic_around_3);
+                if (locationResult[0].getShop_name() != null) {
+                    textView.setText(locationResult[2].getShop_name());
+                }
+                textView.setTypeface(font);
+            }
+
+            if (locationResult.length >= 4) {
+                imageView = (ImageView) getActivity().findViewById(R.id.around_4);
+                textView = (TextView) getActivity().findViewById(R.id.around_4_text);
+                //new DownloadImageTask(imageView).execute("https://i.ytimg.com/vi/Fw8agSotU-M/maxresdefault.jpg");
+                if (locationResult[0].getLogo_image_url() != null) {
+                    new DownloadImageTask(imageView).execute(locationResult[3].getLogo_image_url());
+                }
+                //textView.setText(R.string.dynamic_around_4);
+                if (locationResult[0].getShop_name() != null) {
+                    textView.setText(locationResult[3].getShop_name());
+                }
+                textView.setTypeface(font);
+            }
+
+            if (locationResult.length >= 5) {
+                imageView = (ImageView) getActivity().findViewById(R.id.around_5);
+                textView = (TextView) getActivity().findViewById(R.id.around_5_text);
+                //new DownloadImageTask(imageView).execute("https://i.ytimg.com/vi/VX3RXiEUuWw/hqdefault.jpg");
+                if (locationResult[0].getLogo_image_url() != null) {
+                    new DownloadImageTask(imageView).execute(locationResult[4].getLogo_image_url());
+                }
+                //textView.setText(R.string.dynamic_around_5);
+                if (locationResult[0].getShop_name() != null) {
+                    textView.setText(locationResult[4].getShop_name());
+                }
+                textView.setTypeface(font);
+            }
+        }*/
+        NearbyProfessionals nearbyProfessionals = new NearbyProfessionals((int)mLastLocation.getLatitude(), (int)mLastLocation.getLongitude());
+        String[] shopImageList = nearbyProfessionals.getShopImageList();
+        String[] shopNameList = nearbyProfessionals.getShopNameList();
+        if (shopImageList[0] != null && shopNameList[0] != null) {
+            imageView = (ImageView) getActivity().findViewById(R.id.around_1);
+            textView = (TextView) getActivity().findViewById(R.id.around_1_text);
+            if (shopImageList[0] != null) {
+                new DownloadImageTask(imageView).execute(shopImageList[0]);
+            }
+            if (shopNameList[0] != null) {
+                textView.setText(shopNameList[0]);
+            }
+            textView.setTypeface(font);
+        }
+
+        if (shopImageList[1] != null && shopNameList[1] != null) {
+            imageView = (ImageView) getActivity().findViewById(R.id.around_2);
+            textView = (TextView) getActivity().findViewById(R.id.around_2_text);
+            if (shopImageList[1] != null) {
+                new DownloadImageTask(imageView).execute(shopImageList[1]);
+            }
+            if (shopNameList[1] != null) {
+                textView.setText(shopNameList[1]);
+            }
+            textView.setTypeface(font);
+        }
+        if (shopImageList[2] != null && shopNameList[2] != null) {
+            imageView = (ImageView) getActivity().findViewById(R.id.around_3);
+            textView = (TextView) getActivity().findViewById(R.id.around_3_text);
+            if (shopImageList[2] != null) {
+                new DownloadImageTask(imageView).execute(shopImageList[2]);
+            }
+            if (shopNameList[2] != null) {
+                textView.setText(shopNameList[2]);
+            }
+            textView.setTypeface(font);
+        }
+        if (shopImageList[3] != null && shopNameList[3] != null) {
+            imageView = (ImageView) getActivity().findViewById(R.id.around_4);
+            textView = (TextView) getActivity().findViewById(R.id.around_4_text);
+            if (shopImageList[3] != null) {
+                new DownloadImageTask(imageView).execute(shopImageList[3]);
+            }
+            if (shopNameList[3] != null) {
+                textView.setText(shopNameList[3]);
+            }
+            textView.setTypeface(font);
+        }
+        if (shopImageList[4] != null && shopNameList[4] != null) {
+            imageView = (ImageView) getActivity().findViewById(R.id.around_5);
+            textView = (TextView) getActivity().findViewById(R.id.around_5_text);
+            if (shopImageList[4] != null) {
+                new DownloadImageTask(imageView).execute(shopImageList[4]);
+            }
+            if (shopNameList[4] != null) {
+                textView.setText(shopNameList[4]);
+            }
+            textView.setTypeface(font);
+        }
+
     }
 
-    private void generateGouiranLinkSelection(View root, Typeface font) {
-        RelativeLayout gouiranLinkSelectionProposals = (RelativeLayout)root.findViewById(R.id.gouiran_link_selection_proposals);
+    private void generateGouiranLinkSelection(Typeface font) {
+        RelativeLayout gouiranLinkSelectionProposals = (RelativeLayout)getActivity().findViewById(R.id.gouiran_link_selection_proposals);
 
-        TextView textView = (TextView)root.findViewById(R.id.gouiran_link_selection);
+        TextView textView = (TextView)getActivity().findViewById(R.id.gouiran_link_selection);
         textView.setTypeface(font);
 
         TextView textView1 = new TextView(getActivity());
@@ -253,7 +539,7 @@ public class HomeFragment extends BaseFragment {
         textView1.setPadding(5, 0, 5, 0);
         textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         textView1.setTextColor(getResources().getColor(R.color.black));
-        textView1.setText("Suspendisse imperdiet elit");
+        textView1.setText(R.string.dynamic_selection_1);
         textView1.setLayoutParams(params1);
         textView1.setId(1);
         textView1.setTypeface(font);
@@ -264,7 +550,7 @@ public class HomeFragment extends BaseFragment {
         textView2.setPadding(5, 0, 5, 0);
         textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView2.setTextColor(getResources().getColor(R.color.black));
-        textView2.setText("Curabitur non convallis");
+        textView2.setText(R.string.dynamic_selection_2);
         params2.addRule(RelativeLayout.END_OF, 1);
         textView2.setLayoutParams(params2);
         textView2.setId(2);
@@ -276,7 +562,7 @@ public class HomeFragment extends BaseFragment {
         textView3.setPadding(5, 0, 5, 0);
         textView3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView3.setTextColor(getResources().getColor(R.color.black));
-        textView3.setText("Etiam sollicitudin quis");
+        textView3.setText(R.string.dynamic_selection_3);
         params3.addRule(RelativeLayout.END_OF, 1);
         params3.addRule(RelativeLayout.BELOW, 2);
         textView3.setLayoutParams(params3);
@@ -289,7 +575,7 @@ public class HomeFragment extends BaseFragment {
         textView4.setPadding(5, 0, 5, 0);
         textView4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         textView4.setTextColor(getResources().getColor(R.color.black));
-        textView4.setText("Sed posuere nisl");
+        textView4.setText(R.string.dynamic_selection_4);
         params4.addRule(RelativeLayout.END_OF, 2);
         textView4.setLayoutParams(params4);
         textView4.setId(4);
@@ -301,7 +587,7 @@ public class HomeFragment extends BaseFragment {
         textView5.setPadding(5, 0, 5, 0);
         textView5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView5.setTextColor(getResources().getColor(R.color.black));
-        textView5.setText("Nam nec erat");
+        textView5.setText(R.string.dynamic_selection_5);
         params5.addRule(RelativeLayout.END_OF, 4);
         textView5.setLayoutParams(params5);
         textView5.setId(5);
@@ -313,7 +599,7 @@ public class HomeFragment extends BaseFragment {
         textView6.setPadding(5, 0, 5, 0);
         textView6.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView6.setTextColor(getResources().getColor(R.color.black));
-        textView6.setText("Vivamus vitae porttitor");
+        textView6.setText(R.string.dynamic_selection_6);
         params6.addRule(RelativeLayout.END_OF, 4);
         params6.addRule(RelativeLayout.BELOW, 5);
         textView6.setLayoutParams(params6);
@@ -326,7 +612,7 @@ public class HomeFragment extends BaseFragment {
         textView7.setPadding(5, 0, 5, 0);
         textView7.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         textView7.setTextColor(getResources().getColor(R.color.black));
-        textView7.setText("Quisque imperdiet, arcu");
+        textView7.setText(R.string.dynamic_selection_7);
         params7.addRule(RelativeLayout.END_OF, 5);
         textView7.setLayoutParams(params7);
         textView7.setId(7);
@@ -338,7 +624,7 @@ public class HomeFragment extends BaseFragment {
         textView8.setPadding(5, 0, 5, 0);
         textView8.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView8.setTextColor(getResources().getColor(R.color.black));
-        textView8.setText("Integer posuere ligula");
+        textView8.setText(R.string.dynamic_selection_8);
         params8.addRule(RelativeLayout.END_OF, 7);
         textView8.setLayoutParams(params8);
         textView8.setId(8);
@@ -350,7 +636,7 @@ public class HomeFragment extends BaseFragment {
         textView9.setPadding(5, 0, 5, 0);
         textView9.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         textView9.setTextColor(getResources().getColor(R.color.black));
-        textView9.setText("Vestibulum lorem elit");
+        textView9.setText(R.string.dynamic_selection_9);
         params9.addRule(RelativeLayout.END_OF, 7);
         params9.addRule(RelativeLayout.BELOW, 8);
         textView9.setLayoutParams(params9);
@@ -359,43 +645,12 @@ public class HomeFragment extends BaseFragment {
         gouiranLinkSelectionProposals.addView(textView9);
     }
 
-    private void getGouiranLinkSelection() {
-        gouiranLinkSelection = new String[9];
-
-        gouiranLinkSelection[0] = "Kawasaki Ninja H2R";
-        gouiranLinkSelection[1] = "Suzuki GSXR 1000";
-        gouiranLinkSelection[2] = "Yamaha R6";
-        gouiranLinkSelection[3] = "Yamaha R1";
-        gouiranLinkSelection[4] = "Yamaha MT-10";
-        gouiranLinkSelection[5] = "Ducati 996";
-        gouiranLinkSelection[6] = "KTM Super Duke 1290";
-        gouiranLinkSelection[7] = "BMW S1000 RR";
-        gouiranLinkSelection[8] = "Ducati Multistrada";
-    }
-
-    private void getRecentResearches() {
-        recentResearches = new String[9];
-
-        recentResearches[0] = "Massage suédois";
-        recentResearches[1] = "Massage pierres chaudes";
-        recentResearches[2] = "Massage relaxant";
-        recentResearches[3] = "Massage ayurvédique";
-        recentResearches[4] = "Massage du corps aux huiles essentielles";
-        recentResearches[5] = "Massage aux choix en duo";
-        recentResearches[6] = "Massage californien";
-        recentResearches[7] = "Séance de Reiki";
-        recentResearches[8] = "Massage ayurvédique aux huiles chaudes";
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        generateRecentResearches(root, font);
-        generateAroundMe(root, font);
-        generateGouiranLinkSelection(root, font);
         return (root);
     }
 
@@ -404,7 +659,6 @@ public class HomeFragment extends BaseFragment {
         Resources res = getResources();
         getActivity().getAssets();
         TextView textView;
-        textView = new TextView(getActivity());
         final Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
 
         /* Editing username */
@@ -419,57 +673,11 @@ public class HomeFragment extends BaseFragment {
         welcomeUser.setTypeface(font);
         welcomeUser.setTextColor(res.getColor(R.color.GouiranDarkBlue));
 
-        /* Editing recent researches */
-        /*textView = (TextView)getActivity().findViewById(R.id.my_recent_researches);
-        textView.setTypeface(font);
-        getRecentResearches();
-        recentResearchesText = new TextView[9];
-        for (int i = 0; i < 9; i++)
-            recentResearchesText[i] = new TextView(getActivity());
-
-        for (int i = 0; i < 9; i++) {
-            String researchId = "previous_" + (i + 1);
-            String researchString = "research_" + (i + 1);
-            int resId = res.getIdentifier(researchId, "id", getActivity().getPackageName());
-            int resString = res.getIdentifier(researchString, "string", getActivity().getPackageName());
-            recentResearchesText[i] = (TextView)getActivity().findViewById(resId);
-            recentResearchesText[i].setText(String.format(res.getString(resString), recentResearches[i]));
-            recentResearchesText[i].setTypeface(font);
-            recentResearchesText[i].setTextColor(res.getColor(R.color.GouiranDarkBlue));
-        }*/
-
-        /* Around Me */
-        /*textView = (TextView)getActivity().findViewById(R.id.around_me);
-        textView.setTypeface(font);
-        for (int i = 0; i < 5; i++) {
-            String around = "around_" + (i + 1) + "_text";
-            int resAround = res.getIdentifier(around, "id", getActivity().getPackageName());
-            textView = (TextView)getActivity().findViewById(resAround);
-            textView.setTypeface(font);
-        }*/
-
-        /* Editing Gouiran Link selections */
-        /*textView = (TextView)getActivity().findViewById(R.id.gouiran_link_selection);
-        textView.setTypeface(font);
-        getGouiranLinkSelection();
-        gouiranLinkSelectionText = new TextView[9];
-        for (int i = 0; i < 9; i++)
-            gouiranLinkSelectionText[i] = new TextView(getActivity());
-
-        for (int i = 0; i < 9; i++) {
-            String researchId = "selection_" + (i + 1);
-            String researchString = "research_" + (i + 1);
-            int resId = res.getIdentifier(researchId, "id", getActivity().getPackageName());
-            int resString = res.getIdentifier(researchString, "string", getActivity().getPackageName());
-            gouiranLinkSelectionText[i] = (TextView)getActivity().findViewById(resId);
-            gouiranLinkSelectionText[i].setText(String.format(res.getString(resString), gouiranLinkSelection[i]));
-            gouiranLinkSelectionText[i].setTypeface(font);
-            gouiranLinkSelectionText[i].setTextColor(res.getColor(R.color.GouiranDarkBlue));
-        }*/
-
         /* Invitez des amis */
         textView = (TextView)getActivity().findViewById(R.id.invite_your_friends);
         textView.setTypeface(font);
+
+
 
         emailIntent.setType("plain/text");
         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invitation Gouiran Link");
@@ -487,12 +695,6 @@ public class HomeFragment extends BaseFragment {
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -522,7 +724,5 @@ public class HomeFragment extends BaseFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

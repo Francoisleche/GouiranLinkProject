@@ -2,10 +2,16 @@ package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +20,14 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
@@ -38,8 +47,6 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private static final String ARG_PARAM1 = "param1";
         private static final String ARG_PARAM2 = "param2";
-
-
 
         private ResearchTask mAuthTask = null;
         private EditText recherche;

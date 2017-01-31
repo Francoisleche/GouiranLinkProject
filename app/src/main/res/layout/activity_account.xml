@@ -65,11 +65,13 @@
             android:weightSum="3">
 
             <TextView
+                android:id="@+id/settings_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:layout_marginStart="20dp"
                 android:layout_weight="3"
+                android:clickable="true"
                 android:text="Paramètres" />
             <Button
                 android:id="@+id/settings_button"

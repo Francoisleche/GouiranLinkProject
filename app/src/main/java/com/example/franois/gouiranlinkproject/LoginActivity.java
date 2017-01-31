@@ -491,10 +491,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            if (resp.contains("access_token"))
+            if (resp.contains("access_token")) {
                 connected = true;
-            else
+                Log.d("true", "true");
+            }
+            else {
                 connected = false;
+                Log.d("false", "false");
+            }
         }
 
         @Override

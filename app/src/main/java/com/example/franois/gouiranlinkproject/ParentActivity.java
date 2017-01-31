@@ -1,5 +1,6 @@
 package com.example.franois.gouiranlinkproject;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -118,15 +119,18 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
                         break;
                     case R.id.tab_account:
                         compte = true;
-                        fragNavController.switchTab(TAB_RESEARCH);
-                        System.out.println("Compte = " + compte);
-                        System.out.println("TAB_ACCOUNT = " + TAB_GALLERY);
+                        //fragNavController.switchTab(TAB_ACCOUNT);
+                        Intent i = new Intent(ParentActivity.this, AccountActivity.class);
+                        startActivity(i);
+                        System.out.println("Compte = "+compte);
+                        System.out.println("TAB_ACCOUNT = "+TAB_ACCOUNT);
                         break;
                 }
             }
         });
 
         //Toast.makeText(this, "Compte = " + compte, Toast.LENGTH_SHORT).show();
+
 
 
         mBottomBar.setOnTabReselectListener(new OnTabReselectListener() {

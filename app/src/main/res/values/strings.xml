@@ -66,6 +66,14 @@
     <string name="title_activity_parent">ParentActivity</string>
     <string name="action_settings">Settings</string>
 
+    <string name="erreur">Erreur rencontrée sur l\'application</string>
+    <string name="service_type">Type de service</string>
+    <string name="description">Description</string>
+    <string name="screenshot">Capture d\'écran</string>
+    <string name="informations">Informations sur l\'appareil</string>
+    <string name="modele">Modèle de l\'appareil</string>
+    <string name="version">Version Android/iOS</string>
+
 
     <!-- Facebook -->
     <string name="facebook_app_id">1195041087255686</string>

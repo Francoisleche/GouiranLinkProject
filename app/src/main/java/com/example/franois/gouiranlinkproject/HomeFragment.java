@@ -10,11 +10,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,22 +24,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ThreadFactory;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationServices;
-
-import static com.example.franois.gouiranlinkproject.R.id.imageView;
 
 
 /**
@@ -157,9 +150,6 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         else
             Toast.makeText(getActivity(), "Not connected...", Toast.LENGTH_SHORT).show();
 
-        //Intent i = new Intent(getActivity(), MainHomePage.class);
-        //startActivity(i);
-
     }
 
     /*---------Listener class to get coordinates ------------- */
@@ -188,40 +178,6 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
                 e.printStackTrace();
             }
 
-            /*String gps = "GPS:" + latitude + ", " + longitude;
-            Toast.makeText(getActivity(), gps, Toast.LENGTH_SHORT).show();
-            Log.d("GPS: ",latitude+", "+longitude);*/
-
-            /*String resp;
-            GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[geoloc][latitude]=" + String.valueOf((int)latitude)
-                    + "&query[geoloc][longitude]=" + String.valueOf((int)longitude));
-            Log.d("REQUEST", "https://www.gouiran-beaute.com/link/api/v1/professional/?query[geoloc][latitude]=" + String.valueOf((int)latitude)
-            + "&query[geoloc][longitude]=" + String.valueOf((int)longitude));
-            try {
-                resp = getRequest.execute().get();
-                obj = new JSONObject(resp);
-                arr = obj.getJSONArray("data");
-                Log.d("ARRAY=", String.valueOf(arr));
-                Log.d("TAG", resp);
-                int i = 0;
-                for (i = 0; i < arr.length() && i < 5; i++) {
-                    locationResult[i] = new LocationResult();
-
-
-                    locationResult[i].setShop_name(arr.getJSONObject(i).getString("shop_name"));
-                    locationResult[i].setLogo_image_url(arr.getJSONObject(i).getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("search").getString("url"));
-                    Log.d("TAG3", locationResult[i].getShop_name());
-                    Log.d("TAG3", locationResult[i].getLogo_image_url());
-                    //Log.d("TAG3", locationResult[i].getLogo_image_url());
-                    //Log.d("TAG3", locationResult[i].getShop_name());
-                }
-
-                Log.d("TAG4", String.valueOf(i));
-            } //catch (InterruptedException | ExecutionException | JSONException e) {
-            catch (JSONException | InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }*/
-
 
         }
 
@@ -238,13 +194,6 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
                                     int status, Bundle extras) {
         }
 
-        /*public LocationResult[] getLocationResult() {
-            return locationResult;
-        }
-
-        public void setLocationResult(LocationResult[] locationResult) {
-            this.locationResult = locationResult;
-        }*/
     }
 
     private void generateRecentResearches(Typeface font) {
@@ -369,106 +318,20 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
 
     private void generateAroundMe(Typeface font) {
 
+        TextView textView = (TextView) getActivity().findViewById(R.id.around_me);
+        ImageView imageView;
 
+        NearbyProfessionals nearbyProfessionals = new NearbyProfessionals((int)mLastLocation.getLatitude(), (int)mLastLocation.getLongitude());
+        String[] shopImageList = nearbyProfessionals.getShopImageList();
+        String[] shopNameList = nearbyProfessionals.getShopNameList();
 
-        Toast.makeText(getActivity(), "Latitude: " + String.valueOf(lastLatitude) + "Longitude: " +
-                String.valueOf(lastLongitude), Toast.LENGTH_SHORT).show();
-
+        textView.setTypeface(font);
 
         if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //alertbox("Gps Status!!", "Your GPS is: OFF");
             System.out.println("Your GPS is: OFF");
         }
 
-        Log.d("TAG1", "avant");
-        /*locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                MIN_TIME_BW_UPDATES,
-                MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListener);*/
-        Log.d("TAG1", "après");
-
-        /*= new LocationResult[5];
-        locationResult = locationListener.getLocationResult();*/
-
-        TextView textView = (TextView) getActivity().findViewById(R.id.around_me);
-        textView.setTypeface(font);
-
-        ImageView imageView;
-
-        /*if (locationResult != null) {
-            Log.d("TAGTAGTAG", String.valueOf(locationResult.length));
-            if (locationResult.length >= 1) {
-                imageView = (ImageView) getActivity().findViewById(R.id.around_1);
-                textView = (TextView) getActivity().findViewById(R.id.around_1_text);
-                //new DownloadImageTask(imageView).execute("http://polaris.hs.llnwd.net/o40/vic/2017/img/motorcycles/my17-motorcycles-page/cruisers-en-us.png");
-                if (locationResult[0].getLogo_image_url() != null) {
-                    new DownloadImageTask(imageView).execute(locationResult[0].getLogo_image_url());
-                }
-                //textView.setText(R.string.dynamic_around_1);
-                if (locationResult[0].getShop_name() != null) {
-                    textView.setText(locationResult[0].getShop_name());
-                }
-                textView.setTypeface(font);
-            }
-
-            if (locationResult.length >= 2) {
-                imageView = (ImageView) getActivity().findViewById(R.id.around_2);
-                textView = (TextView) getActivity().findViewById(R.id.around_2_text);
-                //new DownloadImageTask(imageView).execute("http://i2.cdn.cnn.com/cnnnext/dam/assets/160201113353-modern-motorcycle-style-13-super-169.jpg");
-                if (locationResult[0].getLogo_image_url() != null) {
-                    new DownloadImageTask(imageView).execute(locationResult[1].getLogo_image_url());
-                }
-                //textView.setText(R.string.dynamic_around_2);
-                if (locationResult[0].getShop_name() != null) {
-                    textView.setText(locationResult[1].getShop_name());
-                }
-                textView.setTypeface(font);
-            }
-
-            if (locationResult.length >= 3) {
-                imageView = (ImageView) getActivity().findViewById(R.id.around_3);
-                textView = (TextView) getActivity().findViewById(R.id.around_3_text);
-                //new DownloadImageTask(imageView).execute("http://t3.gstatic.com/images?q=tbn:ANd9GcRRq4kyBQRB-TiUZAW3oSBJ5Z6hRluE8qkGogx8VhrSEgUDB64tjXfnxHg");
-                if (locationResult[0].getLogo_image_url() != null) {
-                    new DownloadImageTask(imageView).execute(locationResult[2].getLogo_image_url());
-                }
-                //textView.setText(R.string.dynamic_around_3);
-                if (locationResult[0].getShop_name() != null) {
-                    textView.setText(locationResult[2].getShop_name());
-                }
-                textView.setTypeface(font);
-            }
-
-            if (locationResult.length >= 4) {
-                imageView = (ImageView) getActivity().findViewById(R.id.around_4);
-                textView = (TextView) getActivity().findViewById(R.id.around_4_text);
-                //new DownloadImageTask(imageView).execute("https://i.ytimg.com/vi/Fw8agSotU-M/maxresdefault.jpg");
-                if (locationResult[0].getLogo_image_url() != null) {
-                    new DownloadImageTask(imageView).execute(locationResult[3].getLogo_image_url());
-                }
-                //textView.setText(R.string.dynamic_around_4);
-                if (locationResult[0].getShop_name() != null) {
-                    textView.setText(locationResult[3].getShop_name());
-                }
-                textView.setTypeface(font);
-            }
-
-            if (locationResult.length >= 5) {
-                imageView = (ImageView) getActivity().findViewById(R.id.around_5);
-                textView = (TextView) getActivity().findViewById(R.id.around_5_text);
-                //new DownloadImageTask(imageView).execute("https://i.ytimg.com/vi/VX3RXiEUuWw/hqdefault.jpg");
-                if (locationResult[0].getLogo_image_url() != null) {
-                    new DownloadImageTask(imageView).execute(locationResult[4].getLogo_image_url());
-                }
-                //textView.setText(R.string.dynamic_around_5);
-                if (locationResult[0].getShop_name() != null) {
-                    textView.setText(locationResult[4].getShop_name());
-                }
-                textView.setTypeface(font);
-            }
-        }*/
-        NearbyProfessionals nearbyProfessionals = new NearbyProfessionals((int)mLastLocation.getLatitude(), (int)mLastLocation.getLongitude());
-        String[] shopImageList = nearbyProfessionals.getShopImageList();
-        String[] shopNameList = nearbyProfessionals.getShopNameList();
         if (shopImageList[0] != null && shopNameList[0] != null) {
             imageView = (ImageView) getActivity().findViewById(R.id.around_1);
             textView = (TextView) getActivity().findViewById(R.id.around_1_text);

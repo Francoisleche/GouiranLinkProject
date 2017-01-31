@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -50,8 +52,9 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
         private ResearchTask mAuthTask = null;
         private EditText recherche;
-        private TextView resultat1;
+        private TextView resultat1,resultat2,resultat3;
         private Button carte;
+        private GetRequest getRequest;
 
 
         // TODO: Rename and change types of parameters
@@ -122,7 +125,45 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
             recherche = (EditText) view.findViewById(R.id.bonjour_recherche);
             resultat1 = (TextView) view.findViewById(R.id.textView_1);
             carte = (Button) view.findViewById(R.id.carte_research);
-            recherche.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            resultat2 = (TextView) view.findViewById(R.id.textView_11);
+            resultat3 = (TextView) view.findViewById(R.id.textView_12);
+
+
+            //MARCHE mautomatiquement à la lettre prêt mais c'est très long
+
+            recherche.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    resultat1.setText("Coucou1");
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count,
+                                              int after) {
+                    // TODO Auto-generated method stub
+                    resultat1.setText("Coucou2");
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    resultat1.setText(recherche.getText());
+
+                    String ls = "";
+                    ResearchTask rt = new ResearchTask(recherche.getText().toString(),5);
+                    ls = rt.getResponse();
+                    resultat2.setText(ls);
+
+
+                }
+            });
+
+
+
+                //MARCHe mais on doit attendre que l'utilisateur est finis de taper, et ça marche qu'une fois ????????
+
+                recherche.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
 
@@ -133,22 +174,21 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                     System.out.println(recherche.getText().toString());
                     resultat1.setText("Coucou");
 
+                    String ls = "";
+                    ResearchTask rt = new ResearchTask(recherche.getText().toString(),5);
+                    ls = rt.getResponse();
+                    resultat3.setText(ls);
+
                     return false;
                 }
             });
 
-        /*carte.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                //startActivity(new Intent(MainActivity.this, ActivityB.class));
-                Intent intent = new Intent(getApplicationContext(), MapPane.class);
-                startActivity(intent);
-                Fragment fg = new Fragment();
-            }
-        });*/
+
+
+
+
 
             initUI(view);
-
             return view;
         }
 
@@ -223,6 +263,8 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
          */
         public class ResearchTask extends AsyncTask<Void, Void, Boolean> {
 
+            private String response = "";
+
             private final String mQuery;
             private final int mLimit;
             private final String json;
@@ -237,7 +279,7 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                         "\"query\":\"" + query + "\",\n" +
                         "\"limit\":\"" + limit + "\"" +
                         "}\n";
-               /* getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/autocomplete/professional/_all/", json);
+                getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/autocomplete/professional/_all/?query="+query+"&limit="+limit);
                 String resp = null;
                 try {
                     resp = getRequest.execute().get();
@@ -248,10 +290,12 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                 } catch (ExecutionException e){
                     e.printStackTrace();
                 }
-                if (resp.contains("access_token"))
-                    connected = true;
-                else
-                    connected = false;*/
+                response = resp;
+
+            }
+
+            public String getResponse(){
+                return response;
             }
 
             @Override

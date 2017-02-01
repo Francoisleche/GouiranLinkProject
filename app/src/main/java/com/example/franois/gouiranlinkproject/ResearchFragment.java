@@ -167,12 +167,12 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                 @Override
                 public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
 
-
+    /*
                     System.out.println("Ommmmmmmmmmmggggggggggggg0");
                     ResearchTask ult = new ResearchTask(recherche.getText().toString(),5);
                     System.out.println("Ommmmmmmmmmmggggggggggggg1");
                     System.out.println(recherche.getText().toString());
-                    resultat1.setText("Coucou");
+                    resultat1.setText("Coucou");*/
 
                     String ls = "";
                     ResearchTask rt = new ResearchTask(recherche.getText().toString(),5);

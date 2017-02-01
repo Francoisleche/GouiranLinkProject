@@ -63,6 +63,7 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
     private final int TAB_ACCOUNT = 5;
     public boolean compte = false;
     private String access_token = "";
+    private boolean connected = false;
     private String mEmail = "";
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -78,7 +79,8 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
         Bundle b = getIntent().getExtras();
         if (b != null) {
             access_token = b.getString("access_token");
-            mEmail = b.getString("email");
+            mEmail = b.getString("username");
+            connected = b.getBoolean("connected");
         }
 
         mBottomBar = (BottomBar) findViewById(R.id.bottomBar);
@@ -189,7 +191,7 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
         switch (index) {
             case TAB_HOME:
                 System.out.println("COOOOOOOOOOOMPTE = "+compte);
-                return HomeFragment.newInstance(0, mEmail);
+                return HomeFragment.newInstance(0, mEmail, connected);
             case TAB_RESEARCH:
                 System.out.println("COOOOOOOOOOOMPTE = "+compte);
                 if (compte == false) {

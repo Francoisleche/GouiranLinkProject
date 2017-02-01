@@ -491,8 +491,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            if (resp.contains("access_token"))
+            if (resp.contains("access_token")) {
                 connected = true;
+                Intent i = new Intent(LoginActivity.this, ParentActivity.class);
+                Bundle b = new Bundle();
+                b.putBoolean("connected", true);
+                b.putString("token_access", "token_access");
+                b.putString("username", mEmail);
+                i.putExtras(b);
+                startActivity(i);
+                finish();
+
+            }
             else
                 connected = false;
         }
@@ -528,16 +538,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
-                Intent i = new Intent(LoginActivity.this, ParentActivity.class);
-                Bundle b = new Bundle();
-                b.putBoolean("connected", true);
-                b.putString("token_access", "token_access");
-                b.putString("email", mEmail);
-                i.putExtras(b);
-                startActivity(i);
-                finish();
-            } else {
+if (!success) {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
@@ -562,16 +563,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
-                signIn();
+                //signIn();
                 break;
             case R.id.ignorer_pour_l_instant:
-                Bundle b = new Bundle();
+                /*Bundle b = new Bundle();
                 b.putBoolean("connected", false);
                 b.putString("email", mEmail);
                 Intent i = new Intent(LoginActivity.this, ParentActivity.class);
                 i.putExtras(b);
                 startActivity(i);
-                finish();
+                finish();*/
                 break;
             case R.id.mot_de_passe_oublie:
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);

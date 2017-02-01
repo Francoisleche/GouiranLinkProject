@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,10 +81,12 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
      //* @param param2 Parameter 2.
      * @return A new instance of fragment HomeFragment.
      */
-    public static HomeFragment newInstance(int instance, String username) {
+    public static HomeFragment newInstance(int instance, String username, Boolean connected) {
         Bundle args = new Bundle();
         args.putInt(ARGS_INSTANCE, instance);
         args.putString("username", username);
+
+        args.putBoolean("connected", connected);
 
         HomeFragment firstFragment = new HomeFragment();
         firstFragment.setArguments(args);
@@ -139,6 +142,12 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         if (getArguments() != null) {
             username = getArguments().getString("username");
             connected = getArguments().getBoolean("connected");
+
+            if (connected)
+                text = String.format(getResources().getString(R.string.welcome_user), username);
+            else
+                text = "Bonjour,";
+
         }
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new MyLocationListener();
@@ -201,7 +210,7 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
 
         TextView textView = (TextView)getActivity().findViewById(R.id.my_recent_researches);
         textView.setTypeface(font);
-        if (connected)
+        if (!connected)
             textView.setText(R.string.top_recherche);
 
         TextView textView1 = new TextView(getActivity());
@@ -526,10 +535,6 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
 
         /* Editing username */
         //username = "XXXXXXXXXX";
-        if (connected)
-            text = String.format(res.getString(R.string.welcome_user), username);
-        else
-            text = "Bonjour,";
         welcomeUser = new TextView(getActivity());
         welcomeUser = (TextView)getActivity().findViewById(R.id.welcome_user);
         welcomeUser.setText(text);

@@ -224,10 +224,16 @@
                     android:text="cartes" />
 
                 <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/filtre_research"
+                android:text="filtres" />
+
+                <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/filtre_research"
-                    android:text="filtres" />
+                    android:id="@+id/filtre_prestataire"
+                    android:text="prestataire" />
 
             </LinearLayout>
         </LinearLayout>

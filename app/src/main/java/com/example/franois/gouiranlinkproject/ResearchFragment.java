@@ -195,13 +195,13 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
         private void initUI(View v){
             Button button1 =(Button)v.findViewById(R.id.carte_research);
             button1.setOnClickListener(new View.OnClickListener(){
-
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), MapPane.class);
                     startActivity(intent);
                 }
             });
+
             Button button2 =(Button)v.findViewById(R.id.filtre_research);
             button2.setOnClickListener(new View.OnClickListener(){
 
@@ -211,7 +211,18 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                     startActivity(intent);
                 }
             });
+
+            Button button3 =(Button)v.findViewById(R.id.filtre_prestataire);
+            button3.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), ProfessionalView.class);
+                    startActivity(intent);
+                }
+            });
         }
+
 
         // TODO: Rename method, update argument and hook method into UI event
         public void onButtonPressed(Uri uri) {

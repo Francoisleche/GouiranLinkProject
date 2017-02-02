@@ -10,5 +10,16 @@
         android:text="First Fragment"
         android:textSize="40dp"
         android:textStyle="bold" />
+    <Button
+        android:id="@+id/prendre_rdv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RDV" />
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/maliste">
+    </ListView>
 
 </RelativeLayout>

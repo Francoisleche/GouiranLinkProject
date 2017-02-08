@@ -1,10 +1,10 @@
 package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +13,8 @@ import android.widget.Toast;
 
 import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AccountFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AccountFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AccountFragment extends Fragment implements View.OnClickListener{
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     public Button button_settings;
-
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -37,14 +22,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     //* @param param1 Parameter 1.
-     //* @param param2 Parameter 2.
-     * @return A new instance of fragment AccountFragment.
-     */
     public static AccountFragment newInstance(int instance) {
         Bundle args = new Bundle();
         args.putInt(ARGS_INSTANCE, instance);
@@ -56,39 +33,32 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        button_settings = (Button) inflater.inflate(R.layout.fragment_account, container, false).findViewById(R.id.settings_button);
-        button_settings.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
-                Toast.makeText(getActivity(),
-                        "Yes",
-                        Toast.LENGTH_SHORT).show();
-                //GalleryFragment.newInstance(0);
-            }
-        });
-
-        //Button imageView = (Button) view
-        View view = inflater.inflate(R.layout.fragment_account, container, false).findViewById(R.id.settings_button);
-        return view;
+        View root = inflater.inflate(R.layout.fragment_account, container, false);
+        return (root);
     }
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(getActivity(),
-                "Yes",
-                Toast.LENGTH_SHORT).show();
-        //GalleryFragment.newInstance(0);
+        switch (v.getId())
+        {
+            case (R.id.settings_button):
+                Log.d("SETTINGS", "SETTINGS3");
+                getActivity().setContentView(R.layout.fragment_settings);
+                break;
+            case (R.id.edit_profile):
+                break;
+            case (R.id.about):
+                break;
+            case (R.id.tell_us):
+                break;
+            case (R.id.invite_friends):
+                break;
+        }
     }
 
 

@@ -1,11 +1,12 @@
-package com.example.franois.gouiranlinkproject;
+package com.example.franois.gouiranlinkproject.ToolsClasses;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.example.franois.gouiranlinkproject.R;
 
 /**
  * Created by pyram_m on 06/01/17.

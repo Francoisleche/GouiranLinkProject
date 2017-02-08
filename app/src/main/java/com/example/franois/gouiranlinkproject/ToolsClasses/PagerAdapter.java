@@ -1,8 +1,11 @@
-package com.example.franois.gouiranlinkproject;
+package com.example.franois.gouiranlinkproject.ToolsClasses;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.example.franois.gouiranlinkproject.MyCrushes;
+import com.example.franois.gouiranlinkproject.MyProsFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;

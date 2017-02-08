@@ -79,8 +79,8 @@ public class ReservationFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
 
-        toolbar = (Toolbar) getActivity().findViewById(R.id.reservation_toolbar);
-        activity.setSupportActionBar(toolbar);
+        /*toolbar = (Toolbar) getActivity().findViewById(R.id.reservation_toolbar);
+        activity.setSupportActionBar(toolbar);*/
 
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

@@ -1,75 +1,49 @@
 package com.example.franois.gouiranlinkproject;
 
+import android.app.SearchManager;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActionBarDrawerToggle;
+
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
-
-import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.ncapdevi.fragnav.FragNavController;
-import com.example.franois.gouiranlinkproject.HomeFragment;
-import com.example.franois.gouiranlinkproject.ResearchFragment;
-import com.example.franois.gouiranlinkproject.ReservationFragment;
-import com.example.franois.gouiranlinkproject.FavouritesFragment;
-import com.example.franois.gouiranlinkproject.GalleryFragment;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabReselectListener;
-import com.roughike.bottombar.OnTabSelectListener;
 
-import com.ncapdevi.fragnav.FragNavController;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabReselectListener;
-import com.roughike.bottombar.OnTabSelectListener;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class ParentActivity extends AppCompatActivity implements FragNavController.TransactionListener, FragNavController.RootFragmentListener,
-        HomeFragment.OnFragmentInteractionListener, ResearchFragment.OnFragmentInteractionListener,
+public class ParentActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, ResearchFragment.OnFragmentInteractionListener,
         ReservationFragment.OnFragmentInteractionListener, FavouritesFragment.OnFragmentInteractionListener,
         GalleryFragment.OnFragmentInteractionListener, AccountFragment.OnFragmentInteractionListener {
 
-    private BottomBar mBottomBar;
-
-    private FragNavController fragNavController;
-    private final int TAB_HOME = FragNavController.TAB1;
-    private final int TAB_RESEARCH = FragNavController.TAB2;
-    private final int TAB_RESERVATIONS = FragNavController.TAB3;
-    private final int TAB_FAVOURITES = FragNavController.TAB4;
-    private final int TAB_GALLERY = FragNavController.TAB5;
-    private final int TAB_ACCOUNT = 5;
-    public boolean compte = false;
     private String access_token = "";
     private boolean connected = false;
     private String mEmail = "";
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
+
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
+    private String[] mTabTitles;
+
     private GoogleApiClient client;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,138 +57,121 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
             connected = b.getBoolean("connected");
         }
 
-        mBottomBar = (BottomBar) findViewById(R.id.bottomBar);
-        mBottomBar.selectTabAtPosition(TAB_HOME);
-        fragNavController = new FragNavController(savedInstanceState, getSupportFragmentManager(), R.id.contentContainer, this, 6, TAB_HOME);
-        fragNavController.setTransitionMode(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragNavController.setTransactionListener(this);
+        mTitle = mDrawerTitle = getTitle();
+        mTabTitles = getResources().getStringArray(R.array.menu);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        mBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelected(@IdRes int tabId) {
-                switch (tabId) {
-                    case R.id.tab_home:
-                        fragNavController.switchTab(TAB_HOME);
-                        compte = false;
-                        System.out.println("Compte = " + compte);
-                        break;
-                    case R.id.tab_research:
-                        fragNavController.switchTab(TAB_RESEARCH);
-                        compte = false;
-                        System.out.println("Compte = " + compte);
-                        break;
-                    case R.id.tab_reservations:
-                        fragNavController.switchTab(TAB_RESERVATIONS);
-                        compte = false;
-                        System.out.println("Compte = " + compte);
-                        break;
-                    case R.id.tab_favourites:
-                        fragNavController.switchTab(TAB_FAVOURITES);
-                        compte = false;
-                        System.out.println("Compte = " + compte);
-                        break;
-                    case R.id.tab_gallery:
-                        compte = false;
-                        fragNavController.switchTab(TAB_GALLERY);
-                        System.out.println("Compte = " + compte);
-                        System.out.println("Compte = " + TAB_GALLERY);
-                        break;
-                    case R.id.tab_account:
-                        compte = true;
-                        //fragNavController.switchTab(TAB_ACCOUNT);
-                        Intent i = new Intent(ParentActivity.this, AccountActivity.class);
-                        startActivity(i);
-                        System.out.println("Compte = "+compte);
-                        System.out.println("TAB_ACCOUNT = "+TAB_ACCOUNT);
-                        break;
-                }
+        // set a custom shadow that overlays the main content when the drawer opens
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        // set up the drawer's list view with items and click listener
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, mTabTitles));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        // enable ActionBar app icon to behave as action to toggle nav drawer
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        // ActionBarDrawerToggle ties together the the proper interactions
+        // between the sliding drawer and the action bar app icon
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description for accessibility */
+                R.string.drawer_close  /* "close drawer" description for accessibility */
+        ) {
+            public void onDrawerClosed(View view) {
+                getSupportActionBar().setTitle(mTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
-        });
 
-        //Toast.makeText(this, "Compte = " + compte, Toast.LENGTH_SHORT).show();
-
-
-
-        mBottomBar.setOnTabReselectListener(new OnTabReselectListener() {
-            @Override
-            public void onTabReSelected(@IdRes int tabId) {
-                fragNavController.clearStack();
+            public void onDrawerOpened(View drawerView) {
+                getSupportActionBar().setTitle(mDrawerTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
-        });
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        if (savedInstanceState == null) {
+            selectItem(0);
+        }
+
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
-    public void onBackPressed() {
-        if (fragNavController.canPop()) {
-            fragNavController.pop();
-        } else {
-            super.onBackPressed();
-        }
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (fragNavController != null) {
-            fragNavController.onSaveInstanceState(outState);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        // ActionBarDrawerToggle will take care of this.
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
         }
-    }
-
-    public void pushFragment(Fragment fragment) {
-        if (fragNavController != null) {
-            fragNavController.push(fragment);
-        }
-    }
-
-    @Override
-    public void onTabTransaction(Fragment fragment, int index) {
-        // If we have a backstack, show the back button
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(fragNavController.canPop());
-        }
-    }
-
-    @Override
-    public void onFragmentTransaction(Fragment fragment) {
-        //do fragmentty stuff. Maybe change title, I'm not going to tell you how to live your life
-        // If we have a backstack, show the back button
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(fragNavController.canPop());
-        }
-    }
-
-    @Override
-    public Fragment getRootFragment(int index) {
-        switch (index) {
-            case TAB_HOME:
-                System.out.println("COOOOOOOOOOOMPTE = "+compte);
-                return HomeFragment.newInstance(0, mEmail, connected);
-            case TAB_RESEARCH:
-                System.out.println("COOOOOOOOOOOMPTE = "+compte);
-                if (compte == false) {
-                    return ResearchFragment.newInstance(0);
+        // Handle action buttons
+        switch(item.getItemId()) {
+            case R.id.action_websearch:
+                // create intent to perform web search for this planet
+                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                intent.putExtra(SearchManager.QUERY, getSupportActionBar().getTitle());
+                // catch event that there's no activity to handle intent
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "app not available", Toast.LENGTH_LONG).show();
                 }
-                //case TAB_GALLERY:
-                else{
-                    Toast.makeText(this, "ça marche", Toast.LENGTH_SHORT).show();
-                    return AccountFragment.newInstance(0);
-                }
-            case TAB_RESERVATIONS:
-                System.out.println("COOOOOOOOOOOMPTE = "+compte);
-                return ReservationFragment.newInstance(0);
-            case TAB_FAVOURITES:
-                System.out.println("COOOOOOOOOOOMPTE = "+compte);
-                return FavouritesFragment.newInstance(0);
-            case TAB_GALLERY:
-                System.out.println("COOOOOOOOOOOMPTE = "+compte);
-                return GalleryFragment.newInstance(0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        throw new IllegalStateException("Need to send an index that we know");
     }
 
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Log.d("POSITION", String.valueOf(position));
+            selectItem(position);
+        }
+    }
+
+    private void selectItem(int position) {
+        // update the main content by replacing fragments
+        Fragment fragment = new Fragment();
+        switch (position) {
+            case (0):
+                fragment = new HomeFragment();
+                break;
+            case (1):
+                fragment = new ResearchFragment();
+                break;
+            case (2):
+                fragment = new ReservationFragment();
+                break;
+            case (3):
+                fragment = new FavouritesFragment();
+                break;
+            case (4):
+                fragment = new GalleryFragment();
+                break;
+            case (5):
+                fragment = new AccountFragment();
+                break;
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.contentContainer, fragment).commit();
+
+        // update selected item and title, then close the drawer
+        mDrawerList.setItemChecked(position, true);
+        setTitle(mTabTitles[position]);
+        mDrawerLayout.closeDrawer(mDrawerList);
+    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -256,6 +213,4 @@ public class ParentActivity extends AppCompatActivity implements FragNavControll
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
-    //messageView = (TextView) findViewById(R.id.messageView);
-
 }

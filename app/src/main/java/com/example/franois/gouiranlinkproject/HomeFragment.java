@@ -11,9 +11,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,27 +31,19 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationServices;
 
+import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeFragment extends BaseFragment implements ConnectionCallbacks, OnConnectionFailedListener{
+public class HomeFragment extends Fragment implements ConnectionCallbacks, OnConnectionFailedListener {
 
     //The minimum distance to change updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = -10; // 10 meters
     //The minimum time beetwen updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 0;//1000 * 60 * 1; // 1 minute
     private LocationManager locationManager = null;
     private MyLocationListener locationListener = null;
 
@@ -73,14 +65,6 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     //* @param param1 Parameter 1.
-     //* @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
     public static HomeFragment newInstance(int instance, String username, Boolean connected) {
         Bundle args = new Bundle();
         args.putInt(ARGS_INSTANCE, instance);
@@ -110,24 +94,31 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
     @Override
     public void onConnected(Bundle arg0) {
 
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        lastLatitude = mLastLocation.getLatitude();
-        lastLongitude = mLastLocation.getLongitude();
-
-        /*Toast.makeText(getActivity(), "Latitude: " + String.valueOf(mLastLocation.getLatitude()) + "Longitude: " +
-                String.valueOf(mLastLocation.getLongitude()), Toast.LENGTH_SHORT).show();
-
-        Log.d("POSITION", "Latitude: " + String.valueOf(mLastLocation.getLatitude()) + "Longitude: " +
-                String.valueOf(mLastLocation.getLongitude()));*/
+        if (mLastLocation != null) {
+            lastLatitude = mLastLocation.getLatitude();
+            lastLongitude = mLastLocation.getLongitude();
+        }
 
         final Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
 
         generateRecentResearches(font);
-        generateAroundMe(font);
+        if (mLastLocation != null) {
+            generateAroundMe(font);
+        }
         generateGouiranLinkSelection(font);
-
-
     }
 
     @Override
@@ -210,7 +201,7 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
 
         TextView textView = (TextView)getActivity().findViewById(R.id.my_recent_researches);
         textView.setTypeface(font);
-        if (!connected)
+        if (connected != null && connected == false)
             textView.setText(R.string.top_recherche);
 
         TextView textView1 = new TextView(getActivity());
@@ -528,6 +519,16 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
+        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new MyLocationListener();
+        buildGoogleApiClient();
+
+        if(mGoogleApiClient!= null){
+            mGoogleApiClient.connect();
+        }
+        else
+            Toast.makeText(getActivity(), "Not connected...", Toast.LENGTH_SHORT).show();
+
         Resources res = getResources();
         getActivity().getAssets();
         TextView textView;
@@ -581,16 +582,6 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
     }
 }

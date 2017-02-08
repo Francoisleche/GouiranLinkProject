@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -36,14 +35,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static android.Manifest.permission.READ_CONTACTS;
+
+import com.example.franois.gouiranlinkproject.ToolsClasses.PostRequest;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.auth.api.Auth;
@@ -56,9 +54,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 /**
  * A login screen that offers login via email/password.
@@ -486,14 +481,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String resp = null;
             try {
                 resp = postRequest.execute().get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
+            assert resp != null;
             if (resp.contains("access_token")) {
                 connected = true;
-		Log.d("true", "true");
+		        Log.d("true", "true");
                 Intent i = new Intent(LoginActivity.this, ParentActivity.class);
                 Bundle b = new Bundle();
                 b.putBoolean("connected", true);
@@ -568,14 +562,16 @@ if (!success) {
             case R.id.sign_in_button:
                 //signIn();
                 break;
+            case R.id.email_sign_up_button:
+                break;
             case R.id.ignorer_pour_l_instant:
-                /*Bundle b = new Bundle();
+                Bundle b = new Bundle();
                 b.putBoolean("connected", false);
                 b.putString("email", mEmail);
                 Intent i = new Intent(LoginActivity.this, ParentActivity.class);
                 i.putExtras(b);
                 startActivity(i);
-                finish();*/
+                finish();
                 break;
             case R.id.mot_de_passe_oublie:
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);

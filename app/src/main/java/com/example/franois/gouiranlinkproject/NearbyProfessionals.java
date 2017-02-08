@@ -1,6 +1,6 @@
 package com.example.franois.gouiranlinkproject;
 
-import android.location.Location;
+import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;

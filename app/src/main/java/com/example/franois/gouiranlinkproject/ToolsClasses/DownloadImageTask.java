@@ -1,4 +1,4 @@
-package com.example.franois.gouiranlinkproject;
+package com.example.franois.gouiranlinkproject.ToolsClasses;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

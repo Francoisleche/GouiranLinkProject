@@ -28,6 +28,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.settings_button:
                 break;
+            case R.id.settings_text:
+                break;
             case R.id.invite_friends:
                 break;
         }

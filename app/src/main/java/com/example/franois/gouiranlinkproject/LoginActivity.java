@@ -493,6 +493,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             if (resp.contains("access_token")) {
                 connected = true;
+		Log.d("true", "true");
                 Intent i = new Intent(LoginActivity.this, ParentActivity.class);
                 Bundle b = new Bundle();
                 b.putBoolean("connected", true);
@@ -503,8 +504,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 finish();
 
             }
-            else
+            else {
                 connected = false;
+                Log.d("false", "false");
+            }
         }
 
         @Override

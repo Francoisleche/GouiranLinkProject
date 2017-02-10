@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -35,15 +36,32 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 import com.example.franois.gouiranlinkproject.ToolsClasses.PostRequest;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -54,6 +72,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.vision.text.Text;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 /**
  * A login screen that offers login via email/password.
@@ -84,20 +109,102 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mImageLoginView;
     private View mLoginFormView;
 
+    private MyCustomer myCustomer = new MyCustomer();
+
     private static final int RC_SIGN_IN = 9001;
     private static String mFullName = "";
     private static String mEmail = "";
+    String email = "";
+    String birthday = "";
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
     private TextView mStatusTextView;
     private static final String TAG = "SignInActivity";
 
 
+    private CallbackManager callbackManager;
+    private AccessTokenTracker accessTokenTracker;
+    private ProfileTracker profileTracker;
+
+    private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+            Profile profile = Profile.getCurrentProfile();
+            Log.d("NEXTACITIVITY", "PROFILE");
+            nextActivity(profile);
+        }
+        @Override
+        public void onCancel() {        }
+        @Override
+        public void onError(FacebookException e) {      }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+
+        callbackManager = CallbackManager.Factory.create();
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
+            }
+        };
+
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                Log.d("NEXTACITIVITY", "NEWPROFILE");
+                nextActivity(newProfile);
+            }
+        };
+        accessTokenTracker.startTracking();
+        profileTracker.startTracking();
+
+        LoginButton loginButton = (LoginButton)findViewById(R.id.facebook_login_button);
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday"));
+        callback = new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.v("LoginActivity", response.toString());
+
+                                // Application code
+                                try {
+                                    email = object.getString("email");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                try {
+                                    birthday = object.getString("birthday"); // 01/31/1980 format
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                AccessToken accessToken = loginResult.getAccessToken();
+                Profile profile = Profile.getCurrentProfile();
+                Log.d("NEXTACITIVITY", "CURRENTPROFILE");
+                nextActivity(profile);
+                Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();    }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+            }
+        };
+        loginButton.setReadPermissions("user_friends");
+        loginButton.registerCallback(callbackManager, callback);
+
+
         mStatusTextView = (TextView) findViewById(R.id.status);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -144,8 +251,52 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mImageLoginView = findViewById(R.id.progressImageView);
     }
 
+    private void nextActivity(Profile profile){
+        if (profile != null){
+            Intent main = new Intent(LoginActivity.this, ParentActivity.class);
+            myCustomer.setmFacebook(true);
+            myCustomer.setName(profile.getName());
+            myCustomer.setSurname(profile.getLastName());
+            Log.d("SURNAME", myCustomer.getSurname());
+            myCustomer.setBirthday(birthday);
+            myCustomer.setEmail(email);
+            main.putExtra("MyCustomer", myCustomer);
+/*          main.putExtra("name", profile.getFirstName());
+            main.putExtra("surname", profile.getLastName());
+            main.putExtra("imageUrl", profile.getProfilePictureUri(200,200).toString());*/
+            startActivity(main);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Facebook login
+        Profile profile = Profile.getCurrentProfile();
+        Log.d("RESUME", profile.getFirstName());
+        nextActivity(profile);
+        Log.d("NEXTACITIVITY", "RESUME");
+
+    }
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+    }
+
+    protected void onStop() {
+        super.onStop();
+        //Facebook login
+        accessTokenTracker.stopTracking();
+        profileTracker.stopTracking();
+    }
+
+
+
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from
         //   GoogleSignInApi.getSignInIntent(...);
@@ -304,10 +455,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     /**
-         * Attempts to sign in or register the account specified by the login form.
-         * If there are form errors (invalid email, missing fields, etc.), the
-         * errors are presented and no actual login attempt is made.
-         */
+     * Attempts to sign in or register the account specified by the login form.
+     * If there are form errors (invalid email, missing fields, etc.), the
+     * errors are presented and no actual login attempt is made.
+     */
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -481,22 +632,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String resp = null;
             try {
                 resp = postRequest.execute().get();
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            assert resp != null;
             if (resp.contains("access_token")) {
                 connected = true;
-		        Log.d("true", "true");
-                Intent i = new Intent(LoginActivity.this, ParentActivity.class);
-                Bundle b = new Bundle();
-                b.putBoolean("connected", true);
-                b.putString("token_access", "token_access");
-                b.putString("username", mEmail);
-                i.putExtras(b);
-                startActivity(i);
-                finish();
-
+                Log.d("true", "true");
             }
             else {
                 connected = false;
@@ -535,7 +678,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
 
-if (!success) {
+            if (success) {
+                Intent i = new Intent(LoginActivity.this, ParentActivity.class);
+                Bundle b = new Bundle();
+                b.putBoolean("connected", true);
+                b.putString("token_access", "token_access");
+                b.putString("email", mEmail);
+                i.putExtras(b);
+                startActivity(i);
+                finish();
+            } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
@@ -558,17 +710,22 @@ if (!success) {
 
     @Override
     public void onClick(View v) {
+        Intent i;
         switch (v.getId()) {
             case R.id.sign_in_button:
-                //signIn();
+                signIn();
                 break;
             case R.id.email_sign_up_button:
+                Toast.makeText(this, "Creating account", Toast.LENGTH_LONG);
+                i = new Intent(this, SignUp.class);
+                startActivity(i);
+                finish();
                 break;
             case R.id.ignorer_pour_l_instant:
                 Bundle b = new Bundle();
                 b.putBoolean("connected", false);
                 b.putString("email", mEmail);
-                Intent i = new Intent(LoginActivity.this, ParentActivity.class);
+                i = new Intent(LoginActivity.this, ParentActivity.class);
                 i.putExtras(b);
                 startActivity(i);
                 finish();

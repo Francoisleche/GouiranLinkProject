@@ -1,6 +1,7 @@
 package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.franois.gouiranlinkproject.Rendezvous.PrendreRdv;
 
 import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
@@ -35,10 +39,35 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_account, container, false);
+
+        //ImageView editProfile = (ImageView) root.findViewById(R.id.edit_profile);
+        //editProfile.setOnClickListener(new View.OnClickListener() {
+        // TODO L'UN OU L'AUTRE A TESTER
+        /*Button settingsButton = (Button)root.findViewById(R.id.settings_button);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                getActivity().setContentView(R.layout.fragment_settings);
+            }
+        });*/
+
+        Button inviteFriends = (Button)root.findViewById(R.id.invite_friends);
+        inviteFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                emailIntent.setType("plain/text");
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invitation Gouiran Link");
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Hey, je viens de découvrir l'application mobile Gouiran Link, elle est géniale!\nIl faudrait que tu l'essaye toi aussi!");
+                getContext().startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            }
+        });
+
         return (root);
     }
 
@@ -47,8 +76,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         switch (v.getId())
         {
             case (R.id.settings_button):
-                Log.d("SETTINGS", "SETTINGS3");
-                getActivity().setContentView(R.layout.fragment_settings);
                 break;
             case (R.id.edit_profile):
                 break;

@@ -45,13 +45,16 @@ public class PostRequest extends AsyncTask<String, Void, String>{
                 .build();
         Response response = client.newCall(request).execute();
         String res = response.body().string();
-        res = StringEscapeUtils.unescapeJava(res);
-        int ind = res.indexOf("\"");
-        res= new StringBuilder(res).replace(ind, ind + 1,"").toString();
-        ind = res.lastIndexOf("\"");
-        res= new StringBuilder(res).replace(ind, ind + 1,"").toString();
-        Log.d("1 TESTTEST", res);
-
+        Log.d("-1 TESTTEST", res);
+        if (res != null && !res.equals("")) {
+            res = StringEscapeUtils.unescapeJava(res);
+            int ind = res.indexOf("\"");
+            Log.d("0 TESTTEST", res);
+            res = new StringBuilder(res).replace(ind, ind + 1, "").toString();
+            ind = res.lastIndexOf("\"");
+            res = new StringBuilder(res).replace(ind, ind + 1, "").toString();
+            Log.d("1 TESTTEST", res);
+        }
         return (res);
     }
 

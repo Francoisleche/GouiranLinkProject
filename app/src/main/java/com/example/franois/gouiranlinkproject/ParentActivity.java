@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.ActionBarDrawerToggle;
 
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +27,9 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.io.Externalizable;
+import java.io.Serializable;
 
 public class ParentActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, ResearchFragment.OnFragmentInteractionListener,
         ReservationFragment.OnFragmentInteractionListener, FavouritesFragment.OnFragmentInteractionListener,
@@ -42,6 +47,8 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
     private CharSequence mTitle;
     private String[] mTabTitles;
 
+    private MyCustomer myCustomer;
+
     private GoogleApiClient client;
 
 
@@ -52,6 +59,11 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
+            myCustomer = (MyCustomer)getIntent().getSerializableExtra("MyCustomer");
+            /*String surname = myCustomer.getSurname();
+            String name = myCustomer.getName();
+            Boolean facebook = myCustomer.getArray()[0];*/
+
             access_token = b.getString("access_token");
             mEmail = b.getString("username");
             connected = b.getBoolean("connected");
@@ -99,6 +111,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
         }
 
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
     @Override
@@ -143,9 +156,13 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
     private void selectItem(int position) {
         // update the main content by replacing fragments
         Fragment fragment = new Fragment();
+        Bundle b = new Bundle();
+        b.putSerializable("MyCustomer", myCustomer);
+
         switch (position) {
             case (0):
                 fragment = new HomeFragment();
+                fragment.setArguments(b);
                 break;
             case (1):
                 fragment = new ResearchFragment();
@@ -161,6 +178,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
                 break;
             case (5):
                 fragment = new AccountFragment();
+                fragment.setArguments(b);
                 break;
         }
 

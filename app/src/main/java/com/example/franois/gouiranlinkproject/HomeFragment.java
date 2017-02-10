@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -57,6 +58,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
     TextView welcomeUser;
     String username = null;
     String text;
+    MyCustomer myCustomer;
     final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 
     private OnFragmentInteractionListener mListener;
@@ -133,13 +135,17 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
         if (getArguments() != null) {
             username = getArguments().getString("username");
             connected = getArguments().getBoolean("connected");
-
+            myCustomer = (MyCustomer)getArguments().getSerializable("MyCustomer");
             if (connected)
                 text = String.format(getResources().getString(R.string.welcome_user), username);
             else
                 text = "Bonjour,";
+            assert myCustomer != null;
+            if (myCustomer.ismFacebook())
+                text = String.format(getResources().getString(R.string.welcome_user), myCustomer.getSurname());
 
         }
+
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new MyLocationListener();
         buildGoogleApiClient();
@@ -514,6 +520,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
         return (root);
     }
 

@@ -1,7 +1,6 @@
 package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -13,15 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
 public class FavouritesFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
 
     private OnFragmentInteractionListener mListener;
 
@@ -50,9 +49,9 @@ public class FavouritesFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
 
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        viewPager = (ViewPager) getActivity().findViewById(R.id.favourites_viewpager);
+        ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.favourites_viewpager);
         setupViewPager(viewPager);
-        tabLayout = (TabLayout) getActivity().findViewById(R.id.favourites_tabs);
+        TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.favourites_tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -117,5 +116,13 @@ public class FavouritesFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Set title
+        getActivity()
+                .setTitle(R.string.myFavourites);
     }
 }

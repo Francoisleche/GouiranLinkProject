@@ -4,11 +4,11 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -94,7 +94,7 @@ public class UpcomingFragment extends Fragment{
             LinearLayout.LayoutParams dateParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
 
             separatorView = new View(getActivity());
-            separatorView.setBackgroundColor(getResources().getColor(R.color.black));
+            separatorView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
             separatorView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
             separatorParts[i].addView(separatorView);
 
@@ -144,7 +144,7 @@ public class UpcomingFragment extends Fragment{
 
             buttons[i].setText("Voir");
             buttonParams.setMargins(20, 100, 0, 0);
-            buttons[i].setBackgroundColor(buttons[i].getContext().getResources().getColor(R.color.GouiranLightBlue));
+            buttons[i].setBackgroundColor(ContextCompat.getColor(buttons[i].getContext(), R.color.GouiranLightBlue));
             secondParts[i].addView(buttons[i], buttonParams);
 
         }

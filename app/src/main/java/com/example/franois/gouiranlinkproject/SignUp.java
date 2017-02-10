@@ -1,31 +1,23 @@
 package com.example.franois.gouiranlinkproject;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.ToolsClasses.PostRequest;
 
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static android.R.string.cancel;
 
 public class SignUp extends AppCompatActivity {
 
@@ -146,7 +138,7 @@ public class SignUp extends AppCompatActivity {
             TextView textView = new TextView(this);
             textView = (TextView)popUpLayout.findViewById(R.id.textView);
             textView.setText(R.string.confirmation_mail_sentence);
-            textView.setBackgroundColor(getResources().getColor(R.color.GouiranLightPink));
+            textView.setBackgroundColor(ContextCompat.getColor(this, R.color.GouiranLightPink));
             textView.setTextSize(20);
             Typeface font;
             font = Typeface.createFromAsset(getAssets(), "fonts/Acrom W00 Medium.ttf");

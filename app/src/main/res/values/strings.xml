@@ -207,6 +207,7 @@
     <string name="necessary_field">Ce champ est obligatoire</string>
     <string name="confirmation_mail_sentence">Vous avez reçu un e-mail de confirmation. Veuillez cliquer sur le lien qu\'il contient afin d\'activer votre compte Gouiran Link.</string>
     <string name="phone_number">Numéro de téléphone</string>
+    <string name="gouiran_link">Gouiran Link</string>
 
     <string-array name="menu">
         <item>Accueil</item>

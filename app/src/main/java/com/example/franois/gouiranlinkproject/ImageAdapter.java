@@ -1,14 +1,11 @@
 package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-
-import java.util.ArrayList;
 
 /**
  * Created by pyram_m on 19/01/17.

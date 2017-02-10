@@ -1,7 +1,5 @@
 package com.example.franois.gouiranlinkproject.Object;
 
-import android.media.Image;
-
 /**
  * Created by pyram_m on 31/01/17.
  */

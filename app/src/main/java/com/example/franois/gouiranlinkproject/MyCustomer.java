@@ -1,8 +1,5 @@
 package com.example.franois.gouiranlinkproject;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 class MyCustomer implements Serializable {

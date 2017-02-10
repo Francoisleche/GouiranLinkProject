@@ -1,19 +1,13 @@
 package com.example.franois.gouiranlinkproject;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Adapter;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.Professional_View.AvisProfessional;
 import com.example.franois.gouiranlinkproject.Professional_View.InformationsProfessional;

@@ -1,24 +1,27 @@
 package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.franois.gouiranlinkproject.Rendezvous.PrendreRdv;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
+
 public class AccountFragment extends Fragment implements View.OnClickListener{
     public Button button_settings;
+    private MyCustomer myCustomer;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -37,12 +40,21 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (getArguments() != null) {
+            myCustomer = (MyCustomer)getArguments().getSerializable("MyCustomer");
+        }
+
+        Fragment fragment = new MainSettings();
+        Bundle args = new Bundle();
+        args.putSerializable("MyCustomer", myCustomer);
+        fragment.setArguments(args);
+        fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
     }
 
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_account, container, false);
 
@@ -52,11 +64,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         /*Button settingsButton = (Button)root.findViewById(R.id.settings_button);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                getActivity().setContentView(R.layout.fragment_settings);
+                //getActivity().setContentView(R.layout.fragment_settings);
+                fragmentTransaction.replace(R.id.frameLayout, new NestedSettingsFragment()).addToBackStack("tag").commit();
             }
         });*/
 
-        Button inviteFriends = (Button)root.findViewById(R.id.invite_friends);
+        /*Button inviteFriends = (Button)root.findViewById(R.id.invite_friends);
         inviteFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +79,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Hey, je viens de découvrir l'application mobile Gouiran Link, elle est géniale!\nIl faudrait que tu l'essaye toi aussi!");
                 getContext().startActivity(Intent.createChooser(emailIntent, "Send mail..."));
             }
-        });
+        });*/
 
         return (root);
     }
@@ -152,4 +165,23 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         throw new IllegalStateException("Need to send an index that we know");
     }*/
 
+    @Override
+    public void onStart() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Set title
+        getActivity()
+                .setTitle(R.string.myAccount);
+    }
 }

@@ -350,7 +350,13 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
         }
 
-
+        @Override
+        public void onResume() {
+            super.onResume();
+            // Set title
+            getActivity()
+                    .setTitle(R.string.research);
+        }
 
     }
 

@@ -1,14 +1,11 @@
 package com.example.franois.gouiranlinkproject.ToolsClasses;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;

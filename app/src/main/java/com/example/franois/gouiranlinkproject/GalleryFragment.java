@@ -23,9 +23,6 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 public class GalleryFragment extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    // TODO: Rename and change types of parameters
-    public Button selfie;
-
     private OnFragmentInteractionListener mListener;
 
     public GalleryFragment() {
@@ -38,19 +35,6 @@ public class GalleryFragment extends Fragment {
         GalleryFragment firstFragment = new GalleryFragment();
         firstFragment.setArguments(args);
         return firstFragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        /*selfie.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                getCameraInstance();
-            }
-        });*/
     }
 
     public static Camera getCameraInstance(){
@@ -77,7 +61,7 @@ public class GalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
-        selfie = (Button) view.findViewById(R.id.selfie);
+        Button selfie = (Button) view.findViewById(R.id.selfie);
         selfie.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click

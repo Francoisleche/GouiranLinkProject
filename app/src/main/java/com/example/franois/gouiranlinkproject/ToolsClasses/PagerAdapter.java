@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.example.franois.gouiranlinkproject.MyCrushes;
 import com.example.franois.gouiranlinkproject.MyProsFragment;
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
+class PagerAdapter extends FragmentStatePagerAdapter {
+    final private int mNumOfTabs;
 
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
@@ -19,11 +19,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                MyProsFragment tab1 = new MyProsFragment();
-                return tab1;
+                return new MyProsFragment();
             case 1:
-                MyCrushes tab2 = new MyCrushes();
-                return tab2;
+                return new MyCrushes();
             default:
                 return null;
         }

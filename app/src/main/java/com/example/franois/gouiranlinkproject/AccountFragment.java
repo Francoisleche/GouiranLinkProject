@@ -19,7 +19,6 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
 
 public class AccountFragment extends Fragment implements View.OnClickListener{
-    public Button button_settings;
     private MyCustomer myCustomer;
 
 
@@ -56,7 +55,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_account, container, false);
 
         //ImageView editProfile = (ImageView) root.findViewById(R.id.edit_profile);
         //editProfile.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +79,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
             }
         });*/
 
-        return (root);
+        return (inflater.inflate(R.layout.fragment_account, container, false));
     }
 
     @Override
@@ -98,13 +96,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
                 break;
             case (R.id.invite_friends):
                 break;
-        }
-    }
-
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
         }
     }
 

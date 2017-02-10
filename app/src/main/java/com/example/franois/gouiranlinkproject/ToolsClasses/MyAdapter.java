@@ -8,20 +8,15 @@ import android.widget.ImageView;
 
 import com.example.franois.gouiranlinkproject.R;
 
-/**
- * Created by pyram_m on 06/01/17.
- */
-
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    private ImageView mDataset;
+class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public ImageView mImageView;
-        public ViewHolder(final ImageView v) {
+        final ImageView mImageView;
+        ViewHolder(final ImageView v) {
             super(v);
 
             mImageView = v;
@@ -30,7 +25,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public MyAdapter(ImageView myDataset) {
-        mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
@@ -41,8 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_my_crushes, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder((ImageView)v);
-        return vh;
+        return new ViewHolder((ImageView)v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

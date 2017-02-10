@@ -14,19 +14,19 @@ import android.widget.TextView;
 
 public class MyCrushes extends Fragment{
 
-    LinearLayout coiffureTitleLayout;
-    LinearLayout coiffureTitleContent;
-    LinearLayout beauteTitleLayout;
-    LinearLayout beauteTitleContent;
-    LinearLayout bienEtreTitleLayout;
-    LinearLayout bienEtreTitleContent;
-    LinearLayout hommeTitleLayout;
-    LinearLayout hommeTitleContent;
-    Typeface font;
-    TextView coiffureTitle;
-    TextView beauteTitle;
-    TextView bienEtreTitle;
-    TextView hommeTitle;
+    private LinearLayout coiffureTitleLayout;
+    private LinearLayout coiffureTitleContent;
+    private LinearLayout beauteTitleLayout;
+    private LinearLayout beauteTitleContent;
+    private LinearLayout bienEtreTitleLayout;
+    private LinearLayout bienEtreTitleContent;
+    private LinearLayout hommeTitleLayout;
+    private LinearLayout hommeTitleContent;
+    private Typeface font;
+    private TextView coiffureTitle;
+    private TextView beauteTitle;
+    private TextView bienEtreTitle;
+    private TextView hommeTitle;
 
     public MyCrushes() {
         // Required empty public constructor
@@ -58,10 +58,6 @@ public class MyCrushes extends Fragment{
         return (root);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -164,17 +160,5 @@ public class MyCrushes extends Fragment{
 
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
 }

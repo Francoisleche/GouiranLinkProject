@@ -2,6 +2,7 @@ package com.example.franois.gouiranlinkproject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +13,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
+class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
-    Context context;
-    List<DrawerItem> drawerItemList;
-    int layoutResID;
+    final Context context;
+    final private List<DrawerItem> drawerItemList;
+    final private int layoutResID;
 
-    public CustomDrawerAdapter(Context context, int layoutResourceID,
-                               List<DrawerItem> listItems) {
+    CustomDrawerAdapter(Context context, int layoutResourceID,
+                        List<DrawerItem> listItems) {
         super(context, layoutResourceID, listItems);
         this.context = context;
         this.drawerItemList = listItems;
@@ -27,8 +28,9 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // TODO Auto-generated method stub
 
         DrawerItemHolder drawerHolder;

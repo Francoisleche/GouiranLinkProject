@@ -33,7 +33,7 @@ class MyCustomer implements Serializable {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -53,7 +53,7 @@ class MyCustomer implements Serializable {
         this.email = email;
     }
 
-    public boolean ismFacebook() {
+    boolean ismFacebook() {
         return mFacebook;
     }
 
@@ -61,11 +61,11 @@ class MyCustomer implements Serializable {
         this.mFacebook = mFacebook;
     }
 
-    public boolean ismGoogle() {
+    boolean ismGoogle() {
         return mGoogle;
     }
 
-    public void setmGoogle(boolean mGoogle) {
+    void setmGoogle(boolean mGoogle) {
         this.mGoogle = mGoogle;
     }
 
@@ -73,7 +73,7 @@ class MyCustomer implements Serializable {
         return mGouiranLink;
     }
 
-    public void setmGouiranLink(boolean mGouiranLink) {
+    void setmGouiranLink(boolean mGouiranLink) {
         this.mGouiranLink = mGouiranLink;
     }
 

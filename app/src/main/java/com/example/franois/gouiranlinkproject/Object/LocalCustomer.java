@@ -1,9 +1,5 @@
 package com.example.franois.gouiranlinkproject.Object;
 
-/**
- * Created by pyram_m on 31/01/17.
- */
-
 public class LocalCustomer {
     private String[] history = new String[10];
 
@@ -19,9 +15,7 @@ public class LocalCustomer {
         if (history.length < 10)
             history[history.length] = research;
         else {
-            for (int i = 0; i < 9; i++) {
-                history[i] = history[i + 1];
-            }
+            System.arraycopy(history, 1, history, 0, 9);
             history[9] = research;
         }
     }

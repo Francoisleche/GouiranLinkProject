@@ -14,7 +14,7 @@ import com.facebook.login.LoginManager;
 
 
 public class NestedSettingsFragment extends Fragment {
-    MyCustomer myCustomer;
+    private MyCustomer myCustomer;
 
     private OnFragmentInteractionListener mListener;
 

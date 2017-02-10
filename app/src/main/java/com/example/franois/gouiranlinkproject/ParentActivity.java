@@ -35,9 +35,9 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    CustomDrawerAdapter adapter;
+    private CustomDrawerAdapter adapter;
 
-    List<DrawerItem> dataList;
+    private List<DrawerItem> dataList;
 
 
     private MyCustomer myCustomer;
@@ -63,7 +63,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
         }
 
         // Initializing
-        dataList = new ArrayList<DrawerItem>();
+        dataList = new ArrayList<>();
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -133,7 +133,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
         return true;
     }
 
-    public void SelectItem(int possition) {
+    private void SelectItem(int possition) {
 
         Fragment fragment = null;
         Bundle args = new Bundle();
@@ -238,12 +238,6 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
     }
 
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        return super.onPrepareOptionsMenu(menu);
-    }
-
     /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the drawer.
@@ -324,7 +318,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    public Action getIndexApiAction() {
+    private Action getIndexApiAction() {
         Thing object = new Thing.Builder()
                 .setName("Parent Page") // TODO: Define a title for the content shown.
                 // TODO: Make sure this auto-generated URL is correct.

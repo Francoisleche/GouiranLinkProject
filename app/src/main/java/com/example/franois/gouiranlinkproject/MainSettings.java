@@ -27,7 +27,7 @@ public class MainSettings extends Fragment {
         // Required empty public constructor
     }
 
-    public static MainSettings newInstance(String param1, String param2) {
+    public static MainSettings newInstance() {
         MainSettings fragment = new MainSettings();
         Bundle args = new Bundle();
         fragment.setArguments(args);

@@ -13,17 +13,13 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-/**
- * Created by pyram_m on 13/01/17.
- */
-
 public class PostRequest extends AsyncTask<String, Void, String>{
 
-    static final MediaType JSON
+    private static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
-    String url = "";
-    String json = "";
-    OkHttpClient client = new OkHttpClient();
+    private String url = "";
+    private String json = "";
+    final private OkHttpClient client = new OkHttpClient();
 
     public PostRequest (String url) {
         this.url = url;
@@ -34,7 +30,7 @@ public class PostRequest extends AsyncTask<String, Void, String>{
         this.json = json;
     }
 
-    public String postRequest() throws IOException {
+    private String postRequest() throws IOException {
         RequestBody requestBody = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url(url)

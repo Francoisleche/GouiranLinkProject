@@ -46,18 +46,12 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
     private LocationManager locationManager = null;
     private MyLocationListener locationListener = null;
 
-    GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
 
-    double lastLatitude = 0;
-    double lastLongitude = 0;
-
-    Boolean connected;
-    TextView welcomeUser;
-    String username = null;
-    String text;
-    MyCustomer myCustomer;
-    final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+    private Boolean connected;
+    private String text;
+    private final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 
     private OnFragmentInteractionListener mListener;
 
@@ -77,7 +71,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
         return firstFragment;
     }
 
-    protected synchronized void buildGoogleApiClient() {
+    private synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -108,8 +102,8 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (mLastLocation != null) {
-            lastLatitude = mLastLocation.getLatitude();
-            lastLongitude = mLastLocation.getLongitude();
+            double lastLatitude = mLastLocation.getLatitude();
+            double lastLongitude = mLastLocation.getLongitude();
         }
 
         final Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
@@ -131,9 +125,9 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            username = getArguments().getString("username");
+            String username = getArguments().getString("username");
             connected = getArguments().getBoolean("connected");
-            myCustomer = (MyCustomer)getArguments().getSerializable("MyCustomer");
+            MyCustomer myCustomer = (MyCustomer) getArguments().getSerializable("MyCustomer");
             if (connected)
                 text = String.format(getResources().getString(R.string.welcome_user), username);
             else
@@ -540,7 +534,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
 
         /* Editing username */
         //username = "XXXXXXXXXX";
-        welcomeUser = new TextView(getActivity());
+        TextView welcomeUser = new TextView(getActivity());
         welcomeUser = (TextView)getActivity().findViewById(R.id.welcome_user);
         welcomeUser.setText(text);
         welcomeUser.setTypeface(font);

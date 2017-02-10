@@ -283,17 +283,15 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                 try {
                     resp = getRequest.execute().get();
                     System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-                    System.out.println(resp.toString());
-                } catch (InterruptedException e){
-                    e.printStackTrace();
-                } catch (ExecutionException e){
+                    System.out.println(resp);
+                } catch (InterruptedException | ExecutionException e){
                     e.printStackTrace();
                 }
                 response = resp;
 
             }
 
-            public String getResponse(){
+            String getResponse(){
                 return response;
             }
 

@@ -19,9 +19,6 @@ import java.util.List;
 import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
 public class FavouritesFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private OnFragmentInteractionListener mListener;
 
     public FavouritesFragment() {

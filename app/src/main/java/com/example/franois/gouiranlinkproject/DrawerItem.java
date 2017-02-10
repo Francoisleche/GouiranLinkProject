@@ -1,23 +1,23 @@
 package com.example.franois.gouiranlinkproject;
 
-public class DrawerItem {
+class DrawerItem {
 
-    String ItemName;
-    int imgResID;
+    private String ItemName;
+    private int imgResID;
 
-    public DrawerItem(String itemName, int imgResID) {
+    DrawerItem(String itemName, int imgResID) {
         super();
         ItemName = itemName;
         this.imgResID = imgResID;
     }
 
-    public String getItemName() {
+    String getItemName() {
         return ItemName;
     }
     public void setItemName(String itemName) {
         ItemName = itemName;
     }
-    public int getImgResID() {
+    int getImgResID() {
         return imgResID;
     }
     public void setImgResID(int imgResID) {

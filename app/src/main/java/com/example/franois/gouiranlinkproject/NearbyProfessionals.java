@@ -8,24 +8,19 @@ import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by pyram_m on 31/01/17.
- */
+class NearbyProfessionals {
+    final private String[] shopNameList;
+    final private String[] shopImageList;
 
-public class NearbyProfessionals {
-    String[] shopNameList;
-    String[] shopImageList;
-    GetRequest getRequest;
-
-    public String[] getShopNameList() {
+    String[] getShopNameList() {
         return shopNameList;
     }
 
-    public String[] getShopImageList() {
+    String[] getShopImageList() {
         return shopImageList;
     }
 
-    public NearbyProfessionals(int latitude, int longitude) {
+    NearbyProfessionals(int latitude, int longitude) {
         String resp = null;
         JSONObject obj;
         JSONArray arr;
@@ -33,7 +28,7 @@ public class NearbyProfessionals {
         shopImageList = new String[5];
         shopNameList = new String[5];
 
-        getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[geoloc][latitude]=" + String.valueOf(latitude)
+        GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[geoloc][latitude]=" + String.valueOf(latitude)
                 + "&query[geoloc][longitude]=" + String.valueOf(longitude));
 
         try {

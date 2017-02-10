@@ -24,18 +24,16 @@ public class DoneFragment extends Fragment{
         // Required empty public constructor
     }
 
-    LinearLayout[] linearLayouts = new LinearLayout[10];
-    LinearLayout[] separatorParts = new LinearLayout[10];
-    LinearLayout[] firstParts = new LinearLayout[10];
-    LinearLayout[] secondParts = new LinearLayout[10];
-    LinearLayout[] thirdParts = new LinearLayout[10];
-    Button[] buttons = new Button[10];
-    RelativeLayout layout;
-    Typeface font;
-    TextView instituteName, type, date, hour, slash;
-    ImageView imageView;
-    LinearLayout.LayoutParams LLParams;
-    View separatorView;
+    final private LinearLayout[] linearLayouts = new LinearLayout[10];
+    final private LinearLayout[] separatorParts = new LinearLayout[10];
+    final private LinearLayout[] firstParts = new LinearLayout[10];
+    final private LinearLayout[] secondParts = new LinearLayout[10];
+    final private LinearLayout[] thirdParts = new LinearLayout[10];
+    final private Button[] buttons = new Button[10];
+    private Typeface font;
+    private TextView instituteName, type, date, hour, slash;
+    private ImageView imageView;
+    private View separatorView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,16 +54,9 @@ public class DoneFragment extends Fragment{
             thirdParts[i] = (LinearLayout)root.findViewById(resID);
             buttons[i] = new Button(getActivity());
         }
-        layout = (RelativeLayout) root.findViewById(R.id.done_relative);
         font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
-        LLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         return (root);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -148,19 +139,6 @@ public class DoneFragment extends Fragment{
             secondParts[i].addView(buttons[i], buttonParams);
 
         }
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
 }

@@ -79,13 +79,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
@@ -97,12 +90,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mImageLoginView;
     private View mLoginFormView;
 
-    private MyCustomer myCustomer = new MyCustomer();
+    final private MyCustomer myCustomer = new MyCustomer();
 
     private static final int RC_SIGN_IN = 9001;
-    private static String mFullName = "";
-    String email = "";
-    String birthday = "";
+    private String email = "";
+    private String birthday = "";
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
     private TextView mStatusTextView;
@@ -275,11 +267,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
-    @Override
-    protected void onPause() {
-
-        super.onPause();
-    }
 
     protected void onStop() {
         super.onStop();
@@ -505,10 +492,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
@@ -604,7 +587,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
     /**
@@ -614,14 +596,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
-        private final String mPassword;
         private final String json;
         private final PostRequest postRequest;
         private final Boolean connected;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
-            mPassword = password;
             json = "{\n" +
                     "\"public_key\":\"" + email + "\",\n" +
                     "\"private_key\":\"" + password + "\",\n" +
@@ -631,11 +611,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String resp = null;
             try {
                 resp = postRequest.execute().get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
+            assert resp != null;
             if (resp.contains("access_token")) {
                 connected = true;
                 Log.d("true", "true");
@@ -750,9 +729,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         try {
                             resp = postRequest.execute().get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
+                        } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         }
                         Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_SHORT).show();

@@ -21,23 +21,23 @@ import java.util.regex.Pattern;
 
 public class SignUp extends AppCompatActivity {
 
-    String json = null;
-    String name = null;
-    String surname = null;
-    String email = null;
-    String password = null;
-    String passwordConfirmation = null;
-    String phoneNumber = null;
-    PostRequest postRequest = null;
+    private String json = null;
+    private String name = null;
+    private String surname = null;
+    private String email = null;
+    private String password = null;
+    private String passwordConfirmation = null;
+    private String phoneNumber = null;
+    private PostRequest postRequest = null;
 
-    EditText surnameEditText;
-    EditText nameEditText;
-    EditText emailEditText;
-    EditText passwordEditText;
-    EditText passwordConfirmationEditText;
-    EditText phoneNumberEditText;
+    private EditText surnameEditText;
+    private EditText nameEditText;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private EditText passwordConfirmationEditText;
+    private EditText phoneNumberEditText;
 
-    boolean isEmailValid(String email) {
+    private boolean isEmailValid(String email) {
         String EmailPattern = "[_A-Za-z0-9-\\\\+.]+@[A-Za-z0-9-]+\\.[A-Za-z]+";
         final Pattern pattern = Pattern.compile(EmailPattern);
         final Matcher matcher = pattern.matcher(email);

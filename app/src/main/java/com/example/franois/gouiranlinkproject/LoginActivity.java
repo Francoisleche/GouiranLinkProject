@@ -569,13 +569,13 @@ if (!success) {
                 //signIn();
                 break;
             case R.id.ignorer_pour_l_instant:
-                /*Bundle b = new Bundle();
+                Bundle b = new Bundle();
                 b.putBoolean("connected", false);
                 b.putString("email", mEmail);
                 Intent i = new Intent(LoginActivity.this, ParentActivity.class);
                 i.putExtras(b);
                 startActivity(i);
-                finish();*/
+                finish();
                 break;
             case R.id.mot_de_passe_oublie:
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);

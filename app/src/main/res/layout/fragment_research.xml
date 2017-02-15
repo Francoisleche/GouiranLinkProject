@@ -1,27 +1,31 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.franois.gouiranlinkproject.ResearchFragment">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:text="Recherche"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:background="@color/GouiranLightBlue"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
             android:weightSum="1.0">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Recherche"
-                android:gravity="center"/>
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="5px"
@@ -37,19 +41,20 @@
 
                 <EditText
                     android:id="@+id/bonjour_recherche"
-                    android:layout_width="match_parent"
+                    android:layout_width="100dip"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="0.5"
                     android:gravity="start"
-                    android:text="recherche_1"
+                    android:text="recherche"
                     android:paddingBottom="5dip"
                     android:paddingLeft="5dip"
                     android:paddingRight="5dip"
-                    android:paddingTop="5dip"/>
+                    android:paddingTop="5dip"
+                    android:background="@xml/custom_border_avis"/>
                 <EditText
                     android:id="@+id/upcoming_provider_name_1"
-                    android:layout_width="match_parent"
+                    android:layout_width="100dip"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="0.5"
@@ -58,7 +63,8 @@
                     android:paddingBottom="5dip"
                     android:paddingLeft="5dip"
                     android:paddingRight="5dip"
-                    android:paddingTop="5dip"/>
+                    android:paddingTop="5dip"
+                    android:background="@xml/custom_border_avis"/>
 
 
                 <CheckBox
@@ -76,23 +82,10 @@
 
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:weightSum="1.0">
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1.0">
-                    <ImageView
-                        android:id="@+id/around_1"
-                        android:layout_width="50dp"
-                        android:layout_height="100dp"
-                        android:clickable="true"
-                        android:onClick="onClick"
-                        android:src="@drawable/er6n" />
 
                     <TextView
                         android:text="TextView"
@@ -100,20 +93,6 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/textView_1"
                         android:layout_weight="1"></TextView>
-                </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1.0">
-                    <ImageView
-                        android:id="@+id/around_11"
-                        android:layout_width="50dp"
-                        android:layout_height="100dp"
-                        android:clickable="true"
-                        android:onClick="onClick"
-                        android:src="@drawable/er6n" />
 
                     <TextView
                         android:text="TextView"
@@ -121,20 +100,6 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/textView_11"
                         android:layout_weight="1"></TextView>
-                </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1.0">
-                    <ImageView
-                        android:id="@+id/around_12"
-                        android:layout_width="50dp"
-                        android:layout_height="100dp"
-                        android:clickable="true"
-                        android:onClick="onClick"
-                        android:src="@drawable/er6n" />
 
                     <TextView
                         android:text="TextView"
@@ -142,20 +107,6 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/textView_12"
                         android:layout_weight="1"></TextView>
-                </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1.0">
-                    <ImageView
-                        android:id="@+id/around_13"
-                        android:layout_width="50dp"
-                        android:layout_height="100dp"
-                        android:clickable="true"
-                        android:onClick="onClick"
-                        android:src="@drawable/er6n" />
 
                     <TextView
                         android:text="TextView"
@@ -163,51 +114,24 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/textView_13"
                         android:layout_weight="1"></TextView>
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/around_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_toEndOf="@id/around_1"
-                    android:clickable="true"
-                    android:onClick="onClick"
-                    android:src="@drawable/er6n" />
-
-                <ImageView
-                    android:id="@+id/around_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_toEndOf="@id/around_2"
-                    android:clickable="true"
-                    android:onClick="onClick"
-                    android:src="@drawable/er6n" />
-
-                <ImageView
-                    android:id="@+id/around_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_toEndOf="@id/around_3"
-                    android:clickable="true"
-                    android:onClick="onClick"
-                    android:src="@drawable/er6n" />
-                <ImageView
-                    android:id="@+id/around_5"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_toEndOf="@id/around_3"
-                    android:clickable="true"
-                    android:onClick="onClick"
-                    android:src="@drawable/er6n" />
-                <ImageView
-                    android:id="@+id/around_6"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_toEndOf="@id/around_3"
-                    android:clickable="true"
-                    android:onClick="onClick"
-                    android:src="@drawable/er6n" />
             </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1.0">
+
+                <ListView
+                    android:layout_width="fill_parent"
+                    android:layout_height="600px"
+                    android:id="@+id/mesresultats">
+                </ListView>
+
+        </LinearLayout>
+
+
+
 
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -234,8 +158,13 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/filtre_prestataire"
                     android:text="prestataire" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/filtre_prestataire_trouve"
+                    android:text="prestataire trouve" />
 
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-</FrameLayout>
+</LinearLayout>

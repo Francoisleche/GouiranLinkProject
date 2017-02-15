@@ -25,7 +25,7 @@ public class PrendreRdv extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prendre_rdv);
 
-        Spinner spinner = (Spinner)findViewById(R.id.liste_specialite);
+        Spinner spinner = (Spinner)findViewById(R.id.liste_employe);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,employe);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 

@@ -19,12 +19,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.franois.gouiranlinkproject.Recherche.ProfessionelTrouve;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -32,11 +42,12 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+import static android.content.ContentValues.TAG;
 import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-
-    /**
+/**
      * A simple {@link Fragment} subclass.
      * Activities that contain this fragment must implement the
      * {@link com.example.franois.gouiranlinkproject.ResearchFragment.OnFragmentInteractionListener} interface
@@ -52,7 +63,7 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
         private ResearchTask mAuthTask = null;
         private EditText recherche;
-        private TextView resultat1,resultat2,resultat3;
+        private TextView resultat1,resultat2,resultat3,resultat4;
         private Button carte;
         private GetRequest getRequest;
 
@@ -116,6 +127,8 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
         }
 
+
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -128,7 +141,10 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
             resultat2 = (TextView) view.findViewById(R.id.textView_11);
             resultat3 = (TextView) view.findViewById(R.id.textView_12);
+            resultat4 = (TextView) view.findViewById(R.id.textView_13);
 
+            ListView listView = (ListView) view.findViewById(R.id.mesresultats);
+            ArrayAdapter<String> tableau = new ArrayAdapter<String>(listView.getContext(),R.layout.services);
 
             //MARCHE mautomatiquement à la lettre prêt mais c'est très long
 
@@ -149,11 +165,48 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                 @Override
                 public void afterTextChanged(Editable s) {
                     resultat1.setText(recherche.getText());
-
+                    ArrayList<String> recup = new ArrayList<String>();
                     String ls = "";
                     ResearchTask rt = new ResearchTask(recherche.getText().toString(),5);
                     ls = rt.getResponse();
-                    resultat2.setText(ls);
+                    //System.out.println("LSSSSSSS :"+ls);
+
+                    //resultat2.setText(ls);
+
+                    recup = jsonparser(ls);
+
+                    int size = recup.size();
+                    if(size == 0 ){
+                        resultat2.setText("");
+                        resultat3.setText("");
+                        resultat4.setText("");
+                    }else if(size == 1 ){
+                        resultat2.setText(recup.get(0));
+                    }else if(size == 2 ){
+                        resultat2.setText(recup.get(0));
+                        resultat3.setText(recup.get(1));
+                    }else if(size >= 3){
+                        resultat2.setText(recup.get(0));
+                        resultat3.setText(recup.get(1));
+                        resultat4.setText(recup.get(3));
+                    }
+
+
+//List view des resultats
+
+
+/*
+
+                    for(int i = 0 ; i<40;i++){
+                        tableau.add("Prestation n°"+i);
+
+                    }
+                    listView.setAdapter(tableau);*/
+
+
+                    //System.out.println("1 = "+recup.get(1)+ " 2 ="+recup.get(2));
+
+
 
 
                 }
@@ -166,7 +219,7 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                 recherche.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-
+                    ArrayList<String> recup = new ArrayList<String>();
     /*
                     System.out.println("Ommmmmmmmmmmggggggggggggg0");
                     ResearchTask ult = new ResearchTask(recherche.getText().toString(),5);
@@ -177,11 +230,30 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                     String ls = "";
                     ResearchTask rt = new ResearchTask(recherche.getText().toString(),5);
                     ls = rt.getResponse();
-                    resultat3.setText(ls);
+                    recup = jsonparser(ls);
+
+                    resultat2.setText(recup.get(1));
+                    resultat3.setText(recup.get(2));
+                    resultat4.setText(recup.get(3));
+
+
+
+
+
+
+
+
+
+
+                    //resultat3.setText(ls);
 
                     return false;
                 }
             });
+
+
+
+
 
 
 
@@ -219,6 +291,20 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), ProfessionalView.class);
                     startActivity(intent);
+                }
+            });
+
+            Button button4 =(Button)v.findViewById(R.id.filtre_prestataire_trouve);
+            button4.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    String ls = "";
+                    ResearchTask2 rt = new ResearchTask2("Coiffeur","Montpellier","",43.6109200,3.8772300,"","34070",1,1,1,1,1,true,"price","asc");
+                    ls = rt.getResponse();
+                    System.out.println(ls);
+                    //Intent intent = new Intent(getActivity(), ProfessionelTrouve.class);
+                    //startActivity(intent);
                 }
             });
         }
@@ -263,9 +349,74 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
             void onFragmentInteraction(Uri uri);
         }
 
-        public void recuperation(){
+    public ArrayList<String> jsonparser( String jsonStr){
+        String ls = "";
+        ArrayList<String> specialite = new ArrayList<>();
 
+        if (jsonStr != null) {
+            if(jsonStr.contains("{")){
+                try {
+                    //JSONArray jsonObj2 = new JSONArray(jsonStr);
+
+
+
+                            /*JSONObject reader = new JSONObject(jsonStr);
+                            JSONObject sys  = reader.getJSONObject("value");
+                            String country = sys.getString("value");*/
+
+                    String recup = "{" + '"' + "Recup" + '"' + " : [";
+                    String ahbon = jsonStr.replace("[", recup);
+                    String ahbon2 = ahbon.replace("]", "]}");
+
+
+                    JSONObject jsonObj = new JSONObject(ahbon2);
+
+                    JSONArray contacts = jsonObj.getJSONArray("Recup");
+
+                    // looping through All Contacts
+                    for (int i = 0; i < contacts.length(); i++) {
+                        JSONObject c = contacts.getJSONObject(i);
+
+                        String id = c.getString("value");
+
+                        //JSONObject reader = new JSONObject(ahbon2);
+                        //JSONObject sys = reader.getJSONObject("Recup");
+                        //String country = sys.getString("value");
+
+                        specialite.add(id);
+                        System.out.println("VAAAAAAAAAAAAAALUE " + id);
+
+
+                        // Getting JSON Array node
+                        //JSONArray contacts = jsonObj.getJSONArray("contacts");
+
+                        // looping through All Contacts
+                        }
+                    }catch( final JSONException e){
+                        Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    }
+                }else{
+                    specialite.add(ls);
+                    specialite.add(ls);
+                    specialite.add(ls);
+                    specialite.add(ls);
+                    specialite.add(ls);
+                }
+        }else {
+            System.out.println("C'est nul");
+            Log.e(TAG, "Couldn't get json from server.");
         }
+
+
+    return specialite;
+
+    }
+
+
+
+
+
+
 
 
         /**
@@ -360,8 +511,109 @@ import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
                 mAuthTask = null;
             }
 
+
+
+
         }
 
+
+    public class ResearchTask2 extends AsyncTask<Void, Void, Boolean> {
+
+        private String response = "";
+
+        private final String mQuery;
+        //private final int mLimit;
+        //private final String json;
+        //private final GetRequest getRequest;
+        //private final Boolean connected;
+
+        ResearchTask2(String query, String city,String sponsoring_key,Double latitude,Double longitude, String address, String post_code,int product_category_id,int product_id,
+                      int type_id,int specialty_id,int weekday,boolean automatic_booking_confirmation,String field,String order) {
+            mQuery = query;
+            //mLimit = limit;
+            //System.out.println("QUERY :" + query + ",LIMIT :" + limit);
+            /*json = "{\n" +
+                    "\"query\":\"" + query + "\",\n" +
+                    "\"limit\":\"" + limit + "\"" +
+                    "}\n";*/
+            getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/_all/?query[_all]="+query+
+                    "& query[city]="+city+"&query[sponsoring_key]="+sponsoring_key+"&query[geoloc][latitude]="+latitude+"&query[geoloc][longitude]="+longitude+
+                    "&query[geoloc][address]="+address+"&query[post_code]="+post_code+"&query[product_category_id]="+product_category_id+
+                    "&query[product_id]="+product_id+"&query[type_id]="+type_id+"&query[specialty_id]="+specialty_id+"&query[weekday]="+
+                    weekday+"&query[automatic_booking_confirmation]="+automatic_booking_confirmation+"&sort[field]="+field+"&sort[order]="+order);
+            String resp = null;
+            try {
+                resp = getRequest.execute().get();
+                System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+                System.out.println(resp.toString());
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            } catch (ExecutionException e){
+                e.printStackTrace();
+            }
+            response = resp;
+
+        }
+
+        public String getResponse(){
+            return response;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
+
+            //return (true);
+
+            //return (connected);
+            return true;
+/*            for (String credential : DUMMY_CREDENTIALS) {
+                String[] pieces = credential.split(":");
+                if (pieces[0].equals(mEmail)) {
+                    // Account exists, return true if the password matches.
+                    return pieces[1].equals(mPassword);
+                }
+            }
+
+            // TODO: register the new account here.
+            return true;*/
+        }
+
+
+        protected void onGetExecute(final Boolean success) {
+            mAuthTask = null;
+
+            if (success) {
+                //Intent i = new Intent();
+                //Bundle b = new Bundle();
+                //b.putString("token_access", "token_access");
+                //b.putString("email", mEmail);
+                //i.putExtras(b);
+                //startActivity(i);
+                //finish();
+            } else {
+                //mPasswordView.setError(getString(R.string.error_incorrect_password));
+                //mPasswordView.requestFocus();
+            }
+        }
+
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+        }
+
+
+
+
+    }
 
 
     }

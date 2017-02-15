@@ -18,12 +18,17 @@
             android:weightSum="3">
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="?attr/actionBarSize"
                 android:text="Compte"
-                android:textSize="20dp"
+                android:textSize="25sp"
                 android:gravity="center"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="3"/>
+                android:layout_weight="3"
+                android:background="@color/GouiranLightBlue"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+
+
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
@@ -104,6 +109,7 @@
                 android:text="A propos" />
 
             <Button
+                android:id="@+id/appli_info"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="0"
@@ -132,6 +138,7 @@
                 android:text="Donner votre avis" />
 
             <Button
+                android:id="@+id/appli_comment"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_weight="0"
@@ -172,6 +179,15 @@
             android:layout_width="fill_parent"
             android:layout_height="5px"
             android:background="#FF909090" />
+
+        <Button
+            android:id="@+id/deconnexion"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_weight="0"
+            android:clickable="true"
+            android:layout_marginEnd="20dp"
+            android:text="Deconnexion"/>
 
     </LinearLayout>
 

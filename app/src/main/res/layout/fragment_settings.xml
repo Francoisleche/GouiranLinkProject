@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recherche"
-        android:gravity="center"/>
-    
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_weight="0.07"
+        android:background="@color/GouiranLightBlue"
+        android:gravity="center"
+        android:text="Parametres"
+        android:textSize="25sp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,6 +22,11 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
         android:text="Notifications" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="5px"
+        android:background="#FF909090" />
 
     <Switch
         android:layout_width="wrap_content"
@@ -25,6 +36,11 @@
         android:layout_marginTop="20dp"
         android:text="Activer la fonction Secouer pour rechercher" />
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="5px"
+        android:background="#FF909090" />
+
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,17 +49,27 @@
         android:layout_marginTop="20dp"
         android:text="Erreur rencontrée sur l'application" />
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="5px"
+        android:background="#FF909090" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Version ..."
-        android:gravity="center"/>
+        android:gravity="center"
+        android:text="Version ..." />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="5px"
+        android:background="#FF909090" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Deconnexion"/>
+        android:text="Deconnexion" />
 
 
 </LinearLayout>

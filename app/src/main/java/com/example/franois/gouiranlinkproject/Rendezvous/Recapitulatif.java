@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import com.example.franois.gouiranlinkproject.CamTestActivity;
 import com.example.franois.gouiranlinkproject.R;
-import com.example.franois.gouiranlinkproject.ReservationFragment;
+import com.example.franois.gouiranlinkproject.Reservation.ReservationFragment;
 
 /**
  * Created by François on 03/02/2017.

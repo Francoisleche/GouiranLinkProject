@@ -73,7 +73,13 @@
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
-
+    <style name="result_research">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/GouiranLightBlue</item>
+        <item name="android:fontFamily">fonts/Acrom W00 Medium.ttf</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 
 

@@ -20,7 +20,7 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                tools:context="com.example.franois.gouiranlinkproject.MapPane" />
+                tools:context="com.example.franois.gouiranlinkproject.Recherche.MapPane" />
 
         <TextView
             android:layout_width="wrap_content"

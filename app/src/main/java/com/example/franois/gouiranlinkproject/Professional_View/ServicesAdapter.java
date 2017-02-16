@@ -1,22 +1,17 @@
 package com.example.franois.gouiranlinkproject.Professional_View;
 
-import android.content.ClipData;
 import android.content.Context;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.TextView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.LayoutInflater;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.R;
 
 import java.util.ArrayList;
-
-import static android.R.attr.id;
-import static android.R.attr.targetActivity;
 
 /**
  * Created by François on 14/02/2017.

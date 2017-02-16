@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 import com.example.franois.gouiranlinkproject.R;
-import com.example.franois.gouiranlinkproject.ResearchFragment;
+import com.example.franois.gouiranlinkproject.Recherche.ResearchFragment;
+import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 
 import java.util.concurrent.ExecutionException;
 

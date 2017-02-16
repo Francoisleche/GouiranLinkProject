@@ -132,11 +132,13 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
                 text = String.format(getResources().getString(R.string.welcome_user), username);
             else
                 text = "Bonjour,";
-            assert myCustomer != null;
-            if (myCustomer.ismFacebook() || myCustomer.ismGoogle()) {
+
+            if (myCustomer != null && (myCustomer.ismGouiranLink() || myCustomer.ismFacebook() || myCustomer.ismGoogle())) {
                 text = String.format(getResources().getString(R.string.welcome_user), myCustomer.getSurname());
                 connected = true;
             }
+            else
+                connected = false;
         }
 
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);

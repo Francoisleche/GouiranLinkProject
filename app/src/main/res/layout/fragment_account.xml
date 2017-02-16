@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:id="@+id/frameLayout"
-    tools:context="com.example.franois.gouiranlinkproject.AccountFragment">
+    tools:context="com.example.franois.gouiranlinkproject.Account.AccountFragment">
 
 
 </FrameLayout>

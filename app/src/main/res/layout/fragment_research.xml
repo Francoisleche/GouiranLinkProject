@@ -1,191 +1,205 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_remplace"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.franois.gouiranlinkproject.ResearchFragment">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:text="Recherche"
-        android:gravity="center"
-        android:textSize="25sp"
-        android:background="@color/GouiranLightBlue"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragment_research"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context="com.example.franois.gouiranlinkproject.ResearchFragment">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:weightSum="1.0">
+            android:layout_height="match_parent">
 
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="5px"
-                android:background="#FF909090" />
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+            <TextView
+                android:id="@+id/text_Recherche"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/GouiranLightBlue"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="1.0">
+                android:text="Recherche"
+                android:textSize="25sp"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-                <EditText
-                    android:id="@+id/bonjour_recherche"
-                    android:layout_width="100dip"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.5"
-                    android:gravity="start"
-                    android:text="recherche"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="5dip"
-                    android:paddingRight="5dip"
-                    android:paddingTop="5dip"
-                    android:background="@xml/custom_border_avis"/>
-                <EditText
-                    android:id="@+id/upcoming_provider_name_1"
-                    android:layout_width="100dip"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.5"
-                    android:gravity="start"
-                    android:text="recherche_2"
-                    android:paddingBottom="5dip"
-                    android:paddingLeft="5dip"
-                    android:paddingRight="5dip"
-                    android:paddingTop="5dip"
-                    android:background="@xml/custom_border_avis"/>
-
-
-                <CheckBox
-                    android:id="@+id/chkIos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="A proximité" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="5px"
-                android:background="#FF909090" />
-
-
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:weightSum="1.0">
+                android:layout_below="@+id/text_Recherche"
+                android:orientation="vertical">
 
-                    <TextView
-                        android:text="TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView_1"
-                        android:layout_weight="1"/>
-                </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
                     android:weightSum="1.0">
 
-                    <TextView
-                        android:text="TextView"
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="5px"
+                        android:background="#FF909090" />
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView_11"
-                        android:layout_weight="1"/>
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <EditText
+                            android:id="@+id/bonjour_recherche"
+                            android:layout_width="100dip"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5"
+                            android:background="@xml/custom_border_avis"
+                            android:gravity="start"
+                            android:paddingBottom="5dip"
+                            android:paddingLeft="5dip"
+                            android:paddingRight="5dip"
+                            android:paddingTop="5dip"
+                            android:text="recherche" />
+
+                        <EditText
+                            android:id="@+id/upcoming_provider_name_1"
+                            android:layout_width="100dip"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5"
+                            android:background="@xml/custom_border_avis"
+                            android:gravity="start"
+                            android:paddingBottom="5dip"
+                            android:paddingLeft="5dip"
+                            android:paddingRight="5dip"
+                            android:paddingTop="5dip"
+                            android:text="recherche_2" />
+
+
+                        <CheckBox
+                            android:id="@+id/chkIos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="A proximité" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="5px"
+                        android:background="#FF909090" />
+
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:id="@+id/textView_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="TextView" />
+                    </LinearLayout>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:id="@+id/textView_11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="TextView" />
+                    </LinearLayout>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:id="@+id/textView_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="TextView" />
+                    </LinearLayout>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <TextView
+                            android:id="@+id/textView_13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="TextView" />
+                    </LinearLayout>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:weightSum="1.0">
+
+                        <ListView
+                            android:id="@+id/mesresultats"
+                            android:layout_width="fill_parent"
+                            android:layout_height="600px"></ListView>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="50dp"
+                        android:orientation="horizontal"
+                        android:weightSum="1.0">
+
+                        <Button
+                            android:id="@+id/carte_research"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="cartes" />
+
+                        <Button
+                            android:id="@+id/filtre_research"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="filtres" />
+
+                        <Button
+                            android:id="@+id/filtre_prestataire"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="prestataire" />
+
+                        <Button
+                            android:id="@+id/filtre_prestataire_trouve"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="prestataire trouve" />
+
+                    </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1.0">
-
-                    <TextView
-                        android:text="TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView_12"
-                        android:layout_weight="1"/>
-                </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1.0">
-
-                    <TextView
-                        android:text="TextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView_13"
-                        android:layout_weight="1"/>
-            </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="1.0">
-
-                <ListView
-                    android:layout_width="fill_parent"
-                    android:layout_height="600px"
-                    android:id="@+id/mesresultats">
-                </ListView>
-
-        </LinearLayout>
-
-
-
-
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_marginBottom="50dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1.0">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/carte_research"
-                    android:text="cartes" />
-
-                <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/filtre_research"
-                android:text="filtres" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/filtre_prestataire"
-                    android:text="prestataire" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/filtre_prestataire_trouve"
-                    android:text="prestataire trouve" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
+    </FrameLayout>
+</FrameLayout>

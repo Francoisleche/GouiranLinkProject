@@ -28,6 +28,7 @@ public class ServicesProfessional extends Fragment {
     public final static String AGE = "sdz.chapitreTrois.intent.example.AGE";
     private List<String> resultList;
     public Button button ;
+    public ListView lstview;
 
     public ServicesProfessional(){
 
@@ -37,6 +38,7 @@ public class ServicesProfessional extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
     }
@@ -110,10 +112,9 @@ public class ServicesProfessional extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_services_professional, container, false);
 
-        ListView lstview=(ListView) v.findViewById(R.id.maliste);
+        lstview=(ListView) v.findViewById(R.id.maliste);
         /*lstview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 Toast.makeText(context, "An item of the ListView is clicked.", Toast.LENGTH_LONG).show();

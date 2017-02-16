@@ -5,7 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -102,34 +108,26 @@ import static com.facebook.FacebookSdk.getApplicationContext;
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-        /*carte = (Button) getActivity().findViewById(R.id.carte_research);
-        carte.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                // Do something here
-                //startActivity(new Intent(MainActivity.this, ActivityB.class));
-                Intent intent = new Intent(getApplicationContext(), MapPane.class);
-                startActivity(intent);
-
-            }
-        });*/
-
-        /*recherche.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-
-                //
-                ResearchTask ult = new ResearchTask(recherche.getText().toString(),5);
-
-
-                return false;
-            }
-        });*/
-
-
-
-
         }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+        //AppCompatActivity app = (AppCompatActivity) getActivity();
+        //app.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //ViewPager viewpager = (ViewPager) getActivity().findViewById(R.id.fragment_research);
+
+
+    }
+
+    public void setUpViewPager(ViewPager viewpager){
+        //ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        //sviewPagerAdapter.addFragment(new );
+    }
+
+
 
 
 
@@ -293,8 +291,15 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), ProfessionalView.class);
-                    startActivity(intent);
+
+
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+                    ft.replace(R.id.fragment_remplace,new ProfessionalView());
+
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.commit();
                 }
             });
 
@@ -628,6 +633,37 @@ import static com.facebook.FacebookSdk.getApplicationContext;
         }
 
 
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
+
+
+
+}
 
 

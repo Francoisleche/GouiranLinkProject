@@ -7,31 +7,46 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.view.View;
+
 
 import com.example.franois.gouiranlinkproject.Professional_View.AvisProfessional;
 import com.example.franois.gouiranlinkproject.Professional_View.InformationsProfessional;
 import com.example.franois.gouiranlinkproject.Professional_View.ServicesProfessional;
 
+import java.util.zip.Inflater;
 
 
 /**
  * Created by François on 01/02/2017.
  */
 
-public class ProfessionalView extends AppCompatActivity {
+public class ProfessionalView extends Fragment {
 
     FrameLayout simpleFrameLayout;
     TabLayout tabLayout;
 
 
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_professional_view);
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.simpleFrameLayout,new ServicesProfessional());
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
+
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_professional_view,null);
 
 
-        simpleFrameLayout = (FrameLayout) findViewById(R.id.simpleFrameLayout);
-        tabLayout = (TabLayout) findViewById(R.id.professional_tabs);
+        simpleFrameLayout = (FrameLayout) v.findViewById(R.id.simpleFrameLayout);
+        tabLayout = (TabLayout) v.findViewById(R.id.professional_tabs);
 
         //AJOUTE DES PARTIES AU TABLAYOUT
         //tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
@@ -60,7 +75,7 @@ public class ProfessionalView extends AppCompatActivity {
                         break;
                 }
 
-                FragmentManager fm = getSupportFragmentManager();
+                FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.simpleFrameLayout,fragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -79,8 +94,15 @@ public class ProfessionalView extends AppCompatActivity {
                 Log.i("TAG", "onTabReselected: " + tab.getPosition());
             }
         });
+
+        return v;
     }
 
+    @Override
+    public void onViewCreated(View view ,Bundle savedInstanceState) {
+        getActivity().findViewById(R.id.simpleFrameLayout).setVisibility(View.VISIBLE);
+
+    }
 
 
 }

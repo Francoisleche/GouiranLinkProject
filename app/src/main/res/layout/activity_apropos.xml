@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:text="Bonjour, gouiran link a été crée pour ...."
+        android:text="@string/apropos"
         android:background="@drawable/back"/>
 
 

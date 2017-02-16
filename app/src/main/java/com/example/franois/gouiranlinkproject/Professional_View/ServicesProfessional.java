@@ -11,10 +11,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
-=======
+
 import com.example.franois.gouiranlinkproject.CamTestActivity;
->>>>>>> Maxime
+
 import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.Rendezvous.PrendreRdv;
 

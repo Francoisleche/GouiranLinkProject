@@ -21,7 +21,7 @@ public class MainSettings extends Fragment {
     private MyCustomer myCustomer;
     private GoogleApiClient mGoogleApiClient;
 
-
+    FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
 
     private OnFragmentInteractionListener mListener;
@@ -43,8 +43,7 @@ public class MainSettings extends Fragment {
         if (getArguments() != null) {
             myCustomer = (MyCustomer)getArguments().getSerializable("MyCustomer");
         }
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentManager = getActivity().getSupportFragmentManager();
     }
 
     @Override
@@ -76,6 +75,7 @@ public class MainSettings extends Fragment {
                 Bundle args = new Bundle();
                 args.putSerializable("MyCustomer", myCustomer);
                 fragment.setArguments(args);
+                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
                 fragmentTransaction.commit();
                 getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);
@@ -87,6 +87,7 @@ public class MainSettings extends Fragment {
             public void onClick(View v) {
                 //getActivity().setContentView(R.layout.fragment_settings);
                 Fragment fragment = new EditAccountFragment();
+                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
                 fragmentTransaction.commit();
                 getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);
@@ -97,6 +98,7 @@ public class MainSettings extends Fragment {
         aboutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Fragment fragment = new AboutFragment();
+                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
                 fragmentTransaction.commit();
                 getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);
@@ -107,6 +109,7 @@ public class MainSettings extends Fragment {
         tellUsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Fragment fragment = new TellUsFragment();
+                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
                 fragmentTransaction.commit();
                 getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);

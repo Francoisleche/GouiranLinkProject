@@ -57,7 +57,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.Plus;
 
+import org.apache.commons.lang3.concurrent.AbstractCircuitBreaker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -95,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int RC_SIGN_IN = 9001;
     private String email = "";
     private String birthday = "";
-    private GoogleApiClient mGoogleApiClient;
+    private static GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
     private TextView mStatusTextView;
     private static final String TAG = "SignInActivity";
@@ -138,6 +140,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
+                                Toast.makeText(getApplicationContext(), "onCompleted()", Toast.LENGTH_SHORT).show();
+
                                 Log.v("LoginActivity", response.toString());
 
                                 // Application code
@@ -162,10 +166,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             @Override
             public void onCancel() {
+                Toast.makeText(getApplicationContext(), "onCancel()", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException e) {
+                Toast.makeText(getApplicationContext(), "Veuillez vérifier que vous êtes bien connecté à internet.", Toast.LENGTH_SHORT).show();
             }
         };
         loginButton.setReadPermissions("user_friends");
@@ -248,9 +254,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             myCustomer.setmGouiranLink(false);
             myCustomer.setName(acct.getFamilyName());
             myCustomer.setSurname(acct.getGivenName());
+            Toast.makeText(this, acct.getGivenName(), Toast.LENGTH_SHORT).show();
             myCustomer.setEmail(acct.getEmail());
             myCustomer.setBirthday(null);
-            Log.d("GOOGLE SURNAME", myCustomer.getSurname());
+            //Log.d("GOOGLE SURNAME", myCustomer.getSurname());
             main.putExtra("MyCustomer", myCustomer);
             startActivity(main);
         }
@@ -274,8 +281,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         accessTokenTracker.stopTracking();
         profileTracker.stopTracking();
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -326,6 +331,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             });
         }
     }
+
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
@@ -417,15 +423,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    public void signOut() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // [START_EXCLUDE]
-                        // [END_EXCLUDE]
-                    }
-                });
+    public static void signOut() {
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+        }
     }
 
     private void revokeAccess() {

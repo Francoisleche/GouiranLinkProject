@@ -4,17 +4,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.People;
+import com.google.android.gms.plus.Plus;
 
 
 public class NestedSettingsFragment extends Fragment {
     private MyCustomer myCustomer;
+
+    /*final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this).addApi(Plus.API)
+            .addScope(Plus.SCOPE_PLUS_LOGIN).build();*/
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -48,23 +64,18 @@ public class NestedSettingsFragment extends Fragment {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (myCustomer.ismFacebook()) {
+                if (myCustomer != null && myCustomer.ismFacebook()) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Logged Out", Toast.LENGTH_SHORT).show();
                     LoginManager.getInstance().logOut();
                     Intent login = new Intent(getActivity(), LoginActivity.class);
                     startActivity(login);
                     getActivity().finish();
                 }
-                else if (myCustomer.ismGoogle()) {
-/*                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                            new ResultCallback<Status>() {
-                                @Override
-                                public void onResult(Status status) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "Logged Out", Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(i);
-                                    getActivity().finish();
-                                }
-                            });*/
+                else if (myCustomer != null && myCustomer.ismGoogle()) {
+                    LoginActivity.signOut();
+                }
+                else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Not Logged Out", Toast.LENGTH_SHORT).show();
                 }
             }
         });

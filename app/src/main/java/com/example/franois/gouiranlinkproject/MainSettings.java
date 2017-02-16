@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -19,6 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public class MainSettings extends Fragment {
     private MyCustomer myCustomer;
     private GoogleApiClient mGoogleApiClient;
+
 
     private FragmentTransaction fragmentTransaction;
 
@@ -55,6 +57,8 @@ public class MainSettings extends Fragment {
         inviteFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), "TEXTE", Toast.LENGTH_LONG).show();
+
                 final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                 emailIntent.setType("plain/text");
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invitation Gouiran Link");
@@ -65,45 +69,47 @@ public class MainSettings extends Fragment {
 
         Button settingsButton = (Button)root.findViewById(R.id.settings_button);
         settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 //getActivity().setContentView(R.layout.fragment_settings);
-                View root = inflater.inflate(R.layout.fragment_account, container, false);
                 Fragment fragment = new NestedSettingsFragment();
                 Bundle args = new Bundle();
                 args.putSerializable("MyCustomer", myCustomer);
                 fragment.setArguments(args);
-                fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack("tag").commit();
+                fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
+                fragmentTransaction.commit();
                 getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);
             }
         });
 
         Button modifyAccountButton = (Button)root.findViewById(R.id.edit_profile);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
+        modifyAccountButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //getActivity().setContentView(R.layout.fragment_settings);
-                View root = inflater.inflate(R.layout.activity_account_modify, container, false);
-                /*fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack("tag").commit();
-                getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);*/
+                Fragment fragment = new EditAccountFragment();
+                fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
+                fragmentTransaction.commit();
+                getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);
             }
         });
 
         Button aboutButton = (Button)root.findViewById(R.id.about);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
+        aboutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //getActivity().setContentView(R.layout.fragment_settings);
-                View root = inflater.inflate(R.layout.activity_apropos, container, false);
-                /*fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack("tag").commit();
-                getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);*/
+                Fragment fragment = new AboutFragment();
+                fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
+                fragmentTransaction.commit();
+                getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);
             }
         });
 
         Button tellUsButton = (Button)root.findViewById(R.id.tell_us);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
+        tellUsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //getActivity().setContentView(R.layout.fragment_settings);
-                View root = inflater.inflate(R.layout.activity_application_error, container, false);
-                /*fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack("tag").commit();
-                getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);*/
+                Fragment fragment = new TellUsFragment();
+                fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
+                fragmentTransaction.commit();
+                getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);
             }
         });
 

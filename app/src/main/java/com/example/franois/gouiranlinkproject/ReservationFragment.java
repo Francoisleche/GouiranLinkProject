@@ -15,11 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
-import android.support.v4.view.ViewPager;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,8 +78,8 @@ public class ReservationFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
 
-        toolbar = (Toolbar) getActivity().findViewById(R.id.reservation_toolbar);
-        activity.setSupportActionBar(toolbar);
+        /*toolbar = (Toolbar) getActivity().findViewById(R.id.reservation_toolbar);
+        activity.setSupportActionBar(toolbar);*/
 
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -170,5 +169,13 @@ public class ReservationFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Set title
+        getActivity()
+                .setTitle(R.string.myReservations);
     }
 }

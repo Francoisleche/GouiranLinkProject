@@ -2,11 +2,6 @@ package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,12 +13,16 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.Recherche.ProfessionelTrouve;
@@ -40,6 +39,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
+
+
+import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
+
+
 import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
@@ -446,17 +450,15 @@ import static com.facebook.FacebookSdk.getApplicationContext;
                 try {
                     resp = getRequest.execute().get();
                     System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-                    System.out.println(resp.toString());
-                } catch (InterruptedException e){
-                    e.printStackTrace();
-                } catch (ExecutionException e){
+                    System.out.println(resp);
+                } catch (InterruptedException | ExecutionException e){
                     e.printStackTrace();
                 }
                 response = resp;
 
             }
 
-            public String getResponse(){
+            String getResponse(){
                 return response;
             }
 
@@ -555,6 +557,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
         }
 
+
         public String getResponse(){
             return response;
         }
@@ -614,6 +617,15 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 
     }
+
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            // Set title
+            getActivity()
+                    .setTitle(R.string.research);
+        }
 
 
     }

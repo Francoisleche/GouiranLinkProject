@@ -1,8 +1,8 @@
 package com.example.franois.gouiranlinkproject.Professional_View;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+<<<<<<< HEAD
+=======
+import com.example.franois.gouiranlinkproject.CamTestActivity;
+>>>>>>> Maxime
 import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.Rendezvous.PrendreRdv;
 

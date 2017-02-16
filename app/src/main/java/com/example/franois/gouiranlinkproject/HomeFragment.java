@@ -3,7 +3,6 @@ package com.example.franois.gouiranlinkproject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,9 +10,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationServices;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -31,41 +37,21 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationServices;
+import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeFragment extends BaseFragment implements ConnectionCallbacks, OnConnectionFailedListener{
+public class HomeFragment extends Fragment implements ConnectionCallbacks, OnConnectionFailedListener {
 
     //The minimum distance to change updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = -10; // 10 meters
     //The minimum time beetwen updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 0;//1000 * 60 * 1; // 1 minute
     private LocationManager locationManager = null;
     private MyLocationListener locationListener = null;
 
-    GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
 
-    double lastLatitude = 0;
-    double lastLongitude = 0;
-
-    Boolean connected;
-    TextView welcomeUser;
-    String username = null;
-    String text;
-    final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+    private Boolean connected;
+    private String text;
+    private final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 
     private OnFragmentInteractionListener mListener;
 
@@ -73,14 +59,6 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     //* @param param1 Parameter 1.
-     //* @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
     public static HomeFragment newInstance(int instance, String username, Boolean connected) {
         Bundle args = new Bundle();
         args.putInt(ARGS_INSTANCE, instance);
@@ -93,7 +71,7 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         return firstFragment;
     }
 
-    protected synchronized void buildGoogleApiClient() {
+    private synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -110,24 +88,31 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
     @Override
     public void onConnected(Bundle arg0) {
 
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        lastLatitude = mLastLocation.getLatitude();
-        lastLongitude = mLastLocation.getLongitude();
-
-        /*Toast.makeText(getActivity(), "Latitude: " + String.valueOf(mLastLocation.getLatitude()) + "Longitude: " +
-                String.valueOf(mLastLocation.getLongitude()), Toast.LENGTH_SHORT).show();
-
-        Log.d("POSITION", "Latitude: " + String.valueOf(mLastLocation.getLatitude()) + "Longitude: " +
-                String.valueOf(mLastLocation.getLongitude()));*/
+        if (mLastLocation != null) {
+            double lastLatitude = mLastLocation.getLatitude();
+            double lastLongitude = mLastLocation.getLongitude();
+        }
 
         final Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
 
         generateRecentResearches(font);
-        generateAroundMe(font);
+        if (mLastLocation != null) {
+            generateAroundMe(font);
+        }
         generateGouiranLinkSelection(font);
-
-
     }
 
     @Override
@@ -140,15 +125,20 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            username = getArguments().getString("username");
+            String username = getArguments().getString("username");
             connected = getArguments().getBoolean("connected");
-
+            MyCustomer myCustomer = (MyCustomer) getArguments().getSerializable("MyCustomer");
             if (connected)
                 text = String.format(getResources().getString(R.string.welcome_user), username);
             else
                 text = "Bonjour,";
-
+            assert myCustomer != null;
+            if (myCustomer.ismFacebook() || myCustomer.ismGoogle()) {
+                text = String.format(getResources().getString(R.string.welcome_user), myCustomer.getSurname());
+                connected = true;
+            }
         }
+
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new MyLocationListener();
         buildGoogleApiClient();
@@ -210,17 +200,17 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
 
         TextView textView = (TextView)getActivity().findViewById(R.id.my_recent_researches);
         textView.setTypeface(font);
-        if (!connected)
+        if (connected != null && !connected)
             textView.setText(R.string.top_recherche);
 
         TextView textView1 = new TextView(getActivity());
         RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView1.setPadding(5, 0, 5, 0);
         textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        textView1.setTextColor(getResources().getColor(R.color.black));
+        textView1.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView1.setText(R.string.dynamic_recent_1);
         textView1.setLayoutParams(params1);
-        textView1.setId(1);
+        textView1.setId(View.generateViewId());
         textView1.setTypeface(font);
         myRecentResearchesProposal.addView(textView1);
 
@@ -228,11 +218,11 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView2.setPadding(5, 0, 5, 0);
         textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView2.setTextColor(getResources().getColor(R.color.black));
+        textView2.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView2.setText(R.string.dynamic_recent_2);
-        params2.addRule(RelativeLayout.END_OF, 1);
+        params2.addRule(RelativeLayout.END_OF, textView1.getId());
         textView2.setLayoutParams(params2);
-        textView2.setId(2);
+        textView2.setId(View.generateViewId());
         textView2.setTypeface(font);
         myRecentResearchesProposal.addView(textView2);
 
@@ -240,12 +230,12 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params3 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView3.setPadding(5, 0, 5, 0);
         textView3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView3.setTextColor(getResources().getColor(R.color.black));
+        textView3.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView3.setText(R.string.dynamic_recent_3);
-        params3.addRule(RelativeLayout.END_OF, 1);
-        params3.addRule(RelativeLayout.BELOW, 2);
+        params3.addRule(RelativeLayout.END_OF, textView1.getId());
+        params3.addRule(RelativeLayout.BELOW, textView2.getId());
         textView3.setLayoutParams(params3);
-        textView3.setId(3);
+        textView3.setId(View.generateViewId());
         textView3.setTypeface(font);
         myRecentResearchesProposal.addView(textView3);
 
@@ -253,11 +243,11 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params4 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView4.setPadding(5, 0, 5, 0);
         textView4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        textView4.setTextColor(getResources().getColor(R.color.black));
+        textView4.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView4.setText(R.string.dynamic_recent_4);
-        params4.addRule(RelativeLayout.END_OF, 2);
+        params4.addRule(RelativeLayout.END_OF, textView2.getId());
         textView4.setLayoutParams(params4);
-        textView4.setId(4);
+        textView4.setId(View.generateViewId());
         textView4.setTypeface(font);
         myRecentResearchesProposal.addView(textView4);
 
@@ -265,11 +255,11 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params5 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView5.setPadding(5, 0, 5, 0);
         textView5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView5.setTextColor(getResources().getColor(R.color.black));
+        textView5.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView5.setText(R.string.dynamic_recent_5);
-        params5.addRule(RelativeLayout.END_OF, 4);
+        params5.addRule(RelativeLayout.END_OF, textView4.getId());
         textView5.setLayoutParams(params5);
-        textView5.setId(5);
+        textView5.setId(View.generateViewId());
         textView5.setTypeface(font);
         myRecentResearchesProposal.addView(textView5);
 
@@ -277,12 +267,12 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params6 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView6.setPadding(5, 0, 5, 0);
         textView6.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView6.setTextColor(getResources().getColor(R.color.black));
+        textView6.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView6.setText(R.string.dynamic_recent_6);
-        params6.addRule(RelativeLayout.END_OF, 4);
-        params6.addRule(RelativeLayout.BELOW, 5);
+        params6.addRule(RelativeLayout.END_OF, textView4.getId());
+        params6.addRule(RelativeLayout.BELOW, textView5.getId());
         textView6.setLayoutParams(params6);
-        textView6.setId(6);
+        textView6.setId(View.generateViewId());
         textView6.setTypeface(font);
         myRecentResearchesProposal.addView(textView6);
 
@@ -290,11 +280,11 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params7 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView7.setPadding(5, 0, 5, 0);
         textView7.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        textView7.setTextColor(getResources().getColor(R.color.black));
+        textView7.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView7.setText(R.string.dynamic_recent_7);
-        params7.addRule(RelativeLayout.END_OF, 5);
+        params7.addRule(RelativeLayout.END_OF, textView5.getId());
         textView7.setLayoutParams(params7);
-        textView7.setId(7);
+        textView7.setId(View.generateViewId());
         textView7.setTypeface(font);
         myRecentResearchesProposal.addView(textView7);
 
@@ -302,11 +292,11 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params8 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView8.setPadding(5, 0, 5, 0);
         textView8.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView8.setTextColor(getResources().getColor(R.color.black));
+        textView8.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView8.setText(R.string.dynamic_recent_8);
-        params8.addRule(RelativeLayout.END_OF, 7);
+        params8.addRule(RelativeLayout.END_OF, textView7.getId());
         textView8.setLayoutParams(params8);
-        textView8.setId(8);
+        textView8.setId(View.generateViewId());
         textView8.setTypeface(font);
         myRecentResearchesProposal.addView(textView8);
 
@@ -314,12 +304,12 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params9 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView9.setPadding(5, 0, 5, 0);
         textView9.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView9.setTextColor(getResources().getColor(R.color.black));
+        textView9.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView9.setText(R.string.dynamic_recent_9);
-        params9.addRule(RelativeLayout.END_OF, 7);
-        params9.addRule(RelativeLayout.BELOW, 8);
+        params9.addRule(RelativeLayout.END_OF, textView7.getId());
+        params9.addRule(RelativeLayout.BELOW, textView8.getId());
         textView9.setLayoutParams(params9);
-        textView9.setId(9);
+        textView9.setId(View.generateViewId());
         textView9.setTypeface(font);
         myRecentResearchesProposal.addView(textView9);
 
@@ -410,10 +400,10 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView1.setPadding(5, 0, 5, 0);
         textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        textView1.setTextColor(getResources().getColor(R.color.black));
+        textView1.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView1.setText(R.string.dynamic_selection_1);
         textView1.setLayoutParams(params1);
-        textView1.setId(1);
+        textView1.setId(View.generateViewId());
         textView1.setTypeface(font);
         gouiranLinkSelectionProposals.addView(textView1);
 
@@ -421,11 +411,11 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView2.setPadding(5, 0, 5, 0);
         textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView2.setTextColor(getResources().getColor(R.color.black));
+        textView2.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView2.setText(R.string.dynamic_selection_2);
-        params2.addRule(RelativeLayout.END_OF, 1);
+        params2.addRule(RelativeLayout.END_OF, textView1.getId());
         textView2.setLayoutParams(params2);
-        textView2.setId(2);
+        textView2.setId(View.generateViewId());
         textView2.setTypeface(font);
         gouiranLinkSelectionProposals.addView(textView2);
 
@@ -433,12 +423,12 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params3 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView3.setPadding(5, 0, 5, 0);
         textView3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView3.setTextColor(getResources().getColor(R.color.black));
+        textView3.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView3.setText(R.string.dynamic_selection_3);
-        params3.addRule(RelativeLayout.END_OF, 1);
-        params3.addRule(RelativeLayout.BELOW, 2);
+        params3.addRule(RelativeLayout.END_OF, textView1.getId());
+        params3.addRule(RelativeLayout.BELOW, textView2.getId());
         textView3.setLayoutParams(params3);
-        textView3.setId(3);
+        textView3.setId(View.generateViewId());
         textView3.setTypeface(font);
         gouiranLinkSelectionProposals.addView(textView3);
 
@@ -446,11 +436,11 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params4 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView4.setPadding(5, 0, 5, 0);
         textView4.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        textView4.setTextColor(getResources().getColor(R.color.black));
+        textView4.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView4.setText(R.string.dynamic_selection_4);
-        params4.addRule(RelativeLayout.END_OF, 2);
+        params4.addRule(RelativeLayout.END_OF, textView2.getId());
         textView4.setLayoutParams(params4);
-        textView4.setId(4);
+        textView4.setId(View.generateViewId());
         textView4.setTypeface(font);
         gouiranLinkSelectionProposals.addView(textView4);
 
@@ -458,11 +448,11 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params5 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView5.setPadding(5, 0, 5, 0);
         textView5.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView5.setTextColor(getResources().getColor(R.color.black));
+        textView5.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView5.setText(R.string.dynamic_selection_5);
-        params5.addRule(RelativeLayout.END_OF, 4);
+        params5.addRule(RelativeLayout.END_OF, textView4.getId());
         textView5.setLayoutParams(params5);
-        textView5.setId(5);
+        textView5.setId(View.generateViewId());
         textView5.setTypeface(font);
         gouiranLinkSelectionProposals.addView(textView5);
 
@@ -470,12 +460,12 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params6 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView6.setPadding(5, 0, 5, 0);
         textView6.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView6.setTextColor(getResources().getColor(R.color.black));
+        textView6.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView6.setText(R.string.dynamic_selection_6);
-        params6.addRule(RelativeLayout.END_OF, 4);
-        params6.addRule(RelativeLayout.BELOW, 5);
+        params6.addRule(RelativeLayout.END_OF, textView4.getId());
+        params6.addRule(RelativeLayout.BELOW, textView5.getId());
         textView6.setLayoutParams(params6);
-        textView6.setId(6);
+        textView6.setId(View.generateViewId());
         textView6.setTypeface(font);
         gouiranLinkSelectionProposals.addView(textView6);
 
@@ -483,11 +473,11 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params7 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView7.setPadding(5, 0, 5, 0);
         textView7.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        textView7.setTextColor(getResources().getColor(R.color.black));
+        textView7.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView7.setText(R.string.dynamic_selection_7);
-        params7.addRule(RelativeLayout.END_OF, 5);
+        params7.addRule(RelativeLayout.END_OF, textView5.getId());
         textView7.setLayoutParams(params7);
-        textView7.setId(7);
+        textView7.setId(View.generateViewId());
         textView7.setTypeface(font);
         gouiranLinkSelectionProposals.addView(textView7);
 
@@ -495,11 +485,11 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params8 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView8.setPadding(5, 0, 5, 0);
         textView8.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView8.setTextColor(getResources().getColor(R.color.black));
+        textView8.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView8.setText(R.string.dynamic_selection_8);
-        params8.addRule(RelativeLayout.END_OF, 7);
+        params8.addRule(RelativeLayout.END_OF, textView7.getId());
         textView8.setLayoutParams(params8);
-        textView8.setId(8);
+        textView8.setId(View.generateViewId());
         textView8.setTypeface(font);
         gouiranLinkSelectionProposals.addView(textView8);
 
@@ -507,12 +497,12 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         RelativeLayout.LayoutParams params9 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView9.setPadding(5, 0, 5, 0);
         textView9.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        textView9.setTextColor(getResources().getColor(R.color.black));
+        textView9.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         textView9.setText(R.string.dynamic_selection_9);
-        params9.addRule(RelativeLayout.END_OF, 7);
-        params9.addRule(RelativeLayout.BELOW, 8);
+        params9.addRule(RelativeLayout.END_OF, textView7.getId());
+        params9.addRule(RelativeLayout.BELOW, textView8.getId());
         textView9.setLayoutParams(params9);
-        textView9.setId(9);
+        textView9.setId(View.generateViewId());
         textView9.setTypeface(font);
         gouiranLinkSelectionProposals.addView(textView9);
     }
@@ -522,24 +512,33 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        return (root);
+
+        return (inflater.inflate(R.layout.fragment_home, container, false));
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
-        Resources res = getResources();
+        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new MyLocationListener();
+        buildGoogleApiClient();
+
+        if(mGoogleApiClient!= null){
+            mGoogleApiClient.connect();
+        }
+        else
+            Toast.makeText(getActivity(), "Not connected...", Toast.LENGTH_SHORT).show();
+
         getActivity().getAssets();
         TextView textView;
         final Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
 
         /* Editing username */
         //username = "XXXXXXXXXX";
-        welcomeUser = new TextView(getActivity());
+        TextView welcomeUser = new TextView(getActivity());
         welcomeUser = (TextView)getActivity().findViewById(R.id.welcome_user);
         welcomeUser.setText(text);
         welcomeUser.setTypeface(font);
-        welcomeUser.setTextColor(res.getColor(R.color.GouiranDarkBlue));
+        welcomeUser.setTextColor(ContextCompat.getColor(getContext(), R.color.GouiranDarkBlue));
 
         /* Invitez des amis */
         textView = (TextView)getActivity().findViewById(R.id.invite_your_friends);
@@ -581,16 +580,14 @@ public class HomeFragment extends BaseFragment implements ConnectionCallbacks, O
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Set title
+        getActivity()
+                .setTitle(R.string.home);
     }
 }

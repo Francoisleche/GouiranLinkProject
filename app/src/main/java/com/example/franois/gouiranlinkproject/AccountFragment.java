@@ -1,35 +1,26 @@
 package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import static com.example.franois.gouiranlinkproject.BaseFragment.ARGS_INSTANCE;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AccountFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AccountFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AccountFragment extends Fragment implements View.OnClickListener{
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    public Button button_settings;
+    private MyCustomer myCustomer;
 
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -37,14 +28,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     //* @param param1 Parameter 1.
-     //* @param param2 Parameter 2.
-     * @return A new instance of fragment AccountFragment.
-     */
     public static AccountFragment newInstance(int instance) {
         Bundle args = new Bundle();
         args.putInt(ARGS_INSTANCE, instance);
@@ -56,45 +39,63 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            myCustomer = (MyCustomer)getArguments().getSerializable("MyCustomer");
         }
 
+        Fragment fragment = new MainSettings();
+        Bundle args = new Bundle();
+        args.putSerializable("MyCustomer", myCustomer);
+        fragment.setArguments(args);
+        fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        button_settings = (Button) inflater.inflate(R.layout.fragment_account, container, false).findViewById(R.id.settings_button);
-        button_settings.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
-                Toast.makeText(getActivity(),
-                        "Yes",
-                        Toast.LENGTH_SHORT).show();
-                //GalleryFragment.newInstance(0);
-            }
-        });
 
-        //Button imageView = (Button) view
-        View view = inflater.inflate(R.layout.fragment_account, container, false).findViewById(R.id.settings_button);
-        return view;
+        //ImageView editProfile = (ImageView) root.findViewById(R.id.edit_profile);
+        //editProfile.setOnClickListener(new View.OnClickListener() {
+        // TODO L'UN OU L'AUTRE A TESTER
+        /*Button settingsButton = (Button)root.findViewById(R.id.settings_button);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //getActivity().setContentView(R.layout.fragment_settings);
+                fragmentTransaction.replace(R.id.frameLayout, new NestedSettingsFragment()).addToBackStack("tag").commit();
+            }
+        });*/
+
+        /*Button inviteFriends = (Button)root.findViewById(R.id.invite_friends);
+        inviteFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                emailIntent.setType("plain/text");
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invitation Gouiran Link");
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Hey, je viens de découvrir l'application mobile Gouiran Link, elle est géniale!\nIl faudrait que tu l'essaye toi aussi!");
+                getContext().startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            }
+        });*/
+
+        return (inflater.inflate(R.layout.fragment_account, container, false));
     }
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(getActivity(),
-                "Yes",
-                Toast.LENGTH_SHORT).show();
-        //GalleryFragment.newInstance(0);
-    }
-
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        switch (v.getId())
+        {
+            case (R.id.settings_button):
+                break;
+            case (R.id.edit_profile):
+                break;
+            case (R.id.about):
+                break;
+            case (R.id.tell_us):
+                break;
+            case (R.id.invite_friends):
+                break;
         }
     }
 
@@ -155,4 +156,23 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         throw new IllegalStateException("Need to send an index that we know");
     }*/
 
+    @Override
+    public void onStart() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Set title
+        getActivity()
+                .setTitle(R.string.myAccount);
+    }
 }

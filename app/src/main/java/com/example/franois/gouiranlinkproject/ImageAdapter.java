@@ -1,22 +1,16 @@
 package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
+class ImageAdapter extends BaseAdapter {
+    final private Context mContext;
 
-/**
- * Created by pyram_m on 19/01/17.
- */
-public class ImageAdapter extends BaseAdapter {
-    private Context mContext;
-
-    public ImageAdapter(Context c) {
+    ImageAdapter(Context c) {
         mContext = c;
     }
 
@@ -50,7 +44,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     // references to our images
-    private Integer[] mThumbIds = {
+    final private Integer[] mThumbIds = {
             R.drawable.cb650f, R.drawable.er6n,
             R.drawable.gsxr, R.drawable.h2r,
             R.drawable.kawa, R.drawable.tiger,

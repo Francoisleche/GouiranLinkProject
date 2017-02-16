@@ -1,7 +1,7 @@
 package com.example.franois.gouiranlinkproject;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 public class ApplicationError extends AppCompatActivity {
 

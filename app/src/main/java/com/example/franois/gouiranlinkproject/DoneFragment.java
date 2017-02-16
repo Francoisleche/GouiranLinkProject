@@ -1,23 +1,11 @@
 package com.example.franois.gouiranlinkproject;
 
-import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
-import android.view.InflateException;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
+import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
 
 
 public class DoneFragment extends Fragment{
@@ -38,18 +24,16 @@ public class DoneFragment extends Fragment{
         // Required empty public constructor
     }
 
-    LinearLayout[] linearLayouts = new LinearLayout[10];
-    LinearLayout[] separatorParts = new LinearLayout[10];
-    LinearLayout[] firstParts = new LinearLayout[10];
-    LinearLayout[] secondParts = new LinearLayout[10];
-    LinearLayout[] thirdParts = new LinearLayout[10];
-    Button[] buttons = new Button[10];
-    RelativeLayout layout;
-    Typeface font;
-    TextView instituteName, type, date, hour, slash;
-    ImageView imageView;
-    LinearLayout.LayoutParams LLParams;
-    View separatorView;
+    final private LinearLayout[] linearLayouts = new LinearLayout[10];
+    final private LinearLayout[] separatorParts = new LinearLayout[10];
+    final private LinearLayout[] firstParts = new LinearLayout[10];
+    final private LinearLayout[] secondParts = new LinearLayout[10];
+    final private LinearLayout[] thirdParts = new LinearLayout[10];
+    final private Button[] buttons = new Button[10];
+    private Typeface font;
+    private TextView instituteName, type, date, hour, slash;
+    private ImageView imageView;
+    private View separatorView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,20 +54,14 @@ public class DoneFragment extends Fragment{
             thirdParts[i] = (LinearLayout)root.findViewById(resID);
             buttons[i] = new Button(getActivity());
         }
-        layout = (RelativeLayout) root.findViewById(R.id.done_relative);
         font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
-        LLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         return (root);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        // TODO List of brut links of pictures
         String[] pictures = {"http://d1o5dtyz8r69kc.cloudfront.net/206_thumb.jpg",
                 "http://cdn.dealerspike.com/imglib/v1/400x300/imglib/trimsdb/3029321-3229921-10086451.jpg",
                 "http://www.cyclesofjacksonville.com/images/SEO/New-Motorcycle-For-Sale.jpg",
@@ -102,13 +80,12 @@ public class DoneFragment extends Fragment{
 
             LinearLayout.LayoutParams weightParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
             LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-            LinearLayout.LayoutParams noWeightParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(250, 250);
             LinearLayout.LayoutParams hourParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
             LinearLayout.LayoutParams dateParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
 
             separatorView = new View(getActivity());
-            separatorView.setBackgroundColor(getResources().getColor(R.color.black));
+            separatorView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
             separatorView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
             separatorParts[i].addView(separatorView);
 
@@ -158,23 +135,10 @@ public class DoneFragment extends Fragment{
 
             buttons[i].setText("Voir");
             buttonParams.setMargins(20, 100, 0, 0);
-            buttons[i].setBackgroundColor(buttons[i].getContext().getResources().getColor(R.color.GouiranLightBlue));
+            buttons[i].setBackgroundColor(ContextCompat.getColor(buttons[i].getContext(), R.color.GouiranLightBlue));
             secondParts[i].addView(buttons[i], buttonParams);
 
         }
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
 }

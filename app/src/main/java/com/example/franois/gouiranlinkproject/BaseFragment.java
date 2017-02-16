@@ -1,7 +1,6 @@
 package com.example.franois.gouiranlinkproject;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -42,6 +41,6 @@ public class BaseFragment extends Fragment {
     }
 
     public interface FragmentNavigation {
-        public void pushFragment(Fragment fragment);
+        void pushFragment(Fragment fragment);
     }
 }

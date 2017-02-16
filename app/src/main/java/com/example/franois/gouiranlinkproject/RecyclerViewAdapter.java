@@ -1,29 +1,23 @@
 package com.example.franois.gouiranlinkproject;
 
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.List;
-
-/**
- * Created by pyram_m on 06/01/17.
- */
 
 class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     /**
      * List items
      */
-    private List<ImageView> items;
+    final private List<ImageView> items;
     /**
      * the resource id of item Layout
      */
-    private int itemLayout;
+    final private int itemLayout;
 
     /**
      * Constructor RecyclerSimpleViewAdapter

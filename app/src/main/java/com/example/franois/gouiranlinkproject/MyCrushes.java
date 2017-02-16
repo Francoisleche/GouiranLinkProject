@@ -1,20 +1,9 @@
 package com.example.franois.gouiranlinkproject;
 
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
-import android.view.InflateException;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,25 +11,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class MyCrushes extends Fragment{
 
-    LinearLayout coiffureTitleLayout;
-    LinearLayout coiffureTitleContent;
-    LinearLayout beauteTitleLayout;
-    LinearLayout beauteTitleContent;
-    LinearLayout bienEtreTitleLayout;
-    LinearLayout bienEtreTitleContent;
-    LinearLayout hommeTitleLayout;
-    LinearLayout hommeTitleContent;
-    Typeface font;
-    TextView coiffureTitle;
-    TextView beauteTitle;
-    TextView bienEtreTitle;
-    TextView hommeTitle;
+    private LinearLayout coiffureTitleLayout;
+    private LinearLayout coiffureTitleContent;
+    private LinearLayout beauteTitleLayout;
+    private LinearLayout beauteTitleContent;
+    private LinearLayout bienEtreTitleLayout;
+    private LinearLayout bienEtreTitleContent;
+    private LinearLayout hommeTitleLayout;
+    private LinearLayout hommeTitleContent;
+    private Typeface font;
+    private TextView coiffureTitle;
+    private TextView beauteTitle;
+    private TextView bienEtreTitle;
+    private TextView hommeTitle;
 
     public MyCrushes() {
         // Required empty public constructor
@@ -72,10 +58,6 @@ public class MyCrushes extends Fragment{
         return (root);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -178,17 +160,5 @@ public class MyCrushes extends Fragment{
 
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
 }

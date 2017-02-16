@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -73,6 +74,36 @@ public class MainSettings extends Fragment {
                 fragment.setArguments(args);
                 fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack("tag").commit();
                 getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);
+            }
+        });
+
+        Button modifyAccountButton = (Button)root.findViewById(R.id.edit_profile);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //getActivity().setContentView(R.layout.fragment_settings);
+                View root = inflater.inflate(R.layout.activity_account_modify, container, false);
+                /*fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack("tag").commit();
+                getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);*/
+            }
+        });
+
+        Button aboutButton = (Button)root.findViewById(R.id.about);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //getActivity().setContentView(R.layout.fragment_settings);
+                View root = inflater.inflate(R.layout.activity_apropos, container, false);
+                /*fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack("tag").commit();
+                getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);*/
+            }
+        });
+
+        Button tellUsButton = (Button)root.findViewById(R.id.tell_us);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //getActivity().setContentView(R.layout.fragment_settings);
+                View root = inflater.inflate(R.layout.activity_application_error, container, false);
+                /*fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack("tag").commit();
+                getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);*/
             }
         });
 

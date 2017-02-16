@@ -1,5 +1,7 @@
 package com.example.franois.gouiranlinkproject;
 
+// NON UTILISÉ À SUPPRIMER
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;

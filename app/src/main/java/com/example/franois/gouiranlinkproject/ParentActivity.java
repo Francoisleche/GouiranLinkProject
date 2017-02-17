@@ -21,6 +21,7 @@ import com.example.franois.gouiranlinkproject.Gallery.GalleryFragment;
 import com.example.franois.gouiranlinkproject.Homepage.HomeFragment;
 import com.example.franois.gouiranlinkproject.NavigationDrawer.CustomDrawerAdapter;
 import com.example.franois.gouiranlinkproject.NavigationDrawer.DrawerItem;
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.Recherche.ResearchFragment;
 import com.example.franois.gouiranlinkproject.Reservation.ReservationFragment;
 import com.example.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
@@ -48,7 +49,8 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
     private List<DrawerItem> dataList;
 
 
-    private MyCustomer myCustomer;
+    //private MyCustomer myCustomer;
+    private Customer customer;
 
     private GoogleApiClient client;
 
@@ -60,14 +62,14 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            myCustomer = (MyCustomer)getIntent().getSerializableExtra("MyCustomer");
+            customer = (Customer)getIntent().getSerializableExtra("Customer");
             /*String surname = myCustomer.getSurname();
             String name = myCustomer.getName();
             Boolean facebook = myCustomer.getArray()[0];*/
 
-            String access_token = b.getString("access_token");
+            /*String access_token = b.getString("access_token");
             String mEmail = b.getString("username");
-            boolean connected = b.getBoolean("connected");
+            boolean connected = b.getBoolean("connected");*/
         }
 
         // Initializing
@@ -145,52 +147,30 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
 
         Fragment fragment = null;
         Bundle args = new Bundle();
-        args.putSerializable("MyCustomer", myCustomer);
+        args.putSerializable("Customer", customer);
 
         switch (possition) {
             case 0:
                 fragment = new HomeFragment();
                 fragment.setArguments(args);
-                /*args.putString(HomeFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(HomeFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
                 break;
             case 1:
                 fragment = new ResearchFragment();
-                /*args.putString(ResearchFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(ResearchFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
                 break;
             case 2:
                 fragment = new ReservationFragment();
-                /*args.putString(ReservationFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(ReservationFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
+                fragment.setArguments(args);
                 break;
             case 3:
                 fragment = new FavouritesFragment();
-                /*args.putString(FavouritesFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FavouritesFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
+                fragment.setArguments(args);
                 break;
             case 4:
                 fragment = new GalleryFragment();
-                /*args.putString(GalleryFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(GalleryFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
                 break;
             case 5:
                 fragment = new AccountFragment();
                 fragment.setArguments(args);
-                /*args.putString(AccountFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(AccountFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
                 break;
             default:
                 break;

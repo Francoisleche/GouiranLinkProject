@@ -2,11 +2,13 @@ package com.example.franois.gouiranlinkproject.Object;
 
 import android.media.Image;
 
+import java.io.Serializable;
+
 /**
  * Created by François on 20/01/2017.
  */
 
-public class Customer extends PublicCustomer{
+public class Customer extends PublicCustomer implements Serializable {
 
 
 
@@ -26,8 +28,8 @@ public class Customer extends PublicCustomer{
     private String city;
     private String country;
 
-    private double geoloc_latitude;
-    private double geoloc_longitude;
+    private String geoloc_latitude;
+    private String geoloc_longitude;
 
     private boolean sms;
     private boolean newsletter;
@@ -35,18 +37,21 @@ public class Customer extends PublicCustomer{
     private Customer_Profession profession;
     private String profession_other;
     private String language;
-    private Image image_customer;
+
+    private Image_N image_customer;
 
     private Product_Category_WithoutTree[] product_categories;
 
     private String email;
 
+    private boolean mGouiranLink;
+    private boolean mFacebook;
+    private boolean mGoogle;
 
-
-    public Customer(int id, String name, String surname, Image image, String created_at, String updated_at, boolean has_subscribed, boolean share_with_professional, boolean blocked,
+    public Customer(int id, String name, String surname, Image_N image, String created_at, String updated_at, boolean has_subscribed, boolean share_with_professional, boolean blocked,
                     String gender, String phone, String mobilephone, String birthday_date, String address, String post_code, String city,
-                    String country, double geoloc_latitude, double geoloc_longitude, boolean sms, boolean newsletter, Customer_Profession profession,
-                    String profession_other, String language, Image image_customer, Product_Category_WithoutTree[] product_categories, String email){
+                    String country, String geoloc_latitude, String geoloc_longitude, boolean sms, boolean newsletter, Customer_Profession profession,
+                    String profession_other, String language, Image_N image_customer, Product_Category_WithoutTree[] product_categories, String email){
         super(id,name,surname,image);
         this.setCreated_at(created_at);
         this.setUpdated_at(updated_at);
@@ -68,12 +73,15 @@ public class Customer extends PublicCustomer{
         this.setProfession(profession);
         this.setProfession_other(profession_other);
         this.setLanguage(language);
-        this.setImage(image_customer);
+
+        this.setImage(image);
+        this.setImageCustomer(image_customer);
+
         this.setProduct_categories(product_categories);
         this.setEmail(email);
-
-
-
+        this.setmFacebook(false);
+        this.setmGoogle(false);
+        this.setmGouiranLink(false);
     }
 
 
@@ -181,19 +189,19 @@ public class Customer extends PublicCustomer{
         this.country = country;
     }
 
-    public double getGeoloc_latitude() {
+    public String getGeoloc_latitude() {
         return geoloc_latitude;
     }
 
-    public void setGeoloc_latitude(double geoloc_latitude) {
+    public void setGeoloc_latitude(String geoloc_latitude) {
         this.geoloc_latitude = geoloc_latitude;
     }
 
-    public double getGeoloc_longitude() {
+    public String getGeoloc_longitude() {
         return geoloc_longitude;
     }
 
-    public void setGeoloc_longitude(double geoloc_longitude) {
+    public void setGeoloc_longitude(String geoloc_longitude) {
         this.geoloc_longitude = geoloc_longitude;
     }
 
@@ -237,11 +245,11 @@ public class Customer extends PublicCustomer{
         this.language = language;
     }
 
-    public Image getImage() {
+    public Image_N getImageCustomer() {
         return image_customer;
     }
 
-    public void setImage(Image image) {
+    public void setImageCustomer(Image_N image) {
         this.image_customer = image;
     }
 
@@ -260,4 +268,29 @@ public class Customer extends PublicCustomer{
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public boolean ismGoogle() {
+        return mGoogle;
+    }
+
+    public void setmGoogle(boolean mGoogle) {
+        this.mGoogle = mGoogle;
+    }
+
+    public boolean ismFacebook() {
+        return mFacebook;
+    }
+
+    public void setmFacebook(boolean mFacebook) {
+        this.mFacebook = mFacebook;
+    }
+
+    public boolean ismGouiranLink() {
+        return mGouiranLink;
+    }
+
+    public void setmGouiranLink(boolean mGouiranLink) {
+        this.mGouiranLink = mGouiranLink;
+    }
+
 }

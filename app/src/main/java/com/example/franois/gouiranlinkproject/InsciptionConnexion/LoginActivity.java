@@ -33,10 +33,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.ParentActivity;
 import com.example.franois.gouiranlinkproject.R;
+import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 import com.example.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
 import com.example.franois.gouiranlinkproject.ToolsClasses.PostRequest;
+import com.example.franois.gouiranlinkproject.ToolsClasses.RetrieveCustomerInformationFromRequest;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -50,15 +53,19 @@ import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 
@@ -66,6 +73,7 @@ import org.apache.commons.lang3.concurrent.AbstractCircuitBreaker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -94,6 +102,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mImageLoginView;
     private View mLoginFormView;
+
 
     final private MyCustomer myCustomer = new MyCustomer();
 
@@ -133,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         accessTokenTracker.startTracking();
         profileTracker.startTracking();
 
-        LoginButton loginButton = (LoginButton)findViewById(R.id.facebook_login_button);
+        LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday"));
         FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
             @Override
@@ -145,7 +154,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 Toast.makeText(getApplicationContext(), "onCompleted()", Toast.LENGTH_SHORT).show();
 
-                                Log.v("LoginActivity", response.toString());
+                                Log.d("LoginActivity", response.toString());
 
                                 // Application code
                                 try {
@@ -160,7 +169,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 }
                             }
                         });
-                AccessToken accessToken = loginResult.getAccessToken();
+                //AccessToken accessToken = loginResult.getAccessToken();
+                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                Log.d("TOKEN", loginResult.getAccessToken().getToken());
                 Profile profile = Profile.getCurrentProfile();
                 Log.d("NEXTACITIVITY", "CURRENTPROFILE");
                 nextActivity(profile);
@@ -185,8 +196,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("912405249984-gc5dc7g2alj2c45978nt90pdo2rpb2t4.apps.googleusercontent.com")
                 .requestEmail()
+                .requestProfile()
                 .build();
+        /*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestId()
+                .requestProfile()
+                .build();*/
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -227,8 +245,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mImageLoginView = findViewById(R.id.progressImageView);
     }
 
-    private void nextActivity(Profile profile){
-        if (profile != null){
+    private void nextActivity(Profile profile) {
+        if (profile != null) {
             Intent main = new Intent(LoginActivity.this, ParentActivity.class);
             myCustomer.setmFacebook(true);
             myCustomer.setmGoogle(false);
@@ -239,14 +257,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             myCustomer.setBirthday(birthday);
             myCustomer.setEmail(email);
             main.putExtra("MyCustomer", myCustomer);
+            Log.d("User ID = ", profile.getId());
 /*          main.putExtra("name", profile.getFirstName());
             main.putExtra("surname", profile.getLastName());
             main.putExtra("imageUrl", profile.getProfilePictureUri(200,200).toString());*/
-            startActivity(main);
+            //startActivity(main);
 
         }
     }
-
 
 
     private void nextActivity(GoogleSignInAccount acct) {
@@ -260,8 +278,45 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Toast.makeText(this, acct.getGivenName(), Toast.LENGTH_SHORT).show();
             myCustomer.setEmail(acct.getEmail());
             myCustomer.setBirthday(null);
+            String token = acct.getIdToken();
+            Log.d("IDTOKEN", acct.getIdToken());
             //Log.d("GOOGLE SURNAME", myCustomer.getSurname());
-            main.putExtra("MyCustomer", myCustomer);
+            String json = "{\n" +
+                    "\"tokenId\":\"" + token + "\",\n" +
+                    "\"googleId\":\"" + getString(R.string.server_client_id) + "\"\n" +
+                    "}\n";
+            PostRequest postRequest = new PostRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/google/", json);
+            String resp = null;
+            try {
+                resp = postRequest.execute().get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            String accessToken = null;
+            Log.d("RESP = ", resp);
+            Customer customer = null;
+            if (resp != null && resp.contains("access_token")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(resp);
+                    accessToken = jsonObject.getString("access_token");
+                    GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/user/", "Authorization", "Token " + accessToken);
+                    resp = getRequest.execute().get();
+                    Log.d("GETREQUESTRESP", resp);
+                    RetrieveCustomerInformationFromRequest retrieveCustomerInformationFromRequest = new RetrieveCustomerInformationFromRequest(resp);
+                    customer = retrieveCustomerInformationFromRequest.generateCustomer();
+                    customer.setmFacebook(false);
+                    customer.setmGoogle(true);
+                    customer.setmGouiranLink(false);
+                } catch (JSONException | InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                Log.d("NO ACCESS TOKEN", "BUG");
+            }
+
+            main.putExtra("Customer", customer);
+            //main.putExtra("MyCustomer", myCustomer);
             startActivity(main);
         }
     }
@@ -426,11 +481,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    public static void signOut() {
-        if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-        }
+    public static void signOut(GoogleApiClient googleApiClient) {
+        googleApiClient.connect();
+        if (googleApiClient.isConnected()) {
+            Log.d("IS", "CONNECTED");
+            Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            // [START_EXCLUDE]
+                            // [END_EXCLUDE]
+                        }
+                    });
+        } else
+            Log.d("IS NOT", "CONNECTED");
     }
 
     private void revokeAccess() {
@@ -623,8 +687,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (resp.contains("access_token")) {
                 connected = true;
                 Log.d("true", "true");
-            }
-            else {
+            } else {
                 connected = false;
                 Log.d("false", "false");
             }

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import static com.example.franois.gouiranlinkproject.ToolsClasses.BaseFragment.A
 
 public class FavouritesFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
+    Customer customer;
 
     public FavouritesFragment() {
         // Required empty public constructor
@@ -38,6 +40,7 @@ public class FavouritesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            customer = (Customer) getArguments().getSerializable("Customer");
         }
 
     }

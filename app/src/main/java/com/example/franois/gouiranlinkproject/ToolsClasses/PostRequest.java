@@ -39,7 +39,7 @@ public class PostRequest extends AsyncTask<String, Void, String>{
         Response response = client.newCall(request).execute();
         String res = response.body().string();
         Log.d("-1 TESTTEST", res);
-        if (res != null && !res.equals("")) {
+        /*if (res != null && !res.equals("")) {
             res = StringEscapeUtils.unescapeJava(res);
             int ind = res.indexOf("\"");
             Log.d("0 TESTTEST", res);
@@ -47,7 +47,7 @@ public class PostRequest extends AsyncTask<String, Void, String>{
             ind = res.lastIndexOf("\"");
             res = new StringBuilder(res).replace(ind, ind + 1, "").toString();
             Log.d("1 TESTTEST", res);
-        }
+        }*/
         return (res);
     }
 

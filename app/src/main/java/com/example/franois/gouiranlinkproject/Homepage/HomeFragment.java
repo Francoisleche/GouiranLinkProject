@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
 import com.example.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
@@ -129,14 +130,14 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
         if (getArguments() != null) {
             String username = getArguments().getString("username");
             connected = getArguments().getBoolean("connected");
-            MyCustomer myCustomer = (MyCustomer) getArguments().getSerializable("MyCustomer");
+            Customer customer = (Customer) getArguments().getSerializable("Customer");
             if (connected)
                 text = String.format(getResources().getString(R.string.welcome_user), username);
             else
                 text = "Bonjour,";
 
-            if (myCustomer != null && (myCustomer.ismGouiranLink() || myCustomer.ismFacebook() || myCustomer.ismGoogle())) {
-                text = String.format(getResources().getString(R.string.welcome_user), myCustomer.getSurname());
+            if (customer != null && (customer.ismGouiranLink() || customer.ismFacebook() || customer.ismGoogle())) {
+                text = String.format(getResources().getString(R.string.welcome_user), customer.getSurname());
                 connected = true;
             }
             else

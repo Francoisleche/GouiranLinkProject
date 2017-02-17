@@ -13,13 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 
 public class MainSettings extends Fragment {
-    private MyCustomer myCustomer;
+    private Customer customer;
     private GoogleApiClient mGoogleApiClient;
 
     FragmentManager fragmentManager;
@@ -42,7 +43,7 @@ public class MainSettings extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            myCustomer = (MyCustomer)getArguments().getSerializable("MyCustomer");
+            customer = (Customer)getArguments().getSerializable("Customer");
         }
         fragmentManager = getActivity().getSupportFragmentManager();
     }
@@ -74,7 +75,7 @@ public class MainSettings extends Fragment {
                 //getActivity().setContentView(R.layout.fragment_settings);
                 Fragment fragment = new NestedSettingsFragment();
                 Bundle args = new Bundle();
-                args.putSerializable("MyCustomer", myCustomer);
+                args.putSerializable("Customer", customer);
                 fragment.setArguments(args);
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
@@ -88,6 +89,9 @@ public class MainSettings extends Fragment {
             public void onClick(View v) {
                 //getActivity().setContentView(R.layout.fragment_settings);
                 Fragment fragment = new EditAccountFragment();
+                Bundle args = new Bundle();
+                args.putSerializable("Customer", customer);
+                fragment.setArguments(args);
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
                 fragmentTransaction.commit();

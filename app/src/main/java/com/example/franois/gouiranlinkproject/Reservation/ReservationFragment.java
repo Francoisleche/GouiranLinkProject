@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class ReservationFragment extends Fragment {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    Customer customer;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -71,6 +73,7 @@ public class ReservationFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            customer = (Customer) getArguments().getSerializable("Customer");
         }
 
     }

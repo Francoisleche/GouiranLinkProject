@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
 import com.google.android.gms.auth.api.Auth;
@@ -22,7 +23,7 @@ import static com.example.franois.gouiranlinkproject.ToolsClasses.BaseFragment.A
 
 
 public class AccountFragment extends Fragment implements View.OnClickListener{
-    private MyCustomer myCustomer;
+    private Customer customer;
 
 
     private OnFragmentInteractionListener mListener;
@@ -45,12 +46,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (getArguments() != null) {
-            myCustomer = (MyCustomer)getArguments().getSerializable("MyCustomer");
+            customer = (Customer)getArguments().getSerializable("Customer");
         }
 
         Fragment fragment = new MainSettings();
         Bundle args = new Bundle();
-        args.putSerializable("MyCustomer", myCustomer);
+        args.putSerializable("Customer", customer);
         fragment.setArguments(args);
         fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack("tag").commit();
     }

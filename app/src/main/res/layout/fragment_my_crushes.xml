@@ -5,104 +5,19 @@
     android:layout_height="match_parent"
     tools:context="com.example.franois.gouiranlinkproject.Homepage.HomeFragment">
 
-    <ScrollView android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:columnWidth="150dp"
+        android:gravity="center_horizontal"
+        android:horizontalSpacing="1dp"
+        android:numColumns="auto_fit"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="horizontal"
+        android:stretchMode="none"
+        android:verticalSpacing="1dp" />
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!-- COIFFURE -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/coiffure_crushes_title"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal">
-            </LinearLayout>
-            <HorizontalScrollView
-                android:id="@+id/horizontal_scroll_coiffure_crushes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/coiffure_crushes_title">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/coiffure_crushes_content"
-                    android:orientation="horizontal">
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <!-- BEAUTÉ -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/beaute_crushes_title"
-                android:orientation="horizontal"
-                android:layout_below="@id/horizontal_scroll_coiffure_crushes"
-                android:gravity="center_horizontal">
-            </LinearLayout>
-            <HorizontalScrollView
-                android:id="@+id/horizontal_scroll_beaute_crushes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/beaute_crushes_title">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/beaute_crushes_content"
-                    android:orientation="horizontal">
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <!-- BIEN-ÊTRE -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/bien_etre_crushes_title"
-                android:orientation="horizontal"
-                android:layout_below="@id/horizontal_scroll_beaute_crushes"
-                android:gravity="center_horizontal">
-            </LinearLayout>
-            <HorizontalScrollView
-                android:id="@+id/horizontal_scroll_bien_etre_crushes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bien_etre_crushes_title">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/bien_etre_crushes_content"
-                    android:orientation="horizontal">
-                </LinearLayout>
-            </HorizontalScrollView>
-
-
-            <!-- HOMME -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/homme_crushes_title"
-                android:orientation="horizontal"
-                android:layout_below="@id/horizontal_scroll_bien_etre_crushes"
-                android:gravity="center_horizontal">
-            </LinearLayout>
-            <HorizontalScrollView
-                android:id="@+id/horizontal_scroll_homme_crushes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/homme_crushes_title">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/homme_crushes_content"
-                    android:orientation="horizontal">
-                </LinearLayout>
-            </HorizontalScrollView>
-
-        </RelativeLayout>
-    </ScrollView>
 </FrameLayout>

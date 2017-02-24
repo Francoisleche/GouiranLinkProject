@@ -48,10 +48,12 @@ public class Customer extends PublicCustomer implements Serializable {
     private boolean mFacebook;
     private boolean mGoogle;
 
+    private String token;
+
     public Customer(int id, String name, String surname, Image_N image, String created_at, String updated_at, boolean has_subscribed, boolean share_with_professional, boolean blocked,
                     String gender, String phone, String mobilephone, String birthday_date, String address, String post_code, String city,
                     String country, String geoloc_latitude, String geoloc_longitude, boolean sms, boolean newsletter, Customer_Profession profession,
-                    String profession_other, String language, Image_N image_customer, Product_Category_WithoutTree[] product_categories, String email){
+                    String profession_other, String language, Image_N image_customer, Product_Category_WithoutTree[] product_categories, String email, String token){
         super(id,name,surname,image);
         this.setCreated_at(created_at);
         this.setUpdated_at(updated_at);
@@ -82,6 +84,7 @@ public class Customer extends PublicCustomer implements Serializable {
         this.setmFacebook(false);
         this.setmGoogle(false);
         this.setmGouiranLink(false);
+        this.setToken(token);
     }
 
 
@@ -293,4 +296,11 @@ public class Customer extends PublicCustomer implements Serializable {
         this.mGouiranLink = mGouiranLink;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

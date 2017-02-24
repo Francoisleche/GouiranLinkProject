@@ -95,7 +95,7 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
                     getActivity().finish();
                 } else if (customer != null && customer.ismGoogle()) {
                     Toast.makeText(getActivity().getApplicationContext(), "Logged Out From Google", Toast.LENGTH_SHORT).show();
-                    LoginActivity.signOut(mGoogleApiClient);
+                    //LoginActivity.signOut(mGoogleApiClient);
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
                 } else if (customer != null && customer.ismGouiranLink()) {

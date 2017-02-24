@@ -3,23 +3,43 @@ package com.example.franois.gouiranlinkproject.Reservation;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.franois.gouiranlinkproject.Favourites.MyCrushes;
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
+import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
-public class UpcomingFragment extends Fragment{
+public class UpcomingFragment extends Fragment {
 
     public UpcomingFragment() {
         // Required empty public constructor
@@ -32,6 +52,17 @@ public class UpcomingFragment extends Fragment{
     final private LinearLayout[] thirdParts = new LinearLayout[10];
     final private Button[] buttons = new Button[10];
     private Typeface font;
+    private Customer customer;
+    List<Reservation> reservations;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            customer = (Customer) getArguments().getSerializable("Customer");
+        }
+        reservations = new ArrayList<Reservation>();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +70,9 @@ public class UpcomingFragment extends Fragment{
         View root;
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_upcoming, null);
-        for (int i = 0; i < 10; i++) {
+        font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
+
+        /*for (int i = 0; i < 10; i++) {
             int resID = getResources().getIdentifier("reservation" + (i + 1), "id", getActivity().getPackageName());
             linearLayouts[i] = (LinearLayout)root.findViewById(resID);
             resID = getResources().getIdentifier("reservation" + (i + 1) + "_part0", "id", getActivity().getPackageName());
@@ -53,93 +86,296 @@ public class UpcomingFragment extends Fragment{
             buttons[i] = new Button(getActivity());
         }
         RelativeLayout layout = (RelativeLayout) root.findViewById(R.id.upcoming_relative);
-        font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
         LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
+        */
         return (root);
     }
 
+    private class Reservation {
+        String picture;
+        String institute;
+        List<String> type;
+        String date;
+        String hour;
+
+        public Reservation() {
+            picture = "";
+            institute = "";
+            type = new ArrayList<String>();
+            date = "";
+            hour = "";
+        }
+
+        public String getPicture() {
+            return picture;
+        }
+
+        public void setPicture(String picture) {
+            this.picture = picture;
+        }
+
+        public String getInstitute() {
+            return institute;
+        }
+
+        public void setInstitute(String institute) {
+            this.institute = institute;
+        }
+
+        public List<String> getType() {
+            return type;
+        }
+
+        public void setType(List<String> type) {
+            this.type = type;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getHour() {
+            return hour;
+        }
+
+        public void setHour(String hour) {
+            this.hour = hour;
+        }
+    }
+
+    private List<Reservation> getReservationList() {
+        List<Reservation> reservationList = new ArrayList<Reservation>();
+        String headerKey;
+        String headerValue;
+        String resp;
+
+        headerKey = "Authorization";
+        headerValue = "Token " + String.valueOf(customer.getToken());
+        GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/" + String.valueOf(customer.getId()) + "/", headerKey, headerValue);
+        try {
+            resp = getRequest.execute().get();
+            Log.d("UPCOMING", resp);
+            JSONObject jsonObject = new JSONObject(resp);
+            JSONArray arr = jsonObject.getJSONArray("data");
+            for (int i = 0; i < arr.length(); i++) {
+                Reservation reservation = new Reservation();
+                if (arr.getJSONObject(i).has("begin_date") && !arr.getJSONObject(i).isNull("begin_date") && !isPassed(arr.getJSONObject(i).getString("begin_date"))) {
+
+//                if (arr.getJSONObject(i).has("confirmed") && arr.getJSONObject(i).getBoolean("confirmed")) {
+                    if (arr.getJSONObject(i).getJSONObject("professional").has("shop_name") && !arr.getJSONObject(i).getJSONObject("professional").isNull("shop_name")) {
+                        reservation.institute = arr.getJSONObject(i).getJSONObject("professional").getString("shop_name");
+                        Log.d("NAME=", reservation.institute);
+                    }
+                    if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").has("url") &&
+                            !arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").isNull("url"))
+                        reservation.picture = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
+                    for (int j = 0; j < arr.getJSONObject(i).getJSONArray("products").length(); j++) {
+                        if (arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").has("name") &&
+                                !arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").isNull("name"))
+                            reservation.type.add(arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").getString("name"));
+                    }
+                    if (arr.getJSONObject(i).has("begin_date") && !arr.getJSONObject(i).isNull("begin_date")) {
+                        reservation.date = getDate(arr.getJSONObject(i).getString("begin_date"));
+                        reservation.hour = getHour(arr.getJSONObject(i).getString("begin_date"));
+                    }
+                    reservationList.add(reservation);
+//                }
+/*                else if (arr.getJSONObject(i).has("confirmed") && !arr.getJSONObject(i).getBoolean("confirmed")) {
+                    // TODO NON CONFIRME
+                }*/
+                }
+            }
+
+
+        } catch (InterruptedException | ExecutionException | JSONException e) {
+            e.printStackTrace();
+        }
+        return (reservationList);
+    }
+
+    private boolean isPassed(String complete) {
+        String completeDate;
+        String day;
+        String number;
+        String month;
+        String year;
+        String[] parts;
+
+        Log.d("DATE=", complete);
+        completeDate = complete.substring(0, complete.indexOf("T"));
+        Log.d("DATE=", completeDate);
+        parts = completeDate.split("-");
+        Calendar c = Calendar.getInstance();
+        number = parts[2];
+        month = parts[1];
+        year = parts[0];
+        c.setTime(new Date(Integer.valueOf(parts[0]), Integer.valueOf(parts[1]), Integer.valueOf(parts[2])));
+        try {
+            return new SimpleDateFormat("MM/yyyy").parse(month + "/" + year).before(new Date());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return (false);
+    }
+
+    private String getDate(String complete) {
+        String completeDate;
+        String day;
+        String number;
+        String month;
+        String year;
+        String[] parts;
+
+        Log.d("DATE=", complete);
+        completeDate = complete.substring(0, complete.indexOf("T"));
+        Log.d("DATE=", completeDate);
+        parts = completeDate.split("-");
+        Calendar c = Calendar.getInstance();
+        number = parts[2];
+        month = parts[1];
+        year = parts[0];
+        c.setTime(new Date(Integer.valueOf(parts[0]), Integer.valueOf(parts[1]), Integer.valueOf(parts[2])));
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        switch (dayOfWeek) {
+            case Calendar.MONDAY:
+                day = "Lundi";
+                break;
+            case Calendar.TUESDAY:
+                day = "Mardi";
+                break;
+            case Calendar.WEDNESDAY:
+                day = "Mercredi";
+                break;
+            case Calendar.THURSDAY:
+                day = "Jeudi";
+                break;
+            case Calendar.FRIDAY:
+                day = "Vendredi";
+                break;
+            case Calendar.SATURDAY:
+                day = "Samedi";
+                break;
+            case Calendar.SUNDAY:
+                day = "Dimanche";
+                break;
+            default:
+                day = "";
+        }
+        return (day + " " + number + " " + month + " " + year);
+    }
+
+    private String getHour(String complete) {
+        String completeHour;
+        String hour;
+        String minute;
+        String[] parts;
+
+        completeHour = complete.substring(complete.indexOf("T") + 1, complete.indexOf("Z"));
+        parts = completeHour.split(":");
+        hour = parts[0];
+        minute = parts[1];
+        return (hour + "h" + minute);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        String[] pictures = {"http://d1o5dtyz8r69kc.cloudfront.net/206_thumb.jpg",
-                "http://cdn.dealerspike.com/imglib/v1/400x300/imglib/trimsdb/3029321-3229921-10086451.jpg",
-                "http://www.cyclesofjacksonville.com/images/SEO/New-Motorcycle-For-Sale.jpg",
-                "http://www.snowcity.com/fckimages/toronto-gta-motorcycle-shops.jpg",
-                "http://d1o5dtyz8r69kc.cloudfront.net/206_thumb.jpg",
-                "http://cdn.dealerspike.com/imglib/v1/400x300/imglib/trimsdb/3029321-3229921-10086451.jpg",
-                "http://www.cyclesofjacksonville.com/images/SEO/New-Motorcycle-For-Sale.jpg",
-                "http://www.snowcity.com/fckimages/toronto-gta-motorcycle-shops.jpg",
-                "http://d1o5dtyz8r69kc.cloudfront.net/206_thumb.jpg",
-                "http://cdn.dealerspike.com/imglib/v1/400x300/imglib/trimsdb/3029321-3229921-10086451.jpg"};
-        String[] institute = {"Beauté Romaine", "Beauté Languedoc", "Beauté Héraultaise", "Coiffure Yannick", "Beauté Romaine", "Beauté Languedoc", "Beauté Héraultaise", "Coiffure Yannick", "Beauté Romaine", "Beauté Languedoc"};
-        String[] types = {"Epilation", "Epilation", "Epilation", "Lissage Brésilien", "Epilation", "Epilation", "Epilation", "Lissage Brésilien", "Epilation", "Epilation"};
-        String[] dates = {"Mardi 21 Décembre 2016", "Jeudi 03 Mars 2017", "Vendredi 18 Mai 2017", "Lundi 30 Juin 2017", "Mardi 21 Décembre 2016", "Jeudi 03 Mars 2017", "Vendredi 18 Mai 2017", "Lundi 30 Juin 2017", "Mardi 21 Décembre 2016", "Jeudi 03 Mars 2017"};
-        String[] hours = {"14h30", "11h00", "08h30", "16h00", "14h30", "11h00", "08h30", "16h00", "14h30", "11h30"};
-        for (int i = 0; i < 10; i++) {
 
-            LinearLayout.LayoutParams weightParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-            LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-            LinearLayout.LayoutParams noWeightParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(250, 250);
-            LinearLayout.LayoutParams hourParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-            LinearLayout.LayoutParams dateParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        reservations = getReservationList();
+        List<String> institutesNames = new ArrayList<String>();
+        List<List<String>> types = new ArrayList<List<String>>();
+        List<String> pictures = new ArrayList<String>();
+        List<String> dates = new ArrayList<String>();
+        List<String> hours = new ArrayList<String>();
 
-            View separatorView = new View(getActivity());
-            separatorView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
-            separatorView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
-            separatorParts[i].addView(separatorView);
-
-            TextView instituteName = new TextView(getActivity());
-            instituteName.setText(institute[i]);
-            instituteName.setTypeface(font);
-            instituteName.setTextSize(20);
-            instituteName.setGravity(Gravity.CENTER_HORIZONTAL);
-            instituteName.setPaintFlags(instituteName.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-            firstParts[i].addView(instituteName, weightParams);
-
-            TextView slash = new TextView(getActivity());
-            slash.setText("/");
-            slash.setTypeface(font);
-            slash.setTextSize(20);
-            slash.setGravity(Gravity.CENTER_HORIZONTAL);
-            firstParts[i].addView(slash, weightParams);
-
-            TextView type = new TextView(getActivity());
-            type.setText(types[i]);
-            type.setTypeface(font);
-            type.setTextSize(20);
-            type.setGravity(Gravity.CENTER_HORIZONTAL);
-            firstParts[i].addView(type, weightParams);
-
-            ImageView imageView = new ImageView(getActivity());
-            imageView.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
-            new DownloadImageTask(imageView).execute(pictures[i]);
-            imageViewParams.gravity = Gravity.CENTER_HORIZONTAL;
-            secondParts[i].addView(imageView, imageViewParams);
-
-            TextView date = new TextView(getActivity());
-            date.setText(dates[i]);
-            date.setTypeface(font);
-            date.setTextSize(17);
-            date.setGravity(Gravity.CENTER_HORIZONTAL);
-            dateParams.setMargins(0, 50, 0, 25);
-            thirdParts[i].addView(date, dateParams);
-
-            TextView hour = new TextView(getActivity());
-            hour.setText(hours[i]);
-            hour.setTypeface(font);
-            hour.setTextSize(17);
-            hour.setGravity(Gravity.CENTER_HORIZONTAL);
-            hourParams.setMargins(0, 25, 0, 50);
-            thirdParts[i].addView(hour, hourParams);
-
-            buttons[i].setText("Voir");
-            buttonParams.setMargins(20, 100, 0, 0);
-            buttons[i].setBackgroundColor(ContextCompat.getColor(buttons[i].getContext(), R.color.GouiranLightBlue));
-            secondParts[i].addView(buttons[i], buttonParams);
-
+        for (int i = 0; i < reservations.size(); i++) {
+            institutesNames.add(reservations.get(i).getInstitute());
+            types.add(reservations.get(i).getType());
+            pictures.add(reservations.get(i).getPicture());
+            dates.add(reservations.get(i).getDate());
+            hours.add(reservations.get(i).getHour());
         }
+        for (int i = 0; i < reservations.size(); i++) {
+            institutesNames.add(reservations.get(i).getInstitute());
+            types.add(reservations.get(i).getType());
+            pictures.add(reservations.get(i).getPicture());
+            dates.add(reservations.get(i).getDate());
+            hours.add(reservations.get(i).getHour());
+        }
+        for (int i = 0; i < reservations.size(); i++) {
+            institutesNames.add(reservations.get(i).getInstitute());
+            types.add(reservations.get(i).getType());
+            pictures.add(reservations.get(i).getPicture());
+            dates.add(reservations.get(i).getDate());
+            hours.add(reservations.get(i).getHour());
+        }
+        for (int i = 0; i < reservations.size(); i++) {
+            institutesNames.add(reservations.get(i).getInstitute());
+            types.add(reservations.get(i).getType());
+            pictures.add(reservations.get(i).getPicture());
+            dates.add(reservations.get(i).getDate());
+            hours.add(reservations.get(i).getHour());
+        }
+        for (int i = 0; i < reservations.size(); i++) {
+            institutesNames.add(reservations.get(i).getInstitute());
+            types.add(reservations.get(i).getType());
+            pictures.add(reservations.get(i).getPicture());
+            dates.add(reservations.get(i).getDate());
+            hours.add(reservations.get(i).getHour());
+        }
+        for (int i = 0; i < reservations.size(); i++) {
+            institutesNames.add(reservations.get(i).getInstitute());
+            types.add(reservations.get(i).getType());
+            pictures.add(reservations.get(i).getPicture());
+            dates.add(reservations.get(i).getDate());
+            hours.add(reservations.get(i).getHour());
+        }
+        for (int i = 0; i < reservations.size(); i++) {
+            institutesNames.add(reservations.get(i).getInstitute());
+            types.add(reservations.get(i).getType());
+            pictures.add(reservations.get(i).getPicture());
+            dates.add(reservations.get(i).getDate());
+            hours.add(reservations.get(i).getHour());
+        }
+        for (int i = 0; i < reservations.size(); i++) {
+            institutesNames.add(reservations.get(i).getInstitute());
+            types.add(reservations.get(i).getType());
+            pictures.add(reservations.get(i).getPicture());
+            dates.add(reservations.get(i).getDate());
+            hours.add(reservations.get(i).getHour());
+        }
+        for (int i = 0; i < reservations.size(); i++) {
+            institutesNames.add(reservations.get(i).getInstitute());
+            types.add(reservations.get(i).getType());
+            pictures.add(reservations.get(i).getPicture());
+            dates.add(reservations.get(i).getDate());
+            hours.add(reservations.get(i).getHour());
+        }
+        for (int i = 0; i < reservations.size(); i++) {
+            institutesNames.add(reservations.get(i).getInstitute());
+            types.add(reservations.get(i).getType());
+            pictures.add(reservations.get(i).getPicture());
+            dates.add(reservations.get(i).getDate());
+            hours.add(reservations.get(i).getHour());
+        }
+        GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+        ReservationImageAdapter reservationImageAdapter = new ReservationImageAdapter(getActivity());
+        reservationImageAdapter.setInstitutesNames(institutesNames);
+        reservationImageAdapter.setTypes(types);
+        reservationImageAdapter.setPictures(pictures);
+        reservationImageAdapter.setDates(dates);
+        reservationImageAdapter.setHours(hours);
+        gridview.setAdapter(reservationImageAdapter);
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(getActivity(), "" + position,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

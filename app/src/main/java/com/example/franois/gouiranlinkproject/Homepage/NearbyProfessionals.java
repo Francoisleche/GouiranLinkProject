@@ -42,7 +42,7 @@ class NearbyProfessionals {
                     shopNameList[i] = arr.getJSONObject(i).getString("shop_name");
                 }
                 for (int j = 0; j < arr.getJSONObject(i).getJSONArray("shop_images").length(); j++) {
-                    if (arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("search").getString("url") != null) {
+                    if (arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url") != null) {
                         shopImageList[i] = arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("search").getString("url");
                     }
                 }

@@ -2,33 +2,41 @@ package com.example.franois.gouiranlinkproject.Favourites;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
+import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
+import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
-public class MyCrushes extends Fragment{
+public class MyCrushes extends Fragment {
 
-    private LinearLayout coiffureTitleLayout;
-    private LinearLayout coiffureTitleContent;
-    private LinearLayout beauteTitleLayout;
-    private LinearLayout beauteTitleContent;
-    private LinearLayout bienEtreTitleLayout;
-    private LinearLayout bienEtreTitleContent;
-    private LinearLayout hommeTitleLayout;
-    private LinearLayout hommeTitleContent;
+    private Customer customer;
+    List<Data> datas;
+    private RelativeLayout crushesContent;
     private Typeface font;
-    private TextView coiffureTitle;
-    private TextView beauteTitle;
-    private TextView bienEtreTitle;
-    private TextView hommeTitle;
 
     public MyCrushes() {
         // Required empty public constructor
@@ -36,131 +44,182 @@ public class MyCrushes extends Fragment{
 
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            customer = (Customer) getArguments().getSerializable("Customer");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root;
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_my_crushes, null);
-        coiffureTitleLayout = (LinearLayout) root.findViewById(R.id.coiffure_crushes_title);
-        coiffureTitleContent = (LinearLayout) root.findViewById(R.id.coiffure_crushes_content);
-        beauteTitleLayout = (LinearLayout) root.findViewById(R.id.beaute_crushes_title);
-        beauteTitleContent = (LinearLayout) root.findViewById(R.id.beaute_crushes_content);
-        bienEtreTitleLayout = (LinearLayout) root.findViewById(R.id.bien_etre_crushes_title);
-        bienEtreTitleContent = (LinearLayout) root.findViewById(R.id.bien_etre_crushes_content);
-        hommeTitleLayout = (LinearLayout) root.findViewById(R.id.homme_crushes_title);
-        hommeTitleContent = (LinearLayout) root.findViewById(R.id.homme_crushes_content);
+        //crushesContent = (RelativeLayout) root.findViewById(R.id.crushes_content);
         font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
-        coiffureTitle = new TextView(getActivity());
-        beauteTitle = new TextView(getActivity());
-        bienEtreTitle = new TextView(getActivity());
-        hommeTitle = new TextView(getActivity());
-
 
 
         return (root);
     }
 
+    private class Data {
+        String shop_image;
+        String name;
+        List<String> universes;
+
+
+        public Data() {
+            this.shop_image = "";
+            this.name = "";
+            universes = new ArrayList<String>();
+        }
+    }
+
+    private List<Data> retrieveRequestInformations() {
+        List<Data> datas = new ArrayList<Data>();
+        String headerKey;
+        String headerValue;
+        String resp;
+
+        headerKey = "Authorization";
+        headerValue = "Token " + String.valueOf(customer.getToken());
+        GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/customer/favoris/customer/" + String.valueOf(customer.getId()) + "/", headerKey, headerValue);
+        try {
+            resp = getRequest.execute().get();
+            JSONObject jsonObject = new JSONObject(resp);
+            JSONArray arr = jsonObject.getJSONArray("data");
+            for (int i = 0; i < arr.length(); i++) {
+                Data data = new Data();
+                if (arr.getJSONObject(i).has("shop_name") && !arr.getJSONObject(i).isNull("shop_name")) {
+                    data.name = arr.getJSONObject(i).getString("shop_name");
+                    Log.d("TOTOTATA", data.name);
+                }
+                for (int j = 0; j < arr.getJSONObject(i).getJSONArray("shop_images").length(); j++) {
+                    if (arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url") != null) {
+                        data.shop_image = arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
+                    }
+                }
+                for (int j = 0; j < arr.getJSONObject(i).getJSONArray("product_categories").length(); j++) {
+                    if (arr.getJSONObject(i).getJSONArray("product_categories").getJSONObject(j).getString("name") != null)
+                        data.universes.add(arr.getJSONObject(i).getJSONArray("product_categories").getJSONObject(j).getString("name"));
+                }
+                datas.add(data);
+            }
+        } catch (InterruptedException | ExecutionException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return (datas);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        // COIFFURE
-        coiffureTitle.setText("Coiffure");
-        coiffureTitle.setTypeface(font);
-        coiffureTitle.setTextSize(30);
-        coiffureTitle.setGravity(Gravity.CENTER_HORIZONTAL);
-        coiffureTitleLayout.addView(coiffureTitle);
-        for (int i = 0; i < 20; i++) {
-            ImageView coiffureImage = new ImageView(getActivity());
-            coiffureImage.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
-            if (i % 2 == 0)
-                coiffureImage.setImageResource(R.drawable.h2r);
-            else if (i % 3 == 0)
-                coiffureImage.setImageResource(R.drawable.gsxr);
-            else if (i % 4 == 0)
-                coiffureImage.setImageResource(R.drawable.kawa);
-            else if (i % 5 == 0)
-                coiffureImage.setImageResource(R.drawable.er6n);
-            else
-                coiffureImage.setImageResource(R.drawable.tiger);
-            coiffureImage.getLayoutParams().height = 150;
-            coiffureImage.getLayoutParams().width = 150;
-            coiffureTitleContent.addView(coiffureImage);
-        }
+        datas = retrieveRequestInformations();
+        List<String> imagesUrl = new ArrayList<String>();
+        List<String> names = new ArrayList<String>();
 
-        //BEAUTÉ
-        beauteTitle.setText("Beauté");
-        beauteTitle.setTypeface(font);
-        beauteTitle.setTextSize(30);
-        beauteTitle.setGravity(Gravity.CENTER_HORIZONTAL);
-        beauteTitleLayout.addView(beauteTitle);
-        for (int i = 0; i < 20; i++) {
-            ImageView beauteImage = new ImageView(getActivity());
-            beauteImage.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
-            if (i % 2 == 0)
-                beauteImage.setImageResource(R.drawable.tiger);
-            else if (i % 3 == 0)
-                beauteImage.setImageResource(R.drawable.h2r);
-            else if (i % 4 == 0)
-                beauteImage.setImageResource(R.drawable.gsxr);
-            else if (i % 5 == 0)
-                beauteImage.setImageResource(R.drawable.kawa);
-            else
-                beauteImage.setImageResource(R.drawable.er6n);
-            beauteImage.getLayoutParams().height = 150;
-            beauteImage.getLayoutParams().width = 150;
-            beauteTitleContent.addView(beauteImage);
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
         }
-
-        //BIEN-ÊTRE
-        bienEtreTitle.setText("Bien-être");
-        bienEtreTitle.setTypeface(font);
-        bienEtreTitle.setTextSize(30);
-        bienEtreTitle.setGravity(Gravity.CENTER_HORIZONTAL);
-        bienEtreTitleLayout.addView(bienEtreTitle);
-        for (int i = 0; i < 20; i++) {
-            ImageView bienEtreImage = new ImageView(getActivity());
-            bienEtreImage.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
-            if (i % 2 == 0)
-                bienEtreImage.setImageResource(R.drawable.er6n);
-            else if (i % 3 == 0)
-                bienEtreImage.setImageResource(R.drawable.tiger);
-            else if (i % 4 == 0)
-                bienEtreImage.setImageResource(R.drawable.h2r);
-            else if (i % 5 == 0)
-                bienEtreImage.setImageResource(R.drawable.gsxr);
-            else
-                bienEtreImage.setImageResource(R.drawable.kawa);
-            bienEtreImage.getLayoutParams().height = 150;
-            bienEtreImage.getLayoutParams().width = 150;
-            bienEtreTitleContent.addView(bienEtreImage);
+        // TODO REMOVE
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
         }
-
-        //HOMME
-        hommeTitle.setText("Homme");
-        hommeTitle.setTypeface(font);
-        hommeTitle.setTextSize(30);
-        hommeTitle.setGravity(Gravity.CENTER_HORIZONTAL);
-        hommeTitleLayout.addView(hommeTitle);
-        for (int i = 0; i < 20; i++) {
-            ImageView hommeImage = new ImageView(getActivity());
-            hommeImage.setLayoutParams(new android.view.ViewGroup.LayoutParams(80,60));
-            if (i % 2 == 0)
-                hommeImage.setImageResource(R.drawable.kawa);
-            else if (i % 3 == 0)
-                hommeImage.setImageResource(R.drawable.er6n);
-            else if (i % 4 == 0)
-                hommeImage.setImageResource(R.drawable.tiger);
-            else if (i % 5 == 0)
-                hommeImage.setImageResource(R.drawable.h2r);
-            else
-                hommeImage.setImageResource(R.drawable.gsxr);
-            hommeImage.getLayoutParams().height = 150;
-            hommeImage.getLayoutParams().width = 150;
-            hommeTitleContent.addView(hommeImage);
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
         }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        for (int i = 0; i < datas.size(); i++) {
+            imagesUrl.add(datas.get(i).shop_image);
+            names.add(datas.get(i).name);
+        }
+        // TODO JUSQU'ICI
+        GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+        FavouritesImageAdapter favouritesImageAdapter = new FavouritesImageAdapter(getActivity());
+        favouritesImageAdapter.setmThumbIds(imagesUrl);
+        favouritesImageAdapter.setmThumbNames(names);
+        gridview.setAdapter(favouritesImageAdapter);
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(getActivity(), "" + position,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
-
 
 }

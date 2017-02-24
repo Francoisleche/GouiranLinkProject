@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.Account.AccountFragment;
 import com.example.franois.gouiranlinkproject.Favourites.FavouritesFragment;
@@ -96,7 +97,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
 
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.logo_gouiran_link_24dp);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
 
 
         // set up the drawer's list view with items and click listener
@@ -109,9 +110,8 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         mDrawerToggle = new android.support.v4.app.ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open,
+                R.drawable.ic_dehaze_black_24dp, R.string.drawer_open,
                 R.string.drawer_close) {
             public void onDrawerClosed(View view) {
                 getSupportActionBar().setTitle(mTitle);
@@ -158,19 +158,40 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
                 fragment = new ResearchFragment();
                 break;
             case 2:
-                fragment = new ReservationFragment();
-                fragment.setArguments(args);
+                if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {
+                    fragment = new ReservationFragment();
+                    fragment.setArguments(args);
+                }
+                else {
+                    Toast.makeText(this, "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
+                    fragment = new HomeFragment();
+                    fragment.setArguments(args);
+                }
                 break;
             case 3:
-                fragment = new FavouritesFragment();
-                fragment.setArguments(args);
+                if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {
+                    fragment = new FavouritesFragment();
+                    fragment.setArguments(args);
+                }
+                else {
+                    Toast.makeText(this, "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
+                    fragment = new HomeFragment();
+                    fragment.setArguments(args);
+                }
                 break;
             case 4:
                 fragment = new GalleryFragment();
                 break;
             case 5:
-                fragment = new AccountFragment();
-                fragment.setArguments(args);
+                if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {
+                    fragment = new AccountFragment();
+                    fragment.setArguments(args);
+                }
+                else {
+                    Toast.makeText(this, "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
+                    fragment = new HomeFragment();
+                    fragment.setArguments(args);
+                }
                 break;
             default:
                 break;

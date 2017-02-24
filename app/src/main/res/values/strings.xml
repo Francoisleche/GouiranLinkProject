@@ -3,10 +3,10 @@
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">E-mail</string>
+    <string name="prompt_email">Identifiant</string>
     <string name="prompt_password">Mot de passe</string>
     <string name="action_sign_in">Connexion</string>
-    <string name="action_sign_up">Inscription</string>
+    <string name="action_sign_up">Inscrivez-vous</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">Cette adresse e-mail est invalide</string>
     <string name="error_invalid_password">Ce mot de passe est trop court</string>
@@ -198,15 +198,15 @@
     <string name="action_websearch">Web search</string>
     <string name="name">Nom</string>
     <string name="password">Mot de passe</string>
-    <string name="email_address">Adresse e-mail</string>
+    <string name="email_address">Email</string>
     <string name="surname">Prénom</string>
     <string name="password_confirmation">Mot de passe (confirmation)</string>
-    <string name="inscription">Inscription</string>
+    <string name="inscription">Valider</string>
     <string name="invalid_email">Cette adresse e-mail est invalide.</string>
     <string name="non_equal_password">Les mots de passe ne correspondent pas.</string>
     <string name="necessary_field">Ce champ est obligatoire</string>
     <string name="confirmation_mail_sentence">Vous avez reçu un e-mail de confirmation. Veuillez cliquer sur le lien qu\'il contient afin d\'activer votre compte Gouiran Link.</string>
-    <string name="phone_number">Numéro de téléphone</string>
+    <string name="phone_number">Téléphone</string>
     <string name="gouiran_link">Gouiran Link</string>
 
     <string-array name="menu">
@@ -239,6 +239,14 @@ Jamais sans votre mobile ? Gouiran Link existera, courant 2017, aussi sous forme
 Les partenaires de Gouiran Link ont tous été soigneusement sélectionnés afin de vous offrir une prestation de qualité et une satisfaction toujours au rendez-vous ! Gouiran Link profite en effet du savoir-faire et de l’expérience de Gouiran Beauté, grossiste et détaillant en produits de coiffure et d’esthétique. Présent depuis plus de 50 ans sur le marché, l’enseigne compte aujourd’hui plus d’une vingtaine de magasins en France et dispose d’un site e-commerce où professionnels comme particuliers peuvent trouver leur bonheur.
     </string>
     <string name="server_client_id">912405249984-m49idh3da4dph1oa0vcgimm0hkbkgnpv.apps.googleusercontent.com</string>
+    <string name="slash">/</string>
+    <string name="see">Voir</string>
+    <string name="login_with">Ou connectez-vous avec</string>
+    <string name="not_member_yet">Pas encore membre ?</string>
+    <string name="woman">Une femme</string>
+    <string name="man">Un homme</string>
+    <string name="you_are">Vous êtes</string>
+    <string name="post_code">Code postal</string>
 
 
 </resources>

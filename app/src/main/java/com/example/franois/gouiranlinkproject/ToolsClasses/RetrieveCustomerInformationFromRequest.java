@@ -17,15 +17,20 @@ import java.util.Arrays;
 
 public class RetrieveCustomerInformationFromRequest implements Serializable {
     private String json;
+    private String token;
 
-    public RetrieveCustomerInformationFromRequest(String json) {
+    public RetrieveCustomerInformationFromRequest(String json, String token) {
         this.json = json;
+        this.token = token;
+        Log.d("TOKEN=", token);
+        Log.d("JSON=", json);
     }
 
     public Customer generateCustomer() {
         Customer customer = null;
         int id;
         String name;
+
         String surname;
         Image_N image;
         String created_at;
@@ -61,26 +66,46 @@ public class RetrieveCustomerInformationFromRequest implements Serializable {
             surname = user.getString("surname");
             ArrayList<String[]> arrayList = new ArrayList<>();
             String[] standard = new String[3];
-            standard[0] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("width");
-            standard[1] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("height");
-            standard[2] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
-            arrayList.add(standard);
             String[] search = new String[3];
-            search[0] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("search").getString("width");
-            search[1] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("search").getString("height");
-            search[2] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("search").getString("url");
-            arrayList.add(search);
             String[] favoris = new String[3];
-            favoris[0] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("favoris").getString("width");
-            favoris[1] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("favoris").getString("height");
-            favoris[2] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("favoris").getString("url");
-            arrayList.add(favoris);
             String[] logo = new String[3];
-            logo[0] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("logo").getString("width");
-            logo[1] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("logo").getString("height");
-            logo[2] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("logo").getString("url");
-            arrayList.add(logo);
-
+            if (user.has("image") && !user.isNull("image")) {
+                standard[0] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("width");
+                standard[1] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("height");
+                standard[2] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
+                search[0] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("search").getString("width");
+                search[1] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("search").getString("height");
+                search[2] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("search").getString("url");
+                favoris[0] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("favoris").getString("width");
+                favoris[1] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("favoris").getString("height");
+                favoris[2] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("favoris").getString("url");
+                logo[0] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("logo").getString("width");
+                logo[1] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("logo").getString("height");
+                logo[2] = user.getJSONObject("image").getJSONObject("thumbnails").getJSONObject("logo").getString("url");
+                arrayList.add(standard);
+                arrayList.add(search);
+                arrayList.add(favoris);
+                arrayList.add(logo);
+            }
+            else {
+                Log.d("ELSE ELSE", "ELSE ELSE");
+                standard[0] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                search[0] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                favoris[0] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                logo[0] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                standard[1] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                search[1] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                favoris[1] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                logo[1] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                standard[2] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                search[2] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                favoris[2] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                logo[2] = "https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg";
+                arrayList.add(standard);
+                arrayList.add(search);
+                arrayList.add(favoris);
+                arrayList.add(logo);
+            }
             /*Log.d("IMAGE", image.getUrl());
             Log.d("IMAGEE", Arrays.toString(image.getThumbnails().get(0)));
             Log.d("IMAGEEE", Arrays.toString(image.getThumbnails().get(1)));
@@ -117,9 +142,12 @@ public class RetrieveCustomerInformationFromRequest implements Serializable {
             customer = new Customer(id, name, surname, image, created_at, updated_at, has_subscribed, share_with_professional, blocked,
             gender, phone, mobilephone, birthday_date, address, post_code, city,
                     country, geoloc_latitude, geoloc_longitude, sms, newsletter, profession,
-                    profession_other, language, image_customer, product_categories, email);
+                    profession_other, language, image_customer, product_categories, email, token);
 
-            image = new Image_N(user.getJSONObject("image").getString("url"), arrayList);
+            if (user.has("image") && !user.isNull("image"))
+                image = new Image_N(user.getJSONObject("image").getString("url"), arrayList);
+            else
+                image = new Image_N("https://www.gouiran-beaute.com/link/cache/media/personnage/cr,300,300-5c8799.jpg", arrayList);
 
             customer.setImage(image);
             Log.d("CUSTOMER CREATED", customer.toString());

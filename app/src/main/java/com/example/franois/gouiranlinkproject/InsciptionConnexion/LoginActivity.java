@@ -85,7 +85,6 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
-
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -100,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
-    private View mImageLoginView;
+    //private View mImageLoginView;
     private View mLoginFormView;
 
 
@@ -111,7 +110,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private String birthday = "";
     private static GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
-    private TextView mStatusTextView;
     private static final String TAG = "SignInActivity";
 
 
@@ -192,7 +190,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         loginButton.registerCallback(callbackManager, callback);
 
 
-        mStatusTextView = (TextView) findViewById(R.id.status);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -242,10 +239,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        mImageLoginView = findViewById(R.id.progressImageView);
+        //mImageLoginView = findViewById(R.id.progressImageView);
     }
 
-    private void nextActivity(Profile profile) {
+    private void nextActivity(String resp) {
+        Intent main = new Intent(LoginActivity.this, ParentActivity.class);
+        Customer customer = null;
+        try {
+            JSONObject jsonObject = new JSONObject(resp);
+            String accessToken = jsonObject.getString("access_token");
+            GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/user/", "Authorization", "Token " + accessToken);
+            resp = getRequest.execute().get();
+
+            RetrieveCustomerInformationFromRequest retrieveCustomerInformationFromRequest = new RetrieveCustomerInformationFromRequest(resp, accessToken);
+            customer = retrieveCustomerInformationFromRequest.generateCustomer();
+            customer.setmFacebook(false);
+            customer.setmGoogle(false);
+            customer.setmGouiranLink(true);
+        } catch (JSONException | InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        main.putExtra("Customer", customer);
+        startActivity(main);
+
+    }
+
+        private void nextActivity(Profile profile) {
         if (profile != null) {
             Intent main = new Intent(LoginActivity.this, ParentActivity.class);
             myCustomer.setmFacebook(true);
@@ -302,7 +321,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/user/", "Authorization", "Token " + accessToken);
                     resp = getRequest.execute().get();
                     Log.d("GETREQUESTRESP", resp);
-                    RetrieveCustomerInformationFromRequest retrieveCustomerInformationFromRequest = new RetrieveCustomerInformationFromRequest(resp);
+                    RetrieveCustomerInformationFromRequest retrieveCustomerInformationFromRequest = new RetrieveCustomerInformationFromRequest(resp, accessToken);
                     customer = retrieveCustomerInformationFromRequest.generateCustomer();
                     customer.setmFacebook(false);
                     customer.setmGoogle(true);
@@ -397,7 +416,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_LONG).show();
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             nextActivity(acct);
         }
     }
@@ -588,7 +606,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mImageLoginView.setVisibility(show ? View.VISIBLE : View.GONE);
+            //mImageLoginView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
@@ -600,7 +618,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mImageLoginView.setVisibility(show ? View.VISIBLE : View.GONE);
+            //mImageLoginView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
@@ -668,6 +686,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String json;
         private final PostRequest postRequest;
         private final Boolean connected;
+        private String resp;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -677,7 +696,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     "\"kind\":\"Customer\"\n" +
                     "}\n";
             postRequest = new PostRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/signin/", json);
-            String resp = null;
+            resp = null;
             try {
                 resp = postRequest.execute().get();
             } catch (InterruptedException | ExecutionException e) {
@@ -686,6 +705,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             assert resp != null;
             if (resp.contains("access_token")) {
                 connected = true;
+
                 Log.d("true", "true");
             } else {
                 connected = false;
@@ -725,14 +745,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Intent i = new Intent(LoginActivity.this, ParentActivity.class);
+                /*Intent i = new Intent(LoginActivity.this, ParentActivity.class);
                 Bundle b = new Bundle();
                 b.putBoolean("connected", true);
                 b.putString("token_access", "token_access");
                 b.putString("email", mEmail);
                 i.putExtras(b);
                 startActivity(i);
-                finish();
+                finish();*/
+                nextActivity(resp);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

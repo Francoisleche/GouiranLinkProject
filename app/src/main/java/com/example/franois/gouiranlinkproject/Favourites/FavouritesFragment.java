@@ -83,6 +83,9 @@ public class FavouritesFragment extends Fragment {
         }
 
         void addFragment(Fragment fragment, String title) {
+            Bundle args = new Bundle();
+            args.putSerializable("Customer", customer);
+            fragment.setArguments(args);
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

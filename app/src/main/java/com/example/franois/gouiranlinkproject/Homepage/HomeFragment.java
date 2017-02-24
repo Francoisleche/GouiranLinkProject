@@ -90,7 +90,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
 
     @Override
     public void onConnected(Bundle arg0) {
-
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -104,18 +103,11 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        if (mLastLocation != null) {
-            double lastLatitude = mLastLocation.getLatitude();
-            double lastLongitude = mLastLocation.getLongitude();
-        }
-
         final Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
 
-        generateRecentResearches(font);
         if (mLastLocation != null) {
             generateAroundMe(font);
         }
-        generateGouiranLinkSelection(font);
     }
 
     @Override
@@ -517,7 +509,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         return (inflater.inflate(R.layout.fragment_home, container, false));
     }
 
@@ -536,6 +527,8 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
         getActivity().getAssets();
         TextView textView;
         final Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
+        generateRecentResearches(font);
+        generateGouiranLinkSelection(font);
 
         /* Editing username */
         //username = "XXXXXXXXXX";

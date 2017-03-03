@@ -17,6 +17,10 @@ import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Adapter which represents the layout for a single favourite
+ */
+
 class FavouritesImageAdapter extends BaseAdapter {
     final private Context mContext;
     private List<String> mThumbIds = new ArrayList<String>();
@@ -43,7 +47,6 @@ class FavouritesImageAdapter extends BaseAdapter {
         View grid;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
-            // if it's not recycled, initialize some attributes
             grid = new View(mContext);
             grid = inflater.inflate(R.layout.grid_single_pros, null);
             TextView textView = (TextView)grid.findViewById(R.id.grid_text);

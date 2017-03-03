@@ -30,13 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+/*
+"Mes coups de coeur"
+ */
 
 public class MyCrushes extends Fragment {
 
     private Customer customer;
     List<Data> datas;
-    private RelativeLayout crushesContent;
-    private Typeface font;
 
     public MyCrushes() {
         // Required empty public constructor
@@ -54,14 +55,7 @@ public class MyCrushes extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root;
-        // Inflate the layout for this fragment
-        root = inflater.inflate(R.layout.fragment_my_crushes, null);
-        //crushesContent = (RelativeLayout) root.findViewById(R.id.crushes_content);
-        font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
-
-
-        return (root);
+        return inflater.inflate(R.layout.fragment_my_crushes, null);
     }
 
     private class Data {

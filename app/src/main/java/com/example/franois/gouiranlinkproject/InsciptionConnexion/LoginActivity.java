@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.ParentActivity;
 import com.example.franois.gouiranlinkproject.R;
+import com.example.franois.gouiranlinkproject.ToolsClasses.GetCustomerProfile;
 import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 import com.example.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
 import com.example.franois.gouiranlinkproject.ToolsClasses.PostRequest;
@@ -74,6 +75,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -81,25 +83,18 @@ import java.util.concurrent.ExecutionException;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-/**
- * A login screen that offers login via email/password.
+/*
+Activity for login either with Gouiran Link account or Facebook or Google Plus
  */
+
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
     private UserLoginTask mAuthTask = null;
 
-    // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
-    //private View mImageLoginView;
     private View mLoginFormView;
 
 
@@ -116,6 +111,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
+    LoginButton loginButton;
+    SignInButton signInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,18 +126,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
             }
         };
+        final AccessToken accessToken = AccessToken.getCurrentAccessToken();
 
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                Log.d("NEXTACITIVITY", "NEWPROFILE");
-                nextActivity(newProfile);
+                nextActivity(newProfile, String.valueOf(accessToken));
             }
         };
         accessTokenTracker.startTracking();
         profileTracker.startTracking();
 
-        LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+        Button fb = (Button) findViewById(R.id.fb);
+        loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday"));
         FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
             @Override
@@ -152,9 +151,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 Toast.makeText(getApplicationContext(), "onCompleted()", Toast.LENGTH_SHORT).show();
 
-                                Log.d("LoginActivity", response.toString());
-
-                                // Application code
+                                try {
+                                    String picture = "http://graph.facebook.com/" + object.getString("id") + "/picture?type=large";
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                                 try {
                                     email = object.getString("email");
                                 } catch (JSONException e) {
@@ -167,18 +168,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 }
                             }
                         });
-                //AccessToken accessToken = loginResult.getAccessToken();
-                AccessToken accessToken = AccessToken.getCurrentAccessToken();
-                Log.d("TOKEN", loginResult.getAccessToken().getToken());
                 Profile profile = Profile.getCurrentProfile();
-                Log.d("NEXTACITIVITY", "CURRENTPROFILE");
-                nextActivity(profile);
-                Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();
+                nextActivity(profile, loginResult.getAccessToken().getToken());
             }
 
             @Override
             public void onCancel() {
-                Toast.makeText(getApplicationContext(), "onCancel()", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -186,9 +181,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Toast.makeText(getApplicationContext(), "Veuillez vérifier que vous êtes bien connecté à internet.", Toast.LENGTH_SHORT).show();
             }
         };
-        loginButton.setReadPermissions("user_friends");
         loginButton.registerCallback(callbackManager, callback);
-
 
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -197,23 +190,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 .requestEmail()
                 .requestProfile()
                 .build();
-        /*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestId()
-                .requestProfile()
-                .build();*/
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        // Set the dimensions of the sign-in button.
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
-        //findViewById(R.id.sign_in_button).setOnClickListener(this);
 
         AppEventsLogger.activateApp(getApplication());
-        // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
@@ -239,7 +224,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        //mImageLoginView = findViewById(R.id.progressImageView);
     }
 
     private void nextActivity(String resp) {
@@ -264,7 +248,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
-        private void nextActivity(Profile profile) {
+    private void nextActivity(Profile profile, String accessToken) {
         if (profile != null) {
             Intent main = new Intent(LoginActivity.this, ParentActivity.class);
             myCustomer.setmFacebook(true);
@@ -272,15 +256,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             myCustomer.setmGouiranLink(false);
             myCustomer.setName(profile.getName());
             myCustomer.setSurname(profile.getLastName());
-            Log.d("SURNAME", myCustomer.getSurname());
             myCustomer.setBirthday(birthday);
             myCustomer.setEmail(email);
             main.putExtra("MyCustomer", myCustomer);
-            Log.d("User ID = ", profile.getId());
-/*          main.putExtra("name", profile.getFirstName());
-            main.putExtra("surname", profile.getLastName());
-            main.putExtra("imageUrl", profile.getProfilePictureUri(200,200).toString());*/
-            //startActivity(main);
+            String json = "{\n" +
+                    "\"accessToken\":\"" + AccessToken.getCurrentAccessToken().getToken() + "\",\n" +
+                    "\"userID\":\"" + profile.getId() + "\"\n" +
+                    "}\n";
+
+            PostRequest postRequest = new PostRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/facebook/", json);
+            String resp = null;
+            try {
+                resp = postRequest.execute().get();
+                Toast.makeText(this, resp, Toast.LENGTH_SHORT).show();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            Customer customer = null;
+            if (resp != null && resp.contains("access_token")) {
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(resp);
+                    accessToken = jsonObject.getString("access_token");
+                    GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/user/", "Authorization", "Token " + accessToken);
+                    resp = getRequest.execute().get();
+                    RetrieveCustomerInformationFromRequest retrieveCustomerInformationFromRequest = new RetrieveCustomerInformationFromRequest(resp, accessToken);
+                    customer = retrieveCustomerInformationFromRequest.generateCustomer();
+                    customer.setmFacebook(true);
+                    customer.setmGoogle(false);
+                    customer.setmGouiranLink(false);
+                } catch (JSONException | ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            main.putExtra("Customer", customer);
+            startActivity(main);
 
         }
     }
@@ -298,8 +309,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             myCustomer.setEmail(acct.getEmail());
             myCustomer.setBirthday(null);
             String token = acct.getIdToken();
-            Log.d("IDTOKEN", acct.getIdToken());
-            //Log.d("GOOGLE SURNAME", myCustomer.getSurname());
             String json = "{\n" +
                     "\"tokenId\":\"" + token + "\",\n" +
                     "\"googleId\":\"" + getString(R.string.server_client_id) + "\"\n" +
@@ -312,7 +321,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 e.printStackTrace();
             }
             String accessToken = null;
-            Log.d("RESP = ", resp);
             Customer customer = null;
             if (resp != null && resp.contains("access_token")) {
                 try {
@@ -320,7 +328,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     accessToken = jsonObject.getString("access_token");
                     GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/user/", "Authorization", "Token " + accessToken);
                     resp = getRequest.execute().get();
-                    Log.d("GETREQUESTRESP", resp);
                     RetrieveCustomerInformationFromRequest retrieveCustomerInformationFromRequest = new RetrieveCustomerInformationFromRequest(resp, accessToken);
                     customer = retrieveCustomerInformationFromRequest.generateCustomer();
                     customer.setmFacebook(false);
@@ -330,12 +337,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     e.printStackTrace();
                 }
             }
-            else {
-                Log.d("NO ACCESS TOKEN", "BUG");
-            }
-
             main.putExtra("Customer", customer);
-            //main.putExtra("MyCustomer", myCustomer);
             startActivity(main);
         }
     }
@@ -343,18 +345,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onResume() {
         super.onResume();
-        //Facebook login
         Profile profile = Profile.getCurrentProfile();
-//        Log.d("RESUME", profile.getFirstName());
-        nextActivity(profile);
-        Log.d("NEXTACITIVITY", "RESUME");
-
+        nextActivity(profile, String.valueOf(AccessToken.getCurrentAccessToken()));
     }
 
 
     protected void onStop() {
         super.onStop();
-        //Facebook login
         accessTokenTracker.stopTracking();
         profileTracker.stopTracking();
     }
@@ -364,19 +361,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from
-        //   GoogleSignInApi.getSignInIntent(...);
-        /*if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                // Get account information
-                mFullName = acct.getDisplayName();
-                mEmail = acct.getEmail();
-                System.out.println("FullName = " + mFullName);
-                System.out.println("Email = " + mEmail);
-            }
-        }*/
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
@@ -389,15 +373,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
-            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-            // and the GoogleSignInResult will be available instantly.
-            Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
         } else {
-            // If the user has not previously signed in on this device or the sign-in has expired,
-            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-            // single sign-on will occur in this branch.
             showProgressDialog();
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
@@ -411,9 +389,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast.makeText(this, acct.getDisplayName(), Toast.LENGTH_LONG).show();
             nextActivity(acct);
@@ -436,19 +412,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         //mProgressDialog.show();
     }
-
-/*    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-            updateUI(true);
-        } else {
-            // Signed out, show unauthenticated UI.
-            updateUI(false);
-        }
-    }*/
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -780,7 +743,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Intent i;
         switch (v.getId()) {
             case R.id.sign_in_button:
+                //signIn();
+                break;
+            case R.id.google:
+                signInButton.performClick();
                 signIn();
+                break;
+            case R.id.fb:
+                loginButton.performClick();
                 break;
             case R.id.email_sign_up_button:
                 Toast.makeText(this, "Creating account", Toast.LENGTH_LONG);

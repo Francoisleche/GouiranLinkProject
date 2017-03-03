@@ -42,10 +42,12 @@ import java.util.Locale;
 
 import static com.example.franois.gouiranlinkproject.ToolsClasses.BaseFragment.ARGS_INSTANCE;
 
+/*
+Homepage of the application
+ */
+
 public class HomeFragment extends Fragment implements ConnectionCallbacks, OnConnectionFailedListener {
 
-    //The minimum distance to change updates in meters
-    //The minimum time beetwen updates in milliseconds
     private LocationManager locationManager = null;
     private MyLocationListener locationListener = null;
 
@@ -150,8 +152,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
 
     /*---------Listener class to get coordinates ------------- */
     private class MyLocationListener implements LocationListener {
-
-        //LocationResult[] locationResult = new LocationResult[5];
 
         @Override
         public void onLocationChanged(Location loc) {
@@ -324,8 +324,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
         textView.setTypeface(font);
 
         if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //alertbox("Gps Status!!", "Your GPS is: OFF");
-            System.out.println("Your GPS is: OFF");
+            Toast.makeText(getActivity(), "Votre GPS est désactivé.", Toast.LENGTH_SHORT).show();
         }
 
         if (shopImageList[0] != null && shopNameList[0] != null) {
@@ -508,8 +507,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return (inflater.inflate(R.layout.fragment_home, container, false));
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
@@ -530,23 +528,19 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
         generateRecentResearches(font);
         generateGouiranLinkSelection(font);
 
-        /* Editing username */
-        //username = "XXXXXXXXXX";
         TextView welcomeUser = new TextView(getActivity());
         welcomeUser = (TextView)getActivity().findViewById(R.id.welcome_user);
         welcomeUser.setText(text);
         welcomeUser.setTypeface(font);
         welcomeUser.setTextColor(ContextCompat.getColor(getContext(), R.color.GouiranDarkBlue));
 
-        /* Invitez des amis */
         textView = (TextView)getActivity().findViewById(R.id.invite_your_friends);
         textView.setTypeface(font);
 
 
-
         emailIntent.setType("plain/text");
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invitation Gouiran Link");
-        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Hey, je viens de découvrir l'application mobile Gouiran Link, elle est géniale!\nIl faudrait que tu l'essaye toi aussi!");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.invitation_gouiran_link));
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.invation_text));
 
         Button button = (Button) view.findViewById(R.id.invite_your_friends_button);
         button.setOnClickListener(new View.OnClickListener()
@@ -584,8 +578,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
     @Override
     public void onResume() {
         super.onResume();
-        // Set title
-        getActivity()
-                .setTitle(R.string.home);
+        getActivity().setTitle(R.string.home);
     }
 }

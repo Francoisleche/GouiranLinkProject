@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.example.franois.gouiranlinkproject.R;
 
+/*
+TODO Change this fragment
+ */
 
 public class MyProsFragment extends Fragment{
 
@@ -39,7 +42,6 @@ public class MyProsFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root;
-        // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_my_pros, null);
         coiffureTitleLayout = (LinearLayout) root.findViewById(R.id.coiffure_pros_title);
         coiffureTitleContent = (LinearLayout) root.findViewById(R.id.coiffure_pros_content);

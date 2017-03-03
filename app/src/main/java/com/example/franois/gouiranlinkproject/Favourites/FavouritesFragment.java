@@ -21,6 +21,10 @@ import java.util.List;
 
 import static com.example.franois.gouiranlinkproject.ToolsClasses.BaseFragment.ARGS_INSTANCE;
 
+/*
+Fragment which contains "Mes coups de coeur" and "Mes pros"
+ */
+
 public class FavouritesFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     Customer customer;
@@ -59,8 +63,8 @@ public class FavouritesFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(new MyProsFragment(), "Mes Pros");
-        adapter.addFragment(new MyCrushes(), "Mes Coups de Coeur");
+        adapter.addFragment(new MyProsFragment(), getString(R.string.my_pros));
+        adapter.addFragment(new MyCrushes(), getString(R.string.my_crushes));
         viewPager.setAdapter(adapter);
     }
 
@@ -99,7 +103,6 @@ public class FavouritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favourites, container, false);
     }
 
@@ -126,8 +129,6 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Set title
-        getActivity()
-                .setTitle(R.string.myFavourites);
+        getActivity().setTitle(R.string.myFavourites);
     }
 }

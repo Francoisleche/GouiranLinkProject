@@ -3,8 +3,6 @@ package com.example.franois.gouiranlinkproject.ToolsClasses;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -13,8 +11,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class PostRequest extends AsyncTask<String, Void, String> {
+/**
+ * Created by pyram_m on 03/03/17.
+ */
 
+public class PutRequest extends AsyncTask<String, Void, String> {
     private static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
     private String url = "";
@@ -23,16 +24,16 @@ public class PostRequest extends AsyncTask<String, Void, String> {
     private String value = null;
     final private OkHttpClient client = new OkHttpClient();
 
-    public PostRequest (String url) {
+    public PutRequest (String url) {
         this.url = url;
     }
 
-    public PostRequest (String url, String json) {
+    public PutRequest (String url, String json) {
         this.url = url;
         this.json = json;
     }
 
-    public PostRequest (String url, String json, String key, String value) {
+    public PutRequest (String url, String json, String key, String value) {
         this.url = url;
         this.json = json;
         this.key = key;
@@ -40,20 +41,20 @@ public class PostRequest extends AsyncTask<String, Void, String> {
     }
 
 
-    private String postRequest() throws IOException {
+    private String putRequest() throws IOException {
         RequestBody requestBody = RequestBody.create(JSON, json);
         Request request;
         Response response;
         if (this.key == null && this.value == null) {
             request = new Request.Builder()
                     .url(url)
-                    .post(requestBody)
+                    .put(requestBody)
                     .build();
         }
         else {
             request = new Request.Builder()
                     .url(url)
-                    .post(requestBody)
+                    .put(requestBody)
                     .addHeader(key, value)
                     .build();
         }
@@ -76,7 +77,7 @@ public class PostRequest extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
         String res = "";
         try {
-            res = this.postRequest();
+            res = this.putRequest();
         } catch (IOException e) {
             e.printStackTrace();
         }

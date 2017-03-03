@@ -1,9 +1,12 @@
 package com.example.franois.gouiranlinkproject.InsciptionConnexion;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -52,12 +55,12 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        surnameEditText = (EditText)findViewById(R.id.surname);
-        nameEditText = (EditText)findViewById(R.id.name);
-        emailEditText = (EditText)findViewById(R.id.email_address);
-        passwordEditText = (EditText)findViewById(R.id.password);
-        passwordConfirmationEditText = (EditText)findViewById(R.id.password_confirmation);
-        phoneNumberEditText = (EditText)findViewById(R.id.phone_number);
+        surnameEditText = (EditText) findViewById(R.id.surname);
+        nameEditText = (EditText) findViewById(R.id.name);
+        emailEditText = (EditText) findViewById(R.id.email_address);
+        passwordEditText = (EditText) findViewById(R.id.password);
+        passwordConfirmationEditText = (EditText) findViewById(R.id.password_confirmation);
+        phoneNumberEditText = (EditText) findViewById(R.id.phone_number);
     }
 
     public void onClick(View v) {
@@ -72,7 +75,7 @@ public class SignUp extends AppCompatActivity {
         passwordConfirmation = passwordConfirmationEditText.getText().toString();
         phoneNumber = phoneNumberEditText.getText().toString();
 
-        if (!isEmailValid(email)) {
+        /*if (!isEmailValid(email)) {
             emailEditText.setError(getString(R.string.invalid_email));
             focusView = emailEditText;
             cancel = true;
@@ -130,29 +133,19 @@ public class SignUp extends AppCompatActivity {
 
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
+            }*/
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.confirmation_mail_sentence).setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
             }
+        });
 
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-
-            LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-            ViewGroup popUpLayout = (ViewGroup) layoutInflater.inflate(R.layout.popup, null);
-            TextView textView = new TextView(this);
-            textView = (TextView)popUpLayout.findViewById(R.id.textView);
-            textView.setText(R.string.confirmation_mail_sentence);
-            textView.setBackgroundColor(ContextCompat.getColor(this, R.color.GouiranLightPink));
-            textView.setTextSize(20);
-            Typeface font;
-            font = Typeface.createFromAsset(getAssets(), "fonts/Acrom W00 Medium.ttf");
-            textView.setTypeface(font);
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int width = displayMetrics.widthPixels;
-            int height = displayMetrics.heightPixels;
-            Dialog dialog = new Dialog(SignUp.this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(popUpLayout);
-            dialog.getWindow().setLayout((int)(width * 0.75), (int)(height * 0.25));
-            dialog.show();
-        }
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
     }
+
 }
+//}

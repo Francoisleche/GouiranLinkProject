@@ -24,6 +24,10 @@ import java.io.File;
 
 import static com.example.franois.gouiranlinkproject.ToolsClasses.BaseFragment.ARGS_INSTANCE;
 
+/*
+Fragment wihch is the gallery of the user
+ */
+
 public class GalleryFragment extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -41,18 +45,19 @@ public class GalleryFragment extends Fragment {
         return firstFragment;
     }
 
-    public static Camera getCameraInstance(){
+    public static Camera getCameraInstance() {
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             // Camera is not available (in use or does not exist)
         }
         return c; // returns null if camera is unavailable
     }
 
-    /** Check if this device has a camera */
+    /**
+     * Check if this device has a camera
+     */
     private boolean checkCameraHardware(Context context) {
         // this device has a camera
 // no camera on this device
@@ -63,22 +68,13 @@ public class GalleryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         Button selfie = (Button) view.findViewById(R.id.selfie);
         selfie.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-                Toast.makeText(getActivity(),
-                        "Yes",
-                        Toast.LENGTH_SHORT).show();
                 CamTestActivity cam = new CamTestActivity();
-                Intent intent = new Intent(getActivity(),AndroidCameraApi.class);
+                Intent intent = new Intent(getActivity(), AndroidCameraApi.class);
                 getActivity().startActivity(intent);
-                //cam.open();
-
-                //getCameraInstance();
-                //GalleryFragment.newInstance(0);
             }
         });
         return view;
@@ -86,7 +82,6 @@ public class GalleryFragment extends Fragment {
 
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(getActivity()));
 
@@ -98,11 +93,10 @@ public class GalleryFragment extends Fragment {
             }
         });
         File sdCard = Environment.getExternalStorageDirectory();
-        File dir = new File (sdCard.getAbsolutePath() + "/GouiranLink");
-        
+        File dir = new File(sdCard.getAbsolutePath() + "/GouiranLink");
+
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -127,16 +121,13 @@ public class GalleryFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // Set title
-        getActivity()
-                .setTitle(R.string.myGallery);
+        getActivity().setTitle(R.string.myGallery);
     }
 
 }

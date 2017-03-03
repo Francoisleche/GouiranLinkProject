@@ -22,15 +22,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo_gouiran_link_pink"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme">
-
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -40,41 +37,36 @@
 
         <activity
             android:name=".InsciptionConnexion.SplashScreen"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".GouiranStart"
+            android:label="Start"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".InsciptionConnexion.LoginActivity"
-            android:label="@string/title_activity_login">
-        </activity>
-        <activity android:name=".CamTestActivity">
-        </activity>
-        <activity android:name=".AndroidCameraApi">
-        </activity>
-        <activity android:name=".Recherche.MapPane">
-        </activity>
-        <activity android:name=".Recherche.FilterActivity">
-        </activity>
-        <activity android:name=".Rendezvous.PrendreRdv">
-        </activity>
-        <activity android:name=".Rendezvous.AutresPrestations">
-        </activity>
-        <activity android:name=".Rendezvous.Recapitulatif">
-        </activity>
-
+            android:label="@string/title_activity_login" />
+        <activity android:name=".CamTestActivity" />
+        <activity android:name=".AndroidCameraApi" />
+        <activity android:name=".Recherche.MapPane" />
+        <activity android:name=".Recherche.FilterActivity" />
+        <activity android:name=".Rendezvous.PrendreRdv" />
+        <activity android:name=".Rendezvous.AutresPrestations" />
+        <activity android:name=".Rendezvous.Recapitulatif" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <provider              android:authorities="com.facebook.app.FacebookContentProvider"                 android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
-
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider"
+            android:exported="true" />
 
         <!--
      ATTENTION: This was auto-generated to add Google Play services to your project for

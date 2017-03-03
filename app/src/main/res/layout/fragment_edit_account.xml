@@ -18,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollViewEdit"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -257,8 +258,12 @@
             <ImageView
                 android:id="@+id/edit_profile_picture"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher" />
+                android:text="Edit image"
+                android:id="@+id/edit_image"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -346,13 +351,13 @@
                         android:id="@+id/edit_value_gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sexe" />
+                        android:text="M" />
 
                     <EditText
                         android:id="@+id/edit_value_birth_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Date de Naissance" />
+                        android:text="2017-01-01" />
 
                     <EditText
                         android:id="@+id/edit_value_email"
@@ -364,13 +369,13 @@
                         android:id="@+id/edit_value_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Telephone" />
+                        android:text="0909090909" />
 
                     <EditText
                         android:id="@+id/edit_value_mobile_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Téléphone Mobile" />
+                        android:text="0808080808" />
 
                     <EditText
                         android:id="@+id/edit_value_password"
@@ -445,7 +450,7 @@
                         android:id="@+id/edit_value_country"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pays" />
+                        android:text="FR" />
 
                     <EditText
                         android:id="@+id/edit_value_city"
@@ -457,7 +462,7 @@
                         android:id="@+id/edit_value_post_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Code Postal" />
+                        android:text="00000" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -470,6 +475,13 @@
                 android:clickable="true"
                 android:id="@+id/edit_modify"
                 android:text="Revenir a l'ancienne vie" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:id="@+id/confirm"
+                android:text="Valider les modifications"/>
         </LinearLayout>
 
     </ScrollView>

@@ -9,6 +9,10 @@ import android.widget.ImageView;
 
 import com.example.franois.gouiranlinkproject.R;
 
+/*
+Represents the grid for the gallery
+ */
+
 class ImageAdapter extends BaseAdapter {
     final private Context mContext;
 
@@ -32,7 +36,6 @@ class ImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
         if (convertView == null) {
-            // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
             imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);

@@ -1,15 +1,22 @@
 package com.example.franois.gouiranlinkproject.Account;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,31 +25,31 @@ import android.widget.Toast;
 import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
+import com.example.franois.gouiranlinkproject.ToolsClasses.GetCustomerProfile;
+import com.example.franois.gouiranlinkproject.ToolsClasses.PostFileRequest;
+import com.example.franois.gouiranlinkproject.ToolsClasses.PostRequest;
+import com.example.franois.gouiranlinkproject.ToolsClasses.PutRequest;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link EditAccountFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link EditAccountFragment#newInstance} factory method to
- * create an instance of this fragment.
+import static com.facebook.FacebookSdk.getApplicationContext;
+
+/*
+Fragment which contains the editable part of the account (through http request)
  */
+
 public class EditAccountFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
 
+    static final int PICK_IMAGE_REQUEST = 1;  // The request code
 
     private Customer customer;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -50,20 +57,9 @@ public class EditAccountFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditAccountFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EditAccountFragment newInstance(String param1, String param2) {
+    public static EditAccountFragment newInstance() {
         EditAccountFragment fragment = new EditAccountFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,28 +69,27 @@ public class EditAccountFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             customer = (Customer) getArguments().getSerializable("Customer");
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
         fragmentManager = getActivity().getSupportFragmentManager();
     }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_edit_account, container, false);
 
+        customer = new GetCustomerProfile().getCustomerProfile(customer.getToken());
         ImageView imageView = (ImageView) root.findViewById(R.id.profile_picture);
         new DownloadImageTask(imageView).execute(customer.getImage().getThumbnails().get(0)[2]);
         TextView textView = (TextView) root.findViewById(R.id.name);
         String name = "";
         if (customer.getName().equals("null"))
-            name += "Non renseigné";
+            name += getString(R.string.not_known);
         else
             name += customer.getName();
         name += " ";
         if (customer.getSurname().equals("null"))
-            name += "Non renseigné";
+            name += getString(R.string.not_known);
         else
             name += customer.getSurname();
         textView.setText(name);
@@ -108,43 +103,43 @@ public class EditAccountFragment extends Fragment {
                 textView.setText("Femme");
                 break;
             default:
-                textView.setText("Non renseigné");
+                textView.setText(getString(R.string.not_known));
                 break;
         }
         textView = (TextView) root.findViewById(R.id.value_birth_date);
         if (customer.getBirthday_date().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getBirthday_date());
         textView = (TextView) root.findViewById(R.id.value_email);
         if (customer.getEmail().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getEmail());
 
         textView = (TextView) root.findViewById(R.id.value_phone);
         if (customer.getPhone().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getPhone());
         textView = (TextView) root.findViewById(R.id.value_mobile_phone);
         if (customer.getMobilephone().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getMobilephone());
         textView = (TextView) root.findViewById(R.id.value_country);
         if (customer.getCountry().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getCountry());
         textView = (TextView) root.findViewById(R.id.value_city);
         if (customer.getCity().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getCity());
         textView = (TextView) root.findViewById(R.id.value_post_code);
         if (customer.getPost_code().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getPost_code());
 
@@ -154,62 +149,62 @@ public class EditAccountFragment extends Fragment {
         textView = (TextView) root.findViewById(R.id.edit_name);
         name = "";
         if (customer.getName().equals("null"))
-            name += "Non renseigné";
+            name += getString(R.string.not_known);
         else
             name += customer.getName();
         name += " ";
         if (customer.getSurname().equals("null"))
-            name += "Non renseigné";
+            name += getString(R.string.not_known);
         else
             name += customer.getSurname();
         textView.setText(name);
 
-        textView = (TextView) root.findViewById(R.id.edit_value_gender);
+        textView = (TextView) root.findViewById(R.id.value_gender);
         switch (customer.getGender()) {
             case "M":
-                textView.setText("Homme");
+                textView.setText(R.string.male);
                 break;
             case "F":
-                textView.setText("Femme");
+                textView.setText(R.string.female);
                 break;
             default:
-                textView.setText("Non renseigné");
+                textView.setText(getString(R.string.not_known));
                 break;
         }
-        textView = (TextView) root.findViewById(R.id.edit_value_birth_date);
+        textView = (TextView) root.findViewById(R.id.value_birth_date);
         if (customer.getBirthday_date().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getBirthday_date());
-        textView = (TextView) root.findViewById(R.id.edit_value_email);
+        textView = (TextView) root.findViewById(R.id.value_email);
         if (customer.getEmail().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getEmail());
 
-        textView = (TextView) root.findViewById(R.id.edit_value_phone);
+        textView = (TextView) root.findViewById(R.id.value_phone);
         if (customer.getPhone().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getPhone());
-        textView = (TextView) root.findViewById(R.id.edit_value_mobile_phone);
+        textView = (TextView) root.findViewById(R.id.value_mobile_phone);
         if (customer.getMobilephone().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getMobilephone());
-        textView = (TextView) root.findViewById(R.id.edit_value_country);
+        textView = (TextView) root.findViewById(R.id.value_country);
         if (customer.getCountry().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getCountry());
-        textView = (TextView) root.findViewById(R.id.edit_value_city);
+        textView = (TextView) root.findViewById(R.id.value_city);
         if (customer.getCity().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getCity());
-        textView = (TextView) root.findViewById(R.id.edit_value_post_code);
+        textView = (TextView) root.findViewById(R.id.value_post_code);
         if (customer.getPost_code().equals("null"))
-            textView.setText("Non renseigné");
+            textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getPost_code());
 
@@ -232,17 +227,71 @@ public class EditAccountFragment extends Fragment {
             }
         });
 
+        Button editImage = (Button) root.findViewById(R.id.edit_image);
+        editImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getImage();
+            }
+        });
+
+        EditText editText = (EditText) root.findViewById(R.id.edit_value_gender);
+        final String gender = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_birth_date);
+        final String birth_date = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_email);
+        String email = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_phone);
+        final String phone = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_mobile_phone);
+        final String mobile_phone = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_country);
+        final String country = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_city);
+        final String city = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_post_code);
+        final String post_code = editText.getText().toString();
+
+        Button confirm = (Button) root.findViewById(R.id.confirm);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String json = "{\n" +
+                            "\"email\":\"" + customer.getEmail() + "\",\n" +
+                            "\"name\":\"" + customer.getName() + "\",\n" +
+                            "\"surname\":\"" + customer.getSurname() + "\",\n" +
+                            "\"gender\":\"" + gender + "\",\n" +
+                            "\"birthday_date\":\"" + birth_date + "\",\n" +
+                            "\"phone\":\"" + phone + "\",\n" +
+                            "\"mobilephone\":\"" + mobile_phone + "\",\n" +
+                            "\"country\":\"" + country + "\",\n" +
+                            "\"city\":\"" + city + "\",\n" +
+                            "\"post_code\":\"" + post_code + "\"\n" +
+                            "}\n";
+                    String resp;
+                    PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json, "Authorization", "Token " + customer.getToken());
+                    resp = putRequest.execute().get();
+                    Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_LONG).show();
+                    Log.d("reponse", resp);
+                    customer = new GetCustomerProfile().getCustomerProfile(customer.getToken(), customer);
+                    onCreateView(inflater, container, savedInstanceState);
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
         return (root);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
 
-    // TODO RuntimeException for every account fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -260,18 +309,57 @@ public class EditAccountFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void getImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select picture"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri uri = null;
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            if (data == null) {
+                //Display an error
+                return;
+            }
+            uri = data.getData();
+            PostFileRequest postFileRequest = new PostFileRequest("https://www.gouiran-beaute.com/link/api/v1/customer/upload/image/customer/" + customer.getId() + "/", String.valueOf(customer.getId()), getRealPathFromURI(uri), "Authorization", "Token " + customer.getToken());
+            String resp = null;
+            try {
+                resp = postFileRequest.execute().get();
+                Toast.makeText(getActivity(), resp, Toast.LENGTH_SHORT).show();
+                Fragment newFragment = this;
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .detach(newFragment)
+                        .attach(newFragment)
+                        .commit();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContext().getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,21 +36,13 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
     private Customer customer;
     private Context mContext;
 
-    /*final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-            .addConnectionCallbacks(this)
-            .addOnConnectionFailedListener(this).addApi(Plus.API)
-            .addScope(Plus.SCOPE_PLUS_LOGIN).build();*/
-
-    boolean mSignInClicked;
-
     private OnFragmentInteractionListener mListener;
 
     public NestedSettingsFragment() {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static NestedSettingsFragment newInstance(String param1, String param2) {
+    public static NestedSettingsFragment newInstance() {
         NestedSettingsFragment fragment = new NestedSettingsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -68,7 +61,6 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_nested_settings, container, false);
         Button logoutButton = (Button) root.findViewById(R.id.logout);
 
@@ -79,39 +71,42 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
                 .requestEmail()
                 .build();
         final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(mContext)
-                .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(getActivity(), this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+        if (customer != null && customer.ismFacebook())
+            logoutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.com_facebook_blue));
+        else if (customer != null && customer.ismGoogle())
+            logoutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.GoogleRed));
+        else if (customer != null && customer.ismGouiranLink())
+            logoutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.GouiranLightPink));
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 if (customer != null && customer.ismFacebook()) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Logged Out From Facebook", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.logged_out_facebook, Toast.LENGTH_SHORT).show();
                     LoginManager.getInstance().logOut();
                     Intent login = new Intent(getActivity(), LoginActivity.class);
                     startActivity(login);
                     getActivity().finish();
                 } else if (customer != null && customer.ismGoogle()) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Logged Out From Google", Toast.LENGTH_SHORT).show();
-                    //LoginActivity.signOut(mGoogleApiClient);
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.logged_out_google, Toast.LENGTH_SHORT).show();
+                    LoginActivity.signOut(mGoogleApiClient);
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
+                    getActivity().finish();
                 } else if (customer != null && customer.ismGouiranLink()) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Logged Out From Gouiran Link", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.logged_out_gouiran_link, Toast.LENGTH_SHORT).show();
                     Intent login = new Intent(getActivity(), LoginActivity.class);
                     startActivity(login);
                     getActivity().finish();
-                } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "Not Logged Out", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         return (root);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -151,18 +146,7 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
 
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

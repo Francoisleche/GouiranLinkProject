@@ -1,14 +1,17 @@
 package com.example.franois.gouiranlinkproject;
 
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +34,8 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +54,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
 
     private List<DrawerItem> dataList;
 
+    private FileOutputStream fileOutputStream = null;
 
     //private MyCustomer myCustomer;
     private Customer customer;
@@ -61,6 +67,8 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent);
 
+        /*//TODO Remove delete file
+        this.deleteFile("GouiranLink");*/
         Bundle b = getIntent().getExtras();
         if (b != null) {
             customer = (Customer)getIntent().getSerializableExtra("Customer");

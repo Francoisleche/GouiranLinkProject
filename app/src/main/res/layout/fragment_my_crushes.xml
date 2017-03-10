@@ -6,7 +6,7 @@
     tools:context="com.example.franois.gouiranlinkproject.Homepage.HomeFragment">
 
     <GridView
-        android:id="@+id/gridview"
+        android:id="@+id/gridviewCrushes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"

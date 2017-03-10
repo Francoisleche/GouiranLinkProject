@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,11 +35,18 @@ import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_APPEND;
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.franois.gouiranlinkproject.ToolsClasses.BaseFragment.ARGS_INSTANCE;
 
 
@@ -63,6 +71,7 @@ public class ResearchFragment extends Fragment {
     private Button carte;
     private GetRequest getRequest;
 
+    private FileOutputStream fileOutputStream = null;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -119,12 +128,27 @@ public class ResearchFragment extends Fragment {
         resultat5 = (TextView) view.findViewById(R.id.textView_14);
         resultat6 = (TextView) view.findViewById(R.id.textView_15);
 
-        ListView listView = (ListView) view.findViewById(R.id.mesresultats);
-        ArrayAdapter<String> tableau = new ArrayAdapter<String>(listView.getContext(), R.layout.services);
+        final ListView listView = (ListView) view.findViewById(R.id.mesresultats);
 
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    fileOutputStream = getContext().openFileOutput("GouiranLink", MODE_APPEND);
+                    Log.d("OUTPUT FOUND", listView.getItemAtPosition(position).toString());
+                    fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
+                    fileOutputStream.write("`".getBytes());
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    Log.d("OUTPUT NOT FOUND", "NOT WRITTEN");
+                    e.printStackTrace();
+                }
+            }
+        });
         //MARCHE mautomatiquement à la lettre prêt mais c'est très long
 
-        recherche.addTextChangedListener(new TextWatcher() {
+        /*recherche.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -190,16 +214,16 @@ public class ResearchFragment extends Fragment {
                     listView.setAdapter(tableau);*/
 
 
-                //System.out.println("1 = "+recup.get(1)+ " 2 ="+recup.get(2));
+        //System.out.println("1 = "+recup.get(1)+ " 2 ="+recup.get(2));
 
 
-            }
+            /*}
         });
-
+*/
 
         //MARCHe mais on doit attendre que l'utilisateur est finis de taper, et ça marche qu'une fois ????????
 
-        recherche.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        /*recherche.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 ArrayList<String> recup = new ArrayList<String>();
@@ -216,6 +240,63 @@ public class ResearchFragment extends Fragment {
                 resultat6.setText(recup.get(5));
 
                 return false;
+            }
+        });*/
+
+        recherche.addTextChangedListener(new TextWatcher() {
+            boolean isTyping = false;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            private Timer timer = new Timer();
+            private final long DELAY = 2500;
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!isTyping) {
+                    isTyping = true;
+                }
+
+                timer.cancel();
+                timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        isTyping = false;
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ResearchTask researchTask = new ResearchTask(recherche.getText().toString(), 5);
+                                String ls = "";
+                                ArrayList<String> recup = new ArrayList<String>();
+                                ls = researchTask.getResponse();
+                                recup = jsonparser(ls);
+                                /*resultat2.setText(recup.get(0));
+                                resultat3.setText(recup.get(1));
+                                resultat4.setText(recup.get(2));
+                                resultat5.setText(recup.get(3));
+                                resultat6.setText(recup.get(4));*/
+
+                                String[] results = new String[] {};
+                                final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
+                                ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
+                                listView.setAdapter(tableau);
+                                for (int i = 0; i < recup.size(); i++) {
+                                    resultsList.add(recup.get(i));
+                                    tableau.notifyDataSetChanged();
+                                }
+                            }
+                        });
+                    }
+                }, DELAY);
             }
         });
 

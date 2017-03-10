@@ -45,9 +45,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GouiranStart"
+        <activity
+            android:name=".GouiranStart"
             android:label="Start"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".InsciptionConnexion.LoginActivity"
             android:label="@string/title_activity_login" />
@@ -82,6 +83,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".Account.NotificationsActivity" />
         <activity android:name=".InsciptionConnexion.SignUp" />
+        <activity android:name=".InsciptionConnexion.LoginFacebookActivity" />
+        <activity android:name=".InsciptionConnexion.LoginGoogleActivity"></activity>
     </application>
 
 </manifest>

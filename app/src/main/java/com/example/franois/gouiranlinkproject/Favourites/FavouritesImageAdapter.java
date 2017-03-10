@@ -23,15 +23,24 @@ Adapter which represents the layout for a single favourite
 
 class FavouritesImageAdapter extends BaseAdapter {
     final private Context mContext;
-    private List<String> mThumbIds = new ArrayList<String>();
+    private List<String> mThumbPictures = new ArrayList<String>();
     private List<String> mThumbNames = new ArrayList<String>();
+    private List<Integer> mIds = new ArrayList<Integer>();
 
     FavouritesImageAdapter(Context c) {
         mContext = c;
     }
 
+    public List<Integer> getmIds() {
+        return mIds;
+    }
+
+    public void setmIds(List<Integer> mIds) {
+        this.mIds = mIds;
+    }
+
     public int getCount() {
-        return mThumbIds.size();
+        return mThumbPictures.size();
     }
 
     public Object getItem(int position) {
@@ -52,7 +61,7 @@ class FavouritesImageAdapter extends BaseAdapter {
             TextView textView = (TextView)grid.findViewById(R.id.grid_text);
             ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
             textView.setText(mThumbNames.get(position));
-            new DownloadImageTask(imageView).execute(mThumbIds.get(position));
+            new DownloadImageTask(imageView).execute(mThumbPictures.get(position));
 
         } else {
             grid = convertView;
@@ -60,12 +69,12 @@ class FavouritesImageAdapter extends BaseAdapter {
         return (grid);
     }
 
-    public List<String> getmThumbIds() {
-        return mThumbIds;
+    public List<String> getmThumbPictures() {
+        return mThumbPictures;
     }
 
-    public void setmThumbIds(List<String> mThumbIds) {
-        this.mThumbIds = mThumbIds;
+    public void setmThumbPictures(List<String> mThumbPictures) {
+        this.mThumbPictures = mThumbPictures;
     }
 
     public List<String> getmThumbNames() {

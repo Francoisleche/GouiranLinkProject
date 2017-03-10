@@ -1,7 +1,11 @@
 package com.example.franois.gouiranlinkproject.Account;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,10 +19,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +40,10 @@ import com.example.franois.gouiranlinkproject.ToolsClasses.PutRequest;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -50,6 +60,16 @@ public class EditAccountFragment extends Fragment {
 
     private Customer customer;
 
+    String birth_date;
+    String email;
+    String phone;
+    String mobile_phone;
+    String country;
+    String city;
+    String post_code;
+    String address;
+    String profession;
+    String[] gender;
 
     private OnFragmentInteractionListener mListener;
 
@@ -71,12 +91,14 @@ public class EditAccountFragment extends Fragment {
             customer = (Customer) getArguments().getSerializable("Customer");
         }
         fragmentManager = getActivity().getSupportFragmentManager();
+        gender = new String[1];
     }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_edit_account, container, false);
+
 
         customer = new GetCustomerProfile().getCustomerProfile(customer.getToken());
         ImageView imageView = (ImageView) root.findViewById(R.id.profile_picture);
@@ -97,10 +119,10 @@ public class EditAccountFragment extends Fragment {
         textView = (TextView) root.findViewById(R.id.value_gender);
         switch (customer.getGender()) {
             case "M":
-                textView.setText("Homme");
+                textView.setText(R.string.male);
                 break;
             case "F":
-                textView.setText("Femme");
+                textView.setText(R.string.female);
                 break;
             default:
                 textView.setText(getString(R.string.not_known));
@@ -209,6 +231,7 @@ public class EditAccountFragment extends Fragment {
             textView.setText(customer.getPost_code());
 
 
+
         Button modify = (Button) root.findViewById(R.id.modify);
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,43 +258,109 @@ public class EditAccountFragment extends Fragment {
             }
         });
 
-        EditText editText = (EditText) root.findViewById(R.id.edit_value_gender);
-        final String gender = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_birth_date);
-        final String birth_date = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_email);
-        String email = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_phone);
-        final String phone = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_mobile_phone);
-        final String mobile_phone = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_country);
-        final String country = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_city);
-        final String city = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_post_code);
-        final String post_code = editText.getText().toString();
+        Spinner spinner = (Spinner) root.findViewById(R.id.gender_spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                gender[0] = parent.getItemAtPosition(position).toString();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        if (customer.getGender().equals("F")) {
+            spinner.setSelection(1);
+        }
+        else if (customer.getGender().equals("M"))
+            spinner.setSelection(0);
+        else
+            Toast.makeText(getActivity(), "GENDER=[" + customer.getGender() + "]", Toast.LENGTH_SHORT).show();
+        /*EditText editText = (EditText) root.findViewById(R.id.edit_value_gender);
+        editText.setHint(((TextView) root.findViewById(R.id.value_gender)).getText());
+
+        final String gender = editText.getText().toString();*/
+        EditText editText = (EditText) root.findViewById(R.id.edit_value_birth_date);
+        editText.setHint(((TextView) root.findViewById(R.id.value_birth_date)).getText());
+        birth_date = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_email);
+        editText.setHint(((TextView) root.findViewById(R.id.value_email)).getText());
+        email = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_phone);
+        editText.setHint(((TextView) root.findViewById(R.id.value_phone)).getText());
+        phone = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_mobile_phone);
+        editText.setHint(((TextView) root.findViewById(R.id.value_mobile_phone)).getText());
+        mobile_phone = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_country);
+        editText.setHint(((TextView) root.findViewById(R.id.value_country)).getText());
+        country = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_city);
+        editText.setHint(((TextView) root.findViewById(R.id.value_city)).getText());
+        city = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_post_code);
+        editText.setHint(((TextView) root.findViewById(R.id.value_post_code)).getText());
+        post_code = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_address);
+        editText.setHint(((TextView) root.findViewById(R.id.value_address)).getText());
+        address = editText.getText().toString();
+        editText = (EditText) root.findViewById(R.id.edit_value_profession);
+        editText.setHint(((TextView) root.findViewById(R.id.value_profession)).getText());
+        profession = editText.getText().toString();
+
+        if (birth_date.isEmpty() || birth_date.equals("") || birth_date == null)
+            birth_date = customer.getBirthday_date();
+        if (phone.isEmpty() || phone.equals("") || phone == null)
+            phone = customer.getPhone();
+        if (mobile_phone.isEmpty() || mobile_phone.equals("") || mobile_phone == null)
+            mobile_phone = customer.getMobilephone();
+        if (country.isEmpty() || country.equals("") || country == null)
+            country = customer.getCountry();
+        if (city.isEmpty() || city.equals("") || city == null)
+            city = customer.getCity();
+        if (address.isEmpty() || address.equals("") || address == null)
+            address = customer.getAddress();
+        if (profession.isEmpty() || profession.equals("") || profession == null)
+            Toast.makeText(getActivity(), profession, Toast.LENGTH_SHORT).show();
+            //profession = customer.getProfession().getName();
+        if (post_code.isEmpty() || post_code.equals("") || post_code == null)
+            post_code = customer.getPost_code();
+        if (email.isEmpty() || email.equals("") || email == null)
+            email = customer.getEmail();
+        Toast.makeText(getActivity(), "1- gender = [" + gender[0] + "]", Toast.LENGTH_SHORT).show();
+        if (gender[0] == null || gender[0].isEmpty() || gender[0].equals(""))
+            gender[0] = customer.getGender();
+        Toast.makeText(getActivity(), "2- gender = [" + gender[0] + "]", Toast.LENGTH_SHORT).show();
         Button confirm = (Button) root.findViewById(R.id.confirm);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
+                    Toast.makeText(getActivity(), "3- gender = [" + gender[0] + "]", Toast.LENGTH_SHORT).show();
+                    if (gender != null && gender[0].equals("Homme"))
+                        gender[0] = "M";
+                    else if (gender != null && gender[0].equals("Femme"))
+                        gender[0] = "F";
+
                     String json = "{\n" +
-                            "\"email\":\"" + customer.getEmail() + "\",\n" +
+                            "\"email\":\"" + email + "\",\n" +
                             "\"name\":\"" + customer.getName() + "\",\n" +
                             "\"surname\":\"" + customer.getSurname() + "\",\n" +
-                            "\"gender\":\"" + gender + "\",\n" +
                             "\"birthday_date\":\"" + birth_date + "\",\n" +
                             "\"phone\":\"" + phone + "\",\n" +
+                            "\"gender\":\"" + gender[0] + "\",\n" +
                             "\"mobilephone\":\"" + mobile_phone + "\",\n" +
                             "\"country\":\"" + country + "\",\n" +
                             "\"city\":\"" + city + "\",\n" +
+                            "\"address\":\"" + address + "\",\n" +
+                            //TODO "\"profession\":\"" + profession + "\",\n" +
                             "\"post_code\":\"" + post_code + "\"\n" +
                             "}\n";
                     String resp;
                     PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json, "Authorization", "Token " + customer.getToken());
                     resp = putRequest.execute().get();
+                    Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
                     Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_LONG).show();
                     Log.d("reponse", resp);
                     customer = new GetCustomerProfile().getCustomerProfile(customer.getToken(), customer);

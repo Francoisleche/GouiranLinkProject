@@ -66,7 +66,7 @@
                             android:paddingLeft="5dip"
                             android:paddingRight="5dip"
                             android:paddingTop="5dip"
-                            android:text="recherche" />
+                            android:hint="recherche" />
 
                         <EditText
                             android:id="@+id/upcoming_provider_name_1"
@@ -80,7 +80,7 @@
                             android:paddingLeft="5dip"
                             android:paddingRight="5dip"
                             android:paddingTop="5dip"
-                            android:text="pro" />
+                            android:hint="pro"/>
 
 
                         <CheckBox

@@ -123,7 +123,7 @@ public class RetrieveCustomerInformationFromRequest implements Serializable {
             address = user.getString("address");
             post_code = user.getString("post_code");
             city = user.getString("city");
-            country = user.getString("phone");
+            country = user.getString("country");
             geoloc_latitude = user.getString("geoloc_latitude");
             geoloc_longitude = user.getString("geoloc_longitude");
             sms = user.getBoolean("sms");

@@ -12,43 +12,43 @@ public class Customer extends PublicCustomer implements Serializable {
 
 
 
-    private String created_at;
-    private String updated_at;
+    private String created_at = null;
+    private String updated_at = null;
     private boolean has_subscribed;
     private boolean share_with_professional;
     private boolean blocked;
     //F or M
-    private String gender;
-    private String phone;
-    private String mobilephone;
-    private String birthday_date;
+    private String gender = null;
+    private String phone = null;
+    private String mobilephone = null;
+    private String birthday_date = null;
 
-    private String address;
-    private String post_code;
-    private String city;
-    private String country;
+    private String address = null;
+    private String post_code = null;
+    private String city = null;
+    private String country = null;
 
-    private String geoloc_latitude;
-    private String geoloc_longitude;
+    private String geoloc_latitude = null;
+    private String geoloc_longitude = null;
 
     private boolean sms;
     private boolean newsletter;
 
     private Customer_Profession profession;
-    private String profession_other;
-    private String language;
+    private String profession_other = null;
+    private String language = null;
 
     private Image_N image_customer;
 
     private Product_Category_WithoutTree[] product_categories;
 
-    private String email;
+    private String email = null;
 
     private boolean mGouiranLink;
     private boolean mFacebook;
     private boolean mGoogle;
 
-    private String token;
+    private String token = null;
 
     public Customer(int id, String name, String surname, Image_N image, String created_at, String updated_at, boolean has_subscribed, boolean share_with_professional, boolean blocked,
                     String gender, String phone, String mobilephone, String birthday_date, String address, String post_code, String city,

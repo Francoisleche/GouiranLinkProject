@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -86,12 +87,11 @@ public class GouiranStart extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(GouiranStart.this, LoginActivity.class);
                                 startActivity(intent);
+                                finish();
                             }
                         });
                 AlertDialog dialog = builder.create();
-                dialog.show();
-
-
+                isFirstTime(dialog);
             }
         }, 1500);
     }
@@ -101,5 +101,24 @@ public class GouiranStart extends AppCompatActivity {
         // TODO Auto-generated method stub
         super.onPause();
         finish();
+    }
+
+    private boolean isFirstTime(AlertDialog dialog) {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        boolean ranBefore = preferences.getBoolean("RanBefore", false);
+        if (!ranBefore) {
+            //show dialog if app never launch
+            dialog.show();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("RanBefore", true);
+            editor.commit();
+        }
+        else
+        {
+            Intent intent = new Intent(GouiranStart.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return !ranBefore;
     }
 }

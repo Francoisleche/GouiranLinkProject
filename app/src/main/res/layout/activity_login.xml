@@ -219,7 +219,7 @@
                             android:id="@+id/fb"
                             android:layout_width="100dp"
                             android:layout_height="50dp"
-                            android:background="@drawable/facebook2"
+                            android:background="@drawable/logo_facebook_border"
                             android:onClick="onClick"
                             android:textColor="#ffffff"
                             android:visibility="visible"
@@ -242,7 +242,7 @@
                             android:id="@+id/google"
                             android:layout_width="100dp"
                             android:layout_height="50dp"
-                            android:background="@drawable/google_plus"
+                            android:background="@drawable/logo_google_plus_border"
                             android:onClick="onClick"
                             android:textColor="#ffffff"
                             android:textStyle="bold" />

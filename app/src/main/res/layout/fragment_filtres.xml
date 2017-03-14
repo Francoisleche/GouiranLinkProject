@@ -20,9 +20,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:text="Filtres"
+                android:background="@color/GouiranLightPink"
                 android:gravity="center"
+                android:layout_gravity="center_horizontal"
                 android:textSize="25sp"
-                android:background="@color/GouiranLightBlue"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
             <View
                 android:layout_width="fill_parent"

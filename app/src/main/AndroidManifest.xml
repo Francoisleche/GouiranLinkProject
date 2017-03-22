@@ -22,6 +22,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo_gouiran_link_pink"
@@ -56,9 +57,6 @@
         <activity android:name=".AndroidCameraApi" />
         <activity android:name=".Recherche.MapPane" />
         <activity android:name=".Recherche.FilterActivity" />
-        <activity android:name=".Rendezvous.PrendreRdv" />
-        <activity android:name=".Rendezvous.AutresPrestations" />
-        <activity android:name=".Rendezvous.Recapitulatif" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:label="@string/app_name"

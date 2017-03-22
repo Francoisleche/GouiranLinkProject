@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/section1_bg"
     android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
@@ -10,7 +11,7 @@
         android:text="Donner votre avis"
         android:gravity="center"
         android:textSize="25sp"
-        android:background="@color/GouiranLightBlue"
+        android:background="@color/GouiranLightPink"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 <ScrollView
     android:layout_width="match_parent"

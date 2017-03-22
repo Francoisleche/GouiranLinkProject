@@ -1,6 +1,15 @@
 package com.example.franois.gouiranlinkproject.Gallery;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,12 +18,22 @@ import android.widget.ImageView;
 
 import com.example.franois.gouiranlinkproject.R;
 
+import java.io.File;
+
+import static java.security.AccessController.getContext;
+
 /*
 Represents the grid for the gallery
  */
 
 class ImageAdapter extends BaseAdapter {
     final private Context mContext;
+    static final int PICK_IMAGE_REQUEST = 1;
+    public static final int IMAGE_GALLERY_REQUEST = 20;
+
+    final File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"*/.jpg");
+    final File file2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Stagiaire.png");
+
 
     ImageAdapter(Context c) {
         mContext = c;
@@ -50,7 +69,7 @@ class ImageAdapter extends BaseAdapter {
 
     // references to our images
     final private Integer[] mThumbIds = {
-            R.drawable.cb650f, R.drawable.er6n,
+            R.drawable.imagegouiranlink1,
             R.drawable.gsxr, R.drawable.h2r,
             R.drawable.kawa, R.drawable.tiger,
             R.drawable.zzr1400,
@@ -62,4 +81,7 @@ class ImageAdapter extends BaseAdapter {
             R.drawable.gsxr, R.drawable.h2r,
             R.drawable.kawa, R.drawable.tiger
     };
+
+
+
 }

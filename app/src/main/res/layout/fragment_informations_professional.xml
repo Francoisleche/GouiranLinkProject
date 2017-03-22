@@ -14,24 +14,24 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                tools:context="com.example.franois.gouiranlinkproject.Recherche.MapPane" />
+                android:layout_height="200dp" />
 
-        <TextView
+
+            <TextView
+            android:id="@+id/shop_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Beauté Romaine"
+            android:text="..."
             android:textSize="30dp"
             android:textStyle="bold"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"/>
         <TextView
+            android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -40,6 +40,7 @@
             android:textStyle="bold"
             android:layout_gravity="center"/>
         <TextView
+            android:id="@+id/post_code_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -56,11 +57,13 @@
                 android:layout_marginTop="20dp">
 
                 <Button
+                    android:id="@+id/shop_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Message"/>
 
                 <Button
+                    android:id="@+id/shop_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Appel"/>
@@ -76,6 +79,7 @@
                 android:layout_gravity="center"/>
 
             <TextView
+                android:id="@+id/shop_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -99,7 +103,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Du 1er au 15 Juin"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:layout_gravity="center"/>
@@ -113,10 +116,10 @@
                 android:textStyle="bold"
                 android:layout_gravity="center"/>
             <TextView
+                android:id="@+id/horaires"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Lundi 9h-12h / 14h15h"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:layout_gravity="center"/>

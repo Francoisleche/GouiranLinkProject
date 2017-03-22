@@ -30,6 +30,10 @@ public class PublicProfessional {
     private Professional_Unavailability[] unavailabilities;
     private Professional_Schedule[] schedule;
 
+    public PublicProfessional(){
+
+    }
+
     public PublicProfessional(String shop_name, Product_Category_Tag[] tags, String shop_description, Product_Category_Specialty specialty,
                               String address, String post_code, String city, String country, Professional_Type type, String shop_phone,
                               String shop_email, String website_link, String facebook_link, String instagram_link, String pinterest_link,

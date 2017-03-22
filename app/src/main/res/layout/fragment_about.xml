@@ -7,10 +7,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:text="A propos"
+        android:text="A Propos"
         android:gravity="center"
         android:textSize="25sp"
-        android:background="@color/GouiranLightBlue"
+        android:background="@color/GouiranLightPink"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <TextView

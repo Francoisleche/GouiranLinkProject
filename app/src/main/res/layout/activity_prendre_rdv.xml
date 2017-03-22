@@ -1,73 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/autres_prestations"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ajout d'une autre prestation"/>
+        android:orientation="horizontal"
+        android:weightSum="3">
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choississez votre employé"/>
-    <Spinner
-        android:id="@+id/liste_employe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </Spinner>
-</LinearLayout>
-
-    <CalendarView
-        android:id="@+id/jourouverture"
-        android:layout_width="fill_parent"
-        android:layout_height="360dp"
-        android:layout_marginBottom="10dp"
-        android:background="@xml/customborder"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Selectionner une heure :"/>
-
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="3"
+            android:background="@color/GouiranLightPink"
+            android:gravity="center"
+            android:text="Prendre Rendez Vous"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp">
-
-
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/autres_prestations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ajout d'une autre prestation" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="8h30-9h30"/>
+                    android:id="@+id/somme_prestations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="35sp"/>
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="9h30-10h30"/>
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="10h30-11h30"/>
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="11h30-12h30"/>
+                    android:id="@+id/duree_prestations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="35sp"/>
 
             </LinearLayout>
 
@@ -75,45 +63,116 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="14h30-15h30"/>
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="15h30-16h30"/>
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="16h30-17h30"/>
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:text="17h30-18h30"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choississez votre employé" />
 
-
-
+                <Spinner
+                    android:id="@+id/liste_employe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></Spinner>
             </LinearLayout>
 
-            <Button
-                android:id="@+id/reserver"
+            <CalendarView
+                android:id="@+id/jourouverture"
+                android:layout_width="fill_parent"
+                android:layout_height="360dp"
+                android:layout_marginBottom="10dp"
+                android:background="@xml/customborder" />
+
+            <TextView
+                android:id="@+id/heure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="RESERVER"/>
+                android:text="Selectionner une heure :" />
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:text="8h30-9h30" />
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:text="9h30-10h30" />
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:text="10h30-11h30" />
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:text="11h30-12h30" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:text="14h30-15h30" />
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:text="15h30-16h30" />
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:text="16h30-17h30" />
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:text="17h30-18h30" />
+
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/reserver"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="RESERVER" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
 
         </LinearLayout>
-    </HorizontalScrollView>
-
-
-
-
-
+    </ScrollView>
 
 
 </LinearLayout>

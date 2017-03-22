@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/section1_bg"
     android:weightSum="1">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_weight="0.07"
-        android:background="@color/GouiranLightBlue"
+        android:background="@color/GouiranLightPink"
         android:gravity="center"
         android:text="Parametres"
         android:textSize="25sp"

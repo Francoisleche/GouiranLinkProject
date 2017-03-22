@@ -3,6 +3,7 @@ package com.example.franois.gouiranlinkproject.Account;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.Object.Customer;
@@ -54,6 +56,22 @@ public class MainSettings extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main_settings, container, false);
+
+        TextView textView = (TextView) root.findViewById(R.id.identifiantcustomer);
+        String name = "";
+        if (customer.getName().equals("null"))
+            name += getString(R.string.not_known);
+        else
+            name += customer.getName();
+        name += " ";
+        if (customer.getSurname().equals("null"))
+            name += getString(R.string.not_known);
+        else
+            name += customer.getSurname();
+        textView.setText(name);
+
+
+
 
         Button inviteFriends = (Button)root.findViewById(R.id.invite_friends);
         inviteFriends.setOnClickListener(new View.OnClickListener() {

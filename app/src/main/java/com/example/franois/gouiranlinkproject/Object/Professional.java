@@ -1,11 +1,13 @@
 package com.example.franois.gouiranlinkproject.Object;
 
+import java.io.Serializable;
+
 /**
  * Created by François on 20/01/2017.
  */
 
 
-public class Professional extends PublicProfessional{
+public class Professional extends PublicProfessional implements Serializable {
 
     private int id;
     private Professional_Acquisition professional_acquisition;
@@ -31,6 +33,9 @@ public class Professional extends PublicProfessional{
     private Discount_Exclusivity discount_exclusivity;
     private Resource_Type preference_resource_type;
     private String sponsoring_key;
+
+    public Professional(){
+    }
 
 
     public Professional(String shop_name, Product_Category_Tag[] tags, String shop_description, Product_Category_Specialty specialty,
@@ -254,4 +259,26 @@ public class Professional extends PublicProfessional{
     public void setSponsoring_key(String sponsoring_key) {
         this.sponsoring_key = sponsoring_key;
     }
+
+
+    public String toString(){
+        //Pas d'image logo, penser à la mettre
+
+        String s = "Professionnal [ id:" + String.valueOf(id)+ ",Professional_Acquisition :"+
+                " ,Latitude : "+String.valueOf(geoloc_latitude)+" ,Longitude : "+String.valueOf(geoloc_longitude)+ ", max_intervention_distance:"+String.valueOf(max_intervention_distance)+
+                ",logo_image :"+ "...."+",automatic_booking_confirmation : "+ String.valueOf(automatic_booking_confirmation) + ",customer_can_choose_resource_booking : "+String.valueOf(customer_can_choose_resource_booking)+
+                ",created_at:"+String.valueOf(created_at)+",updated_at:"+String.valueOf(updated_at)+",Professional_Subscription_Type:"+String.valueOf(professional_subscription_type)+
+                ",notification_preferences_sms:"+String.valueOf(notification_preferences_sms)+",sms_happybirthday_enabled:"+String.valueOf(sms_happybirthday_enabled)+",sms_happybirthday_sender:"+String.valueOf(sms_happybirthday_sender)+
+                ",sms_happybirthday_content:"+String.valueOf(sms_happybirthday_content)+",sms_fidelity_enabled:"+String.valueOf(sms_fidelity_enabled)+",sms_fidelity_sender"+
+                ",sms_fidelity_content:"+String.valueOf(sms_fidelity_content)+",sms_remember_booking_enabled:"+String.valueOf(sms_remember_booking_enabled)+",discount_exclusivity"+String.valueOf(discount_exclusivity)+
+                ",preference_resource_type:"+String.valueOf(preference_resource_type)+",sponsoring_key:"+String.valueOf(sponsoring_key);
+
+
+        return s;
+    }
+
+
+
+
+
 }

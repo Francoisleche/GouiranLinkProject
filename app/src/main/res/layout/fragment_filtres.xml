@@ -22,7 +22,7 @@
                 android:text="Filtres"
                 android:gravity="center"
                 android:textSize="25sp"
-                android:background="@color/GouiranLightBlue"
+                android:background="@color/GouiranLightPink"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
             <View
                 android:layout_width="fill_parent"

@@ -1,16 +1,21 @@
 package com.example.franois.gouiranlinkproject.Object;
 
+import java.io.Serializable;
+
 /**
  * Created by François on 20/01/2017.
  */
 
-public class Product_Category_WithoutTree {
+public class Product_Category_WithoutTree implements Serializable{
 
     private int id;
     private String name;
     private Product_Category_Tag[] tags;
     private String created_at;
     private String updated_at;
+
+    public Product_Category_WithoutTree(){
+    }
 
     public Product_Category_WithoutTree(int id,String name,Product_Category_Tag[] tags,String created_at,String updated_at){
         this.setId(id);

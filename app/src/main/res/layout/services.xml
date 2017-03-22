@@ -4,5 +4,8 @@
     android:text="TextView"
     android:id="@+id/montexte"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="80dp"
+    android:theme="@style/result_research"
+    android:textSize="30sp"
+    android:gravity="center"
     />

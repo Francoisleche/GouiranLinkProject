@@ -2,17 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/section1_bg"
     tools:context="com.example.franois.gouiranlinkproject.Account.NestedSettingsFragment">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Recherche"
-            android:gravity="center"/>
+            android:layout_width="match_parent"
+            android:text="Paramètres"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:background="@color/GouiranLightPink"
+            android:textSize="25sp"/>
 
         <Switch
             android:layout_width="wrap_content"
@@ -38,14 +42,52 @@
             android:layout_marginTop="20dp"
             android:text="Erreur rencontrée sur l'application" />
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5px"
+            android:background="#FF909090"
+            android:layout_marginTop="20dp" />
 
         <TextView
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:id="@+id/versionsmartphone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Version ..."
             android:gravity="center"/>
 
+        <TextView
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:id="@+id/modelsmartphone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:id="@+id/nomsmartphone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:id="@+id/manufacturersmartphone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5px"
+            android:background="#FF909090"
+            android:layout_marginTop="20dp" />
+
         <Button
+            android:layout_marginTop="20dp"
             android:id="@+id/logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

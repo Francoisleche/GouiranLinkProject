@@ -11,7 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+
+import com.example.franois.gouiranlinkproject.Object.Professional;
+import com.example.franois.gouiranlinkproject.Object.Professional_Product;
 import com.example.franois.gouiranlinkproject.R;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 
 /**
@@ -22,13 +26,33 @@ public class ProfessionalView extends Fragment {
 
     FrameLayout simpleFrameLayout;
     TabLayout tabLayout;
+    private Professional professional;
+    private Professional_Product[] professional_product;
+
+
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            professional = (Professional)getArguments().getSerializable("Professionnal");
+            professional_product = (Professional_Product[])getArguments().getSerializable("ProfessionnalProduct");
+        }
+
+        System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
+
+
+        Fragment fragment = null;
+        Bundle args = new Bundle();
+        args.putSerializable("Professionnal", professional);
+        args.putSerializable("ProfessionnalProduct", professional_product);
+        fragment = new ServicesProfessional();
+        fragment.setArguments(args);
+
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.simpleFrameLayout,new ServicesProfessional());
+        ft.replace(R.id.simpleFrameLayout,fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
 
@@ -52,20 +76,29 @@ public class ProfessionalView extends Fragment {
         // LES 2 fonctionnent !
         //tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
             Fragment fragment = null;
+
+
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //viewPager.setCurrentItem(tab.getPosition());
+                Bundle args = new Bundle();
+                args.putSerializable("Professionnal", professional);
+
                 Log.i("TAG", "onTabSelected: " + tab.getPosition());
                 switch (tab.getPosition()) {
                     case 0:
                         fragment = new ServicesProfessional();
+                        fragment.setArguments(args);
                         break;
                     case 1:
                         fragment = new AvisProfessional();
+                        fragment.setArguments(args);
                         break;
                     case 2:
                         fragment = new InformationsProfessional();
+                        fragment.setArguments(args);
                         break;
                 }
 
@@ -98,6 +131,10 @@ public class ProfessionalView extends Fragment {
 
     }
 
+
+
+    public interface OnFragmentInteractionListener {
+    }
 
 }
 

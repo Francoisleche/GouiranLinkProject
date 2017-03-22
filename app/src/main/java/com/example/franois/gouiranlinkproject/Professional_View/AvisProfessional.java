@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.franois.gouiranlinkproject.Object.Professional;
 import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.Recherche.ResearchFragment;
 import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
@@ -21,6 +22,7 @@ public class AvisProfessional extends Fragment{
 
     private GetRequest getRequest;
     private ResearchFragment.ResearchTask mAuthTask = null;
+    private Professional professional;
 
     public AvisProfessional(){
 // Required empty public constructor
@@ -29,7 +31,12 @@ public class AvisProfessional extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //Récupération de l'objet Professionnal
+        if (getArguments() != null) {
+            professional = (Professional)getArguments().getSerializable("Professionnal");
+        }
+        System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
+        //
     }
 
     @Override

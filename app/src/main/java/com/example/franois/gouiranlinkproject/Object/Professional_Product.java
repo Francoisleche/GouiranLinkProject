@@ -1,10 +1,12 @@
 package com.example.franois.gouiranlinkproject.Object;
 
+import java.io.Serializable;
+
 /**
  * Created by François on 20/01/2017.
  */
 
-public class Professional_Product {
+public class Professional_Product implements Serializable{
 
     private int id;
     private String name;
@@ -21,6 +23,10 @@ public class Professional_Product {
     private String updated_at;
 
     private Discount[] discount;
+
+    public Professional_Product(){
+
+    }
 
     public Professional_Product(int id, String name, double price, String currency, String duration, String description, String deleted_at,
                                 Product product, String created_at, String updated_at, Discount[] discount){

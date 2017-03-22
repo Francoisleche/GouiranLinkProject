@@ -10,6 +10,10 @@ public class GenericSchedule {
     private String begin_time;
     private String end_time;
 
+    public GenericSchedule(){
+
+    }
+
     public GenericSchedule(int weekday,String begin_time,String end_time){
         this.setWeekday(weekday);
         this.setBegin_time(begin_time);

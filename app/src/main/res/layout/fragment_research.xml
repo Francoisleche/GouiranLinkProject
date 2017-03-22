@@ -21,8 +21,8 @@
                 android:id="@+id/text_Recherche"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/GouiranLightBlue"
                 android:gravity="center"
+                android:background="@color/GouiranLightPink"
                 android:text="Recherche"
                 android:textSize="25sp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -51,52 +51,91 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:gravity="center"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:weightSum="1.0">
 
-                        <EditText
-                            android:id="@+id/bonjour_recherche"
-                            android:layout_width="150dip"
+                        <TextView
+                            android:layout_marginTop="20dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.5"
-                            android:background="@xml/custom_border_avis"
-                            android:gravity="start"
-                            android:paddingBottom="5dip"
-                            android:paddingLeft="5dip"
-                            android:paddingRight="5dip"
-                            android:paddingTop="5dip"
-                            android:hint="recherche" />
-
-                        <EditText
-                            android:id="@+id/upcoming_provider_name_1"
-                            android:layout_width="150dip"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.5"
-                            android:background="@xml/custom_border_avis"
-                            android:gravity="start"
-                            android:paddingBottom="5dip"
-                            android:paddingLeft="5dip"
-                            android:paddingRight="5dip"
-                            android:paddingTop="5dip"
-                            android:hint="pro"/>
-
-
-                        <CheckBox
-                            android:id="@+id/chkIos"
+                            android:gravity="center"
+                            android:text="Je recherche"
+                            android:textSize="25sp" />
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="A proximité" />
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0"
+                            android:background="@drawable/back"
+                            android:gravity="start"
+                            android:paddingBottom="5dip"
+                            android:paddingLeft="5dip"
+                            android:paddingRight="5dip"
+                            android:paddingTop="5dip">
+                            <EditText
+                                android:id="@+id/bonjour_recherche"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.5"
+                                android:hint="recherche" />
+
+                            <ImageView
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_weight="1"
+                                android:clickable="false"
+                                android:background="@drawable/ic_search_black_24dp"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_marginTop="20dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="à"
+                            android:textSize="25sp" />
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal"
+                            android:weightSum="1.0"
+                            android:background="@drawable/back"
+                            android:gravity="start"
+                            android:paddingBottom="5dip"
+                            android:paddingLeft="5dip"
+                            android:paddingRight="5dip"
+                            android:paddingTop="5dip">
+                            <EditText
+                                android:id="@+id/upcoming_provider_name_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.5"
+                                android:hint="pro"/>
+
+                            <ImageView
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_weight="1"
+                                android:clickable="false"
+                                android:background="@drawable/ic_search_black_24dp"/>
+                        </LinearLayout>
+
+
                     </LinearLayout>
 
                     <View
+                        android:layout_marginTop="20dp"
                         android:layout_width="fill_parent"
                         android:layout_height="5px"
                         android:background="#FF909090" />
 
 
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
@@ -182,7 +221,7 @@
                             android:layout_weight="1"
                             android:text="Aucune donnée"
                             android:theme="@style/result_research"/>
-                    </LinearLayout>
+                    </LinearLayout>-->
 
                     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="match_parent"
@@ -193,7 +232,9 @@
                         <ListView
                             android:id="@+id/mesresultats"
                             android:layout_width="fill_parent"
-                            android:layout_height="600px"></ListView>
+                            android:layout_height="800px"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"></ListView>
 
                     </LinearLayout>
 

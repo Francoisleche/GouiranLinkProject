@@ -1,10 +1,12 @@
 package com.example.franois.gouiranlinkproject.Object;
 
+import java.io.Serializable;
+
 /**
  * Created by François on 20/01/2017.
  */
 
-public class Product {
+public class Product implements Serializable{
 
     private int id;
     private String name;
@@ -18,6 +20,10 @@ public class Product {
     private boolean enabled;
     private String created_at;
     private String updated_at;
+
+    public Product(){
+
+    }
 
     public Product(int id, String name, Product_Category_WithoutTree category, double price, String currency, String color, String duration,
                    String description, boolean enabled, String created_at, String updated_at){

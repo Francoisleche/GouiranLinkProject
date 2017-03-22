@@ -3,6 +3,7 @@ package com.example.franois.gouiranlinkproject.Account;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity;
@@ -63,6 +65,43 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_nested_settings, container, false);
         Button logoutButton = (Button) root.findViewById(R.id.logout);
+
+        TextView textViewversion = (TextView) root.findViewById(R.id.versionsmartphone);
+        TextView textViewmodel = (TextView) root.findViewById(R.id.modelsmartphone);
+        TextView textViewnom = (TextView) root.findViewById(R.id.nomsmartphone);
+        TextView textViewmanufacturer = (TextView) root.findViewById(R.id.manufacturersmartphone);
+
+
+        //Information du smartphone
+        System.out.println(Build.HARDWARE);
+        System.out.println(Build.VERSION.CODENAME);
+        System.out.println(Build.VERSION.BASE_OS);
+        System.out.println(Build.VERSION.INCREMENTAL);
+        System.out.println(Build.VERSION.SDK_INT);
+        System.out.println(Build.VERSION.SDK);
+
+        System.out.println(Build.HOST);
+        System.out.println(Build.ID);
+        System.out.println(Build.DEVICE);
+        System.out.println(Build.DISPLAY);
+        System.out.println(Build.MANUFACTURER);
+        System.out.println(Build.MODEL);
+        System.out.println(Build.PRODUCT);
+        System.out.println(Build.SERIAL);
+
+        //String s = Build.HARDWARE;
+        String sdk = Build.VERSION.SDK;
+        String model = Build.MODEL;
+        String nom = Build.HOST;
+        String manufacturer = Build.MANUFACTURER;
+
+        textViewversion.setText("Version "+ sdk);
+        textViewmodel.setText("Model "+ model);
+        textViewnom.setText("Nom du telephone : "+ nom);
+        textViewmanufacturer.setText("Constructeur "+ manufacturer);
+
+
+
 
         if (customer != null && !customer.ismGouiranLink() && !customer.ismFacebook() && !customer.ismGoogle()) {
             logoutButton.setVisibility(View.GONE);

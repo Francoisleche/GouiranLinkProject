@@ -1,19 +1,23 @@
 package com.example.franois.gouiranlinkproject;
 
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.Account.AccountFragment;
 import com.example.franois.gouiranlinkproject.Favourites.FavouritesFragment;
@@ -21,6 +25,7 @@ import com.example.franois.gouiranlinkproject.Gallery.GalleryFragment;
 import com.example.franois.gouiranlinkproject.Homepage.HomeFragment;
 import com.example.franois.gouiranlinkproject.NavigationDrawer.CustomDrawerAdapter;
 import com.example.franois.gouiranlinkproject.NavigationDrawer.DrawerItem;
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.Recherche.ResearchFragment;
 import com.example.franois.gouiranlinkproject.Reservation.ReservationFragment;
 import com.example.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
@@ -29,6 +34,8 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +54,10 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
 
     private List<DrawerItem> dataList;
 
+    private FileOutputStream fileOutputStream = null;
 
-    private MyCustomer myCustomer;
+    //private MyCustomer myCustomer;
+    private Customer customer;
 
     private GoogleApiClient client;
 
@@ -58,16 +67,18 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent);
 
+        /*//TODO Remove delete file
+        this.deleteFile("GouiranLink");*/
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            myCustomer = (MyCustomer)getIntent().getSerializableExtra("MyCustomer");
+            customer = (Customer)getIntent().getSerializableExtra("Customer");
             /*String surname = myCustomer.getSurname();
             String name = myCustomer.getName();
             Boolean facebook = myCustomer.getArray()[0];*/
 
-            String access_token = b.getString("access_token");
+            /*String access_token = b.getString("access_token");
             String mEmail = b.getString("username");
-            boolean connected = b.getBoolean("connected");
+            boolean connected = b.getBoolean("connected");*/
         }
 
         // Initializing
@@ -94,7 +105,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
 
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.logo_gouiran_link_24dp);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
 
 
         // set up the drawer's list view with items and click listener
@@ -107,9 +118,8 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         mDrawerToggle = new android.support.v4.app.ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open,
+                R.drawable.ic_dehaze_black_24dp, R.string.drawer_open,
                 R.string.drawer_close) {
             public void onDrawerClosed(View view) {
                 getSupportActionBar().setTitle(mTitle);
@@ -145,52 +155,51 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
 
         Fragment fragment = null;
         Bundle args = new Bundle();
-        args.putSerializable("MyCustomer", myCustomer);
+        args.putSerializable("Customer", customer);
 
         switch (possition) {
             case 0:
                 fragment = new HomeFragment();
                 fragment.setArguments(args);
-                /*args.putString(HomeFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(HomeFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
                 break;
             case 1:
                 fragment = new ResearchFragment();
-                /*args.putString(ResearchFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(ResearchFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
                 break;
             case 2:
-                fragment = new ReservationFragment();
-                /*args.putString(ReservationFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(ReservationFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
+                if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {
+                    fragment = new ReservationFragment();
+                    fragment.setArguments(args);
+                }
+                else {
+                    Toast.makeText(this, "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
+                    fragment = new HomeFragment();
+                    fragment.setArguments(args);
+                }
                 break;
             case 3:
-                fragment = new FavouritesFragment();
-                /*args.putString(FavouritesFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(FavouritesFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
+                if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {
+                    fragment = new FavouritesFragment();
+                    fragment.setArguments(args);
+                }
+                else {
+                    Toast.makeText(this, "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
+                    fragment = new HomeFragment();
+                    fragment.setArguments(args);
+                }
                 break;
             case 4:
                 fragment = new GalleryFragment();
-                /*args.putString(GalleryFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(GalleryFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
                 break;
             case 5:
-                fragment = new AccountFragment();
-                fragment.setArguments(args);
-                /*args.putString(AccountFragment.ITEM_NAME, dataList.get(possition)
-                        .getItemName());
-                args.putInt(AccountFragment.IMAGE_RESOURCE_ID, dataList.get(possition)
-                        .getImgResID());*/
+                if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {
+                    fragment = new AccountFragment();
+                    fragment.setArguments(args);
+                }
+                else {
+                    Toast.makeText(this, "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
+                    fragment = new HomeFragment();
+                    fragment.setArguments(args);
+                }
                 break;
             default:
                 break;

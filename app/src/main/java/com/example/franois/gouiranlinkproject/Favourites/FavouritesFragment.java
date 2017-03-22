@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
 
 import java.util.ArrayList;
@@ -20,8 +21,13 @@ import java.util.List;
 
 import static com.example.franois.gouiranlinkproject.ToolsClasses.BaseFragment.ARGS_INSTANCE;
 
+/*
+Fragment which contains "Mes coups de coeur" and "Mes pros"
+ */
+
 public class FavouritesFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
+    Customer customer;
 
     public FavouritesFragment() {
         // Required empty public constructor
@@ -38,6 +44,7 @@ public class FavouritesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            customer = (Customer) getArguments().getSerializable("Customer");
         }
 
     }
@@ -56,8 +63,8 @@ public class FavouritesFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(new MyProsFragment(), "Mes Pros");
-        adapter.addFragment(new MyCrushes(), "Mes Coups de Coeur");
+        adapter.addFragment(new MyProsFragment(), getString(R.string.my_pros));
+        adapter.addFragment(new MyCrushes(), getString(R.string.my_crushes));
         viewPager.setAdapter(adapter);
     }
 
@@ -80,6 +87,9 @@ public class FavouritesFragment extends Fragment {
         }
 
         void addFragment(Fragment fragment, String title) {
+            Bundle args = new Bundle();
+            args.putSerializable("Customer", customer);
+            fragment.setArguments(args);
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
@@ -93,7 +103,6 @@ public class FavouritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favourites, container, false);
     }
 
@@ -120,8 +129,6 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Set title
-        getActivity()
-                .setTitle(R.string.myFavourites);
+        getActivity().setTitle(R.string.myFavourites);
     }
 }

@@ -18,29 +18,26 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:id="@+id/scrollViewEdit"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="419dp"
-                android:src="@drawable/cb650f" />
+                android:id="@+id/profile_picture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="NOM PRENOM" />
-
-            <Button
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:text="Modifier Nom et prenom" />
+                android:layout_height="wrap_content"
+                android:id="@+id/name"
+                android:gravity="center"
+                android:textSize="20sp"/>
 
             <View
                 android:layout_width="fill_parent"
@@ -50,46 +47,55 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
 
                     <TextView
+                        android:id="@+id/key_private_informations"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Informations Privées" />
 
                     <TextView
+                        android:id="@+id/key_gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sexe" />
 
                     <TextView
+                        android:id="@+id/key_birth_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Date de Naissance" />
 
                     <TextView
+                        android:id="@+id/key_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Email" />
 
                     <TextView
+                        android:id="@+id/key_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Telephone" />
+                        android:text="Téléphone" />
 
                     <TextView
+                        android:id="@+id/key_mobile_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Verifications" />
+                        android:text="Téléphone Mobile" />
 
                     <TextView
+                        android:id="@+id/key_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mot de passe" />
@@ -98,50 +104,55 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="" />
+                        android:layout_height="wrap_content" />
 
                     <TextView
+                        android:id="@+id/value_gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sexe" />
 
                     <TextView
+                        android:id="@+id/value_birth_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Date de Naissance" />
 
                     <TextView
+                        android:id="@+id/value_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Email" />
 
                     <TextView
+                        android:id="@+id/value_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Telephone" />
 
                     <TextView
+                        android:id="@+id/value_mobile_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Verifications" />
+                        android:text="Téléphone Mobile" />
 
                     <TextView
+                        android:id="@+id/value_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mot de passe" />
+                        android:text="********" />
 
 
                 </LinearLayout>
             </LinearLayout>
-
 
 
             <View
@@ -150,44 +161,62 @@
                 android:background="#FF909090" />
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <LinearLayout
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="left"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/key_optional"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Informations Facultatives" />
 
                     <TextView
+                        android:id="@+id/key_country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pays" />
+
+                    <TextView
+                        android:id="@+id/key_city"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ville" />
 
                     <TextView
+                        android:id="@+id/key_post_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ecole" />
+                        android:text="Code Postal" />
 
                     <TextView
+                        android:id="@+id/key_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Emploi" />
+                        android:text="Adresse" />
+
+                    <TextView
+                        android:id="@+id/key_profession"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Profession" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -196,19 +225,34 @@
                         android:text="" />
 
                     <TextView
+                        android:id="@+id/value_country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pays" />
+
+                    <TextView
+                        android:id="@+id/value_city"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ville" />
 
                     <TextView
+                        android:id="@+id/value_post_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ecole" />
+                        android:text="Code Postal" />
 
                     <TextView
+                        android:id="@+id/value_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Emploi" />
+                        android:text="Adresse" />
+
+                    <TextView
+                        android:id="@+id/value_profession"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Profession" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -218,7 +262,318 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:text="Enregistrer" />
+                android:clickable="true"
+                android:id="@+id/modify"
+                android:text="Modifier profil" />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_profile_action"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/edit_profile_picture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit image"
+                android:id="@+id/edit_image"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_name"
+                android:gravity="center"
+                android:textSize="20sp"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="5px"
+                android:background="#FF909090" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:weightSum="7"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_private_informations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Informations Privées" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sexe" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_birth_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Date de Naissance" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Téléphone" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_mobile_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Téléphone Mobile" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mot de passe" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_weight="1"
+                    android:weightSum="7"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"/>
+
+                    <!--<EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />-->
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:prompt="@string/gender_prompt"
+                        android:entries="@array/gender_choice"
+                        android:spinnerMode="dropdown"
+                        android:id="@+id/gender_spinner"/>
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_birth_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"/>
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone" />
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_mobile_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone" />
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_password"
+                        android:layout_width="wrap_content"
+                        android:inputType="textPassword"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="5px"
+                android:background="#FF909090" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:weightSum="6"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_optional"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Informations Facultatives" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pays" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ville" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_post_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Code Postal" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Adresse" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/edit_key_profession"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Profession" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:layout_weight="1"
+                    android:weightSum="6"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible" />
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_post_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <EditText
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_profession"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:id="@+id/edit_modify"
+                android:text="Revenir a l'ancienne vie" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:id="@+id/confirm"
+                android:text="Valider les modifications"/>
         </LinearLayout>
 
     </ScrollView>

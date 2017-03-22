@@ -3,10 +3,10 @@
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">E-mail</string>
+    <string name="prompt_email">Identifiant</string>
     <string name="prompt_password">Mot de passe</string>
     <string name="action_sign_in">Connexion</string>
-    <string name="action_sign_up">Inscription</string>
+    <string name="action_sign_up">Inscrivez-vous</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">Cette adresse e-mail est invalide</string>
     <string name="error_invalid_password">Ce mot de passe est trop court</string>
@@ -96,8 +96,6 @@
 
     <string name="take_picture">Take picture</string>
     <string name="title_activity_settings">Settings</string>
-
-    <!-- Strings related to SettingsFragment -->
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
@@ -198,15 +196,15 @@
     <string name="action_websearch">Web search</string>
     <string name="name">Nom</string>
     <string name="password">Mot de passe</string>
-    <string name="email_address">Adresse e-mail</string>
+    <string name="email_address">Email</string>
     <string name="surname">Prénom</string>
     <string name="password_confirmation">Mot de passe (confirmation)</string>
-    <string name="inscription">Inscription</string>
+    <string name="inscription">Valider</string>
     <string name="invalid_email">Cette adresse e-mail est invalide.</string>
     <string name="non_equal_password">Les mots de passe ne correspondent pas.</string>
     <string name="necessary_field">Ce champ est obligatoire</string>
     <string name="confirmation_mail_sentence">Vous avez reçu un e-mail de confirmation. Veuillez cliquer sur le lien qu\'il contient afin d\'activer votre compte Gouiran Link.</string>
-    <string name="phone_number">Numéro de téléphone</string>
+    <string name="phone_number">Téléphone</string>
     <string name="gouiran_link">Gouiran Link</string>
 
     <string-array name="menu">
@@ -225,9 +223,9 @@
 
 Salons de coiffure, instituts de beauté ou encore spas, découvrez tous les établissements partenaires de Gouiran Link, et faites votre choix parmi une sélection de prestations diverses, selon vos envies du moment. Jetez votre dévolu sur une séance de modelage, faites-vous plaisir avec une manucure semi-permanente ou bien profitez encore d’une offre exceptionnelle pour réaliser un lissage brésilien !
 
-Pour se faire chouchouter, rien de plus simple ! Effectuez une recherche, ex: lissage brésilien, épilation,... dans une zone géographique donnée.  Plusieurs professionnels vous sont alors automatiquement proposés.
+Pour se faire chouchouter, rien de plus simple ! Effectuez une recherche, ex: lissage brésilien, épilation,… dans une zone géographique donnée.  Plusieurs professionnels vous sont alors automatiquement proposés.
 
-Vous pouvez alors choisir un professionnel, accédez à sa page “Vitrine” contenant les  informations sur ses prestations, tarifs, disponibilités,... et réservez sur les créneaux disponibles de l’agenda du professionnel. Le RdV vous est confirmé par email et le paiement se fera directement chez le professionnel.Dernière étape ? Profiter de ce moment de détente ! Pour une recherche plus poussée, plusieurs filtres vous permettront de vous orienter vers un choix personnalisé. Type de service, jour d’ouverture, prestation à domicile ou encore spécialité de l’établissement.
+Vous pouvez alors choisir un professionnel, accédez à sa page “Vitrine” contenant les  informations sur ses prestations, tarifs, disponibilités,… et réservez sur les créneaux disponibles de l’agenda du professionnel. Le RdV vous est confirmé par email et le paiement se fera directement chez le professionnel.Dernière étape ? Profiter de ce moment de détente ! Pour une recherche plus poussée, plusieurs filtres vous permettront de vous orienter vers un choix personnalisé. Type de service, jour d’ouverture, prestation à domicile ou encore spécialité de l’établissement.
 
 
 De plus, Gouiran Link est également un excellent moyen de profiter des offres en cours et des promotions du moment. Vous pourrez ainsi être informé(e) des réductions ou prestations offertes de vos instituts préférés, afin de ne pas louper les bonnes affaires !
@@ -239,5 +237,34 @@ Jamais sans votre mobile ? Gouiran Link existera, courant 2017, aussi sous forme
 Les partenaires de Gouiran Link ont tous été soigneusement sélectionnés afin de vous offrir une prestation de qualité et une satisfaction toujours au rendez-vous ! Gouiran Link profite en effet du savoir-faire et de l’expérience de Gouiran Beauté, grossiste et détaillant en produits de coiffure et d’esthétique. Présent depuis plus de 50 ans sur le marché, l’enseigne compte aujourd’hui plus d’une vingtaine de magasins en France et dispose d’un site e-commerce où professionnels comme particuliers peuvent trouver leur bonheur.
     </string>
 
+    <string name="server_client_id">912405249984-m49idh3da4dph1oa0vcgimm0hkbkgnpv.apps.googleusercontent.com</string>
+    <string name="slash">/</string>
+    <string name="see">Voir</string>
+    <string name="login_with">Ou connectez-vous avec</string>
+    <string name="not_member_yet">Pas encore membre ?</string>
+    <string name="woman">Une femme</string>
+    <string name="man">Un homme</string>
+    <string name="you_are">Vous êtes</string>
+    <string name="post_code">Code postal</string>
+    <string name="presentation_text">LE PARTENAIRE DE VOS RENDEZ-VOUS BEAUTÉ</string>
+    <string name="notification_push">Gouiran Link vous enverra des notifications afin de vous tenir informé de l\'état de vos rendez-vous beauté.</string>
+    <string name="not_known">Non renseigné</string>
+    <string name="male">Homme</string>
+    <string name="female">Femme</string>
+    <string name="gouiran_link_invitation">Invitation Gouiran Link</string>
+    <string name="gouiran_link_invite_mail">Hey, je viens de découvrir l\'application mobile Gouiran Link, elle est géniale! Il faudrait que tu l\'essaye toi aussi!</string>
+    <string name="send_mail">Send mail...</string>
+    <string name="logged_out_facebook">Logged Out From Facebook</string>
+    <string name="logged_out_google">Logged Out From Google</string>
+    <string name="logged_out_gouiran_link">Logged Out From Gouiran Link</string>
+    <string name="my_pros">Mes Pros</string>
+    <string name="my_crushes">Mes Coups de Coeur</string>
+    <string name="invitation_gouiran_link">Invitation Gouiran Link</string>
+    <string name="invation_text">Hey, je viens de découvrir l\'application mobile Gouiran Link, elle est géniale! Il faudrait que tu l\'essaye toi aussi!</string>
 
+    <string name="gender_prompt">Sexe</string>
+    <string-array name="gender_choice">
+        <item>Homme</item>
+        <item>Femme</item>
+    </string-array>
 </resources>

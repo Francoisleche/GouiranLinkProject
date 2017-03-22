@@ -15,10 +15,11 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <TextView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/apropos"
-        android:background="@drawable/back"/>
+        android:background="@drawable/back"
+        android:padding="10dp"/>
 
 
 

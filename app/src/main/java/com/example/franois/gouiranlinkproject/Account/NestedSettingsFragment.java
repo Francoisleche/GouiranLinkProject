@@ -4,20 +4,37 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity;
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
+import com.example.franois.gouiranlinkproject.ToolsClasses.App;
 import com.example.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.People;
+import com.google.android.gms.plus.Plus;
 
+import static com.google.android.gms.wearable.DataMap.TAG;
 
-public class NestedSettingsFragment extends Fragment {
-    private MyCustomer myCustomer;
+public class NestedSettingsFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    private Customer customer;
+    private Context mContext;
 
     private OnFragmentInteractionListener mListener;
 
@@ -25,8 +42,7 @@ public class NestedSettingsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static NestedSettingsFragment newInstance(String param1, String param2) {
+    public static NestedSettingsFragment newInstance() {
         NestedSettingsFragment fragment = new NestedSettingsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -37,46 +53,60 @@ public class NestedSettingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            myCustomer = (MyCustomer)getArguments().getSerializable("MyCustomer");
+            customer = (Customer) getArguments().getSerializable("Customer");
         }
+        mContext = getContext();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_nested_settings, container, false);
+        Button logoutButton = (Button) root.findViewById(R.id.logout);
 
-        Button logoutButton = (Button)root.findViewById(R.id.logout);
+        if (customer != null && !customer.ismGouiranLink() && !customer.ismFacebook() && !customer.ismGoogle()) {
+            logoutButton.setVisibility(View.GONE);
+        }
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+                .enableAutoManage(getActivity(), this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        if (customer != null && customer.ismFacebook())
+            logoutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.com_facebook_blue));
+        else if (customer != null && customer.ismGoogle())
+            logoutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.GoogleRed));
+        else if (customer != null && customer.ismGouiranLink())
+            logoutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.GouiranLightPink));
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (myCustomer.ismFacebook()) {
+            public void onClick(View v) {
+                if (customer != null && customer.ismFacebook()) {
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.logged_out_facebook, Toast.LENGTH_SHORT).show();
                     LoginManager.getInstance().logOut();
                     Intent login = new Intent(getActivity(), LoginActivity.class);
                     startActivity(login);
                     getActivity().finish();
-                }
-                else if (myCustomer.ismGoogle()) {
-/*                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                            new ResultCallback<Status>() {
-                                @Override
-                                public void onResult(Status status) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "Logged Out", Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(i);
-                                    getActivity().finish();
-                                }
-                            });*/
+                } else if (customer != null && customer.ismGoogle()) {
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.logged_out_google, Toast.LENGTH_SHORT).show();
+                    LoginActivity.signOut(mGoogleApiClient);
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                } else if (customer != null && customer.ismGouiranLink()) {
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.logged_out_gouiran_link, Toast.LENGTH_SHORT).show();
+                    Intent login = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(login);
+                    getActivity().finish();
                 }
             }
         });
-
-
         return (root);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -86,6 +116,7 @@ public class NestedSettingsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         }/* else {
@@ -100,18 +131,22 @@ public class NestedSettingsFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

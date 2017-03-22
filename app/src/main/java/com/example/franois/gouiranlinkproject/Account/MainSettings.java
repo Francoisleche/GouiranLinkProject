@@ -13,14 +13,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+/*
+Fragment which shows the settings' page
+ */
 
 public class MainSettings extends Fragment {
-    private MyCustomer myCustomer;
-    private GoogleApiClient mGoogleApiClient;
+    private Customer customer;
 
     FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -42,7 +45,7 @@ public class MainSettings extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            myCustomer = (MyCustomer)getArguments().getSerializable("MyCustomer");
+            customer = (Customer)getArguments().getSerializable("Customer");
         }
         fragmentManager = getActivity().getSupportFragmentManager();
     }
@@ -50,7 +53,6 @@ public class MainSettings extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_main_settings, container, false);
 
         Button inviteFriends = (Button)root.findViewById(R.id.invite_friends);
@@ -61,9 +63,9 @@ public class MainSettings extends Fragment {
 
                 final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                 emailIntent.setType("plain/text");
-                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invitation Gouiran Link");
-                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Hey, je viens de découvrir l'application mobile Gouiran Link, elle est géniale!\nIl faudrait que tu l'essaye toi aussi!");
-                getContext().startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.gouiran_link_invitation));
+                emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.gouiran_link_invite_mail));
+                getContext().startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
             }
         });
 
@@ -71,10 +73,9 @@ public class MainSettings extends Fragment {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //getActivity().setContentView(R.layout.fragment_settings);
                 Fragment fragment = new NestedSettingsFragment();
                 Bundle args = new Bundle();
-                args.putSerializable("MyCustomer", myCustomer);
+                args.putSerializable("Customer", customer);
                 fragment.setArguments(args);
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
@@ -86,8 +87,10 @@ public class MainSettings extends Fragment {
         Button modifyAccountButton = (Button)root.findViewById(R.id.edit_profile);
         modifyAccountButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //getActivity().setContentView(R.layout.fragment_settings);
                 Fragment fragment = new EditAccountFragment();
+                Bundle args = new Bundle();
+                args.putSerializable("Customer", customer);
+                fragment.setArguments(args);
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
                 fragmentTransaction.commit();
@@ -120,7 +123,6 @@ public class MainSettings extends Fragment {
         return (root);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -144,18 +146,7 @@ public class MainSettings extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

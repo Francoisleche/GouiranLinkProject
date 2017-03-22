@@ -1,12 +1,13 @@
 package com.example.franois.gouiranlinkproject.Object;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by François on 20/01/2017.
  */
 
-public class Image_N {
+public class Image_N implements Serializable{
 
     private String url;
     //1er element du tableau : width

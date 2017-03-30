@@ -474,12 +474,13 @@ public class PrendreRdv extends Fragment {
                     Bundle args = new Bundle();
                     args.putSerializable("Professionnal", professional);
                     args.putSerializable("Customer", customer);
-                    recap[0] = String.valueOf(finalTariftotal) + liste_prestations_selectionne[0].getCurrency();
-                    recap[1] = String.valueOf(finalHeuretotal) + "h" + String.valueOf(finalMinutetotal) + "min";
-                    recap[2] = professional.getShop_name();
-                    recap[3] = professional.getAddress() + " - " + professional.getCity() + " - " + professional.getCountry();
-                    recap[4] = String.valueOf(jour_selectionne) + "/" + String.valueOf(mois_selectionne + 1) + "/" + String.valueOf(annee_selectionne);
-                    recap[5] = heure_selectionne.getText().toString();
+                    recap[0] = String.valueOf(finalTariftotal) ;
+                    recap[1] = liste_prestations_selectionne[0].getCurrency();
+                    recap[2] = String.valueOf(finalHeuretotal) + "h" + String.valueOf(finalMinutetotal) + "min";
+                    recap[3] = professional.getShop_name();
+                    recap[4] = professional.getAddress() + " - " + professional.getCity() + " - " + professional.getCountry();
+                    recap[5] = String.valueOf(jour_selectionne) + "/" + String.valueOf(mois_selectionne + 1) + "/" + String.valueOf(annee_selectionne);
+                    recap[6] = heure_selectionne.getText().toString();
 
 
                     //System.out.println("RECAPITULATIF : "+recap[0]+" "+recap[1]);

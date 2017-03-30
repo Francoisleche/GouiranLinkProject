@@ -129,11 +129,11 @@ public class Recapitulatif extends Fragment {
 
         System.out.println("RECAPITULATIF : "+recap[0]+" "+recap[1]);
 
-        tarif.setText(recap[0]);
-        duree.setText(recap[1]);
-        nomprestataire.setText(recap[2]);
-        adresseprestataire.setText(recap[3]);
-        horairedateprestation.setText(recap[4] + " - " + recap[5]);
+        tarif.setText(recap[0]+recap[1]);
+        duree.setText(recap[2]);
+        nomprestataire.setText(recap[3]);
+        adresseprestataire.setText(recap[4]);
+        horairedateprestation.setText(recap[5] + " - " + recap[6]);
 
         Button recapitulatif = (Button) v.findViewById(R.id.valider_reservation);
         recapitulatif.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +146,29 @@ public class Recapitulatif extends Fragment {
 
 
                 CustomerBooking booking = new CustomerBooking();
+                booking.setId(1000);
+                booking.setCreated_at("");
+                booking.setUpdated_at("");
+                booking.setBegin_date(recap[5]);
+                booking.setEnd_date(recap[5]);
+                booking.setPrice(Double.parseDouble(recap[0]));
+                booking.setCurrency(recap[1]);
+                booking.setConfirmed(true);
+                booking.setCancelled(false);
+                booking.setNo_show(false);
+                booking.setNo_show_comment("");
+                booking.setFirst_booking(false);
+                booking.setFirst_booking_comment("");
+                booking.setHome_address(professional.getAddress());
+                booking.setHome_post_code(professional.getPost_code());
+                booking.setHome_city(professional.getCity());
+                booking.setHome_country(professional.getCountry());
+                booking.setPhone(professional.getShop_phone());
+                booking.setProfessional(professional);
+
+
+
+
                 Comment comment = new Comment();
 
 
@@ -185,7 +208,7 @@ public class Recapitulatif extends Fragment {
 
         ResearchTask(CustomerBooking booking, Customer customer) {
             //mEmail = email;
-            /*json = "{\n" +
+            json = "{\n" +
                     "\"id\":\"" + booking.getId() + "\",\n" +
                     "\"created_at\":\"" + booking.getCreated_at() + "\",\n" +
                     "\"updated_at\":\"" + booking.getUpdated_at() + "\",\n" +
@@ -208,8 +231,8 @@ public class Recapitulatif extends Fragment {
                     "\"observation\":\"" + booking.getObservation() + "\",\n" +
                     "\"phone\":\"" + booking.getPhone() + "\",\n" +
 
-                    "\"products\":\"[{";
-            String s = "";
+                    "\"products\":\"[{" +
+            /*String s = "";
                     for(int i=0;i<booking.getProducts().length;i++) {
                         s = s + "\"id\":\"" + booking.getProducts()[i].getId() + "\",\n" +
                                 "\"name\":\"" + booking.getProducts()[i].getName() + "\",\n" +
@@ -226,27 +249,30 @@ public class Recapitulatif extends Fragment {
 
                         json = json.concat(s);
 
-                        json = json + "],\"resource\":\"" + null + "\",\n" +
-                                "\"parent\":\"" + null + "\",\n";
+                        json = json + "],\"resource\":\"" + "{}" + "\",\n" + */
+                         "}],\n " +
+                    "\"resource\":\"" + "{}" + "\",\n" +
+                                "\"parent\":\"" + "{}" + "\",\n" +
 
-*/
+
 
 
             //////////////////////////////Professionnal
-            String json = "{\n" +
+            //String json = "{\n" +
+              "\"professional\":\"{" +
                     "\"id\":\"" + booking.getProfessional().getId() + "\",\n" +
                     "\"acquisition\":\"{" + null + "}\",\n" +
                     "\"name\":\"" + booking.getProfessional().getShop_name() + "\",\n" +
                     "\"geoloc_latitude\":\"" + booking.getProfessional().getGeoloc_latitude() + "\",\n" +
                     "\"geoloc_longitude\":\"" + booking.getProfessional().getGeoloc_longitude() + "\",\n" +
                     "\"max_intervention_distance\":\"" + booking.getProfessional().getMax_intervention_distance() + "\",\n" +
-                    "\"logo_image\":\"{" + null + "}\",\n" +
+                    "\"logo_image\":\"{}\",\n" +
 
                     "\"automatic_booking_confirmation\":\"" + booking.getProfessional().isAutomatic_booking_confirmation() + "\",\n" +
                     "\"customer_can_choose_resource_booking\":\"" + booking.getProfessional().isCustomer_can_choose_resource_booking() + "\",\n" +
                     "\"created_at\":\"" + booking.getProfessional().getCreated_at() + "\",\n" +
                     "\"updated_at\":\"" + booking.getProfessional().getUpdated_at() + "\",\n" +
-                    "\"current_subscription_type\":\"{" + null + "}\",\n" +
+                    "\"current_subscription_type\":\"{}\",\n" +
 
                     "\"notifications_preferences_sms\":\"" + booking.getProfessional().getNotification_preferences_sms() + "\",\n" +
                     "\"sms_happybirthday_enabled\":\"" + booking.getProfessional().isSms_happybirthday_enabled() + "\",\n" +
@@ -256,12 +282,12 @@ public class Recapitulatif extends Fragment {
                     "\"sms_fidelity_sender\":\"" + booking.getProfessional().getSms_fidelity_sender() + "\",\n" +
                     "\"sms_fidelity_content\":\"" + booking.getProfessional().getSms_fidelity_content() + "\",\n" +
                     "\"sms_remember_booking_enabled\":\"" + booking.getProfessional().isSms_remember_booking_enabled() + "\",\n" +
-                    "\"discount_exclusivity\":\"{" + null + "}\",\n" +
-                    "\"preference_resource_type\":\"{" + null + "}\",\n" +
+                    "\"discount_exclusivity\":\"{}\",\n" +
+                    "\"preference_resource_type\":\"{}\",\n" +
 
 
                     "\"sponsoring_key\":\"" + booking.getProfessional().getSponsoring_key() + "\",\n" +
-                    "\"show_discount\":\"{" + null + "}\",\n" +
+                    "\"show_discount\":\"{}\",\n" +
                     "\"shop_name\":\"" + booking.getProfessional().getShop_name() + "\",\n" +
                     "\"tags\":\"" + "[]" + "\",\n" +
                     "\"shop_description\":\"" + booking.getProfessional().getShop_description() + "\",\n" +
@@ -280,7 +306,7 @@ public class Recapitulatif extends Fragment {
                     "\"instagram_link\":\"" + booking.getProfessional().getInstagram_link() + "\",\n" +
 
                     "\"pinterest_link\":\"" + booking.getProfessional().getPinterest_link() + "\",\n" +
-                    "\"product_categories\":\"" + "[{" + null + "}]" + "\"\n" +
+                    "\"product_categories\":\"" + "[{}]" + "\"\n" +
 
 
                     //PROFESSIONNAL PRODUCT"\"first_booking_comment\":\"" + booking.getFirst_booking_comment() + "\",\n" +
@@ -290,7 +316,10 @@ public class Recapitulatif extends Fragment {
                     //Comment
 
 
-                    "}\n";
+              "}\n,"+
+              "\"comment\":\"" + "{}" + "\"\n";
+
+
 
             headerKey = "Authorization";
             headerValue = "Token " + String.valueOf(customer.getToken());

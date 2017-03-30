@@ -302,69 +302,6 @@ public class DoneFragment extends Fragment {
             dates.add(reservations.get(i).getDate());
             hours.add(reservations.get(i).getHour());
         }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
         GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
         ReservationImageAdapter reservationImageAdapter = new ReservationImageAdapter(getActivity());
         reservationImageAdapter.setInstitutesNames(institutesNames);

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
@@ -31,6 +32,8 @@ import com.example.franois.gouiranlinkproject.Reservation.ReservationFragment;
 import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 import com.example.franois.gouiranlinkproject.ToolsClasses.PostRequest;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -174,7 +177,14 @@ public class Recapitulatif extends Fragment {
 
                 booking.setProfessional(professional);
 
-                ResearchTask researchTask = new ResearchTask(booking,customer);
+                ResearchTask researchTask = null;
+                try {
+                    researchTask = new ResearchTask(booking,customer);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 String ls2 = "";
                 ls2 = researchTask.getResponse();
                 System.out.println("Resultat recapitulatif : "+ls2);
@@ -186,6 +196,53 @@ public class Recapitulatif extends Fragment {
 
 
         return v;
+    }
+
+    /* Prend en paramètre une date au format DD/MM/YYYY et une heure au format HHhMM
+    *  Renvoie dans string[0] Date et heure de début au format YYYY-MM-DDTHH:MM:SSZ
+    *  Renvoie dans string[1] Date et heure de fin au format YYYY-MM-DDTHH:MM:SSZ
+    */
+    private String[] getDateInformations(String dateOld, String hourOld) {
+        String dateConverted = "";
+        String hourConverted = "";
+        String endHourConverted = "";
+        String[] parts;
+        String number;
+        String month;
+        String year;
+        String hour;
+        String minute;
+        String cpy;
+        int durationMinute;
+        int durationHour;
+        String[] informations = new String[2];
+
+        cpy = recap[2];
+        durationHour = Integer.valueOf(cpy.substring(0, cpy.indexOf('h')));
+        cpy = recap[2];
+        cpy = cpy.substring(cpy.indexOf("h") + 1);
+        durationMinute = Integer.valueOf(cpy.substring(0, cpy.indexOf("m")));
+        parts = dateOld.split("/");
+        Calendar c = Calendar.getInstance();
+        number = String.format("%02d", Integer.parseInt(parts[0]));
+        month = String.format("%02d", Integer.parseInt(parts[1]));
+        year = String.format("%04d", Integer.parseInt(parts[2]));
+        parts = hourOld.split("-");
+        parts = parts[0].split("h");
+        hour = String.format("%02d", Integer.parseInt(parts[0]));
+        minute = String.format("%02d", Integer.parseInt(parts[1]));
+
+        dateConverted = year + "-" + month + "-" + number;
+        hourConverted = hour + ":" + minute + ":" + "00";
+
+        informations[0] = dateConverted + "T" + hourConverted + "Z";
+        hour = String.format("%02d", Integer.parseInt(hour) + durationHour);
+        minute = String.format("%02d", Integer.parseInt(minute) + durationMinute);
+
+        endHourConverted = hour + ":" + minute + ":" + "00";
+        informations[1] = dateConverted + "T" + endHourConverted + "Z";
+
+        return (informations);
     }
 
 
@@ -206,129 +263,34 @@ public class Recapitulatif extends Fragment {
         String headerKey;
         String headerValue;
 
-        ResearchTask(CustomerBooking booking, Customer customer) {
+        //TODO ID prestation
+        ResearchTask(CustomerBooking booking, Customer customer) throws ExecutionException, InterruptedException {
             //mEmail = email;
+            //TODO Nombre de réservation
+            String prestDetails = "";
+            for (int i = 0; i < liste_prestations_selectionne.length; i++) {
+                GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional-product/" + String.valueOf(liste_prestations_selectionne[i].getId()) + "/");
+                prestDetails += getRequest.execute().get();
+                if (i + 1 < liste_prestations_selectionne.length)
+                    prestDetails += ",\n";
+            }
+            String[] informations = getDateInformations(recap[5], recap[6]);
             json = "{\n" +
-                    "\"id\":\"" + booking.getId() + "\",\n" +
-                    "\"created_at\":\"" + booking.getCreated_at() + "\",\n" +
-                    "\"updated_at\":\"" + booking.getUpdated_at() + "\",\n" +
-                    "\"begin_date\":\"" + booking.getBegin_date() + "\",\n" +
-                    "\"end_date\":\"" + booking.getEnd_date() + "\",\n" +
-                    "\"price\":\"" + booking.getPrice() + "\",\n" +
-                    "\"currency\":\"" + booking.getCurrency() + "\",\n" +
-
-                    "\"confirmed\":\"" + booking.isConfirmed() + "\",\n" +
-                    "\"cancelled\":\"" + booking.isCancelled() + "\",\n" +
-                    "\"no_show\":\"" + booking.isNo_show() + "\",\n" +
-                    "\"no_show_comment\":\"" + booking.getNo_show_comment() + "\",\n" +
-                    "\"first_booking\":\"" + booking.isFirst_booking() + "\",\n" +
-                    "\"first_booking_comment\":\"" + booking.getFirst_booking_comment() + "\",\n" +
-
-                    "\"home_address\":\"" + booking.getHome_address() + "\",\n" +
-                    "\"home_post_code\":\"" + booking.getHome_post_code() + "\",\n" +
-                    "\"home_city\":\"" + booking.getHome_city() + "\",\n" +
-                    "\"home_country\":\"" + booking.getHome_country() + "\",\n" +
-                    "\"observation\":\"" + booking.getObservation() + "\",\n" +
-                    "\"phone\":\"" + booking.getPhone() + "\",\n" +
-
-                    "\"products\":\"[{" +
-            /*String s = "";
-                    for(int i=0;i<booking.getProducts().length;i++) {
-                        s = s + "\"id\":\"" + booking.getProducts()[i].getId() + "\",\n" +
-                                "\"name\":\"" + booking.getProducts()[i].getName() + "\",\n" +
-                                "\"price\":\"" + booking.getProducts()[i].getPrice() + "\",\n" +
-                                "\"currency\":\"" + booking.getProducts()[i].getCurrency() + "\",\n" +
-                                "\"duration\":\"" + booking.getProducts()[i].getDuration() + "\",\n" +
-                                "\"description\":\"" + booking.getProducts()[i].getDescription() + "\",\n" +
-                                "\"deleted_at\":\"" + booking.getProducts()[i].getDeleted_at() + "\",\n" +
-                                "\"product\":\"" + null + "\",\n" +
-                                "\"created_at\":\"" + booking.getProducts()[i].getCreated_at() + "\",\n" +
-                                "\"updated_at\":\"" + booking.getProducts()[i].getUpdated_at() + "\",\n" +
-                                "\"discounts\":\"" + "[]" + "\"},\n";
-                    }
-
-                        json = json.concat(s);
-
-                        json = json + "],\"resource\":\"" + "{}" + "\",\n" + */
-                         "}],\n " +
-                    "\"resource\":\"" + "{}" + "\",\n" +
-                                "\"parent\":\"" + "{}" + "\",\n" +
-
-
-
-
-            //////////////////////////////Professionnal
-            //String json = "{\n" +
-              "\"professional\":\"{" +
-                    "\"id\":\"" + booking.getProfessional().getId() + "\",\n" +
-                    "\"acquisition\":\"{" + null + "}\",\n" +
-                    "\"name\":\"" + booking.getProfessional().getShop_name() + "\",\n" +
-                    "\"geoloc_latitude\":\"" + booking.getProfessional().getGeoloc_latitude() + "\",\n" +
-                    "\"geoloc_longitude\":\"" + booking.getProfessional().getGeoloc_longitude() + "\",\n" +
-                    "\"max_intervention_distance\":\"" + booking.getProfessional().getMax_intervention_distance() + "\",\n" +
-                    "\"logo_image\":\"{}\",\n" +
-
-                    "\"automatic_booking_confirmation\":\"" + booking.getProfessional().isAutomatic_booking_confirmation() + "\",\n" +
-                    "\"customer_can_choose_resource_booking\":\"" + booking.getProfessional().isCustomer_can_choose_resource_booking() + "\",\n" +
-                    "\"created_at\":\"" + booking.getProfessional().getCreated_at() + "\",\n" +
-                    "\"updated_at\":\"" + booking.getProfessional().getUpdated_at() + "\",\n" +
-                    "\"current_subscription_type\":\"{}\",\n" +
-
-                    "\"notifications_preferences_sms\":\"" + booking.getProfessional().getNotification_preferences_sms() + "\",\n" +
-                    "\"sms_happybirthday_enabled\":\"" + booking.getProfessional().isSms_happybirthday_enabled() + "\",\n" +
-                    "\"sms_happybirthday_sender\":\"" + booking.getProfessional().getSms_happybirthday_sender() + "\",\n" +
-                    "\"sms_happybirthday_content\":\"" + booking.getProfessional().getSms_happybirthday_content() + "\",\n" +
-                    "\"sms_fidelity_enabled\":\"" + booking.getProfessional().isSms_fidelity_enabled() + "\",\n" +
-                    "\"sms_fidelity_sender\":\"" + booking.getProfessional().getSms_fidelity_sender() + "\",\n" +
-                    "\"sms_fidelity_content\":\"" + booking.getProfessional().getSms_fidelity_content() + "\",\n" +
-                    "\"sms_remember_booking_enabled\":\"" + booking.getProfessional().isSms_remember_booking_enabled() + "\",\n" +
-                    "\"discount_exclusivity\":\"{}\",\n" +
-                    "\"preference_resource_type\":\"{}\",\n" +
-
-
-                    "\"sponsoring_key\":\"" + booking.getProfessional().getSponsoring_key() + "\",\n" +
-                    "\"show_discount\":\"{}\",\n" +
-                    "\"shop_name\":\"" + booking.getProfessional().getShop_name() + "\",\n" +
-                    "\"tags\":\"" + "[]" + "\",\n" +
-                    "\"shop_description\":\"" + booking.getProfessional().getShop_description() + "\",\n" +
-                    "\"specialty\":\"" + booking.getProfessional().getSpecialty() + "\",\n" +
-
-                    "\"address\":\"" + booking.getProfessional().getAddress() + "\",\n" +
-                    "\"post_code\":\"" + booking.getProfessional().getPost_code() + "\",\n" +
-                    "\"city\":\"" + booking.getProfessional().getCity() + "\",\n" +
-                    "\"country\":\"" + booking.getProfessional().getCountry() + "\",\n" +
-                    "\"type\":\"" + "{" + null + "}" + "\",\n" +
-
-                    "\"shop_phone\":\"" + booking.getProfessional().getShop_phone() + "\",\n" +
-                    "\"shop_email\":\"" + booking.getProfessional().getShop_email() + "\",\n" +
-                    "\"website_link\":\"" + booking.getProfessional().getWebsite_link() + "\",\n" +
-                    "\"facebook_link\":\"" + booking.getProfessional().getFacebook_link() + "\",\n" +
-                    "\"instagram_link\":\"" + booking.getProfessional().getInstagram_link() + "\",\n" +
-
-                    "\"pinterest_link\":\"" + booking.getProfessional().getPinterest_link() + "\",\n" +
-                    "\"product_categories\":\"" + "[{}]" + "\"\n" +
-
-
-                    //PROFESSIONNAL PRODUCT"\"first_booking_comment\":\"" + booking.getFirst_booking_comment() + "\",\n" +
-                    //RESOURCE"\"first_booking_comment\":\"" + booking.getFirst_booking_comment() + "\",\n" +
-                    //BaseBooking PRODUCT"\"first_booking_comment\":\"" + booking.getFirst_booking_comment() + "\",\n" +
-                    //Professional_Customer
-                    //Comment
-
-
-              "}\n,"+
-              "\"comment\":\"" + "{}" + "\"\n";
+                    "\"begin_date\":\"" + informations[0] + "\"," +
+                    "\"end_date\":\"" + informations[1] + "\"," +
+                    "\"products\":[\n" + prestDetails +
+                    "]\n" +
+                    "}\n";
 
 
 
             headerKey = "Authorization";
+            System.out.println("bigJson=" + json);
             headerValue = "Token " + String.valueOf(customer.getToken());
             postRequest = new PostRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/professional/" + String.valueOf(customer.getId()) + "/" + String.valueOf(professional.getId()) + "/", json, headerKey, headerValue);
             String resp = null;
             try {
                 resp = postRequest.execute().get();
-                System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-                System.out.println(resp);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

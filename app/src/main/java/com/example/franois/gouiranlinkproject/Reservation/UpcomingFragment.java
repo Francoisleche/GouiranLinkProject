@@ -158,17 +158,16 @@ public class UpcomingFragment extends Fragment {
         GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/" + String.valueOf(customer.getId()) + "/", headerKey, headerValue);
         try {
             resp = getRequest.execute().get();
-            Log.d("UPCOMING", resp);
             JSONObject jsonObject = new JSONObject(resp);
             JSONArray arr = jsonObject.getJSONArray("data");
             for (int i = 0; i < arr.length(); i++) {
                 Reservation reservation = new Reservation();
+                System.out.println(String.valueOf(i) + " DATE " + arr.getJSONObject(i).getString("begin_date"));
                 if (arr.getJSONObject(i).has("begin_date") && !arr.getJSONObject(i).isNull("begin_date") && !isPassed(arr.getJSONObject(i).getString("begin_date"))) {
 
 //                if (arr.getJSONObject(i).has("confirmed") && arr.getJSONObject(i).getBoolean("confirmed")) {
                     if (arr.getJSONObject(i).getJSONObject("professional").has("shop_name") && !arr.getJSONObject(i).getJSONObject("professional").isNull("shop_name")) {
                         reservation.institute = arr.getJSONObject(i).getJSONObject("professional").getString("shop_name");
-                        Log.d("NAME=", reservation.institute);
                     }
                     if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").has("url") &&
                             !arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").isNull("url"))
@@ -205,20 +204,27 @@ public class UpcomingFragment extends Fragment {
         String year;
         String[] parts;
 
-        Log.d("DATE=", complete);
+        /*DateTimeFormatter parser = ISODateTimeFormat.dateTime();
+        DateTime dt = parser.parseDateTime(complete);
+
+        DateTimeFormatter formatter = DateTimeFormat.mediumDateTime();
+        System.out.println(formatter.print(dt));*/
+
         completeDate = complete.substring(0, complete.indexOf("T"));
-        Log.d("DATE=", completeDate);
         parts = completeDate.split("-");
         Calendar c = Calendar.getInstance();
         number = parts[2];
         month = parts[1];
         year = parts[0];
         c.setTime(new Date(Integer.valueOf(parts[0]), Integer.valueOf(parts[1]), Integer.valueOf(parts[2])));
+        System.out.println("NEW DATE = " + new Date());
         try {
-            return new SimpleDateFormat("MM/yyyy").parse(month + "/" + year).before(new Date());
+            System.out.println(new SimpleDateFormat("DD/MM/YYYY").parse(number + "/" + month + "/" + year).before(new Date()));
+            return new SimpleDateFormat("DD/MM/YYYY").parse(number + "/" + month + "/" + year).before(new Date());
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        System.out.println(false);
         return (false);
     }
 
@@ -230,9 +236,7 @@ public class UpcomingFragment extends Fragment {
         String year;
         String[] parts;
 
-        Log.d("DATE=", complete);
         completeDate = complete.substring(0, complete.indexOf("T"));
-        Log.d("DATE=", completeDate);
         parts = completeDate.split("-");
         Calendar c = Calendar.getInstance();
         number = parts[2];
@@ -291,69 +295,6 @@ public class UpcomingFragment extends Fragment {
         List<String> dates = new ArrayList<String>();
         List<String> hours = new ArrayList<String>();
 
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
-        for (int i = 0; i < reservations.size(); i++) {
-            institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
-            pictures.add(reservations.get(i).getPicture());
-            dates.add(reservations.get(i).getDate());
-            hours.add(reservations.get(i).getHour());
-        }
         for (int i = 0; i < reservations.size(); i++) {
             institutesNames.add(reservations.get(i).getInstitute());
             types.add(reservations.get(i).getType());

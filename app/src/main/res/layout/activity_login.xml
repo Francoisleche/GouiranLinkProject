@@ -164,13 +164,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="5">
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:background="@color/black"/>
+                    android:weightSum="3">
                     <View
                         android:layout_width="0dp"
                         android:layout_height="1dp"
@@ -189,12 +183,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:background="@color/black"/>
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:background="@color/black"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -202,12 +190,14 @@
                     android:layout_height="fill_parent"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="15dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <FrameLayout
                         android:id="@+id/FrameLayoutFacebook"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <com.facebook.login.widget.LoginButton
                             android:id="@+id/facebook_login_button"
@@ -230,7 +220,7 @@
                         android:id="@+id/FrameLayoutGoogle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="100dp">
+                        android:layout_weight="1">
 
                         <com.google.android.gms.common.SignInButton
                             android:id="@+id/sign_in_button"

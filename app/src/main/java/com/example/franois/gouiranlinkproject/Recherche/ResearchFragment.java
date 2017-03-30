@@ -181,6 +181,14 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    fileOutputStream = getContext().openFileOutput("GouiranLink", MODE_APPEND);
+                    fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
+                    fileOutputStream.write("`".getBytes());
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 /*fileOutputStream = getContext().openFileOutput("GouiranLink", MODE_APPEND);
                 Log.d("OUTPUT FOUND", listView.getItemAtPosition(position).toString());
                 fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());

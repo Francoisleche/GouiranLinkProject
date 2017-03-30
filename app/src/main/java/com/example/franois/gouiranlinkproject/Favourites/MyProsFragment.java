@@ -166,16 +166,16 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
                     emailIntent.setType("plain/text");
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, email);
 
-                    Button mail = (Button) root.findViewById(R.id.mail);
-                    mail.setOnClickListener(new View.OnClickListener() {
+                    //Button mail = (Button) root.findViewById(R.id.mail);
+                    root.findViewById(R.id.mail).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             getContext().startActivity(Intent.createChooser(emailIntent, "Envoyer e-mail..."));
                         }
                     });
 
-                    Button call = (Button) root.findViewById(R.id.call);
-                    call.setOnClickListener(new View.OnClickListener() {
+                    //Button call = (Button) root.findViewById(R.id.call);
+                    root.findViewById(R.id.call).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             getContext().startActivity(Intent.createChooser(callIntent, "Appeler..."));

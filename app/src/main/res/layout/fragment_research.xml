@@ -13,6 +13,7 @@
         android:orientation="vertical"
         tools:context="com.example.franois.gouiranlinkproject.Recherche.ResearchFragment">
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -26,6 +27,14 @@
                 android:text="Recherche"
                 android:textSize="25sp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+            <ProgressBar
+                android:id="@+id/research_progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone" />
 
             <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
@@ -110,7 +119,7 @@
                             android:paddingRight="5dip"
                             android:paddingTop="5dip">
                             <EditText
-                                android:id="@+id/upcoming_provider_name_1"
+                                android:id="@+id/recherche_ville"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -244,6 +253,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="50dp"
                         android:orientation="horizontal"
+                        android:gravity="center"
                         android:weightSum="1.0">
 
                         <Button
@@ -257,18 +267,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="filtres" />
-
-                        <Button
-                            android:id="@+id/filtre_prestataire"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="prestataire" />
-
-                        <Button
-                            android:id="@+id/filtre_prestataire_trouve"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="prestataire trouve" />
 
                     </LinearLayout>
                 </LinearLayout>

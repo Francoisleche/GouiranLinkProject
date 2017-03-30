@@ -164,6 +164,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
                 break;
             case 1:
                 fragment = new ResearchFragment();
+                fragment.setArguments(args);
                 break;
             case 2:
                 if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {

@@ -81,6 +81,11 @@ public class GalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
+        //String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        //System.out.println("filePathColumn : " +filePathColumn[0]+filePathColumn[1]+filePathColumn[2]);
+
+
+
         /*Button selfie = (Button) view.findViewById(R.id.selfie);
         selfie.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -193,11 +198,16 @@ public class GalleryFragment extends Fragment {
         GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(getActivity()));
 
+
+
+
+
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 Toast.makeText(getActivity(), "" + position,
                         Toast.LENGTH_SHORT).show();
+
             }
         });
         File sdCard = Environment.getExternalStorageDirectory();

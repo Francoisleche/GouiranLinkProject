@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.franois.gouiranlinkproject.Homepage.HomeFragment;
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.Object.Professional;
 import com.example.franois.gouiranlinkproject.Object.Professional_Product;
 import com.example.franois.gouiranlinkproject.R;
@@ -29,6 +31,7 @@ import java.util.concurrent.ExecutionException;
 
 public class ServicesProfessional extends Fragment {
 
+
     private ResearchTask mAuthTask = null;
     private GetRequest getRequest;
 
@@ -39,7 +42,7 @@ public class ServicesProfessional extends Fragment {
     public ListView lstview;
     private Professional professional;
     private Professional_Product[] professional_product;
-
+    private Customer customer;
 
     public ServicesProfessional(){
 
@@ -54,6 +57,7 @@ public class ServicesProfessional extends Fragment {
         if (getArguments() != null) {
             professional = (Professional)getArguments().getSerializable("Professionnal");
             professional_product = (Professional_Product[])getArguments().getSerializable("ProfessionnalProduct");
+            customer = (Customer)getArguments().getSerializable("Customer");
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
         //
@@ -188,23 +192,26 @@ public class ServicesProfessional extends Fragment {
 
         lstview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                Fragment fragment = null;
+                Bundle args = new Bundle();
+                System.out.println("CUSTOMER 2:"+ customer.getName());
+            if(!customer.getName().equals("")){
+
                 System.out.println("ON A CLIQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 Toast.makeText(getContext(), "An item of the ListView is clicked.", Toast.LENGTH_LONG).show();
                 //for(int i=0;i<= 40 ;i++){
-                    //Intent intent = new Intent(getActivity(),PrendreRdv.class);
-                    //intent.putExtra(AGE,position);
-                    //startActivity(intent);
+                //Intent intent = new Intent(getActivity(),PrendreRdv.class);
+                //intent.putExtra(AGE,position);
+                //startActivity(intent);
                 //}
 
 
 
-
-
-                Fragment fragment = null;
-                Bundle args = new Bundle();
                 args.putSerializable("Professionnal", professional);
                 args.putSerializable("ProfessionnalProduct", professional_product);
-                args.putSerializable("service","ServicesProfessional");
+                args.putSerializable("Customer", customer);
+                args.putSerializable("service", "ServicesProfessional");
                 args.putSerializable("position_list_clique", position);
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
@@ -213,10 +220,22 @@ public class ServicesProfessional extends Fragment {
                 fragment = new PrendreRdv();
                 fragment.setArguments(args);
 
+                ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
+
+            }else{
+                Toast.makeText(getActivity(), "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                fragment = new HomeFragment();
+                fragment.setArguments(args);
                 ft.replace(R.id.fragment_remplace, fragment);
 
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
+            }
             }
         });
 

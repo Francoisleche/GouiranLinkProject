@@ -155,10 +155,14 @@ public class DoneFragment extends Fragment {
 
         headerKey = "Authorization";
         headerValue = "Token " + String.valueOf(customer.getToken());
+        System.out.println("MATOKEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN" + String.valueOf(customer.getToken()));
         GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/" + String.valueOf(customer.getId()) + "/", headerKey, headerValue);
         try {
             resp = getRequest.execute().get();
             Log.d("UPCOMING", resp);
+            String s = resp.replace(",",", \n");
+            Log.d("UPCOMING", s);
+
             JSONObject jsonObject = new JSONObject(resp);
             JSONArray arr = jsonObject.getJSONArray("data");
             for (int i = 0; i < arr.length(); i++) {

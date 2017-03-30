@@ -16,6 +16,10 @@ public class Comment {
     private String created_at;
     private String updated_at;
 
+    public Comment(){
+
+    }
+
     public Comment(int id, int grade, String text, boolean published, String professional_response, PublicCustomer customer,
                    PublicProfessional professional, String created_at, String updated_at){
         this.setId(id);

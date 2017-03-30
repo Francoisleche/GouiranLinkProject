@@ -1,10 +1,12 @@
 package com.example.franois.gouiranlinkproject.Object;
 
+import java.io.Serializable;
+
 /**
  * Created by François on 03/02/2017.
  */
 
-public class Professional_Subscription_Type {
+public class Professional_Subscription_Type implements Serializable{
 
     private int id;
     private String name;
@@ -30,6 +32,10 @@ public class Professional_Subscription_Type {
     private boolean has_statistic;
     private boolean can_delete_account;
     private boolean needs_moderation;
+
+    public Professional_Subscription_Type(){
+
+    }
 
 
 

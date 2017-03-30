@@ -9,6 +9,10 @@ public class Booking extends BaseBooking{
     private Professional_Customer professional_customer;
     private Comment comment;
 
+    public Booking(){
+
+    }
+
     public Booking(int id,String created_at,String updated_at,String begin_date,String end_date,double price,String currency,
                    boolean confirmed,boolean cancelled,boolean no_show,String no_show_comment,boolean first_booking,String first_booking_comment,
                    String home_address,String home_post_code,String home_city,String home_country,String observation,

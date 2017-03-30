@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.franois.gouiranlinkproject.CamTestActivity;
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.Object.Professional;
 import com.example.franois.gouiranlinkproject.Object.Professional_Product;
 import com.example.franois.gouiranlinkproject.Professional_View.ServicesAdapter;
@@ -28,6 +29,7 @@ import com.example.franois.gouiranlinkproject.R;
 
 public class AutresPrestations extends Fragment {
     private Professional professional;
+    private Customer customer;
     private Professional_Product[] liste_prestations_selectionne;
     private Professional_Product[] courante_liste_prestations;
     public ListView lstview;
@@ -40,6 +42,7 @@ public class AutresPrestations extends Fragment {
             professional = (Professional) getArguments().getSerializable("Professionnal");
             liste_prestations_selectionne = (Professional_Product[]) getArguments().getSerializable("liste_prestations_selectionne");
             courante_liste_prestations = (Professional_Product[]) getArguments().getSerializable("courante_liste_prestations");
+            customer = (Customer) getArguments().getSerializable("Customer");
 
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :" + professional.toString());
@@ -130,6 +133,7 @@ public class AutresPrestations extends Fragment {
                 Fragment fragment = null;
                 Bundle args = new Bundle();
                 args.putSerializable("Professionnal", professional);
+                args.putSerializable("Customer",customer);
                 args.putSerializable("liste_prestations_selectionne", liste_prestations_selectionne);
                 args.putSerializable("courante_liste_prestations", courante_liste_prestations);
                 //args.putSerializable("position_list_clique", lstview.getSelectedItem());

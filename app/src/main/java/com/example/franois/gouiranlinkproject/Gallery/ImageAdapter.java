@@ -67,6 +67,21 @@ class ImageAdapter extends BaseAdapter {
         return imageView;
     }
 
+    public View getView(int position, View convertView, ViewGroup parent, int[] tab) {
+        ImageView imageView;
+        if (convertView == null) {
+            imageView = new ImageView(mContext);
+            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setPadding(8, 8, 8, 8);
+        } else {
+            imageView = (ImageView) convertView;
+        }
+
+        imageView.setImageResource(mThumbIds[position]);
+        return imageView;
+    }
+
     // references to our images
     final private Integer[] mThumbIds = {
             R.drawable.imagegouiranlink1,

@@ -145,9 +145,9 @@ public class InformationsProfessional extends Fragment {
 
 
 
-        Button shop_phone=(Button) view.findViewById(R.id.shop_phone);
-        shop_phone.setText(professional.getShop_phone());
-        shop_phone.setOnClickListener(new View.OnClickListener() {
+        //Button shop_phone=(Button) view.findViewById(R.id.shop_phone);
+        //shop_phone.setText(professional.getShop_phone());
+        view.findViewById(R.id.shop_phone).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -164,9 +164,9 @@ public class InformationsProfessional extends Fragment {
 
 
         //Récupérer l'adresse email de l'utilisateur
-        Button shop_email=(Button) view.findViewById(R.id.shop_email);
-        shop_email.setText(professional.getShop_email());
-        shop_email.setOnClickListener(new View.OnClickListener() {
+        //Button shop_email=(Button) view.findViewById(R.id.shop_email);
+        //shop_email.setText(professional.getShop_email());
+        view.findViewById(R.id.shop_email).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

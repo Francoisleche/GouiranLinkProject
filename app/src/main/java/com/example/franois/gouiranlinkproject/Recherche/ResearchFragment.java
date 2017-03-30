@@ -1,9 +1,14 @@
 package com.example.franois.gouiranlinkproject.Recherche;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -21,10 +27,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.Object.GenericSchedule;
 import com.example.franois.gouiranlinkproject.Object.Product;
 import com.example.franois.gouiranlinkproject.Object.Product_Category_Tag;
@@ -32,7 +40,9 @@ import com.example.franois.gouiranlinkproject.Object.Product_Category_WithoutTre
 import com.example.franois.gouiranlinkproject.Object.Professional;
 import com.example.franois.gouiranlinkproject.Object.Professional_Product;
 import com.example.franois.gouiranlinkproject.Object.Professional_Schedule;
+import com.example.franois.gouiranlinkproject.Object.Professional_Subscription_Type;
 import com.example.franois.gouiranlinkproject.Object.PublicProfessional;
+import com.example.franois.gouiranlinkproject.Professional_View.InformationsProfessional;
 import com.example.franois.gouiranlinkproject.Professional_View.ProfessionalView;
 import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
@@ -73,6 +83,10 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private View mProgressView;
+    private View mLoginFormView;
+
+
     private Professional PremierProfessionnal = new Professional();
     private Product_Category_WithoutTree[] PremierProfessionnalProduits;
     private Product_Category_Tag[] PremierProfessionnalProduitsTag;
@@ -81,9 +95,12 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
     private Professional_Product[] PremierProfessionalProduct;
 
+    private Customer customer;
+
 
     private ResearchTask mAuthTask = null;
     private EditText recherche;
+    private EditText recherche_ville;
     private TextView resultat1, resultat2, resultat3, resultat4, resultat5, resultat6;
     private Button carte;
     private GetRequest getRequest;
@@ -120,6 +137,10 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (getArguments() != null) {
+            customer = (Customer) getArguments().getSerializable("Customer");
+        }
+
     }
 
     @Override
@@ -135,7 +156,16 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_research, container, false);
+
+
+        //mLoginFormView = view.findViewById(R.id.login_form);
+        mProgressView = view.findViewById(R.id.research_progress);
+
+
+
+
         recherche = (EditText) view.findViewById(R.id.bonjour_recherche);
+        recherche_ville = (EditText) view.findViewById(R.id.recherche_ville);
         //resultat1 = (TextView) view.findViewById(R.id.textView_1);
         carte = (Button) view.findViewById(R.id.carte_research);
 
@@ -156,6 +186,9 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                 fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
                 fileOutputStream.write("`".getBytes());
                 fileOutputStream.close();*/
+                //attemptLogin();
+                showProgress(true);
+
 
                 System.out.println(listView.getItemAtPosition(position).toString());
                 ResearchTask3 researchTask3 = new ResearchTask3(listView.getItemAtPosition(position).toString());
@@ -164,23 +197,47 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                 ls2 = researchTask3.getResponse();
                 recup2 = jsonparser2(ls2);
 
-                Fragment fragment = null;
-                Bundle args = new Bundle();
-                args.putSerializable("Professionnal", PremierProfessionnal);
-                args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+
+                if(PremierProfessionnal.getProfessional_subscription_type().getName().equals("Full")) {
+                    Fragment fragment = null;
+                    Bundle args = new Bundle();
+                    args.putSerializable("Professionnal", PremierProfessionnal);
+                    args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                    args.putSerializable("Customer", customer);
+                    System.out.println("CUSTOMER :"+ customer.getName());
 
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
 
-                fragment = new ProfessionalView();
-                fragment.setArguments(args);
+                    fragment = new ProfessionalView();
+                    fragment.setArguments(args);
 
-                ft.replace(R.id.fragment_remplace, fragment);
+                    ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
 
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.commit();
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.commit();
+                }else if(PremierProfessionnal.getProfessional_subscription_type().getName().equals("Free")){
+                    Fragment fragment = null;
+                    Bundle args = new Bundle();
+                    args.putSerializable("Professionnal", PremierProfessionnal);
+                    args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                    args.putSerializable("Customer", customer);
+
+
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                    fragment = new InformationsProfessional();
+                    fragment.setArguments(args);
+
+                    ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.commit();
+                }
 
             }
         });
@@ -281,7 +338,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
             }
         });*/
 
-        recherche.addTextChangedListener(new TextWatcher() {
+        recherche_ville.addTextChangedListener(new TextWatcher() {
             boolean isTyping = false;
 
             @Override
@@ -312,6 +369,159 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                /*ResearchTask researchTask = new ResearchTask(recherche.getText().toString(), 5);
+                                String ls = "";
+                                ArrayList<String> recup = new ArrayList<String>();
+                                ls = researchTask.getResponse();
+                                recup = jsonparser(ls);
+
+
+                                String[] results = new String[] {};
+                                final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
+                                ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
+                                listView.setAdapter(tableau);
+                                for (int i = 0; i < recup.size(); i++) {
+                                    resultsList.add(recup.get(i));
+                                    tableau.notifyDataSetChanged();
+                                }*/
+
+                                final Dialog dialog = new Dialog(getContext());
+                                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                                View contentView = layoutInflater.inflate(R.layout.research_popup, null);
+                                final LinearLayout root = (LinearLayout) contentView.findViewById(R.id.proRootLayout);
+                                System.out.println("Ooooooooooooooooooh tablea ?"+recherche_ville.getText().toString());
+                                ResearchTask4 researchTask = new ResearchTask4(recherche_ville.getText().toString());
+                                String ls = "";
+                                final ArrayList<String> recup2 = new ArrayList<String>();
+                                ls = researchTask.getResponse();
+                                //recup = jsonparser(ls);
+
+                                String recup = "{" + '"' + "Recup" + '"' + " : [";
+                                String ahbon = ls.replace("[", recup);
+                                String ahbon2 = ahbon.replace("]", "]}");
+
+
+                                JSONObject jsonObj = null;
+                                try {
+                                    jsonObj = new JSONObject(ahbon2);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                JSONArray contacts = null;
+                                try {
+                                    contacts = jsonObj.getJSONArray("Recup");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                // looping through All Contacts
+                                for (int i = 0; i < contacts.length(); i++) {
+                                    JSONObject c = null;
+                                    try {
+                                        c = contacts.getJSONObject(i);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    String id = null;
+                                    try {
+                                        id = c.getString("value");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    recup2.add(id);
+                                    System.out.println("VAAAAAAAAAAAAAALUE " + id);
+
+
+                                    // Getting JSON Array node
+                                    //JSONArray contacts = jsonObj.getJSONArray("contacts");
+
+                                    // looping through All Contacts
+                                }
+
+
+                                ListView listview = (ListView) root.findViewById(R.id.mesresultats_ville);
+
+                                String[] results = new String[] {};
+                                final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
+                                ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
+                                listview.setAdapter(tableau);
+                                for (int i = 0; i < recup2.size(); i++) {
+                                    resultsList.add(recup2.get(i));
+                                    tableau.notifyDataSetChanged();
+                                }
+                                if(!recup2.isEmpty()) {
+                                    dialog.setContentView(root);
+                                    dialog.show();
+                                }
+
+                                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                            recherche_ville.setText(recup2.get(position));
+                                            dialog.cancel();
+                                    }
+                                });
+                                System.out.println("LSSSSSSSSSS" + ls);
+
+
+
+
+
+
+
+                            }
+                        });
+                    }
+                }, DELAY);
+            }
+        });
+
+
+
+
+
+        recherche.addTextChangedListener(new TextWatcher() {
+            boolean isTyping = false;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            private Timer timer = new Timer();
+            private final long DELAY = 2500;
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!isTyping) {
+                    isTyping = true;
+                }
+
+
+
+
+
+
+
+
+                timer.cancel();
+                timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        isTyping = false;
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+
                                 ResearchTask researchTask = new ResearchTask(recherche.getText().toString(), 5);
                                 String ls = "";
                                 ArrayList<String> recup = new ArrayList<String>();
@@ -378,71 +588,6 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
             }
         });
 
-        Button button3 = (Button) v.findViewById(R.id.filtre_prestataire);
-        button3.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
-                ft.replace(R.id.fragment_remplace, new ProfessionalView());
-
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.commit();
-            }
-        });
-
-        Button button4 = (Button) v.findViewById(R.id.filtre_prestataire_trouve);
-        button4.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                ResearchTask2 researchTask2 = new ResearchTask2();
-                String ls2 = "";
-                ArrayList<String> recup2 = new ArrayList<String>();
-                ls2 = researchTask2.getResponse();
-                recup2 = jsonparser2(ls2);
-
-                Fragment fragment = null;
-                Bundle args = new Bundle();
-                args.putSerializable("Professionnal", PremierProfessionnal);
-
-
-
-
-
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
-
-                fragment = new ProfessionalView();
-                fragment.setArguments(args);
-
-                ft.replace(R.id.fragment_remplace, fragment);
-
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.commit();
-
-
-                //String ls = "";
-                //ResearchTask2 rt = new ResearchTask2("Coiffeur", "Montpellier", "", 43.6109200, 3.8772300, "", "34070", 1, 1, 1, 1, 1, true, "price", "asc");
-                //ls = rt.getResponse();
-                //System.out.println(ls);
-                //Intent intent = new Intent(getActivity(), ProfessionelTrouve.class);
-                //startActivity(intent);
-
-
-
-                //2eme recherche pour les prestataires
-
-
-                //System.out.println(ls2);
-
-
-            }
-        });
     }
 
 
@@ -484,6 +629,115 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+
+
+
+
+
+
+    /**
+     * Attempts to sign in or register the account specified by the login form.
+     * If there are form errors (invalid email, missing fields, etc.), the
+     * errors are presented and no actual login attempt is made.
+     */
+    private void attemptLogin() {
+        if (mAuthTask != null) {
+            return;
+        }
+
+        // Reset errors.
+        //mEmailView.setError(null);
+        //mPasswordView.setError(null);
+
+        // Store values at the time of the login attempt.
+        //String email = mEmailView.getText().toString();
+        //String password = mPasswordView.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        // Check for a valid password, if the user entered one.
+        /*if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }*/
+
+        // Check for a valid email address.
+        /*if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
+            cancel = true;
+        } else if (!isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
+            cancel = true;
+        }*/
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            showProgress(true);
+            //mAuthTask = new UserLoginTask(email, password);
+            //mAuthTask.execute((Void) null);
+        }
+    }
+
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+           /* mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });*/
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            //mImageLoginView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            //mImageLoginView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     public ArrayList<String> jsonparser(String jsonStr) {
         String ls = "";
@@ -704,6 +958,19 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                             premierprofessionel.add(updated_at);
                             premierprofessionel.add(current_subscription_type);
                             premierprofessionel.add(notifications_preferences_sms);
+
+
+                            /////////////////SUBSCRIPTION ACCOUNT (FREE Ou PREMIUM)///////////////////
+                            Professional_Subscription_Type professional_subscription_type = new Professional_Subscription_Type();
+                            JSONObject jsonObj_resource_manager = new JSONObject(current_subscription_type);
+                            int id_current_subscription_type = (int) jsonObj_resource_manager.get("id");
+                            String name_current_subscription_type = (String) jsonObj_resource_manager.get("name");
+                            professional_subscription_type.setId(id_current_subscription_type);
+                            professional_subscription_type.setName(name_current_subscription_type);
+                            PremierProfessionnal.setProfessional_subscription_type(professional_subscription_type);
+                            /////////////////////////////////////////////////////////////////////////
+
+
 
                             String sms_happybirthday_enabled = c.getString("sms_happybirthday_enabled");
                             String sms_happybirthday_sender = c.getString("sms_happybirthday_sender");
@@ -1266,6 +1533,98 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
     }
 
 
+
+    public class ResearchTask4 extends AsyncTask<Void, Void, Boolean> {
+
+        private String response = "";
+
+        private final String mQuery;
+        //private final int mLimit;
+        //private final String json;
+        //private final GetRequest getRequest;
+        //private final Boolean connected;
+
+        //ResearchTask2(String query, String city, String sponsoring_key, Double latitude, Double longitude, String address, String post_code, int product_category_id, int product_id,
+        //             int type_id, int specialty_id, int weekday, boolean automatic_booking_confirmation, String field, String order) {
+        ResearchTask4(String query){
+            mQuery = query;
+            getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/autocomplete/professional/place/?query="+query);
+
+            String resp = null;
+            try {
+                resp = getRequest.execute().get();
+                System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+                System.out.println(resp.toString());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            response = resp;
+
+        }
+
+
+        public String getResponse() {
+            return response;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
+
+            //return (true);
+
+            //return (connected);
+            return true;
+/*            for (String credential : DUMMY_CREDENTIALS) {
+                String[] pieces = credential.split(":");
+                if (pieces[0].equals(mEmail)) {
+                    // Account exists, return true if the password matches.
+                    return pieces[1].equals(mPassword);
+                }
+            }
+
+            // TODO: register the new account here.
+            return true;*/
+        }
+
+
+        protected void onGetExecute(final Boolean success) {
+            mAuthTask = null;
+
+            if (success) {
+                //Intent i = new Intent();
+                //Bundle b = new Bundle();
+                //b.putString("token_access", "token_access");
+                //b.putString("email", mEmail);
+                //i.putExtras(b);
+                //startActivity(i);
+                //finish();
+            } else {
+                //mPasswordView.setError(getString(R.string.error_incorrect_password));
+                //mPasswordView.requestFocus();
+            }
+        }
+
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+        }
+
+
+    }
+
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -1306,5 +1665,6 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
 
 }
+
 
 

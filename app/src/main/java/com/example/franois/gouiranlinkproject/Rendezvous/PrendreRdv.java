@@ -2,8 +2,10 @@ package com.example.franois.gouiranlinkproject.Rendezvous;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.widget.TextViewCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,13 @@ import android.widget.Spinner;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.CamTestActivity;
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.Object.Professional;
 import com.example.franois.gouiranlinkproject.Object.Professional_Product;
 import com.example.franois.gouiranlinkproject.R;
@@ -38,11 +43,16 @@ public class PrendreRdv extends Fragment {
     private Professional_Product[] professional_product;
     private Professional_Product[] courante_liste_prestations;
     private Professional_Product[] liste_prestations_selectionne;
+    private Customer customer;
     private String service_selectionne;
 
     private Professional_Product professional_product_selectionne;
     private int position_list_clique;
     private String[] recap = new String[40];
+
+
+    private boolean check = false;
+    private TextView heure_selectionne;
 
 
     private CalendarView calendar;
@@ -65,6 +75,7 @@ public class PrendreRdv extends Fragment {
             professional_product = (Professional_Product[])getArguments().getSerializable("ProfessionnalProduct");
             service_selectionne = (String)getArguments().getString("service");
             position_list_clique = (int)getArguments().getInt("position_list_clique");
+            customer = (Customer)getArguments().getSerializable("Customer");
 
             if(service_selectionne.contains("ServicesProfessional")){
                 //Recupération de l'élement selectionné et changement de la nouvelle liste des prestations
@@ -153,8 +164,233 @@ public class PrendreRdv extends Fragment {
 
         final TextView duree = (TextView) v.findViewById(R.id.duree_prestations);
         final TextView somme = (TextView) v.findViewById(R.id.somme_prestations);
-        TextView heure = (TextView)v.findViewById(R.id.heure);
-        heure.setText("choississez une heure : "+ service_selectionne);
+        //TextView heure = (TextView)v.findViewById(R.id.heure);
+        //heure.setText("choississez une heure : "+ service_selectionne);
+
+
+
+        final TextView matinheure1 = (TextView) v.findViewById(R.id.matinheure1);
+        final TextView matinheure2 = (TextView) v.findViewById(R.id.matinheure2);
+        final TextView matinheure3 = (TextView) v.findViewById(R.id.matinheure3);
+        final TextView matinheure4 = (TextView) v.findViewById(R.id.matinheure4);
+        final TextView matinheure5 = (TextView) v.findViewById(R.id.matinheure5);
+        final TextView matinheure6 = (TextView) v.findViewById(R.id.matinheure6);
+        final TextView matinheure7 = (TextView) v.findViewById(R.id.matinheure7);
+        final TextView matinheure8 = (TextView) v.findViewById(R.id.matinheure8);
+
+
+        final int color = R.color.green;
+        final int color2 = R.color.white;
+        matinheure1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("J4AI CLIQUER OMG");
+                if (check) {
+                    if (!heure_selectionne.getText().equals("8h30-9h30")) {
+                        System.out.println("LA1");
+                        matinheure1.setBackgroundColor(getResources().getColor(color));
+                        heure_selectionne.setBackgroundColor(getResources().getColor(color2));
+                        heure_selectionne = matinheure1;
+                    }else{
+                        System.out.println("LA2");
+                        matinheure1.setBackgroundColor(getResources().getColor(color2));
+                        check = false;
+                        heure_selectionne = null;
+                    }
+                }
+                else {
+                    System.out.println("LA3");
+                    matinheure1.setBackgroundColor(getResources().getColor(color));
+                    heure_selectionne = matinheure1;
+                    check = true;
+                }
+            }
+        });
+
+        matinheure2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("J4AI CLIQUER OMG");
+                if (check) {
+                    if (!heure_selectionne.getText().equals("9h30-10h30")) {
+                        System.out.println("LA1");
+                        matinheure2.setBackgroundColor(getResources().getColor(color));
+                        heure_selectionne.setBackgroundColor(getResources().getColor(color2));
+                        heure_selectionne = matinheure2;
+                    }else{
+                        System.out.println("LA2");
+                        matinheure2.setBackgroundColor(getResources().getColor(color2));
+                        check = false;
+                        heure_selectionne = null;
+                    }
+                }
+                else {
+                    System.out.println("LA3");
+                    matinheure2.setBackgroundColor(getResources().getColor(color));
+                    heure_selectionne = matinheure2;
+                    check = true;
+                }
+            }
+        });
+
+        matinheure3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("J4AI CLIQUER OMG");
+                if (check) {
+                    if (!heure_selectionne.getText().equals("10h30-11h30")) {
+                        System.out.println("LA1");
+                        matinheure3.setBackgroundColor(getResources().getColor(color));
+                        heure_selectionne.setBackgroundColor(getResources().getColor(color2));
+                        heure_selectionne = matinheure3;
+                    }else{
+                        System.out.println("LA2");
+                        matinheure3.setBackgroundColor(getResources().getColor(color2));
+                        check = false;
+                        heure_selectionne = null;
+                    }
+                }
+                else {
+                    System.out.println("LA3");
+                    matinheure3.setBackgroundColor(getResources().getColor(color));
+                    heure_selectionne = matinheure3;
+                    check = true;
+                }
+            }
+        });
+
+        matinheure4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("J4AI CLIQUER OMG");
+                if (check) {
+                    if (!heure_selectionne.getText().equals("11h30-12h30")) {
+                        System.out.println("LA1");
+                        matinheure4.setBackgroundColor(getResources().getColor(color));
+                        heure_selectionne.setBackgroundColor(getResources().getColor(color2));
+                        heure_selectionne = matinheure4;
+                    }else{
+                        System.out.println("LA2");
+                        matinheure4.setBackgroundColor(getResources().getColor(color2));
+                        check = false;
+                        heure_selectionne = null;
+                    }
+                }
+                else {
+                    System.out.println("LA3");
+                    matinheure4.setBackgroundColor(getResources().getColor(color));
+                    heure_selectionne = matinheure4;
+                    check = true;
+                }
+            }
+        });
+
+        matinheure5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("J4AI CLIQUER OMG");
+                if (check) {
+                    if (!heure_selectionne.getText().equals("14h30-15h30")) {
+                        System.out.println("LA1");
+                        matinheure5.setBackgroundColor(getResources().getColor(color));
+                        heure_selectionne.setBackgroundColor(getResources().getColor(color2));
+                        heure_selectionne = matinheure5;
+                    }else{
+                        System.out.println("LA2");
+                        matinheure5.setBackgroundColor(getResources().getColor(color2));
+                        check = false;
+                        heure_selectionne = null;
+                    }
+                }
+                else {
+                    System.out.println("LA3");
+                    matinheure5.setBackgroundColor(getResources().getColor(color));
+                    heure_selectionne = matinheure5;
+                    check = true;
+                }
+            }
+        });
+
+        matinheure6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("J4AI CLIQUER OMG");
+                if (check) {
+                    if (!heure_selectionne.getText().equals("15h30-16h30")) {
+                        System.out.println("LA1");
+                        matinheure6.setBackgroundColor(getResources().getColor(color));
+                        heure_selectionne.setBackgroundColor(getResources().getColor(color2));
+                        heure_selectionne = matinheure6;
+                    }else{
+                        System.out.println("LA2");
+                        matinheure6.setBackgroundColor(getResources().getColor(color2));
+                        check = false;
+                        heure_selectionne = null;
+                    }
+                }
+                else {
+                    System.out.println("LA3");
+                    matinheure6.setBackgroundColor(getResources().getColor(color));
+                    heure_selectionne = matinheure6;
+                    check = true;
+                }
+            }
+        });
+
+        matinheure7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("J4AI CLIQUER OMG");
+                if (check) {
+                    if (!heure_selectionne.getText().equals("16h30-17h30")) {
+                        System.out.println("LA1");
+                        matinheure7.setBackgroundColor(getResources().getColor(color));
+                        heure_selectionne.setBackgroundColor(getResources().getColor(color2));
+                        heure_selectionne = matinheure7;
+                    }else{
+                        System.out.println("LA2");
+                        matinheure7.setBackgroundColor(getResources().getColor(color2));
+                        check = false;
+                        heure_selectionne = null;
+                    }
+                }
+                else {
+                    System.out.println("LA3");
+                    matinheure7.setBackgroundColor(getResources().getColor(color));
+                    heure_selectionne = matinheure7;
+                    check = true;
+                }
+            }
+        });
+
+        matinheure8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("J4AI CLIQUER OMG");
+                if (check) {
+                    if (!heure_selectionne.getText().equals("17h30-18h30")) {
+                        System.out.println("LA1");
+                        matinheure8.setBackgroundColor(getResources().getColor(color));
+                        heure_selectionne.setBackgroundColor(getResources().getColor(color2));
+                        heure_selectionne = matinheure8;
+                    }else{
+                        System.out.println("LA2");
+                        matinheure8.setBackgroundColor(getResources().getColor(color2));
+                        check = false;
+                        heure_selectionne = null;
+                    }
+                }
+                else {
+                    System.out.println("LA3");
+                    matinheure8.setBackgroundColor(getResources().getColor(color));
+                    heure_selectionne = matinheure8;
+                    check = true;
+                }
+            }
+        });
+
+
+
 
         Spinner spinner = (Spinner)v.findViewById(R.id.liste_employe);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,employe);
@@ -210,7 +446,7 @@ public class PrendreRdv extends Fragment {
                 args.putSerializable("liste_prestations_selectionne", liste_prestations_selectionne);
                 //System.out.println("ESSAYE DE COMPRENDRE : "+ courante_liste_prestations[1].getName());
                 args.putSerializable("courante_liste_prestations", courante_liste_prestations);
-
+                args.putSerializable("Customer", customer);
 
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
@@ -219,7 +455,7 @@ public class PrendreRdv extends Fragment {
                 fragment = new AutresPrestations();
                 fragment.setArguments(args);
 
-                ft.replace(R.id.fragment_remplace, fragment);
+                ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
 
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
@@ -232,45 +468,98 @@ public class PrendreRdv extends Fragment {
         final double finalTariftotal = tariftotal;
         reserver.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-                //Toast.makeText(this,"Yes",Toast.LENGTH_SHORT).show();
-                //CamTestActivity cam = new CamTestActivity();
-                //Intent intent = new Intent(getApplicationContext(), Recapitulatif.class);
-                //startActivity(intent);
-                Fragment fragment = null;
-                Bundle args = new Bundle();
-                args.putSerializable("Professionnal", professional);
-                recap[0] = String.valueOf(finalTariftotal)+liste_prestations_selectionne[0].getCurrency();
-                recap[1] = String.valueOf(finalHeuretotal)+"h"+String.valueOf(finalMinutetotal)+"min";
-                recap[2] = professional.getShop_name();
-                recap[3] = professional.getAddress() + " - " + professional.getCity() + " - " + professional.getCountry();
-                recap[4] = String.valueOf(jour_selectionne)+"/"+String.valueOf(mois_selectionne+1)+"/"+String.valueOf(annee_selectionne);
+            System.out.println("Daaaaaaaaaaaaate"+jour_selectionne);
+                if(jour_selectionne!=0){
+                    Fragment fragment = null;
+                    Bundle args = new Bundle();
+                    args.putSerializable("Professionnal", professional);
+                    args.putSerializable("Customer", customer);
+                    recap[0] = String.valueOf(finalTariftotal) + liste_prestations_selectionne[0].getCurrency();
+                    recap[1] = String.valueOf(finalHeuretotal) + "h" + String.valueOf(finalMinutetotal) + "min";
+                    recap[2] = professional.getShop_name();
+                    recap[3] = professional.getAddress() + " - " + professional.getCity() + " - " + professional.getCountry();
+                    recap[4] = String.valueOf(jour_selectionne) + "/" + String.valueOf(mois_selectionne + 1) + "/" + String.valueOf(annee_selectionne);
+                    recap[5] = heure_selectionne.getText().toString();
 
 
-                //System.out.println("RECAPITULATIF : "+recap[0]+" "+recap[1]);
-                args.putSerializable("recap", recap);
-                args.putSerializable("position_list_clique", position_list_clique);
-                args.putSerializable("liste_prestations_selectionne", liste_prestations_selectionne);
+                    //System.out.println("RECAPITULATIF : "+recap[0]+" "+recap[1]);
+                    args.putSerializable("recap", recap);
+                    args.putSerializable("position_list_clique", position_list_clique);
+                    args.putSerializable("liste_prestations_selectionne", liste_prestations_selectionne);
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
 
-                fragment = new Recapitulatif();
-                fragment.setArguments(args);
+                    fragment = new Recapitulatif();
+                    fragment.setArguments(args);
 
-                ft.replace(R.id.fragment_remplace, fragment);
+                    ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
 
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.commit();
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.commit();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Veuillez selectionner une date", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
+
+
+        TableLayout table = (TableLayout) v.findViewById(R.id.idtableserviceselectionne);
+        TableRow row;
+
+        TextView tv1,tv2;
+
+        row = new TableRow(getActivity());
+        tv1 = new TextView(getActivity());
+        tv2 = new TextView(getActivity());
+        tv1.setText("Services");
+        tv1.setTypeface(null, Typeface.BOLD);
+        tv1.setGravity(Gravity.LEFT);
+        tv1.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
+        tv2.setText("Prix");
+        tv2.setTypeface(null, Typeface.BOLD);
+        tv2.setGravity(Gravity.RIGHT);
+        tv2.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
+        //tv1.setBackgroundResource(R.drawable.back);
+        //tv2.setBackgroundResource(R.drawable.back);
+        row.addView(tv1);
+        row.addView(tv2);
+        table.addView(row);
+
+        for(int i=0;i<liste_prestations_selectionne.length;i++) {
+            row = new TableRow(getActivity()); // création d'une nouvelle ligne
+
+            tv1 = new TextView(getActivity()); // création cellule
+            tv1.setText(liste_prestations_selectionne[i].getName()); // ajout du texte
+            tv1.setGravity(Gravity.LEFT); // centrage dans la cellule
+            // adaptation de la largeur de colonne à l'écran :
+            //tv1.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
+            tv1.setLayoutParams( new TableRow.LayoutParams(0,100,1));
+
+            // idem 2ème cellule
+            tv2 = new TextView(getActivity());
+            tv2.setText(String.valueOf(liste_prestations_selectionne[i].getPrice())+liste_prestations_selectionne[i].getCurrency());
+            tv2.setGravity(Gravity.RIGHT);
+            //tv2.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
+            tv2.setLayoutParams( new TableRow.LayoutParams(0,50,1));
+
+            //tv1.setBackgroundResource(R.drawable.back);
+            //tv2.setBackgroundResource(R.drawable.back);
+            // ajout des cellules à la ligne
+            row.addView(tv1);
+            row.addView(tv2);
+            // ajout de la ligne au tableau
+            table.addView(row);
+        }
+
+
 
         return v;
     }
 
     public void initializeCalendar() {
-
         // sets whether to show the week number.
         calendar.setShowWeekNumber(false);
         // sets the first day of week according to Calendar.

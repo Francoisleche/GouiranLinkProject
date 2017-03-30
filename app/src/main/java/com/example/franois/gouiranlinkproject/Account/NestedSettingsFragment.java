@@ -8,35 +8,39 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity;
 import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
-import com.example.franois.gouiranlinkproject.ToolsClasses.App;
-import com.example.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
+import com.example.franois.gouiranlinkproject.Recherche.ResearchFragment;
+import com.example.franois.gouiranlinkproject.ShakeListener;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.plus.People;
-import com.google.android.gms.plus.Plus;
+
 
 import static com.google.android.gms.wearable.DataMap.TAG;
 
 public class NestedSettingsFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private Customer customer;
     private Context mContext;
+
+    private Switch mySwitch;
+    private ShakeListener mShaker;
 
     private OnFragmentInteractionListener mListener;
 
@@ -58,12 +62,59 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
             customer = (Customer) getArguments().getSerializable("Customer");
         }
         mContext = getContext();
+
+        mShaker = new ShakeListener(getActivity());
+        mShaker.setOnShakeListener(new ShakeListener.OnShakeListener (){
+            public void onShake()
+            {
+                //Toast.makeText(getActivity(), "Shake " , Toast.LENGTH_LONG).show();
+                Fragment fragment = null;
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
+                fragment = new ResearchFragment();
+                ft.replace(R.id.frameLayout, fragment);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_nested_settings, container, false);
+
+
+        mySwitch = (Switch) root.findViewById(R.id.secouer_recherche);
+
+        //set the switch to ON
+        //mySwitch.setChecked(true);
+        //attach a listener to check for changes in state
+        mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+
+                if(isChecked){
+                    System.out.println("Switch is currently ON");
+                }else{
+                    System.out.println("Switch is currently OFF");
+                }
+
+            }
+        });
+
+        //check the current state before we display the screen
+        if(mySwitch.isChecked()){
+            System.out.println("Switch is currently ON");
+        }
+        else {
+            System.out.println("Switch is currently OFF");
+        }
+
+
         Button logoutButton = (Button) root.findViewById(R.id.logout);
 
         TextView textViewversion = (TextView) root.findViewById(R.id.versionsmartphone);
@@ -96,9 +147,9 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
         String manufacturer = Build.MANUFACTURER;
 
         textViewversion.setText("Version "+ sdk);
-        textViewmodel.setText("Model "+ model);
+        textViewmodel.setText("Model : "+ model);
         textViewnom.setText("Nom du telephone : "+ nom);
-        textViewmanufacturer.setText("Constructeur "+ manufacturer);
+        textViewmanufacturer.setText("Constructeur : "+ manufacturer);
 
 
 

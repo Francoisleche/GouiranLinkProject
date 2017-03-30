@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.Object.Professional;
 import com.example.franois.gouiranlinkproject.Object.Professional_Product;
 import com.example.franois.gouiranlinkproject.R;
@@ -28,6 +29,7 @@ public class ProfessionalView extends Fragment {
     TabLayout tabLayout;
     private Professional professional;
     private Professional_Product[] professional_product;
+    private Customer customer;
 
 
 
@@ -38,6 +40,7 @@ public class ProfessionalView extends Fragment {
         if (getArguments() != null) {
             professional = (Professional)getArguments().getSerializable("Professionnal");
             professional_product = (Professional_Product[])getArguments().getSerializable("ProfessionnalProduct");
+            customer = (Customer)getArguments().getSerializable("Customer");
         }
 
         System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
@@ -47,12 +50,13 @@ public class ProfessionalView extends Fragment {
         Bundle args = new Bundle();
         args.putSerializable("Professionnal", professional);
         args.putSerializable("ProfessionnalProduct", professional_product);
+        args.putSerializable("Customer",customer);
         fragment = new ServicesProfessional();
         fragment.setArguments(args);
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.simpleFrameLayout,fragment);
+        ft.replace(R.id.simpleFrameLayout,fragment).addToBackStack(null);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
 
@@ -85,6 +89,9 @@ public class ProfessionalView extends Fragment {
                 //viewPager.setCurrentItem(tab.getPosition());
                 Bundle args = new Bundle();
                 args.putSerializable("Professionnal", professional);
+                args.putSerializable("ProfessionnalProduct",professional_product);
+                args.putSerializable("Customer",customer);
+                System.out.println("CUSTOMER 1 :"+ customer.getName());
 
                 Log.i("TAG", "onTabSelected: " + tab.getPosition());
                 switch (tab.getPosition()) {

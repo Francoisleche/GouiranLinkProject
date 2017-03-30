@@ -27,7 +27,6 @@ import android.widget.Toast;
 import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
-import com.example.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -37,20 +36,16 @@ import com.google.android.gms.location.LocationServices;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import static android.content.Context.MODE_APPEND;
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.franois.gouiranlinkproject.ToolsClasses.BaseFragment.ARGS_INSTANCE;
 
@@ -250,6 +245,15 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
 
             }
 
+            ImageView imageView1 = new ImageView(getActivity());
+            ImageView imageView2 = new ImageView(getActivity());
+            ImageView imageView3 = new ImageView(getActivity());
+            ImageView imageView4 = new ImageView(getActivity());
+            ImageView imageView5 = new ImageView(getActivity());
+            ImageView imageView6 = new ImageView(getActivity());
+            ImageView imageView7 = new ImageView(getActivity());
+            ImageView imageView8 = new ImageView(getActivity());
+            ImageView imageView9 = new ImageView(getActivity());
             TextView textView1 = new TextView(getActivity());
             TextView textView2 = new TextView(getActivity());
             TextView textView3 = new TextView(getActivity());
@@ -262,6 +266,12 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
 
             if (parts.length >= 1 && parts[0] != null && !Objects.equals(parts[0], "")) {
                 RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                /*imageView1.setImageResource(R.drawable.coloration1);
+                imageView1.setId(View.generateViewId());
+                imageView1.setLayoutParams(params1);*/
+
+
                 textView1.setPadding(5, 0, 5, 0);
                 textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 textView1.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
@@ -270,8 +280,24 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
                 textView1.setLayoutParams(params1);
                 textView1.setId(View.generateViewId());
                 textView1.setTypeface(font);
+                //textView1.setTextAlignment(imageView1.getId());
+
                 myRecentResearchesProposal.addView(textView1);
             }
+
+             /*                   <ImageView
+            android:id="@+id/around_1"
+            android:layout_width="180dp"
+            android:layout_height="160dp"
+            android:onClick="onClick"
+            android:clickable="true"/>
+                    <TextView
+            android:id="@+id/around_1_text"
+            android:layout_alignStart="@id/around_1"
+            android:layout_alignTop="@id/around_1"
+            android:layout_alignEnd="@id/around_1"
+            android:layout_alignBottom="@id/around_1"
+            style="@style/AroundMeProposals"/>*/
 
             if (parts.length >= 2 && parts[1] != null && !Objects.equals(parts[1], "")) {
                 RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

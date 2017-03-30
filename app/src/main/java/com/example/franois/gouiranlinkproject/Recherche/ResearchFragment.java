@@ -26,9 +26,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +59,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -86,6 +90,8 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
     private View mProgressView;
     private View mLoginFormView;
 
+
+    private Filter filter = new Filter();
 
     private Professional PremierProfessionnal = new Professional();
     private Product_Category_WithoutTree[] PremierProfessionnalProduits;
@@ -479,9 +485,6 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
         });
 
 
-
-
-
         recherche.addTextChangedListener(new TextWatcher() {
             boolean isTyping = false;
 
@@ -521,7 +524,23 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                             @Override
                             public void run() {
 
+                                ResearchTask2 researchTask = new ResearchTask2(recherche.getText().toString(), 5);
+                                String ls = "";
+                                ArrayList<ArrayList <String>> recup = new ArrayList<ArrayList<String>>();
+                                ls = researchTask.getResponse();
+                                recup = jsonparser3(ls);
 
+                                String[] results = new String[] {};
+                                final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
+                                ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
+                                listView.setAdapter(tableau);
+                                for (int i = 0; i < recup.size(); i++) {
+                                    resultsList.add(recup.get(i).get(3));
+                                    tableau.notifyDataSetChanged();
+                                }
+
+
+/*
                                 ResearchTask researchTask = new ResearchTask(recherche.getText().toString(), 5);
                                 String ls = "";
                                 ArrayList<String> recup = new ArrayList<String>();
@@ -536,24 +555,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                                 for (int i = 0; i < recup.size(); i++) {
                                     resultsList.add(recup.get(i));
                                     tableau.notifyDataSetChanged();
-                                }
-
-
-
-                                //2eme recherche pour les prestataires
-                                /*ResearchTask2 researchTask2 = new ResearchTask2();
-                                String ls2 = "";
-                                ArrayList<String> recup2 = new ArrayList<String>();
-                                ls2 = researchTask2.getResponse();
-                                recup2 = jsonparser2(ls2);*/
-
-                                //System.out.println(ls2);
-
-                                /*resultat2.setText(recup.get(0));
-                                resultat3.setText(recup.get(1));
-                                resultat4.setText(recup.get(2));
-                                resultat5.setText(recup.get(3));
-                                resultat6.setText(recup.get(4));*/
+                                }*/
 
 
                             }
@@ -573,7 +575,16 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle args = new Bundle();
+                String[] tableau = new String[5];
+                tableau[0] = "Bonjour";
+                tableau[1] = "Bonjour1";
+                tableau[2] = "Bonjour2";
+                tableau[3] = "Bonjour3";
+                tableau[4] = "Bonjour4";
+                args.putSerializable("tableau", tableau);
                 Intent intent = new Intent(getActivity(), MapPane.class);
+                intent.putExtras(args);
                 startActivity(intent);
             }
         });
@@ -583,8 +594,57 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FilterActivity.class);
-                startActivity(intent);
+
+                final Dialog dialog = new Dialog(getContext());
+                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                View contentView = layoutInflater.inflate(R.layout.filtres_popup, null);
+                final LinearLayout root = (LinearLayout) contentView.findViewById(R.id.proRootLayout2);
+                System.out.println("Ooooooooooooooooooh filtres ?");
+
+                dialog.setContentView(root);
+                dialog.show();
+
+                final CheckBox acceptation_automatique_rdv = (CheckBox)contentView.findViewById(R.id.acceptation_auto);
+                final CheckBox plusreserve = (CheckBox)contentView.findViewById(R.id.plusreserve);
+                final Spinner spinner = (Spinner)contentView.findViewById(R.id.liste_specialite);
+                final CheckBox type1 = (CheckBox)contentView.findViewById(R.id.type1);
+                final CheckBox type2 = (CheckBox)contentView.findViewById(R.id.type2);
+                final CalendarView jourouverture = (CalendarView)contentView.findViewById(R.id.jourouverture);
+
+                Button accepter_filtre = (Button) contentView.findViewById(R.id.accepter_filtre);
+                accepter_filtre.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if(acceptation_automatique_rdv.isChecked()){
+                            filter.setAcceptation_Automatique_RDV(true);
+                        }
+                        if(plusreserve.isChecked()){
+                            filter.setLes_plusreserve_semaine(true);
+                        }
+                        /*if(spinner.isClickable()){
+                            filter.setSpecialite(spinner.getSelectedItem().toString());
+                        }*/
+                        if(type1.isChecked() && type2.isChecked()){
+                                filter.setType("Tout");
+                        }else if(type1.isChecked() && !type2.isChecked()){
+                                filter.setType("Salon");
+                        }else if(!type1.isChecked() && type2.isChecked()){
+                                filter.setType("Domicile");
+                        }else{
+                                filter.setType("");
+                        }
+
+                        dialog.cancel();
+
+                    }
+                });
+
+
+
+
+                //Intent intent = new Intent(getActivity(), FilterActivity.class);
+                //startActivity(intent);
             }
         });
 
@@ -1237,6 +1297,43 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
     }
 
 
+    public ArrayList<ArrayList <String>> jsonparser3(String jsonStr) {
+
+        ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
+
+        if (jsonStr != null) {
+            if (jsonStr.contains("{")) {
+                try {
+
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    JSONArray contacts = jsonObj.getJSONArray("data");
+
+                    for (int i = 0; i < contacts.length(); i++) {
+                        ArrayList<String> personnes = new ArrayList<String>();
+                        JSONObject c = contacts.getJSONObject(i);
+
+                        String id = c.getString("id");
+                        String geoloc_latitude = c.getString("geoloc_latitude");
+                        String geoloc_longitude = c.getString("geoloc_longitude");
+                        String shop_name = c.getString("shop_name");
+                        personnes.add(id);
+                        personnes.add(geoloc_latitude);
+                        personnes.add(geoloc_longitude);
+                        personnes.add(shop_name);
+                        vue_personnes_sur_carte.add(personnes);
+                    }
+
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                }
+
+            }
+        }
+
+        return vue_personnes_sur_carte;
+    }
+
+
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
@@ -1333,6 +1430,9 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
     public class ResearchTask2 extends AsyncTask<Void, Void, Boolean> {
 
+        private final String mQuery;
+        private final int mLimit;
+
         private String response = "";
 
         //private final String mQuery;
@@ -1343,7 +1443,9 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
         //ResearchTask2(String query, String city, String sponsoring_key, Double latitude, Double longitude, String address, String post_code, int product_category_id, int product_id,
          //             int type_id, int specialty_id, int weekday, boolean automatic_booking_confirmation, String field, String order) {
-        ResearchTask2(){
+        ResearchTask2(String query, int limit) {
+            mQuery = query;
+            mLimit = limit;
         // mQuery = query;
             //mLimit = limit;
             //System.out.println("QUERY :" + query + ",LIMIT :" + limit);
@@ -1356,7 +1458,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                     "&query[geoloc][address]=" + address + "&query[post_code]=" + post_code + "&query[product_category_id]=" + product_category_id +
                     "&query[product_id]=" + product_id + "&query[type_id]=" + type_id + "&query[specialty_id]=" + specialty_id + "&query[weekday]=" +
                     weekday + "&query[automatic_booking_confirmation]=" + automatic_booking_confirmation + "&sort[field]=" + field + "&sort[order]=" + order);*/
-            getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/");
+            getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[all]=" + query + "&limit=" + limit);
 
             String resp = null;
             try {
@@ -1662,6 +1764,9 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
             return mFragmentTitleList.get(position);
         }
     }
+
+
+
 
 
 }

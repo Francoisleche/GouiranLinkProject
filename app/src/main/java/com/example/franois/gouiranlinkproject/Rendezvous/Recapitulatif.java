@@ -179,11 +179,8 @@ public class Recapitulatif extends Fragment {
                 ls2 = researchTask.getResponse();
                 System.out.println("Resultat recapitulatif : "+ls2);
 
-
-
             }
         });
-
 
         return v;
     }
@@ -246,7 +243,6 @@ public class Recapitulatif extends Fragment {
                                 "\"updated_at\":\"" + booking.getProducts()[i].getUpdated_at() + "\",\n" +
                                 "\"discounts\":\"" + "[]" + "\"},\n";
                     }
-
                         json = json.concat(s);
 
                         json = json + "],\"resource\":\"" + "{}" + "\",\n" + */
@@ -308,13 +304,11 @@ public class Recapitulatif extends Fragment {
                     "\"pinterest_link\":\"" + booking.getProfessional().getPinterest_link() + "\",\n" +
                     "\"product_categories\":\"" + "[{}]" + "\"\n" +
 
-
                     //PROFESSIONNAL PRODUCT"\"first_booking_comment\":\"" + booking.getFirst_booking_comment() + "\",\n" +
                     //RESOURCE"\"first_booking_comment\":\"" + booking.getFirst_booking_comment() + "\",\n" +
                     //BaseBooking PRODUCT"\"first_booking_comment\":\"" + booking.getFirst_booking_comment() + "\",\n" +
                     //Professional_Customer
                     //Comment
-
 
               "}\n,"+
               "\"comment\":\"" + "{}" + "\"\n";

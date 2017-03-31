@@ -2,6 +2,7 @@ package com.example.franois.gouiranlinkproject;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.example.franois.gouiranlinkproject.Account.AccountFragment;
 import com.example.franois.gouiranlinkproject.Favourites.FavouritesFragment;
 import com.example.franois.gouiranlinkproject.Gallery.GalleryFragment;
 import com.example.franois.gouiranlinkproject.Homepage.HomeFragment;
+import com.example.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity;
 import com.example.franois.gouiranlinkproject.NavigationDrawer.CustomDrawerAdapter;
 import com.example.franois.gouiranlinkproject.NavigationDrawer.DrawerItem;
 import com.example.franois.gouiranlinkproject.Object.Customer;
@@ -376,6 +378,12 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
         if (count == 0) {
             super.onBackPressed();
             //additional code
+        } else if (count == 1) {
+            if (!(customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink()))) {
+                Intent intent = new Intent(ParentActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
         } else if (count > 1) {
             getSupportFragmentManager().popBackStack();
             if (findViewById(R.id.frame_layout) != null)

@@ -26,6 +26,8 @@ import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
 import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -181,6 +183,7 @@ public class UpcomingFragment extends Fragment {
                         reservation.date = getDate(arr.getJSONObject(i).getString("begin_date"));
                         reservation.hour = getHour(arr.getJSONObject(i).getString("begin_date"));
                     }
+                    Log.d("UPCOMINGDATE=", arr.getJSONObject(i).getString("begin_date"));
                     reservationList.add(reservation);
 //                }
 /*                else if (arr.getJSONObject(i).has("confirmed") && !arr.getJSONObject(i).getBoolean("confirmed")) {
@@ -204,6 +207,8 @@ public class UpcomingFragment extends Fragment {
         String year;
         String[] parts;
 
+
+
         /*DateTimeFormatter parser = ISODateTimeFormat.dateTime();
         DateTime dt = parser.parseDateTime(complete);
 
@@ -217,15 +222,14 @@ public class UpcomingFragment extends Fragment {
         month = parts[1];
         year = parts[0];
         c.setTime(new Date(Integer.valueOf(parts[0]), Integer.valueOf(parts[1]), Integer.valueOf(parts[2])));
-        System.out.println("NEW DATE = " + new Date());
-        try {
-            System.out.println(new SimpleDateFormat("DD/MM/YYYY").parse(number + "/" + month + "/" + year).before(new Date()));
-            return new SimpleDateFormat("DD/MM/YYYY").parse(number + "/" + month + "/" + year).before(new Date());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        System.out.println(false);
-        return (false);
+        DateTime current = new org.joda.time.DateTime( org.joda.time.DateTimeZone.UTC );
+        complete = complete.replace("T", " ");
+        complete = complete.replace("Z", "");
+        System.out.println("Complete " + complete);
+        System.out.println("Current " + current);
+        System.out.println("Comparison " + current.isAfter(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(complete)));
+        
+        return (current.isAfter(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(complete)));
     }
 
     private String getDate(String complete) {

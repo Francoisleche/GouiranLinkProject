@@ -28,6 +28,8 @@
         android:icon="@mipmap/logo_gouiran_link_pink"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:theme="@style/MyMaterialTheme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

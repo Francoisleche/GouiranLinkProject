@@ -25,23 +25,25 @@ android:layout_height="match_parent"/>-->
         android:layout_width="match_parent"
         android:layout_height="400dp"
         tools:context="com.example.franois.gouiranlinkproject.Recherche.MapPane" />
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:weightSum="1.0">
 
-        <ListView
-            android:id="@+id/mesresultats_map"
-            android:layout_width="fill_parent"
-            android:layout_height="800px"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"></ListView>
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
 
-    </LinearLayout>
+            <ListView
+                android:id="@+id/mesresultats_map"
+                android:layout_width="fill_parent"
+                android:layout_height="800px"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"></ListView>
+
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>

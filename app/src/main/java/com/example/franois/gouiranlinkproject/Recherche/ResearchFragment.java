@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -194,11 +195,47 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
         listView = (ListView) view.findViewById(R.id.mesresultats);
 
+        /*listView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgress(true);
+
+            }});*/
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showProgress(true);
+
+                /*new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while(true){
+
+                        }
+                    }
+                })
+
+                int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+                recherche_layout.animate().setDuration(shortAnimTime).alpha(
+                        true ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        recherche_layout.setVisibility(true ? View.GONE : View.VISIBLE);
+                    }
+                });
+
+                mProgressView.setVisibility(true ? View.VISIBLE : View.GONE);
+                //mImageLoginView.setVisibility(show ? View.VISIBLE : View.GONE);
+                mProgressView.animate().setDuration(shortAnimTime).alpha(
+                        true ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mProgressView.setVisibility(true ? View.VISIBLE : View.GONE);
+                    }});*/
+                //showProgress(true);
                 try {
                     fileOutputStream = getContext().openFileOutput("GouiranLink", MODE_APPEND);
                     fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
@@ -920,6 +957,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
+        System.out.println("00000000000000000000000000000000000000000");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -931,9 +969,20 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                     mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });*/
+            System.out.println("11111111111111111111111111111111111111111111");
+            FrameLayout fragment_remplace = (FrameLayout) getActivity().findViewById(R.id.fragment_remplace);
+            fragment_remplace.setVisibility(show ? View.GONE : View.VISIBLE);
 
-            recherche_layout.setVisibility(show ? View.INVISIBLE : View.VISIBLE);
-            recherche_layout.setVisibility(show ? View.GONE : View.VISIBLE);
+            //recherche_layout.setVisibility(show ? View.INVISIBLE : View.VISIBLE);
+            //recherche_layout.setVisibility(show ? View.GONE : View.VISIBLE);
+            recherche_layout.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    recherche_layout.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             //mImageLoginView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
@@ -946,7 +995,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-
+            System.out.println("22222222222222222222222222222222222222222222");
             recherche_layout.setVisibility(show ? View.INVISIBLE : View.VISIBLE);
             recherche_layout.setVisibility(show ? View.GONE : View.VISIBLE);
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);

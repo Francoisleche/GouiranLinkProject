@@ -26,6 +26,8 @@ import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
 import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -159,9 +161,7 @@ public class DoneFragment extends Fragment {
         GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/" + String.valueOf(customer.getId()) + "/", headerKey, headerValue);
         try {
             resp = getRequest.execute().get();
-            Log.d("UPCOMING", resp);
             String s = resp.replace(",",", \n");
-            Log.d("UPCOMING", s);
 
             JSONObject jsonObject = new JSONObject(resp);
             JSONArray arr = jsonObject.getJSONArray("data");
@@ -172,7 +172,6 @@ public class DoneFragment extends Fragment {
 //                if (arr.getJSONObject(i).has("confirmed") && arr.getJSONObject(i).getBoolean("confirmed")) {
                     if (arr.getJSONObject(i).getJSONObject("professional").has("shop_name") && !arr.getJSONObject(i).getJSONObject("professional").isNull("shop_name")) {
                         reservation.institute = arr.getJSONObject(i).getJSONObject("professional").getString("shop_name");
-                        Log.d("NAME=", reservation.institute);
                     }
                     if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").has("url") &&
                             !arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").isNull("url"))
@@ -186,6 +185,7 @@ public class DoneFragment extends Fragment {
                         reservation.date = getDate(arr.getJSONObject(i).getString("begin_date"));
                         reservation.hour = getHour(arr.getJSONObject(i).getString("begin_date"));
                     }
+                    Log.d("DONEDATE=", arr.getJSONObject(i).getString("begin_date"));
                     reservationList.add(reservation);
 //                }
 /*                else if (arr.getJSONObject(i).has("confirmed") && !arr.getJSONObject(i).getBoolean("confirmed")) {
@@ -209,21 +209,29 @@ public class DoneFragment extends Fragment {
         String year;
         String[] parts;
 
-        Log.d("DATE=", complete);
+
+
+        /*DateTimeFormatter parser = ISODateTimeFormat.dateTime();
+        DateTime dt = parser.parseDateTime(complete);
+
+        DateTimeFormatter formatter = DateTimeFormat.mediumDateTime();
+        System.out.println(formatter.print(dt));*/
+
         completeDate = complete.substring(0, complete.indexOf("T"));
-        Log.d("DATE=", completeDate);
         parts = completeDate.split("-");
         Calendar c = Calendar.getInstance();
         number = parts[2];
         month = parts[1];
         year = parts[0];
         c.setTime(new Date(Integer.valueOf(parts[0]), Integer.valueOf(parts[1]), Integer.valueOf(parts[2])));
-        try {
-            return new SimpleDateFormat("MM/yyyy").parse(month + "/" + year).before(new Date());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return (false);
+        DateTime current = new org.joda.time.DateTime( org.joda.time.DateTimeZone.UTC );
+        complete = complete.replace("T", " ");
+        complete = complete.replace("Z", "");
+        System.out.println("Complete " + complete);
+        System.out.println("Current " + current);
+        System.out.println("Comparison " + current.isAfter(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(complete)));
+
+        return (current.isAfter(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").parseDateTime(complete)));
     }
 
     private String getDate(String complete) {
@@ -234,9 +242,7 @@ public class DoneFragment extends Fragment {
         String year;
         String[] parts;
 
-        Log.d("DATE=", complete);
         completeDate = complete.substring(0, complete.indexOf("T"));
-        Log.d("DATE=", completeDate);
         parts = completeDate.split("-");
         Calendar c = Calendar.getInstance();
         number = parts[2];
@@ -302,7 +308,7 @@ public class DoneFragment extends Fragment {
             dates.add(reservations.get(i).getDate());
             hours.add(reservations.get(i).getHour());
         }
-        GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+        GridView gridview = (GridView) getActivity().findViewById(R.id.gridviewDone);
         ReservationImageAdapter reservationImageAdapter = new ReservationImageAdapter(getActivity());
         reservationImageAdapter.setInstitutesNames(institutesNames);
         reservationImageAdapter.setTypes(types);

@@ -263,6 +263,7 @@ Les partenaires de Gouiran Link ont tous été soigneusement sélectionnés afin
     <string name="invation_text">Hey, je viens de découvrir l\'application mobile Gouiran Link, elle est géniale! Il faudrait que tu l\'essaye toi aussi!</string>
 
     <string name="gender_prompt">Sexe</string>
+    <string name="coming_soon">Coming soon</string>
     <string-array name="gender_choice">
         <item>Homme</item>
         <item>Femme</item>

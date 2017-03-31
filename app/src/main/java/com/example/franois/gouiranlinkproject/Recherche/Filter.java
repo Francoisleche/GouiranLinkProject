@@ -16,7 +16,6 @@ public class Filter {
     private String jour_ouverture;
 
     public Filter(){
-
     }
 
     public Filter(ArrayList<String> prestations,boolean acceptation_Automatique_RDV,boolean les_plusreserve_semaine,

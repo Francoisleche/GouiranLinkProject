@@ -87,6 +87,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    ArrayList<ArrayList<String>> donnée_geolocalise = new ArrayList<ArrayList<String>>();
     private View mProgressView;
     private View mLoginFormView;
 
@@ -532,7 +533,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                             @Override
                             public void run() {
 
-                                ResearchTask2 researchTask = new ResearchTask2(recherche.getText().toString(), 5);
+                                /*ResearchTask2 researchTask = new ResearchTask2(recherche.getText().toString(), 5);
                                 String ls = "";
                                 ArrayList<ArrayList <String>> recup = new ArrayList<ArrayList<String>>();
                                 ls = researchTask.getResponse();
@@ -545,25 +546,84 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                                 for (int i = 0; i < recup.size(); i++) {
                                     resultsList.add(recup.get(i).get(3));
                                     tableau.notifyDataSetChanged();
-                                }
+                                }*/
 
 
-/*
+                                // Récupération de la liste de String
                                 ResearchTask researchTask = new ResearchTask(recherche.getText().toString(), 5);
                                 String ls = "";
                                 ArrayList<String> recup = new ArrayList<String>();
                                 ls = researchTask.getResponse();
+                                System.out.println("ALllllllllllllo");
                                 recup = jsonparser(ls);
 
 
+                                System.out.println("ALllllllllllllo");
                                 String[] results = new String[] {};
                                 final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
                                 ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
                                 listView.setAdapter(tableau);
+                                int g =0;
                                 for (int i = 0; i < recup.size(); i++) {
                                     resultsList.add(recup.get(i));
                                     tableau.notifyDataSetChanged();
-                                }*/
+                                    g++;
+                                }
+
+                                // Récupération des données de géoloc pour chacun des éléments
+                                ArrayList<ArrayList <String>> recup2 = new ArrayList<ArrayList<String>>();
+                                for(int j=0;j<g;j++){
+                                    System.out.println("LATAIIIIIIILLLLLLLEESTDE :"+recup.get(j).length());
+                                    System.out.println("LAPERSOOOOOONEESTDE :"+recup.get(j));
+                                    String ls2 = "";
+                                    ResearchTask2 researchTask2 = new ResearchTask2(recup.get(j), 1);
+                                    ls2 = researchTask2.getResponse();
+                                    System.out.println("repooooooooooooooooonse"+ls2);
+                                    //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
+                                        if (ls2 != null) {
+                                            if (ls2.contains("{")) {
+                                                try {
+
+                                                    JSONObject jsonObj = new JSONObject(ls2);
+                                                    JSONArray contacts = jsonObj.getJSONArray("data");
+
+                                                    for (int i = 0; i < contacts.length(); i++) {
+                                                        if (i == 0) {
+                                                            ArrayList<String> personnes = new ArrayList<String>();
+                                                            JSONObject c = contacts.getJSONObject(i);
+
+                                                            String id = c.getString("id");
+                                                            String geoloc_latitude = c.getString("geoloc_latitude");
+                                                            String geoloc_longitude = c.getString("geoloc_longitude");
+                                                            String shop_name = c.getString("shop_name");
+                                                            System.out.println("shop_nameshop_nameshop_nameshop_name"+ shop_name);
+                                                            personnes.add(id);
+                                                            personnes.add(geoloc_latitude);
+                                                            personnes.add(geoloc_longitude);
+                                                            personnes.add(shop_name);
+                                                            recup2.add(personnes);
+                                                        }
+                                                    }
+
+                                                } catch (final JSONException e) {
+                                                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                                                }
+                                            }
+                                        }
+                                    }
+
+
+
+                                //ls = researchTask.getResponse();
+                                //recup2 = jsonparser3(ls);
+
+                                donnée_geolocalise = recup2;
+                                for(int i =0;i<donnée_geolocalise.size();i++){
+                                    System.out.println("ppppppppppppppppppppppppppppppp" + donnée_geolocalise.get(i).get(3));
+                                }
+                                //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
+
+
 
 
                             }
@@ -590,7 +650,19 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                 tableau[2] = "Bonjour2";
                 tableau[3] = "Bonjour3";
                 tableau[4] = "Bonjour4";
+
+
+                boolean recherche_boolean = false;
+                System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOh comprend pas" + recherche.getText());
+                if(recherche.getText().toString().isEmpty()){
+                    recherche_boolean = false;
+                }else{
+                    recherche_boolean = true;
+                }
+                //recherche_boolean
+                args.putBoolean("recherche_boolean",recherche_boolean);
                 args.putSerializable("tableau", tableau);
+                args.putSerializable("donnée_geolocalise", donnée_geolocalise);
                 Intent intent = new Intent(getActivity(), MapPane.class);
                 intent.putExtras(args);
                 startActivity(intent);
@@ -1466,7 +1538,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                     "&query[geoloc][address]=" + address + "&query[post_code]=" + post_code + "&query[product_category_id]=" + product_category_id +
                     "&query[product_id]=" + product_id + "&query[type_id]=" + type_id + "&query[specialty_id]=" + specialty_id + "&query[weekday]=" +
                     weekday + "&query[automatic_booking_confirmation]=" + automatic_booking_confirmation + "&sort[field]=" + field + "&sort[order]=" + order);*/
-            getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[all]=" + query + "&limit=" + limit);
+            getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[_all]=" + query + "&limit=" + limit);
 
             String resp = null;
             try {

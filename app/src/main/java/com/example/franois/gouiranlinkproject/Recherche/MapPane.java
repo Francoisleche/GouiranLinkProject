@@ -58,12 +58,14 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
     public LocationManager locationManager;
     public Criteria criteria;
     public String bestProvider;
-
+    public boolean recherche_bool = false;
 
     private GoogleMap mMap;
     private static final int REQUEST_CODE_LOCATION = 123;
     private LocationManager lManager;
     private Location location;
+
+    ArrayList<ArrayList<String>> thumbs2 = new ArrayList<ArrayList<String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +75,28 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
         String[] thumbs=(String[])bundle.getSerializable("tableau");
+        thumbs2=(ArrayList<ArrayList<String>>)bundle.getSerializable("donnée_geolocalise");
+        recherche_bool =(boolean)bundle.getBoolean("recherche_boolean");
 
 
         ListView mesresultats_map = (ListView)findViewById(R.id.mesresultats_map);
-        String[] results = thumbs;
-        final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
-        ArrayAdapter<String> tableau = new ArrayAdapter<String>(this, R.layout.services, resultsList);
-        mesresultats_map.setAdapter(tableau);
+        System.out.println("Boooooooooooooooolean"+recherche_bool);
+        if(!recherche_bool){
+            String[] results = thumbs;
+            final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
+            ArrayAdapter<String> tableau = new ArrayAdapter<String>(this, R.layout.services, resultsList);
+            mesresultats_map.setAdapter(tableau);
+        }else{
+            String[] results = new String[5];
+            for(int i =0; i<thumbs2.size();i++){
+                System.out.println("Boooooooooooooooolean et thumbs2 :"+thumbs2.get(i).get(3));
+                results[i] =  thumbs2.get(i).get(3);
+            }
+            final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
+            ArrayAdapter<String> tableau = new ArrayAdapter<String>(this, R.layout.services, resultsList);
+            mesresultats_map.setAdapter(tableau);
+        }
+
 
 
         lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -116,32 +133,75 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }else {
-            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            mMap.setMyLocationEnabled(true);
-            criteria = new Criteria();
-            bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
-            Location location1 = locationManager.getLastKnownLocation(bestProvider);
-            latitude = location1.getLatitude();
-            longitude = location1.getLongitude();
 
-            LatLng latLng = new LatLng(latitude, longitude);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
 
-            System.out.println("latitude " + latitude +" longitude "+ longitude);
-            recherche_autour(latitude,longitude);
-            //shopImageList = new String[5];
-            //shopNameList = new String[5];
-            for(int i =0;i<10;i++){
-                if (LatitudeList[i]==null) {
+            if(!recherche_bool){
+                locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+                mMap.setMyLocationEnabled(true);
+                criteria = new Criteria();
+                bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true));
+                Location location1 = locationManager.getLastKnownLocation(bestProvider);
+                latitude = location1.getLatitude();
+                longitude = location1.getLongitude();
 
+                LatLng latLng = new LatLng(latitude, longitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
+
+                System.out.println("latitude " + latitude +" longitude "+ longitude);
+                recherche_autour(latitude,longitude);
+                //shopImageList = new String[5];
+                //shopNameList = new String[5];
+                for(int i =0;i<10;i++){
+                    if (LatitudeList[i]==null) {
+
+                    }
+                    else{
+                        System.out.println("LATITUDE de " + i +" : "+ LatitudeList[i]);
+                        System.out.println("Longitude de " + i +" : "+ LongitudeList[i]);
+                        LatLng premier_trouve = new LatLng(Double.parseDouble(LatitudeList[i]),Double.parseDouble(LongitudeList[i]));
+                        mMap.addMarker(new MarkerOptions().position(premier_trouve).title(shopNameList[i]));
+                    }
                 }
-                else{
-                    System.out.println("LATITUDE de " + i +" : "+ LatitudeList[i]);
-                    System.out.println("Longitude de " + i +" : "+ LongitudeList[i]);
-                    LatLng premier_trouve = new LatLng(Double.parseDouble(LatitudeList[i]),Double.parseDouble(LongitudeList[i]));
-                    mMap.addMarker(new MarkerOptions().position(premier_trouve).title(shopNameList[i]));
+            }else{
+                System.out.println("Allo2222");
+
+                String[] tableau_shop_name = new String[5];
+                String[] tableau_latitude = new String[5];
+                String[] tableau_longitude = new String[5];
+                for (int i = 0; i < thumbs2.size(); i++) {
+                    tableau_latitude[i] = thumbs2.get(i).get(1);
+                    tableau_longitude[i] = thumbs2.get(i).get(2);
+                    tableau_shop_name[i] = thumbs2.get(i).get(3);
                 }
+
+                locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+                mMap.setMyLocationEnabled(true);
+                criteria = new Criteria();
+                bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+                Location location1 = locationManager.getLastKnownLocation(bestProvider);
+                latitude = location1.getLatitude();
+                longitude = location1.getLongitude();
+
+                LatLng latLng = new LatLng(latitude, longitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+
+                System.out.println("latitude " + latitude + " longitude " + longitude);
+                //recherche_autour(latitude,longitude);
+                //shopImageList = new String[5];
+                //shopNameList = new String[5];
+                for (int i = 0; i < 5; i++) {
+                    if (tableau_latitude[i] == null) {
+
+                    } else {
+                        System.out.println("LATITUDE de " + i + " : " + tableau_latitude[i]);
+                        System.out.println("Longitude de " + i + " : " + tableau_longitude[i]);
+                        LatLng premier_trouve = new LatLng(Double.parseDouble(tableau_latitude[i]), Double.parseDouble(tableau_longitude[i]));
+                        mMap.addMarker(new MarkerOptions().position(premier_trouve).title(tableau_shop_name[i]));
+                    }
+                }
+
             }
+
 
 
 

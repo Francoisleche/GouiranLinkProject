@@ -76,8 +76,8 @@ public class AndroidCameraApi2 extends AppCompatActivity {
         assert takePictureButton != null;
 
 
-        /*ActivityCompat.requestPermissions(AndroidCameraApi2.this,
-                new String[]{Manifest.permission.CAMERA},100);*/
+        ActivityCompat.requestPermissions(AndroidCameraApi2.this,
+                new String[]{Manifest.permission.CAMERA},100);
 
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override

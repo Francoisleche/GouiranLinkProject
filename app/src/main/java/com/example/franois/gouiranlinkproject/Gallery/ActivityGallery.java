@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.AndroidCameraApi;
 import com.example.franois.gouiranlinkproject.AndroidCameraApi2;
+import com.example.franois.gouiranlinkproject.AndroidCameraApi3;
 import com.example.franois.gouiranlinkproject.CamTestActivity;
 import com.example.franois.gouiranlinkproject.R;
 
@@ -82,6 +83,14 @@ public class ActivityGallery extends Fragment {
                 //AndroidCameraApi2 api = new AndroidCameraApi2();
                 Intent intent = new Intent(getActivity(), AndroidCameraApi2.class);
                 getActivity().startActivity(intent);
+                /*Fragment fragment = null;
+                Bundle args = new Bundle();
+                args.putSerializable("value", 0);
+                fragment = new AndroidCameraApi3();
+                fragment.setArguments(args);
+
+                FragmentManager fm = getFragmentManager();
+                fm.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();*/
             }
         });
 /*

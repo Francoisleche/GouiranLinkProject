@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.franois.gouiranlinkproject.Account.AccountFragment;
 import com.example.franois.gouiranlinkproject.Favourites.FavouritesFragment;
+import com.example.franois.gouiranlinkproject.Gallery.ActivityGallery;
 import com.example.franois.gouiranlinkproject.Gallery.GalleryFragment;
 import com.example.franois.gouiranlinkproject.Homepage.HomeFragment;
 import com.example.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity;
@@ -191,7 +192,10 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
                 }
                 break;
             case 4:
-                fragment = new GalleryFragment();
+                //fragment = new GalleryFragment();
+                fragment = new ActivityGallery();
+                // intent = new Intent(this,ActivityGallery.class);
+                //startActivity(intent);
                 break;
             case 5:
                 if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {

@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
+    private TextView a_masque;
 
     final private MyCustomer myCustomer = new MyCustomer();
 
@@ -200,6 +200,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         AppEventsLogger.activateApp(getApplication());
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -213,6 +218,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
+
+        a_masque = (TextView) findViewById(R.id.a_masque_lorsque_click);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -234,6 +241,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String accessToken = jsonObject.getString("access_token");
             GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/user/", "Authorization", "Token " + accessToken);
             resp = getRequest.execute().get();
+
 
             RetrieveCustomerInformationFromRequest retrieveCustomerInformationFromRequest = new RetrieveCustomerInformationFromRequest(resp, accessToken);
             customer = retrieveCustomerInformationFromRequest.generateCustomer();
@@ -500,6 +508,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return;
         }
 
+
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -558,6 +567,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
 
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
             mLoginFormView.animate().setDuration(shortAnimTime).alpha(

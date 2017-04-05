@@ -65,6 +65,7 @@ public class Recapitulatif extends Fragment {
             liste_prestations_selectionne = (Professional_Product[])getArguments().getSerializable("liste_prestations_selectionne");
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
+        System.out.println("Numero TELEPHONE :"+customer.getPhone());
         //
 
     }
@@ -276,6 +277,7 @@ public class Recapitulatif extends Fragment {
 
                     "\"begin_date\":\"" + informations[0] + "\"," +
                     "\"end_date\":\"" + informations[1] + "\"," +
+                    "\"phone\":\"" + customer.getMobilephone() + "\"," +
                     "\"products\":[\n" + prestDetails +
                     "]\n" +
                     "}\n";

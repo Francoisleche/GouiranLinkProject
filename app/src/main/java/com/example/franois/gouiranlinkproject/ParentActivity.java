@@ -61,6 +61,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
 
     //private MyCustomer myCustomer;
     private Customer customer;
+    private String token;
 
     private GoogleApiClient client;
 
@@ -75,6 +76,8 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
         Bundle b = getIntent().getExtras();
         if (b != null) {
             customer = (Customer)getIntent().getSerializableExtra("Customer");
+            token = (String)getIntent().getStringExtra("token");
+            System.out.println("Toooooooooooooken"+token);
             /*String surname = myCustomer.getSurname();
             String name = myCustomer.getName();
             Boolean facebook = myCustomer.getArray()[0];*/
@@ -159,6 +162,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
         Fragment fragment = null;
         Bundle args = new Bundle();
         args.putSerializable("Customer", customer);
+        args.putSerializable("token", token);
 
         switch (possition) {
             case 0:

@@ -30,6 +30,7 @@ public class ProfessionalView extends Fragment {
     private Professional professional;
     private Professional_Product[] professional_product;
     private Customer customer;
+    private String token;
 
 
 
@@ -41,6 +42,8 @@ public class ProfessionalView extends Fragment {
             professional = (Professional)getArguments().getSerializable("Professionnal");
             professional_product = (Professional_Product[])getArguments().getSerializable("ProfessionnalProduct");
             customer = (Customer)getArguments().getSerializable("Customer");
+            token = (String)getArguments().getString("token");
+            System.out.println("Toooooooooooooken"+token);
         }
 
         System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
@@ -91,6 +94,7 @@ public class ProfessionalView extends Fragment {
                 args.putSerializable("Professionnal", professional);
                 args.putSerializable("ProfessionnalProduct",professional_product);
                 args.putSerializable("Customer",customer);
+                args.putSerializable("token",token);
                 System.out.println("CUSTOMER 1 :"+ customer.getName());
 
                 Log.i("TAG", "onTabSelected: " + tab.getPosition());

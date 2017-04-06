@@ -236,9 +236,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void nextActivity(String resp) {
         Intent main = new Intent(LoginActivity.this, ParentActivity.class);
         Customer customer = null;
+        String accessToken = "";
         try {
             JSONObject jsonObject = new JSONObject(resp);
-            String accessToken = jsonObject.getString("access_token");
+            accessToken = jsonObject.getString("access_token");
             GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/user/", "Authorization", "Token " + accessToken);
             resp = getRequest.execute().get();
 
@@ -252,6 +253,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             e.printStackTrace();
         }
         main.putExtra("Customer", customer);
+        main.putExtra("token",accessToken);
+        System.out.println("Toooooooooooooken"+accessToken);
         startActivity(main);
 
     }
@@ -267,6 +270,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             myCustomer.setBirthday(birthday);
             myCustomer.setEmail(email);
             main.putExtra("MyCustomer", myCustomer);
+            main.putExtra("token",accessToken);
             String json = "{\n" +
                     "\"accessToken\":\"" + AccessToken.getCurrentAccessToken().getToken() + "\",\n" +
                     "\"userID\":\"" + profile.getId() + "\"\n" +
@@ -299,6 +303,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
             main.putExtra("Customer", customer);
+            main.putExtra("token",accessToken);
             startActivity(main);
 
         }
@@ -346,6 +351,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
             main.putExtra("Customer", customer);
+            main.putExtra("token",accessToken);
             startActivity(main);
         }
     }

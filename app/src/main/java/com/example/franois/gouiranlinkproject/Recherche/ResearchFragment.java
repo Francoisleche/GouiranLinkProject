@@ -107,7 +107,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
     private Professional_Product[] PremierProfessionalProduct;
 
     private Customer customer;
-
+    private String token;
 
     private ResearchTask mAuthTask = null;
     private EditText recherche;
@@ -156,6 +156,8 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
         if (getArguments() != null) {
             customer = (Customer) getArguments().getSerializable("Customer");
+            token = (String)getArguments().getString("token");
+            System.out.println("Toooooooooooooken"+token);
         }
 
     }
@@ -277,6 +279,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                     args.putSerializable("Professionnal", PremierProfessionnal);
                     args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
                     args.putSerializable("Customer", customer);
+                    args.putSerializable("token",token);
                     System.out.println("CUSTOMER :" + customer.getName());
 
 
@@ -297,7 +300,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                     args.putSerializable("Professionnal", PremierProfessionnal);
                     args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
                     args.putSerializable("Customer", customer);
-
+                    args.putSerializable("token",token);
 
                     FragmentManager fm = getFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();

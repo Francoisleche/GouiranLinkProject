@@ -87,7 +87,8 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
             ArrayAdapter<String> tableau = new ArrayAdapter<String>(this, R.layout.services, resultsList);
             mesresultats_map.setAdapter(tableau);
         }else{
-            String[] results = new String[5];
+            String[] results = new String[thumbs2.size()];
+            System.out.println("Thumbs2 :"+thumbs2.size());
             for(int i =0; i<thumbs2.size();i++){
                 System.out.println("Boooooooooooooooolean et thumbs2 :"+thumbs2.get(i).get(3));
                 results[i] =  thumbs2.get(i).get(3);

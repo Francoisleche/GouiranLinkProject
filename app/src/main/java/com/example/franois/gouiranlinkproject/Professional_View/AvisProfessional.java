@@ -12,6 +12,8 @@ import com.example.franois.gouiranlinkproject.R;
 import com.example.franois.gouiranlinkproject.Recherche.ResearchFragment;
 import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 
+import org.json.JSONObject;
+
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -23,6 +25,7 @@ public class AvisProfessional extends Fragment{
     private GetRequest getRequest;
     private ResearchFragment.ResearchTask mAuthTask = null;
     private Professional professional;
+    private String accessToken;
 
     public AvisProfessional(){
 // Required empty public constructor
@@ -34,6 +37,8 @@ public class AvisProfessional extends Fragment{
         //Récupération de l'objet Professionnal
         if (getArguments() != null) {
             professional = (Professional)getArguments().getSerializable("Professionnal");
+            accessToken = (String)getArguments().getString("token");
+            System.out.println("Toooooooooooooken"+accessToken);
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
         //
@@ -43,7 +48,11 @@ public class AvisProfessional extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_avis_professional, container, false);
+        View view = inflater.inflate(R.layout.fragment_avis_professional, container, false);
+
+        ResearchTask3 research = new ResearchTask3(accessToken);
+
+        return view;
     }
 
 
@@ -52,21 +61,24 @@ public class AvisProfessional extends Fragment{
 
         private String response = "";
 
-        private final String mQuery;
+        //private final String mQuery;
         //private final int mLimit;
         //private final String json;
         //private final GetRequest getRequest;
         //private final Boolean connected;
 
-        ResearchTask3(String query) {
-            mQuery = query;
+        ResearchTask3(String accessToken) {
+            //mQuery = query;
             //mLimit = limit;
             //System.out.println("QUERY :" + query + ",LIMIT :" + limit);
             /*json = "{\n" +
                     "\"query\":\"" + query + "\",\n" +
                     "\"limit\":\"" + limit + "\"" +
                     "}\n";*/
-            getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/comment/professional/{professional_id}/?query[_all]="+query);
+            //JSONObject jsonObject = new JSONObject(resp);
+            //String accessToken = jsonObject.getString("access_token");
+            getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/comment/professional/"+
+                    String.valueOf(professional.getId())+"/", "Authorization", "Token " + accessToken);
             String resp = null;
             try {
                 resp = getRequest.execute().get();
@@ -78,7 +90,6 @@ public class AvisProfessional extends Fragment{
                 e.printStackTrace();
             }
             response = resp;
-
         }
 
         public String getResponse(){

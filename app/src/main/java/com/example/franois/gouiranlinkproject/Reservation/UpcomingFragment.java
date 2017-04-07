@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +57,7 @@ public class UpcomingFragment extends Fragment {
     private Typeface font;
     private Customer customer;
     List<Reservation> reservations;
+    private ListView listviewupcoming;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,18 +96,48 @@ public class UpcomingFragment extends Fragment {
     }
 
     private class Reservation {
+        String id;
         String picture;
         String institute;
         List<String> type;
         String date;
         String hour;
+        String adress;
+        Customer customer;
 
         public Reservation() {
+            id = "";
             picture = "";
             institute = "";
             type = new ArrayList<String>();
             date = "";
             hour = "";
+            adress = "";
+            customer = new Customer();
+        }
+
+        public Customer getCustomer() {
+            return customer;
+        }
+
+        public void setCustomer(Customer customer) {
+            this.customer = customer;
+        }
+
+        public String getAdress() {
+            return adress;
+        }
+
+        public void setAdress(String adress) {
+            this.adress = adress;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
         }
 
         public String getPicture() {
@@ -150,26 +182,39 @@ public class UpcomingFragment extends Fragment {
     }
 
     private List<Reservation> getReservationList() {
-        List<Reservation> reservationList = new ArrayList<Reservation>();
-        String headerKey;
-        String headerValue;
-        String resp;
+            List<Reservation> reservationList = new ArrayList<Reservation>();
+            String headerKey;
+            String headerValue;
+            String resp;
 
-        headerKey = "Authorization";
-        headerValue = "Token " + String.valueOf(customer.getToken());
-        GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/" + String.valueOf(customer.getId()) + "/", headerKey, headerValue);
-        try {
+            headerKey = "Authorization";
+            headerValue = "Token " + String.valueOf(customer.getToken());
+            GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/" + String.valueOf(customer.getId()) + "/", headerKey, headerValue);
+            try {
             resp = getRequest.execute().get();
+            System.out.println("PPPPPPPPPPPPPPPPPPPPPPP"+resp);
             JSONObject jsonObject = new JSONObject(resp);
             JSONArray arr = jsonObject.getJSONArray("data");
             for (int i = 0; i < arr.length(); i++) {
                 Reservation reservation = new Reservation();
                 System.out.println(String.valueOf(i) + " DATE " + arr.getJSONObject(i).getString("begin_date"));
                 if (arr.getJSONObject(i).has("begin_date") && !arr.getJSONObject(i).isNull("begin_date") && !isPassed(arr.getJSONObject(i).getString("begin_date"))) {
-
+                    if(arr.getJSONObject(i).has("id")){
+                        reservation.setId(arr.getJSONObject(i).getString("id"));
+                        System.out.println("PPPPPPPPPPPPPOLICE"+reservation.getId());
+                    }
 //                if (arr.getJSONObject(i).has("confirmed") && arr.getJSONObject(i).getBoolean("confirmed")) {
                     if (arr.getJSONObject(i).getJSONObject("professional").has("shop_name") && !arr.getJSONObject(i).getJSONObject("professional").isNull("shop_name")) {
                         reservation.institute = arr.getJSONObject(i).getJSONObject("professional").getString("shop_name");
+                    }
+                    if (arr.getJSONObject(i).getJSONObject("professional").has("address") && !arr.getJSONObject(i).getJSONObject("professional").isNull("address")
+                            && arr.getJSONObject(i).getJSONObject("professional").has("post_code") && !arr.getJSONObject(i).getJSONObject("professional").isNull("post_code")
+                            && arr.getJSONObject(i).getJSONObject("professional").has("city") && !arr.getJSONObject(i).getJSONObject("professional").isNull("city")
+                            && arr.getJSONObject(i).getJSONObject("professional").has("country") && !arr.getJSONObject(i).getJSONObject("professional").isNull("country")) {
+                        reservation.adress = arr.getJSONObject(i).getJSONObject("professional").getString("address") + " - " +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("post_code") + " - " +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("city") + " - " +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("country");
                     }
                     if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").has("url") &&
                             !arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").isNull("url"))
@@ -183,6 +228,7 @@ public class UpcomingFragment extends Fragment {
                         reservation.date = getDate(arr.getJSONObject(i).getString("begin_date"));
                         reservation.hour = getHour(arr.getJSONObject(i).getString("begin_date"));
                     }
+                    reservation.customer=customer;
                     Log.d("UPCOMINGDATE=", arr.getJSONObject(i).getString("begin_date"));
                     reservationList.add(reservation);
 //                }
@@ -298,6 +344,9 @@ public class UpcomingFragment extends Fragment {
         List<String> pictures = new ArrayList<String>();
         List<String> dates = new ArrayList<String>();
         List<String> hours = new ArrayList<String>();
+        List<String> adress = new ArrayList<String>();
+        List<String> id = new ArrayList<String>();
+
 
         for (int i = 0; i < reservations.size(); i++) {
             institutesNames.add(reservations.get(i).getInstitute());
@@ -305,22 +354,46 @@ public class UpcomingFragment extends Fragment {
             pictures.add(reservations.get(i).getPicture());
             dates.add(reservations.get(i).getDate());
             hours.add(reservations.get(i).getHour());
+            adress.add(reservations.get(i).getAdress());
+            id.add(reservations.get(i).getId());
         }
-        GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+
+
         ReservationImageAdapter reservationImageAdapter = new ReservationImageAdapter(getActivity());
         reservationImageAdapter.setInstitutesNames(institutesNames);
         reservationImageAdapter.setTypes(types);
         reservationImageAdapter.setPictures(pictures);
         reservationImageAdapter.setDates(dates);
         reservationImageAdapter.setHours(hours);
-        gridview.setAdapter(reservationImageAdapter);
+        reservationImageAdapter.setId(id);
+        reservationImageAdapter.setAdress(adress);
+        reservationImageAdapter.setCustomer(customer);
+
+
+        //Utiliser une gridView pour affichage
+        //GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
+        /*gridview.setAdapter(reservationImageAdapter);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 Toast.makeText(getActivity(), "" + position,
                         Toast.LENGTH_SHORT).show();
             }
+        });*/
+
+        //Utiliser une listView pour affichage
+        listviewupcoming = (ListView) getActivity().findViewById(R.id.listviewUpcoming);
+        listviewupcoming.setAdapter(reservationImageAdapter);
+        listviewupcoming.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(getActivity(), "" + position,
+                        Toast.LENGTH_SHORT).show();
+            }
         });
+
+
+
     }
 
 }

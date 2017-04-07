@@ -5,7 +5,14 @@
     android:layout_height="match_parent"
     tools:context="com.example.franois.gouiranlinkproject.Homepage.HomeFragment">
 
-    <GridView
+    <ListView
+        android:id="@+id/listviewUpcoming"
+        android:layout_width="fill_parent"
+        android:layout_height="800px"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"></ListView>
+
+    <!--<GridView
         android:id="@+id/gridview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,6 +24,6 @@
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="horizontal"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="1dp" />
+        android:verticalSpacing="1dp" />-->
 
 </FrameLayout>

@@ -15,6 +15,10 @@ public class PublicCustomer implements Serializable {
     protected String surname;
     protected Image_N image;
 
+    public PublicCustomer(){
+
+    }
+
     public PublicCustomer(int id,String name,String surname,Image_N image){
         this.setId(id);
         this.setName(name);

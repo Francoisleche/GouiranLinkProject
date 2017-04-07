@@ -77,7 +77,7 @@ public class AvisProfessional extends Fragment{
                     "}\n";*/
             //JSONObject jsonObject = new JSONObject(resp);
             //String accessToken = jsonObject.getString("access_token");
-            getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/comment/professional/"+
+            getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/comment/professional-customer/"+
                     String.valueOf(professional.getId())+"/", "Authorization", "Token " + accessToken);
             String resp = null;
             try {

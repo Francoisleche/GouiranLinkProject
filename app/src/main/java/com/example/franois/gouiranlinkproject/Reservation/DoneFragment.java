@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +57,7 @@ public class DoneFragment extends Fragment {
     private Typeface font;
     private Customer customer;
     List<Reservation> reservations;
+    private ListView listviewDone;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -308,21 +310,35 @@ public class DoneFragment extends Fragment {
             dates.add(reservations.get(i).getDate());
             hours.add(reservations.get(i).getHour());
         }
-        GridView gridview = (GridView) getActivity().findViewById(R.id.gridviewDone);
+
+        listviewDone = (ListView) getActivity().findViewById(R.id.listviewDone);
+
+        //GridView gridview = (GridView) getActivity().findViewById(R.id.gridviewDone);
         ReservationImageAdapter reservationImageAdapter = new ReservationImageAdapter(getActivity());
         reservationImageAdapter.setInstitutesNames(institutesNames);
         reservationImageAdapter.setTypes(types);
         reservationImageAdapter.setPictures(pictures);
         reservationImageAdapter.setDates(dates);
         reservationImageAdapter.setHours(hours);
-        gridview.setAdapter(reservationImageAdapter);
+        /*gridview.setAdapter(reservationImageAdapter);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 Toast.makeText(getActivity(), "" + position,
                         Toast.LENGTH_SHORT).show();
             }
+        });*/
+
+        listviewDone.setAdapter(reservationImageAdapter);
+        listviewDone.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(getActivity(), "" + position,
+                        Toast.LENGTH_SHORT).show();
+            }
         });
+
+
     }
 
 }

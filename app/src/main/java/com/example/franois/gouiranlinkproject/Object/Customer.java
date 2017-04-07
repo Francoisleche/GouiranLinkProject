@@ -50,6 +50,8 @@ public class Customer extends PublicCustomer implements Serializable {
 
     private String token = null;
 
+    public Customer(){}
+
     public Customer(int id, String name, String surname, Image_N image, String created_at, String updated_at, boolean has_subscribed, boolean share_with_professional, boolean blocked,
                     String gender, String phone, String mobilephone, String birthday_date, String address, String post_code, String city,
                     String country, String geoloc_latitude, String geoloc_longitude, boolean sms, boolean newsletter, Customer_Profession profession,

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:id="@+id/proRootLayout2"
+    android:layout_height="wrap_content">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- TODO: Update blank fragment layout -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1.0">
+
+            <TextView
+                android:id="@+id/monrdv"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:text="Mon RdV"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:background="@color/GouiranLightPink"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="5px"
+                android:background="#FF909090" />
+
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="PRESTATIONS"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                style="@style/TitleFilter"
+                android:gravity="left"/>-->
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Mon RdV"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/texte_pro"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text=""
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/texte_date"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Je recherche"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/texte_adresse"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Je recherche"
+                android:textSize="25sp" />
+
+
+            <Button
+                android:id="@+id/ok_reservation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Accepter"
+                android:gravity="center"
+                android:layout_marginTop="10dp"/>
+
+            <Button
+                android:id="@+id/supprimer_reservation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Supprimer"
+                android:gravity="center"
+                android:layout_marginTop="10dp"/>
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

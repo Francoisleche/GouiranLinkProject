@@ -1,27 +1,43 @@
 package com.example.franois.gouiranlinkproject.Reservation;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.franois.gouiranlinkproject.Object.Customer;
 import com.example.franois.gouiranlinkproject.R;
+import com.example.franois.gouiranlinkproject.ToolsClasses.DeleteRequest;
 import com.example.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
+import com.example.franois.gouiranlinkproject.ToolsClasses.GetRequest;
+import com.example.franois.gouiranlinkproject.ToolsClasses.PutRequest;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ReservationImageAdapter extends BaseAdapter {
     final private Context mContext;
+    private Customer customer;
+
     private List<String> institutesNames = new ArrayList<String>();
     //private List<String> types = new ArrayList<String>();
     List<List<String>> types = new ArrayList<List<String>>();
     private List<String> pictures = new ArrayList<String>();
     private List<String> dates = new ArrayList<String>();
     private List<String> hours = new ArrayList<String>();
+    private List<String> adress = new ArrayList<String>();
+    private List<String> id = new ArrayList<String>();
+
 
 
     ReservationImageAdapter(Context c) {
@@ -30,6 +46,30 @@ public class ReservationImageAdapter extends BaseAdapter {
 
     public Context getmContext() {
         return mContext;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public List<String> getId() {
+        return id;
+    }
+
+    public void setId(List<String> id) {
+        this.id = id;
+    }
+
+    public List<String> getAdress() {
+        return adress;
+    }
+
+    public void setAdress(List<String> adress) {
+        this.adress = adress;
     }
 
     public List<String> getInstitutesNames() {
@@ -81,11 +121,12 @@ public class ReservationImageAdapter extends BaseAdapter {
     }
 
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     // create a new ImageView for each item referenced by the Adapter
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final int position2 = position;
         View grid;
         String type;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -114,7 +155,89 @@ public class ReservationImageAdapter extends BaseAdapter {
         } else {
             grid = convertView;
         }
+
+
+
+        Button button = (Button) grid.findViewById(R.id.button);
+        button.setVisibility(View.VISIBLE);
+        button.setClickable(true);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // delete ton item ou appelle ta class qui va sauvegarder position.
+                int position3 =position2;
+                System.out.println("???????????????"+ position3);
+
+                final Dialog dialog = new Dialog(getmContext());
+                LayoutInflater layoutInflater = LayoutInflater.from(getmContext());
+                View contentView = layoutInflater.inflate(R.layout.reservation_popup, null);
+                final LinearLayout root = (LinearLayout) contentView.findViewById(R.id.proRootLayout2);
+                System.out.println("Ooooooooooooooooooh filtres ?");
+
+                TextView textview = (TextView) contentView.findViewById(R.id.monrdv);
+                textview.setText("Mon RdV chez " + institutesNames.get(position) + "-" +id.get(position));
+
+                TextView textview1 = (TextView) contentView.findViewById(R.id.texte_pro);
+                textview1.setText("chez " + institutesNames.get(position));
+
+                TextView textview2 = (TextView) contentView.findViewById(R.id.texte_date);
+                textview2.setText("pour " + dates.get(position));
+
+                TextView textview3 = (TextView) contentView.findViewById(R.id.texte_adresse);
+                textview3.setText("à" + adress.get(position));
+
+                dialog.setContentView(root);
+                dialog.show();
+
+                Button ok_reservation = (Button) contentView.findViewById(R.id.ok_reservation);
+                Button supprimer_reservation = (Button) contentView.findViewById(R.id.supprimer_reservation);
+
+                ok_reservation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+
+                supprimer_reservation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        deleteReservationList(id.get(position));
+                        dialog.cancel();
+                    }
+                });
+
+
+
+
+            }
+        });
+
+
+
+
         return (grid);
     }
+
+    private void deleteReservationList(String id) {
+        String headerKey;
+        String headerValue;
+        String resp;
+
+        headerKey = "Authorization";
+        headerValue = "Token " + String.valueOf(customer.getToken());
+        System.out.println("headerValue = Token " + String.valueOf(customer.getToken()));
+        DeleteRequest getRequest = new DeleteRequest("https://www.gouiran-beaute.com/link/api/v1/booking/" + id + "/",String.valueOf(customer.getId()), headerKey, headerValue);
+        try {
+            resp = getRequest.execute().get();
+            System.out.println("DELETE : " + resp);
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }

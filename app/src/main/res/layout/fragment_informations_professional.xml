@@ -88,14 +88,25 @@
                     app:cb_color="#99CC00" />
             </LinearLayout>
 
-            <TextView
+            <RelativeLayout
+                android:id="@+id/ahbon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="COEUR"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
+                android:padding="5dp"
+                android:layout_gravity="center">
+
+
+                <ImageView
+                    android:id="@+id/favorites_info_prof"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_coeur1"
+                    android:scaleType="fitXY"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:onClick="onCardClicked"/>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/shop_description"

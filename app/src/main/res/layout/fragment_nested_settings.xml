@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/section1_bg"
-    tools:context="com.example.franois.gouiranlinkproject.Account.NestedSettingsFragment">
+    tools:context="com.gouiranlink.franois.gouiranlinkproject.Account.NestedSettingsFragment">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"

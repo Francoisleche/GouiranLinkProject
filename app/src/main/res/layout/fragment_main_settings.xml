@@ -5,7 +5,7 @@
     android:gravity="center"
     android:id="@+id/frameLayout"
     android:background="@drawable/section1_bg"
-    tools:context="com.example.franois.gouiranlinkproject.Account.MainSettings">
+    tools:context="com.gouiranlink.franois.gouiranlinkproject.Account.MainSettings">
 
     <FrameLayout
         android:layout_width="match_parent"

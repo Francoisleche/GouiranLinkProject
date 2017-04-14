@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.franois.gouiranlinkproject.Account.ModifyProfileFragment">
+    tools:context="com.gouiranlink.franois.gouiranlinkproject.Account.ModifyProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

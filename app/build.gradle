@@ -5,16 +5,37 @@ android {
     buildToolsVersion '25.0.0'
 
     defaultConfig {
-        applicationId "com.example.franois.gouiranlinkproject"
+        applicationId "com.gouiranlink.franois.gouiranlinkproject"
         minSdkVersion 22
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //on créé une signature de release
+    signingConfigs {
+        release {
+            storeFile file(project.file("GouiranLinkKeyStore.jks"))
+            storePassword "g9ou2ir0an"
+            keyAlias "GL"
+            keyPassword "g9ou2ir0an"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+
+            //puis on l'utilise afin de signer notre apk en mode release
+            signingConfig signingConfigs.release
         }
     }
 }

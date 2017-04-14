@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.franois.gouiranlinkproject.AndroidCameraApi2">
+    tools:context="com.gouiranlink.franois.gouiranlinkproject.AndroidCameraApi2">
     <TextureView
         android:id="@+id/texture"
         android:layout_width="match_parent"

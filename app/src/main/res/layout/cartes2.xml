@@ -24,7 +24,7 @@ android:layout_height="match_parent"/>-->
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        tools:context="com.example.franois.gouiranlinkproject.Recherche.MapPane" />
+        tools:context="com.gouiranlink.franois.gouiranlinkproject.Recherche.MapPane" />
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"

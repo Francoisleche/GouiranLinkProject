@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.franois.gouiranlinkproject">
+    package="com.gouiranlink.franois.gouiranlinkproject">
 
     <uses-sdk
         android:minSdkVersion="21"
@@ -42,7 +42,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".InsciptionConnexion.SplashScreen"
+            android:name="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -52,17 +52,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GouiranStart"
+            android:name="com.gouiranlink.franois.gouiranlinkproject.GouiranStart"
             android:label="Start"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".InsciptionConnexion.LoginActivity"
+            android:name="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".CamTestActivity" />
-        <activity android:name=".AndroidCameraApi" />
-        <activity android:name=".AndroidCameraApi2" />
-        <activity android:name=".Recherche.MapPane" />
-        <activity android:name=".Recherche.FilterActivity" />
+        <activity android:name="com.gouiranlink.franois.gouiranlinkproject.CamTestActivity" />
+        <activity android:name="com.gouiranlink.franois.gouiranlinkproject.AndroidCameraApi" />
+        <activity android:name="com.gouiranlink.franois.gouiranlinkproject.AndroidCameraApi2" />
+        <activity android:name="com.gouiranlink.franois.gouiranlinkproject.Recherche.MapPane" />
+        <activity android:name="com.gouiranlink.franois.gouiranlinkproject.Recherche.FilterActivity" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:label="@string/app_name"
@@ -82,13 +82,13 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".ParentActivity"
+            android:name="com.gouiranlink.franois.gouiranlinkproject.ParentActivity"
             android:label="@string/title_activity_parent"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Account.NotificationsActivity" />
-        <activity android:name=".InsciptionConnexion.SignUp" />
-        <activity android:name=".InsciptionConnexion.LoginFacebookActivity" />
-        <activity android:name=".InsciptionConnexion.LoginGoogleActivity"></activity>
+        <activity android:name="com.gouiranlink.franois.gouiranlinkproject.Account.NotificationsActivity" />
+        <activity android:name="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.SignUp" />
+        <activity android:name="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginFacebookActivity" />
+        <activity android:name="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginGoogleActivity"></activity>
         <!--<activity android:name=".Gallery.ActivityGallery"></activity>-->
         <!--<activity android:name=".Gallery.PhotosActivity"></activity>-->
     </application>

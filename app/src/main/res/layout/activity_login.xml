@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity">
+    tools:context="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity">
 
     <!-- Login progress -->
     <!--<ImageView
@@ -42,8 +42,12 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -52,14 +56,6 @@
             android:layout_gravity="center"
             android:background="@drawable/white_rounded_square"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/a_masque_lorsque_click"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="16dp"
-                android:text=""
-                android:layout_marginEnd="25dp"></TextView>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -290,6 +286,7 @@
                 android:textColor="@color/GouiranDarkPink"
                 android:textStyle="bold" />
 
-        </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
 </LinearLayout>

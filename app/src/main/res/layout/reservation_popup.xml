@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:id="@+id/proRootLayout2"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -75,24 +77,55 @@
                 android:text="Je recherche"
                 android:textSize="25sp" />
 
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_gravity="center">
 
-            <Button
+
+
+            <!--<Button
                 android:id="@+id/ok_reservation"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Accepter"
                 android:gravity="center"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"/>-->
 
-            <Button
+    <at.markushi.ui.CircleButton
+        android:id="@+id/ok_reservation"
+        android:layout_width="match_parent"
+        android:layout_height="64dip"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dip"
+        android:src="@drawable/ic_action_tick"
+        app:cb_color="#99CC00"
+        android:gravity="left"/>
+
+            <!--<Button
                 android:id="@+id/supprimer_reservation"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Supprimer"
                 android:gravity="center"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:layout_gravity="right"/>-->
 
+    <at.markushi.ui.CircleButton
+        android:id="@+id/supprimer_reservation"
+        android:layout_width="64dip"
+        android:layout_height="64dip"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dip"
+        android:src="@drawable/ic_supprimer_white"
+        app:cb_color="#FF4444"
+        android:layout_gravity="right"/>
 
+</LinearLayout>
 
         </LinearLayout>
 

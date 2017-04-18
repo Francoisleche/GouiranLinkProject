@@ -139,14 +139,16 @@ public class TellUsFragment extends Fragment {
 
 
         Button envoi_mail_erreur_tellus=(Button) v.findViewById(R.id.envoi_mail_erreur_tellus);
-        //shop_email.setText(professional.getShop_email());
         envoi_mail_erreur_tellus.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent email = new Intent(Intent.ACTION_SEND);
+                Intent email = new Intent(Intent.ACTION_SEND,Uri.fromParts(
+                        "mailto","abc@gmail.com", null));
                 email.setType("text/plain");
-                //email.putExtra(android.content.Intent.EXTRA_EMAIL,"meynardfrancois@gmail.com");
+
+                //Obligatoire d'avoir un tableau
+                email.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "Contact@gouiran-link.com" });
                 email.putExtra(Intent.EXTRA_SUBJECT, "Avis");
                 if(!avis_tellus.getText().equals("")){
                     String s = avis_tellus.getText().toString() + description_tellus.getText().toString() + "\n";

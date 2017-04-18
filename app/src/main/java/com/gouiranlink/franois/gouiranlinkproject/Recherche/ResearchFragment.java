@@ -147,8 +147,8 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
         if (getArguments() != null) {
             customer = (Customer) getArguments().getSerializable("Customer");
-            token = (String)getArguments().getString("token");
-            System.out.println("Toooooooooooooken"+token);
+            token = (String) getArguments().getString("token");
+            System.out.println("Toooooooooooooken" + token);
         }
 
     }
@@ -170,7 +170,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
         //mLoginFormView = view.findViewById(R.id.login_form);
         mProgressView = view.findViewById(R.id.research_progress);
-        recherche_layout = (LinearLayout)view.findViewById(R.id.recherche_layout);
+        recherche_layout = (LinearLayout) view.findViewById(R.id.recherche_layout);
 
         recherche = (EditText) view.findViewById(R.id.bonjour_recherche);
         recherche_ville = (EditText) view.findViewById(R.id.recherche_ville);
@@ -211,81 +211,79 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                     @Override
                     public void run() {
 
-                        try{
+                        try {
+
+                            try {
+                                fileOutputStream = getContext().openFileOutput("GouiranLink", MODE_APPEND);
+                                fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
+                                fileOutputStream.write("`".getBytes());
+                                fileOutputStream.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
 
-                try {
-                    fileOutputStream = getContext().openFileOutput("GouiranLink", MODE_APPEND);
-                    fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
-                    fileOutputStream.write("`".getBytes());
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                            System.out.println(listView.getItemAtPosition(position).toString());
 
 
-                System.out.println(listView.getItemAtPosition(position).toString());
+                            ResearchTask3 researchTask3 = new ResearchTask3(listView.getItemAtPosition(position).toString());
+                            String ls2 = "";
+                            ArrayList<String> recup2 = new ArrayList<String>();
+                            ls2 = researchTask3.getResponse();
+                            //setInfo(ls2);
+                            recup2 = jsonparser2(ls2);
 
 
-                ResearchTask3 researchTask3 = new ResearchTask3(listView.getItemAtPosition(position).toString());
-                String ls2 = "";
-                ArrayList<String> recup2 = new ArrayList<String>();
-                ls2 = researchTask3.getResponse();
-                //setInfo(ls2);
-                recup2 = jsonparser2(ls2);
+                            if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Full")) {
+                                //Fragment fragment = null;
+                                Bundle args = new Bundle();
+                                args.putSerializable("Professionnal", PremierProfessionnal);
+                                args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                                args.putSerializable("Customer", customer);
+                                args.putSerializable("token", token);
+                                System.out.println("CUSTOMER :" + customer.getName());
 
 
+                                FragmentManager fm = getFragmentManager();
+                                //FragmentTransaction ft = fm.beginTransaction();
+                                ft[0] = fm.beginTransaction();
+                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
 
-                if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Full")) {
-                    //Fragment fragment = null;
-                    Bundle args = new Bundle();
-                    args.putSerializable("Professionnal", PremierProfessionnal);
-                    args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
-                    args.putSerializable("Customer", customer);
-                    args.putSerializable("token",token);
-                    System.out.println("CUSTOMER :" + customer.getName());
+                                fragment[0] = new ProfessionalView();
+                                fragment[0].setArguments(args);
 
+                                //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
 
-                    FragmentManager fm = getFragmentManager();
-                    //FragmentTransaction ft = fm.beginTransaction();
-                    ft[0] = fm.beginTransaction();
-                    //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+                                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                //ft.commit();
+                            } else if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Free")) {
+                                //Fragment fragment = null;
+                                Bundle args = new Bundle();
+                                args.putSerializable("Professionnal", PremierProfessionnal);
+                                args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                                args.putSerializable("Customer", customer);
+                                args.putSerializable("token", token);
 
-                    fragment[0] = new ProfessionalView();
-                    fragment[0].setArguments(args);
+                                FragmentManager fm = getFragmentManager();
+                                //FragmentTransaction ft = fm.beginTransaction();
+                                ft[0] = fm.beginTransaction();
+                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
 
-                    //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+                                fragment[0] = new InformationsProfessional();
+                                fragment[0].setArguments(args);
 
-                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    //ft.commit();
-                } else if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Free")) {
-                    //Fragment fragment = null;
-                    Bundle args = new Bundle();
-                    args.putSerializable("Professionnal", PremierProfessionnal);
-                    args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
-                    args.putSerializable("Customer", customer);
-                    args.putSerializable("token",token);
+                                //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
 
-                    FragmentManager fm = getFragmentManager();
-                    //FragmentTransaction ft = fm.beginTransaction();
-                     ft[0] = fm.beginTransaction();
-                    //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
-
-                    fragment[0] = new InformationsProfessional();
-                    fragment[0].setArguments(args);
-
-                    //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
-
-                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    //ft.commit();
-                }
+                                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                //ft.commit();
+                            }
 
 
-                ft[0].replace(R.id.fragment_remplace, fragment[0]).addToBackStack(null);
-                ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft[0].commit();
-                           ringProgressDialog.cancel();
-                        }catch(Exception e){
+                            ft[0].replace(R.id.fragment_remplace, fragment[0]).addToBackStack(null);
+                            ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                            ft[0].commit();
+                            ringProgressDialog.cancel();
+                        } catch (Exception e) {
                             System.out.println("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSE PAS");
                             e.printStackTrace();
                         }
@@ -297,7 +295,6 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
                 //Obligé de faire ça après !
                 getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
-
 
 
             }
@@ -581,12 +578,9 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
 
     //PROGRESS DIALOG
-    private void setInfo(String s)
-    {
-        getActivity().runOnUiThread(new Runnable()
-        {
-            public void run()
-            {
+    private void setInfo(String s) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
                 final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Downloading Infos...", true);
                 ringProgressDialog.setCancelable(true);
             }
@@ -597,7 +591,6 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 /// Your other code goes here...
 
     }
-
 
 
     private void initUI(View v) {
@@ -1091,7 +1084,6 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                 ringProgressDialog.setCancelable(true);
             }
         });*/
-
 
 
         String ls = "";
@@ -1791,9 +1783,6 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
                 // Simulate network access.
 
 
-
-
-
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
@@ -1846,11 +1835,9 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
     public class ResearchTask4 extends AsyncTask<Void, Void, Boolean> {
 
         @Override
-        protected void onPreExecute(){
-            getActivity().runOnUiThread(new Runnable()
-            {
-                public void run()
-                {
+        protected void onPreExecute() {
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
                     final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Downloading Infos...", true);
                     ringProgressDialog.setCancelable(true);
                 }
@@ -1896,10 +1883,8 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
             try {
 
-                getActivity().runOnUiThread(new Runnable()
-                {
-                    public void run()
-                    {
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
                         final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Downloading Infos...", true);
                         ringProgressDialog.setCancelable(true);
                     }

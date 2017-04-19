@@ -34,6 +34,8 @@ public class ReservationImageAdapter extends BaseAdapter {
     private List<String> hours = new ArrayList<String>();
     private List<String> adress = new ArrayList<String>();
     private List<String> id = new ArrayList<String>();
+    private String type_reservation = new String();
+
 
 
 
@@ -67,6 +69,14 @@ public class ReservationImageAdapter extends BaseAdapter {
 
     public void setAdress(List<String> adress) {
         this.adress = adress;
+    }
+
+    public String getType_reservation() {
+        return type_reservation;
+    }
+
+    public void setType_reservation(String type_reservation) {
+        this.type_reservation = type_reservation;
     }
 
     public List<String> getInstitutesNames() {
@@ -195,31 +205,33 @@ public class ReservationImageAdapter extends BaseAdapter {
                     }
                 });
 
-
-                contentView.findViewById(R.id.supprimer_reservation).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Dialog d = new AlertDialog.Builder(getmContext())
-                                .setTitle("Confirmation")
-                                .setMessage("Voulez-vous supprimer le RdV ?")
-                                .setNegativeButton(android.R.string.cancel, null)
-                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog2, int which) {
+                if(type_reservation.equals("Done")){
+                    contentView.findViewById(R.id.supprimer_reservation).setVisibility(View.GONE);
+                }else {
+                    contentView.findViewById(R.id.supprimer_reservation).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Dialog d = new AlertDialog.Builder(getmContext())
+                                    .setTitle("Confirmation")
+                                    .setMessage("Voulez-vous supprimer le RdV ?")
+                                    .setNegativeButton(android.R.string.cancel, null)
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog2, int which) {
                                             deleteReservationList(id.get(position));
                                             dialog.cancel();
-                                    }
-                                })
-                                .create();
-                        d.show();
+                                        }
+                                    })
+                                    .create();
+                            d.show();
 
 
-                        //Si on enleve la boite de dialogue, remettre les 2 lignes ci dessous
-                        //deleteReservationList(id.get(position));
-                        //dialog.cancel();
-                    }
-                });
-
+                            //Si on enleve la boite de dialogue, remettre les 2 lignes ci dessous
+                            //deleteReservationList(id.get(position));
+                            //dialog.cancel();
+                        }
+                    });
+                }
 
 
 

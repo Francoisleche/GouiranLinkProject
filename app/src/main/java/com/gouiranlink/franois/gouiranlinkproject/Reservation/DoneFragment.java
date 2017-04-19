@@ -90,6 +90,7 @@ public class DoneFragment extends Fragment {
         List<String> type;
         String date;
         String hour;
+        String adress;
 
         public Reservation() {
             picture = "";
@@ -97,6 +98,7 @@ public class DoneFragment extends Fragment {
             type = new ArrayList<String>();
             date = "";
             hour = "";
+            adress = "";
         }
 
         public String getPicture() {
@@ -138,6 +140,14 @@ public class DoneFragment extends Fragment {
         public void setHour(String hour) {
             this.hour = hour;
         }
+
+        public String getAdress() {
+            return adress;
+        }
+
+        public void setAdress(String adress) {
+            this.adress = adress;
+        }
     }
 
     private List<Reservation> getReservationList() {
@@ -164,6 +174,19 @@ public class DoneFragment extends Fragment {
                     if (arr.getJSONObject(i).getJSONObject("professional").has("shop_name") && !arr.getJSONObject(i).getJSONObject("professional").isNull("shop_name")) {
                         reservation.institute = arr.getJSONObject(i).getJSONObject("professional").getString("shop_name");
                     }
+
+                    if (arr.getJSONObject(i).getJSONObject("professional").has("address") &&
+                            arr.getJSONObject(i).getJSONObject("professional").has("post_code") &&
+                            arr.getJSONObject(i).getJSONObject("professional").has("city") &&
+                            !arr.getJSONObject(i).getJSONObject("professional").isNull("address") &&
+                            !arr.getJSONObject(i).getJSONObject("professional").isNull("post_code") &&
+                            !arr.getJSONObject(i).getJSONObject("professional").isNull("city")) {
+
+                        reservation.adress = arr.getJSONObject(i).getJSONObject("professional").getString("address") +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("post_code") +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("city");
+                    }
+
                     if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").has("url") &&
                             !arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").isNull("url"))
                         reservation.picture = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
@@ -291,6 +314,7 @@ public class DoneFragment extends Fragment {
         List<String> pictures = new ArrayList<String>();
         List<String> dates = new ArrayList<String>();
         List<String> hours = new ArrayList<String>();
+        List<String> adress = new ArrayList<String>();
 
         for (int i = 0; i < reservations.size(); i++) {
             institutesNames.add(reservations.get(i).getInstitute());
@@ -298,6 +322,7 @@ public class DoneFragment extends Fragment {
             pictures.add(reservations.get(i).getPicture());
             dates.add(reservations.get(i).getDate());
             hours.add(reservations.get(i).getHour());
+            adress.add(reservations.get(i).getAdress());
         }
 
         listviewDone = (ListView) getActivity().findViewById(R.id.listviewDone);
@@ -309,6 +334,10 @@ public class DoneFragment extends Fragment {
         reservationImageAdapter.setPictures(pictures);
         reservationImageAdapter.setDates(dates);
         reservationImageAdapter.setHours(hours);
+        reservationImageAdapter.setAdress(adress);
+        reservationImageAdapter.setType_reservation("Done");
+
+
         /*gridview.setAdapter(reservationImageAdapter);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,

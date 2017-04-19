@@ -58,7 +58,12 @@ class FavouritesImageAdapter extends BaseAdapter {
             TextView textView = (TextView)grid.findViewById(R.id.grid_text);
             ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
             textView.setText(mThumbNames.get(position));
-            new DownloadImageTask(imageView).execute(mThumbPictures.get(position));
+            //Si le compte est Free, alors il ne possède pas de photo
+            if(!mThumbPictures.get(position).equals("Free")){
+                new DownloadImageTask(imageView).execute(mThumbPictures.get(position));
+            }else{
+                imageView.setImageResource(R.drawable.logo_free);
+            }
 
         } else {
             grid = convertView;

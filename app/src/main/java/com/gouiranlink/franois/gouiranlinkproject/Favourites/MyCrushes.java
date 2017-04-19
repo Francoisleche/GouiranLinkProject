@@ -76,6 +76,7 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
         String name;
         Integer id;
         List<String> universes;
+        String subscription;
 
 
         public Data() {
@@ -83,6 +84,7 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
             this.name = "";
             this.id = -1;
             universes = new ArrayList<String>();
+            this.subscription = "";
         }
     }
 
@@ -97,6 +99,7 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
         GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/customer/favoris/customer/" + String.valueOf(customer.getId()) + "/", headerKey, headerValue);
         try {
             resp = getRequest.execute().get();
+            System.out.println("FAVORIS"+ resp);
             Toast.makeText(getActivity(), "CRUSHED", Toast.LENGTH_SHORT).show();
             JSONObject jsonObject = new JSONObject(resp);
             JSONArray arr = jsonObject.getJSONArray("data");
@@ -108,6 +111,13 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
                 }
                 if (arr.getJSONObject(i).has("id"))
                     data.id = arr.getJSONObject(i).getInt("id");
+
+                if (arr.getJSONObject(i).getJSONObject("current_subscription_type").getString("name").equals("Full")){
+                    data.subscription = "Full";
+                }else{
+                    data.subscription = "Free";
+                }
+
 
                 for (int j = 0; j < arr.getJSONObject(i).getJSONArray("shop_images").length(); j++) {
                     if (arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url") != null) {
@@ -135,8 +145,14 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
         List<String> names = new ArrayList<String>();
         List<Integer> ids = new ArrayList<Integer>();
 
+
         for (int i = 0; i < datas.size(); i++) {
-            imagesUrl.add(datas.get(i).shop_image);
+            //Si le compte est Free, alors il ne possède pas de photo
+            if(datas.get(i).subscription.equals("Full")){
+                imagesUrl.add(datas.get(i).shop_image);
+            }else{
+                imagesUrl.add("Free");
+            }
             names.add(datas.get(i).name);
             ids.add(datas.get(i).id);
         }

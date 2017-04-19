@@ -3,6 +3,7 @@ package com.gouiranlink.franois.gouiranlinkproject;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -16,10 +17,12 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +35,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,6 +47,9 @@ import java.util.List;
 
 
 public class AndroidCameraApi2 extends AppCompatActivity {
+    private FileInputStream fileInputStream = null;
+
+
     private static final String TAG = "AndroidCameraApi";
     private Button takePictureButton;
     private TextureView textureView;
@@ -179,7 +186,114 @@ public class AndroidCameraApi2 extends AppCompatActivity {
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-            final File file = new File(Environment.getExternalStorageDirectory()+"/pic.jpg");
+
+
+            //ESSAIE
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+            File file = null;
+
+
+            boolean trouve = false;
+            String trouve_Folder = "";
+            String trouve_Column = "";
+            int column_index_data, column_index_folder_name;
+            Cursor cursor = null;
+            String absolutePathOfImage = null;
+            Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
+            final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+            cursor = this.getContentResolver().query(uri, projection, null, null, orderBy + " DESC");
+            column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            column_index_folder_name = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+            while (cursor.moveToNext()) {
+                absolutePathOfImage = cursor.getString(column_index_data);
+                Log.e("Column", absolutePathOfImage);
+                Log.e("Folder", cursor.getString(column_index_folder_name));
+                if (absolutePathOfImage.contains("/storage/emulated/0/GouiranLinkPhoto/images")) {
+                    System.out.println("Allllllllllllllllllllllllors : " +cursor.getString(column_index_folder_name));
+                    System.out.println("Allllllllllllllllllllllllors2 : /GouiranLinkPhoto/images");
+
+
+                    trouve = true;
+                    trouve_Folder = cursor.getString(column_index_folder_name);
+                    trouve_Column = absolutePathOfImage;
+                }
+            }
+
+            if(trouve){
+                String str = trouve_Column.replace("/storage/emulated/0/GouiranLinkPhoto/images/image","" );
+                String s = str.replace(".jpg","");
+                System.out.println("SSSSSSSSSSSSSSSSS"+ s);
+                int nombre = Integer.parseInt(s);
+                System.out.println("NOmmmmmmmmmmmmmmmbre"+ nombre);
+
+                //final String appDirectoryName = "/GouiranLinkPhoto/images";
+                String imageRoot = Environment.getExternalStorageDirectory() + "/GouiranLinkPhoto/images";
+                file = new File(imageRoot, "image"+nombre+1 +".jpg");
+                //file = new File(appDirectoryName, "image1"+1+".jpg");
+                /*try {
+                    System.out.println("TROUUUUUUVE");
+                    fileInputStream = this.openFileInput("GouiranLinkPhoto");
+                    final String appDirectoryName = "GouiranLinkPhoto";
+                    //final File imageRoot = new File(Environment.getExternalStoragePublicDirectory(
+                    //        Environment.DIRECTORY_PICTURES), appDirectoryName);
+                    //file = new File(imageRoot, trouve_aussi+"1.jpg");
+                    //file = new File(Environment.getExternalStorageDirectory()+"GouiranLinkPhoto/"+trouve_aussi+"1.jpg");
+                    file = new File(appDirectoryName, "image1.jpg");
+                    Log.d("OUTPUT", "FOUND");
+                } catch (FileNotFoundException e) {
+                    fileInputStream = null;
+                    Log.d("OUTPUT", "NOT FOUND");
+                    e.printStackTrace();
+                }*/
+
+
+            }else{
+                System.out.println("PasTrouuuuuuuuuuuuuuve");
+                final String appDirectoryName = "GouiranLinkPhoto";
+                /*final File imageRoot = new File(Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_PICTURES), appDirectoryName);
+                System.out.println("PasTrouuuuuuuuuuuuuuve" + imageRoot.getAbsolutePath());*/
+                File imageRoot = new File(Environment.getExternalStorageDirectory () + "/GouiranLinkPhoto/images");
+                boolean success = false;
+                if(!imageRoot.exists()){
+                    Log.d(TAG,"EXISTE PAS");
+                    success = imageRoot.mkdir();
+                }
+                if (!success){
+                    Log.d(TAG,"Folder not created.");
+                }
+                else{
+                    Log.d(TAG,"Folder created!");
+                }
+
+
+                //file = new File(Environment.getExternalStorageDirectory()+"GouiranLinkPhoto/pic0.jpg");
+                imageRoot.mkdirs();
+                file = new File(imageRoot, "image1.jpg");
+
+                /*File file2 = new File(Environment.getExternalStorageDirectory() +"/GouiranLinkPhoto/");
+
+                if(!file2.exists())     //check if file already exists
+                {
+                    file2.mkdirs();     //if not, create it
+                    System.out.println("c'estpasse");
+                }
+                //file = new File(Environment.getExternalStorageDirectory()+"GouiranLinkPhoto/pic0.jpg");
+                file = new File(file2.toString() + "/image" +1+ ".jpg");*/
+            }
+
+
+
+            //final File file = new File(Environment.getExternalStorageDirectory()+"GouiranLinkPhoto/pic.jpg");
+
+
+            final File finalFile = file;
+            System.out.println("Fillllllllllllle"+finalFile.getName());
+            System.out.println("Fillllllllllllle"+finalFile.getAbsolutePath());
+
+
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
@@ -203,9 +317,11 @@ public class AndroidCameraApi2 extends AppCompatActivity {
                 private void save(byte[] bytes) throws IOException {
                     OutputStream output = null;
                     try {
-                        output = new FileOutputStream(file);
+                        System.out.println("Ducoup ???");
+                        output = new FileOutputStream(finalFile);
                         output.write(bytes);
                     } finally {
+                        System.out.println("Alors");
                         if (null != output) {
                             output.close();
                         }
@@ -213,11 +329,15 @@ public class AndroidCameraApi2 extends AppCompatActivity {
                 }
             };
             reader.setOnImageAvailableListener(readerListener, mBackgroundHandler);
+            final File finalFile1 = file;
+            System.out.println("FFFFFFfinalFile1"+finalFile1);
             final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback() {
                 @Override
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    Toast.makeText(AndroidCameraApi2.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
+                    System.out.println("JAIPAAAAAAAS");
+                    Toast.makeText(AndroidCameraApi2.this, "Saved:" + finalFile1, Toast.LENGTH_SHORT).show();
+                    System.out.println("JAIPAAAAAAAS");
                     createCameraPreview();
                 }
             };

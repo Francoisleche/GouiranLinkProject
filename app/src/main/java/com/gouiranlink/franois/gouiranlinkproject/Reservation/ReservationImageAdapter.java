@@ -172,7 +172,7 @@ public class ReservationImageAdapter extends BaseAdapter {
                 System.out.println("Ooooooooooooooooooh filtres ?");
 
                 TextView textview = (TextView) contentView.findViewById(R.id.monrdv);
-                textview.setText("Mon RdV chez " + institutesNames.get(position));
+                textview.setText("Mon rendez vous");
                 //textview.setText("Mon RdV chez " + institutesNames.get(position) + "-" +id.get(position));
 
                 TextView textview1 = (TextView) contentView.findViewById(R.id.texte_pro);

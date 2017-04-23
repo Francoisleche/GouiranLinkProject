@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.gouiranlink.franois.gouiranlinkproject.AndroidCameraApi;
 import com.gouiranlink.franois.gouiranlinkproject.AndroidCameraApi2;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 
@@ -73,7 +74,7 @@ public class ActivityGallery extends Fragment {
                 //CamTestActivity cam = new CamTestActivity();
                 //Intent intent = new Intent(getActivity(), AndroidCameraApi.class);
                 //AndroidCameraApi2 api = new AndroidCameraApi2();
-                Intent intent = new Intent(getActivity(), AndroidCameraApi2.class);
+                Intent intent = new Intent(getActivity(), AndroidCameraApi.class);
                 getActivity().startActivity(intent);
                 /*Fragment fragment = null;
                 Bundle args = new Bundle();

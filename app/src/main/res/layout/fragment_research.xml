@@ -64,6 +64,20 @@
                             android:gravity="center"
                             android:text="Je recherche"
                             android:textSize="25sp" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoCompleteTextView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:layout_below="@+id/imageView"
+                            android:layout_alignLeft="@+id/imageView"
+                            android:layout_alignStart="@+id/imageView"
+                            android:layout_marginTop="72dp"
+                            android:hint="AutoComplete TextView">
+                            <requestFocus />
+                        </AutoCompleteTextView>
+
                         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

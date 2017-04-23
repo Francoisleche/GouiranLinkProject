@@ -27,6 +27,7 @@ import com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginActiv
 import com.gouiranlink.franois.gouiranlinkproject.NavigationDrawer.CustomDrawerAdapter;
 import com.gouiranlink.franois.gouiranlinkproject.NavigationDrawer.DrawerItem;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
+import com.gouiranlink.franois.gouiranlinkproject.Recherche.Research2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Reservation.Reservation2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.Reservation.ReservationFragment;
@@ -40,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ParentActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, ResearchFragment.OnFragmentInteractionListener,
+public class ParentActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, ResearchFragment.OnFragmentInteractionListener, Research2Fragment.OnFragmentInteractionListener,
         ReservationFragment.OnFragmentInteractionListener, FavouritesFragment.OnFragmentInteractionListener,
         GalleryFragment.OnFragmentInteractionListener, AccountFragment.OnFragmentInteractionListener {
 
@@ -167,7 +168,7 @@ public class ParentActivity extends AppCompatActivity implements HomeFragment.On
                 fragment.setArguments(args);
                 break;
             case 1:
-                fragment = new ResearchFragment();
+                fragment = new Research2Fragment();
                 fragment.setArguments(args);
                 break;
             case 2:

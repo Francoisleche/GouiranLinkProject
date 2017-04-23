@@ -191,7 +191,7 @@ public class AndroidCameraApi2 extends AppCompatActivity {
             //ESSAIE
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-            File file = null;
+            //File file = null;
 
 
             boolean trouve = false;
@@ -230,7 +230,7 @@ public class AndroidCameraApi2 extends AppCompatActivity {
 
                 //final String appDirectoryName = "/GouiranLinkPhoto/images";
                 String imageRoot = Environment.getExternalStorageDirectory() + "/GouiranLinkPhoto/images";
-                file = new File(imageRoot, "image"+nombre+1 +".jpg");
+                file = new File(imageRoot, "/image"+(nombre+1)+".jpg");
                 //file = new File(appDirectoryName, "image1"+1+".jpg");
                 /*try {
                     System.out.println("TROUUUUUUVE");
@@ -286,7 +286,8 @@ public class AndroidCameraApi2 extends AppCompatActivity {
 
 
 
-            //final File file = new File(Environment.getExternalStorageDirectory()+"GouiranLinkPhoto/pic.jpg");
+            //final File file = new File(Environment.getExternalStorageDirectory()+"pic.jpg");
+            file = new File(Environment.getExternalStorageDirectory()+"/pic.jpg");
 
 
             final File finalFile = file;
@@ -324,6 +325,7 @@ public class AndroidCameraApi2 extends AppCompatActivity {
                         System.out.println("Alors");
                         if (null != output) {
                             output.close();
+                            System.out.println("CLOOOOOOSE");
                         }
                     }
                 }

@@ -7,7 +7,9 @@ package com.gouiranlink.franois.gouiranlinkproject;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -21,10 +23,12 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -173,7 +177,83 @@ public class AndroidCameraApi extends AppCompatActivity {
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-            final File file = new File(Environment.getExternalStorageDirectory()+"/pic.jpg");
+
+
+
+            //AJOUTER CODE FRANCOIS
+            boolean trouve = false;
+            String trouve_Folder = "";
+            String trouve_Column = "";
+            int column_index_data, column_index_folder_name;
+            Cursor cursor = null;
+            String absolutePathOfImage = null;
+            Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
+            final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+            cursor = this.getContentResolver().query(uri, projection, null, null, orderBy + " ASC");
+            column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            column_index_folder_name = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+            while (cursor.moveToNext()) {
+                absolutePathOfImage = cursor.getString(column_index_data);
+                Log.e("Column", absolutePathOfImage);
+                Log.e("Folder", cursor.getString(column_index_folder_name));
+                if (absolutePathOfImage.contains(Environment.getExternalStorageDirectory()+"/GouiranLinkPhoto/images")) {
+                    System.out.println("TROUVER : " +cursor.getString(column_index_folder_name));
+
+
+                    trouve = true;
+                    trouve_Folder = cursor.getString(column_index_folder_name);
+                    trouve_Column = absolutePathOfImage;
+                }
+            }
+
+
+            if(trouve){
+                String str = trouve_Column.replace(Environment.getExternalStorageDirectory()+"/GouiranLinkPhoto/images/image","" );
+                String s = str.replace(".jpg","");
+                //System.out.println("SSSSSSSSSSSSSSSSS"+ s);
+                int nombre = Integer.parseInt(s);
+
+
+                //final String appDirectoryName = "/GouiranLinkPhoto/images";
+                String imageRoot = Environment.getExternalStorageDirectory() + "/GouiranLinkPhoto/images";
+                file = new File(imageRoot, "/image"+(nombre+1)+".jpg");
+                System.out.println("Nom du fichier :"+ file.getAbsolutePath());
+
+            }else {
+                System.out.println("PasTrouuuuuuuuuuuuuuve");
+                final String appDirectoryName = "GouiranLinkPhoto";
+                /*final File imageRoot = new File(Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_PICTURES), appDirectoryName);
+                System.out.println("PasTrouuuuuuuuuuuuuuve" + imageRoot.getAbsolutePath());*/
+                File imageRoot = new File(Environment.getExternalStorageDirectory() + "/GouiranLinkPhoto/images");
+                boolean success = false;
+                if (!imageRoot.exists()) {
+                    Log.d(TAG, "EXISTE PAS");
+                    success = imageRoot.mkdirs();
+                }
+                if (!success) {
+                    Log.d(TAG, "Folder not created.");
+                } else {
+                    Log.d(TAG, "Folder created!");
+                }
+
+
+                //file = new File(Environment.getExternalStorageDirectory()+"GouiranLinkPhoto/pic0.jpg");
+                //imageRoot.mkdirs();
+                file = new File(imageRoot, "image1.jpg");
+            }
+
+
+
+
+            ///////////////////////////////////////////////////
+
+
+            //final File file = new File(Environment.getExternalStorageDirectory()+"/pic.jpg");
+            final File filename = file;
+
+
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
@@ -197,11 +277,15 @@ public class AndroidCameraApi extends AppCompatActivity {
                 private void save(byte[] bytes) throws IOException {
                     OutputStream output = null;
                     try {
-                        output = new FileOutputStream(file);
+                        output = new FileOutputStream(filename);
                         output.write(bytes);
                     } finally {
                         if (null != output) {
                             output.close();
+                            //sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+                            AndroidCameraApi.this.sendBroadcast(new Intent(
+                                    Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri
+                                    .parse("file://" + filename.getAbsolutePath())));
                         }
                     }
                 }
@@ -211,7 +295,7 @@ public class AndroidCameraApi extends AppCompatActivity {
                 @Override
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    Toast.makeText(AndroidCameraApi.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AndroidCameraApi.this, "Saved:" + filename, Toast.LENGTH_SHORT).show();
                     createCameraPreview();
                 }
             };

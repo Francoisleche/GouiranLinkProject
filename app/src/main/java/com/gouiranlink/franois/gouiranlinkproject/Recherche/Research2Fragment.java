@@ -81,7 +81,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
     ArrayList<ArrayList<String>> donnée_geolocalise = new ArrayList<ArrayList<String>>();
     private View mProgressView;
-    private LinearLayout recherche_layout;
+    private LinearLayout recherche_layout,vue_listview;
     private View mLoginFormView;
 
 
@@ -99,10 +99,10 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     private String token;
 
     private ResearchTask mAuthTask = null;
-    private EditText recherche;
+    //private EditText recherche;
     private EditText recherche_ville;
     private TextView resultat1, resultat2, resultat3, resultat4, resultat5, resultat6;
-    private Button carte;
+    private Button carte,button_retour_layout,boutton_recherche;
     private GetRequest getRequest;
 
     private FileOutputStream fileOutputStream = null;
@@ -114,10 +114,12 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     private OnFragmentInteractionListener mListener;
     private String[] resultat_rech = new String[5];
 
+    ArrayList<ArrayList<String>> recup2 = new ArrayList<ArrayList<String>>();
+
     private ImageView loupe_recherche;
     private ImageView loupe_recherche_ville;
 
-    private AutoCompleteTextView text;
+    private AutoCompleteTextView text,text2;
     ParserTask parserTask;
     private String[] languages2;
 
@@ -126,6 +128,8 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     private String[] C;
     private String[] D;
     private String[] E;
+
+    private String[] F,G,H,I,J,K,L,M,N,O,P,Q,Ri,S,T,U,V,W,X,Y,Z;
 
 
 
@@ -174,7 +178,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.fragment_research, container, false);
+        final View view = inflater.inflate(R.layout.fragment_research2, container, false);
 
 
         text=(AutoCompleteTextView)view.findViewById(R.id.autoCompleteTextView1);
@@ -185,7 +189,37 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         D = recupToutlesautocomplete("D");
         E = recupToutlesautocomplete("E");
 
-        String[] TOUT = new String[A.length+B.length+C.length+D.length+E.length];
+        F = recupToutlesautocomplete("F");
+        G = recupToutlesautocomplete("G");
+        H = recupToutlesautocomplete("H");
+        I = recupToutlesautocomplete("I");
+        J = recupToutlesautocomplete("J");
+
+        K = recupToutlesautocomplete("K");
+        L = recupToutlesautocomplete("L");
+        M = recupToutlesautocomplete("M");
+        N = recupToutlesautocomplete("N");
+        O = recupToutlesautocomplete("O");
+
+        P = recupToutlesautocomplete("P");
+        Q = recupToutlesautocomplete("Q");
+        Ri = recupToutlesautocomplete("R");
+        S = recupToutlesautocomplete("S");
+        T = recupToutlesautocomplete("T");
+
+        U = recupToutlesautocomplete("U");
+        V = recupToutlesautocomplete("V");
+        W = recupToutlesautocomplete("W");
+        X = recupToutlesautocomplete("X");
+        Y = recupToutlesautocomplete("Y");
+        Z = recupToutlesautocomplete("Z");
+
+
+        int taille = A.length+B.length+C.length+D.length+E.length +
+                F.length+G.length+H.length+I.length+J.length+K.length+L.length+M.length+N.length+O.length+
+        P.length+Q.length+Ri.length+S.length+T.length+U.length+V.length+W.length+X.length+Y.length+Z.length;
+        String[] TOUT = new String[taille];
+
         //String[] TOUT = new String[4];
 
         //TOUT[0]="coucou";
@@ -193,26 +227,90 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         //TOUT[2]="coucou3";
 
 
+
         ArrayList list = new ArrayList();
         for (Object object : A) {
             list.add(object);
         }
-
         for (Object object : B) {
             list.add(object);
         }
-
         for (Object object : C) {
             list.add(object);
         }
-
         for (Object object : D) {
             list.add(object);
         }
-
         for (Object object : E) {
             list.add(object);
         }
+        for (Object object : F) {
+            list.add(object);
+        }
+        for (Object object : G) {
+            list.add(object);
+        }
+        for (Object object : H) {
+            list.add(object);
+        }
+        for (Object object : I) {
+            list.add(object);
+        }
+        for (Object object : J) {
+            list.add(object);
+        }
+
+        for (Object object : K) {
+            list.add(object);
+        }
+        for (Object object : L) {
+            list.add(object);
+        }
+        for (Object object : M) {
+            list.add(object);
+        }
+        for (Object object : N) {
+            list.add(object);
+        }
+        for (Object object : O) {
+            list.add(object);
+        }
+
+        for (Object object : P) {
+            list.add(object);
+        }
+        for (Object object : Q) {
+            list.add(object);
+        }
+        for (Object object : Ri) {
+            list.add(object);
+        }
+        for (Object object : S) {
+            list.add(object);
+        }
+        for (Object object : T) {
+            list.add(object);
+        }
+
+        for (Object object : U) {
+            list.add(object);
+        }
+        for (Object object : V) {
+            list.add(object);
+        }
+        for (Object object : W) {
+            list.add(object);
+        }
+        for (Object object : X) {
+            list.add(object);
+        }
+        for (Object object : Y) {
+            list.add(object);
+        }
+        for (Object object : Z) {
+            list.add(object);
+        }
+
 
         list.toArray(TOUT);
 
@@ -239,6 +337,29 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         TOUT[200] = "ESSAIE";
         TOUT[300] = "ESSAIE";
         TOUT[400] = "ESSAIE";
+        TOUT[500] = "ESSAIE";
+        TOUT[600] = "ESSAIE";
+        TOUT[700] = "ESSAIE";
+        TOUT[800] = "ESSAIE";
+        TOUT[900] = "ESSAIE";
+        TOUT[1000] = "ESSAIE";
+        TOUT[1100] = "ESSAIE";
+        TOUT[1200] = "ESSAIE";
+        TOUT[1300] = "ESSAIE";
+        TOUT[1400] = "ESSAIE";
+        TOUT[1500] = "ESSAIE";
+        TOUT[1600] = "ESSAIE";
+        TOUT[1638] = "ESSAIE";
+        TOUT[1738] = "ESSAIE";
+        TOUT[1838] = "ESSAIE";
+        TOUT[1938] = "ESSAIE";
+        TOUT[2038] = "ESSAIE";
+        TOUT[2138] = "ESSAIE";
+        TOUT[2204] = "ESSAIE";
+        TOUT[2238] = "ESSAIE";
+        TOUT[2338] = "ESSAIE";
+
+
 
         ArrayAdapter adapter = new
                 ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,TOUT);
@@ -361,36 +482,221 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
 
 
+
+        text2=(AutoCompleteTextView)view.findViewById(R.id.autoCompleteTextView2);
+
+        text2.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                String [] place  = place_jsonparser(recherche_place(text2.getText().toString()));
+
+                ArrayAdapter adapter2 = new
+                        ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,place);
+
+                text2.setThreshold(1);
+                text2.setAdapter(adapter2);
+            }
+
+
+        });
+
+
+
+
+
+
         //mLoginFormView = view.findViewById(R.id.login_form);
-        mProgressView = view.findViewById(R.id.research_progress);
+        //mProgressView = view.findViewById(R.id.research_progress);
         recherche_layout = (LinearLayout) view.findViewById(R.id.recherche_layout);
+        vue_listview = (LinearLayout) view.findViewById(R.id.vue_listview);
 
-        recherche = (EditText) view.findViewById(R.id.bonjour_recherche);
-        recherche_ville = (EditText) view.findViewById(R.id.recherche_ville);
-        loupe_recherche = (ImageView) view.findViewById(R.id.loupe_recherche_ville);
+        button_retour_layout = (Button) view.findViewById(R.id.button_retour);
+
+        boutton_recherche = (Button) view.findViewById(R.id.boutton_recherche);
+
+        //recherche = (EditText) view.findViewById(R.id.bonjour_recherche);
+        //recherche_ville = (EditText) view.findViewById(R.id.recherche_ville);
+        loupe_recherche = (ImageView) view.findViewById(R.id.loupe_recherche);
         loupe_recherche_ville = (ImageView) view.findViewById(R.id.loupe_recherche_ville);
-        //resultat1 = (TextView) view.findViewById(R.id.textView_1);
-        carte = (Button) view.findViewById(R.id.carte_research);
 
-        /*resultat2 = (TextView) view.findViewById(R.id.textView_11);
-        resultat3 = (TextView) view.findViewById(R.id.textView_12);
-        resultat4 = (TextView) view.findViewById(R.id.textView_13);
-        resultat5 = (TextView) view.findViewById(R.id.textView_14);
-        resultat6 = (TextView) view.findViewById(R.id.textView_15);*/
+
+
+
+        carte = (Button) view.findViewById(R.id.carte_research);
 
 
         listView = (ListView) view.findViewById(R.id.mesresultats);
 
-        /*listView.setOnClickListener(new View.OnClickListener() {
+
+        boutton_recherche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showProgress(true);
+                if (!text2.getText().toString().isEmpty()) {
 
-            }});*/
+                    recherche_layout.setVisibility(true ? View.GONE : View.VISIBLE);
+                    vue_listview.setVisibility(true ? View.VISIBLE : View.GONE);
 
+                    //ADAPTER pour la listView
+                    ResearchTask2 recherche_list_prof = new ResearchTask2(text.getText().toString(), text2.getText().toString(), 5);
+                    String json_prof = "";
+                    json_prof = recherche_list_prof.getResponse();
+                    final List<String> list_nom_prof_afficher = null;
+                    final List<String> list_id_prof_afficher = null;
+                    ArrayList<String> recup = new ArrayList<String>();
+                    if (json_prof != null) {
+                        if (json_prof.contains("{")) {
+                            try {
+
+                                JSONObject jsonObj = new JSONObject(json_prof);
+                                JSONArray contacts = jsonObj.getJSONArray("data");
+
+                                for (int i = 0; i < contacts.length(); i++) {
+                                    if (i == 0) {
+                                        ArrayList<String> personnes = new ArrayList<String>();
+                                        JSONObject c = contacts.getJSONObject(i);
+
+                                        String id = c.getString("id");
+                                        System.out.println("Iiiiiiiiiiiiiiiiiiiiiiiid"+id);
+                                        String geoloc_latitude = c.getString("geoloc_latitude");
+                                        String geoloc_longitude = c.getString("geoloc_longitude");
+                                        String shop_name = c.getString("shop_name");
+                                        System.out.println("shop_nameshop_nameshop_nameshop_name" + shop_name);
+                                        personnes.add(id);
+                                        personnes.add(geoloc_latitude);
+                                        personnes.add(geoloc_longitude);
+                                        personnes.add(shop_name);
+                                        recup2.add(personnes);
+                                        recup.add(shop_name);
+                                    }
+                                }
+
+                            } catch (final JSONException e) {
+                                Log.e(TAG, "Json parsing error: " + e.getMessage());
+                            }
+                        }
+                    }
+                    String[] results = new String[]{};
+                    final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
+                    ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
+                    listView.setAdapter(tableau);
+                    int g = 0;
+                    for (int i = 0; i < recup.size(); i++) {
+                        resultsList.add(recup.get(i));
+                        tableau.notifyDataSetChanged();
+                        g++;
+                    }
+
+
+
+
+
+
+
+                    // Récupération de la liste de String
+                    /*ResearchTask researchTask = new ResearchTask(text.getText().toString(), 5);
+                    String ls = "";
+                    ArrayList<String> recup = new ArrayList<String>();
+                    ls = researchTask.getResponse();
+                    System.out.println("ALllllllllllllo");
+                    recup = jsonparser(ls);
+
+                    System.out.println("ALllllllllllllo");
+                    String[] results = new String[]{};
+                    final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
+                    ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
+                    listView.setAdapter(tableau);
+                    int g = 0;
+                    for (int i = 0; i < recup.size(); i++) {
+                        resultsList.add(recup.get(i));
+                        tableau.notifyDataSetChanged();
+                        g++;
+                    }*/
+
+                    // Récupération des données de géoloc pour chacun des éléments
+                   /*ArrayList<ArrayList<String>> recup2 = new ArrayList<ArrayList<String>>();
+                    for (int j = 0; j < 5; j++) {
+                        System.out.println("LATAIIIIIIILLLLLLLEESTDE :" + recup.get(j).length());
+                        System.out.println("LAPERSOOOOOONEESTDE :" + recup.get(j));
+                        String ls2 = "";
+                        ResearchTask2 researchTask2 = new ResearchTask2(recup.get(j), 1);
+                        ls2 = researchTask2.getResponse();
+                        System.out.println("repooooooooooooooooonse" + ls2);
+                        //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
+                        if (ls2 != null) {
+                            if (ls2.contains("{")) {
+                                try {
+
+                                    JSONObject jsonObj = new JSONObject(ls2);
+                                    JSONArray contacts = jsonObj.getJSONArray("data");
+
+                                    for (int i = 0; i < contacts.length(); i++) {
+                                        if (i == 0) {
+                                            ArrayList<String> personnes = new ArrayList<String>();
+                                            JSONObject c = contacts.getJSONObject(i);
+
+                                            String id = c.getString("id");
+                                            String geoloc_latitude = c.getString("geoloc_latitude");
+                                            String geoloc_longitude = c.getString("geoloc_longitude");
+                                            String shop_name = c.getString("shop_name");
+                                            System.out.println("shop_nameshop_nameshop_nameshop_name" + shop_name);
+                                            personnes.add(id);
+                                            personnes.add(geoloc_latitude);
+                                            personnes.add(geoloc_longitude);
+                                            personnes.add(shop_name);
+                                            recup2.add(personnes);
+                                        }
+                                    }
+
+                                } catch (final JSONException e) {
+                                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                                }
+                            }
+                        }
+                    }*/
+
+
+
+                    donnée_geolocalise = recup2;
+                    for (int i = 0; i < donnée_geolocalise.size(); i++) {
+                        System.out.println("ppppppppppppppppppppppppppppppp" + donnée_geolocalise.get(i).get(3));
+                    }
+                    //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
+
+                } else {
+                    Toast.makeText(getActivity(), "Rentrer une ville ou un lieu", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+        button_retour_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                recherche_layout.setVisibility(true ? View.VISIBLE : View.GONE);
+                vue_listview.setVisibility(true ? View.GONE : View.VISIBLE);
+
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -429,20 +735,29 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
                             //DEUXIEME METHODE
                             //Recupérer liste des produits
+                            System.out.println("DEBUT DONNEE GENERALE");
+                            System.out.println("D "+ recup2.get(0).get(0));
+                            System.out.println("D" + position);
+                            //donneegeneral_jsonparser(recherche_donneegeneral(listView.getItemAtPosition(position).toString()));
+                            donneegeneral_jsonparser(recherche_donneegeneral(recup2.get(position).get(0)));
+                            String id = String.valueOf(PremierProfessionnal.getId());
+
                             System.out.println("DEBUT PRODUCT");
-                            products_jsonparser(recherche_product("83"));
+                            System.out.println("D "+id);
+                            products_jsonparser(recherche_product(id));
                             for(int i=0;i<PremierProfessionalProduct.length;i++){
                                 System.out.println("PremierProfesionnelProduct : "+PremierProfessionalProduct[i].getName()+PremierProfessionalProduct[i].getPrice());
                             }
 
                             System.out.println("DEBUT SCHEDULE");
-                            schedule_jsonparser(recherche_schedule("83"));
+                            schedule_jsonparser(recherche_schedule(id));
+                            PremierProfessionnal.setSchedule(ProfessionnalGenericSchedule);
                             for(int i=0;i<ProfessionnalGenericSchedule.length;i++){
                                 System.out.println("PremierProfesionnelSchedule : "+ProfessionnalGenericSchedule[i].getWeekday() + ProfessionnalGenericSchedule[i].getBegin_time());
                             }
 
-                            System.out.println("DEBUT DONNEE GENERALE");
-                            donneegeneral_jsonparser(recherche_donneegeneral("Audrey'm"));
+
+
 
 
 
@@ -521,17 +836,15 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         });
 
 
-        recherche_ville.addTextChangedListener(new TextWatcher() {
+        /*recherche_ville.addTextChangedListener(new TextWatcher() {
             boolean isTyping = false;
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             private Timer timer = new Timer();
@@ -552,21 +865,6 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                /*ResearchTask researchTask = new ResearchTask(recherche.getText().toString(), 5);
-                                String ls = "";
-                                ArrayList<String> recup = new ArrayList<String>();
-                                ls = researchTask.getResponse();
-                                recup = jsonparser(ls);
-
-
-                                String[] results = new String[] {};
-                                final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
-                                ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
-                                listView.setAdapter(tableau);
-                                for (int i = 0; i < recup.size(); i++) {
-                                    resultsList.add(recup.get(i));
-                                    tableau.notifyDataSetChanged();
-                                }*/
 
                                 final Dialog dialog = new Dialog(getContext());
                                 LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
@@ -577,7 +875,6 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                                 String ls = "";
                                 final ArrayList<String> recup2 = new ArrayList<String>();
                                 ls = researchTask.getResponse();
-                                //recup = jsonparser(ls);
 
                                 String recup = "{" + '"' + "Recup" + '"' + " : [";
                                 String ahbon = ls.replace("[", recup);
@@ -616,11 +913,6 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                                     recup2.add(id);
                                     System.out.println("VAAAAAAAAAAAAAALUE " + id);
 
-
-                                    // Getting JSON Array node
-                                    //JSONArray contacts = jsonObj.getJSONArray("contacts");
-
-                                    // looping through All Contacts
                                 }
 
 
@@ -644,14 +936,6 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         recherche_ville.setText(recup2.get(position));
                                         dialog.cancel();
-
-                                        //Recupérer liste des produits
-                                       /* products_jsonparser(recherche_product("376"));
-                                        for(int i=0;i<PremierProfessionalProduct.length;i++){
-                                            System.out.println("PremierProfesionnelProduct : "+PremierProfessionalProduct[i].getName()+PremierProfessionalProduct[i].getPrice());
-                                        }
-                                        //Recupérer Données générales
-                                        donneegeneral_jsonparser(recherche_donneegeneral(""));*/
 
                                         //Recupérer liste des produits
                                         System.out.println("DEBUT PRODUCT");
@@ -679,10 +963,10 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                     }
                 }, DELAY);
             }
-        });
+        });*/
 
 
-        recherche.addTextChangedListener(new TextWatcher() {
+        /*recherche.addTextChangedListener(new TextWatcher() {
             boolean isTyping = false;
 
             @Override
@@ -715,20 +999,6 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                             @Override
                             public void run() {
 
-                                /*ResearchTask2 researchTask = new ResearchTask2(recherche.getText().toString(), 5);
-                                String ls = "";
-                                ArrayList<ArrayList <String>> recup = new ArrayList<ArrayList<String>>();
-                                ls = researchTask.getResponse();
-                                recup = jsonparser3(ls);
-
-                                String[] results = new String[] {};
-                                final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
-                                ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
-                                listView.setAdapter(tableau);
-                                for (int i = 0; i < recup.size(); i++) {
-                                    resultsList.add(recup.get(i).get(3));
-                                    tableau.notifyDataSetChanged();
-                                }*/
                                 if (!recherche_ville.getText().toString().isEmpty()) {
 
                                     // Récupération de la liste de String
@@ -806,26 +1076,15 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
 
 
-                                    //ESSAIE
-
-
-
-
-
-
-
                                 } else {
                                     Toast.makeText(getActivity(), "Rentrer une ville ou un lieu", Toast.LENGTH_SHORT).show();
                                 }
-
                             }
                         });
                     }
                 }, DELAY);
             }
-        });
-
-
+        });*/
         initUI(view);
         return view;
     }
@@ -864,8 +1123,8 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
 
                 boolean recherche_boolean = false;
-                System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOh comprend pas" + recherche.getText());
-                if (recherche.getText().toString().isEmpty()) {
+                System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOh comprend pas" + text.getText().toString());
+                if (text.getText().toString().isEmpty()) {
                     recherche_boolean = false;
                 } else {
                     recherche_boolean = true;
@@ -937,14 +1196,21 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
             }
         });
 
+
+        //MARCHE
         loupe_recherche_ville.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+
+
                 if (!recherche_ville.getText().toString().isEmpty()) {
 
+                    recherche_layout.setVisibility(true ? View.GONE : View.VISIBLE);
+                    vue_listview.setVisibility(true ? View.VISIBLE : View.GONE);
+
                     // Récupération de la liste de String
-                    ResearchTask researchTask = new ResearchTask(recherche.getText().toString(), 5);
+                    ResearchTask researchTask = new ResearchTask(text.getText().toString(), 5);
                     String ls = "";
                     ArrayList<String> recup = new ArrayList<String>();
                     ls = researchTask.getResponse();
@@ -973,7 +1239,6 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                         ResearchTask2 researchTask2 = new ResearchTask2(recup.get(j), 1);
                         ls2 = researchTask2.getResponse();
                         System.out.println("repooooooooooooooooonse" + ls2);
-                        //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
                         if (ls2 != null) {
                             if (ls2.contains("{")) {
                                 try {
@@ -1007,14 +1272,11 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                     }
 
 
-                    //ls = researchTask.getResponse();
-                    //recup2 = jsonparser3(ls);
 
                     donnée_geolocalise = recup2;
                     for (int i = 0; i < donnée_geolocalise.size(); i++) {
                         System.out.println("ppppppppppppppppppppppppppppppp" + donnée_geolocalise.get(i).get(3));
                     }
-                    //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
 
 
                 } else {
@@ -1029,9 +1291,13 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
             @Override
             public void onClick(View v) {
 
-                if (!recherche_ville.getText().toString().isEmpty()) {
+                if (!text2.getText().toString().isEmpty()) {
+
+                    recherche_layout.setVisibility(true ? View.GONE : View.VISIBLE);
+                    vue_listview.setVisibility(true ? View.VISIBLE : View.GONE);
+
                     // Récupération de la liste de String
-                    ResearchTask researchTask = new ResearchTask(recherche.getText().toString(), 5);
+                    ResearchTask researchTask = new ResearchTask(text.getText().toString(), 5);
                     String ls = "";
                     ArrayList<String> recup = new ArrayList<String>();
                     ls = researchTask.getResponse();
@@ -1103,6 +1369,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                     //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
 
                 } else {
+
                     Toast.makeText(getActivity(), "Rentrer une ville ou un lieu", Toast.LENGTH_SHORT).show();
                 }
 
@@ -1890,23 +2157,31 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         //private final GetRequest getRequest;
         //private final Boolean connected;
 
-        //ResearchTask2(String query, String city, String sponsoring_key, Double latitude, Double longitude, String address, String post_code, int product_category_id, int product_id,
-        //             int type_id, int specialty_id, int weekday, boolean automatic_booking_confirmation, String field, String order) {
-        ResearchTask2(String query, int limit) {
+         ResearchTask2(String query_all, String query_city, int limit) {
+             mQuery = query_all;
+             mLimit = limit;
+
+             getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[_all]=" + query_all+ "&query[city]="+query_city + "&limit=" + limit);
+
+             String resp = null;
+             try {
+                 resp = getRequest.execute().get();
+                 System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+                 System.out.println(resp.toString());
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             } catch (ExecutionException e) {
+                 e.printStackTrace();
+             }
+             response = resp;
+
+         }
+
+
+         ResearchTask2(String query, int limit) {
             mQuery = query;
             mLimit = limit;
-            // mQuery = query;
-            //mLimit = limit;
-            //System.out.println("QUERY :" + query + ",LIMIT :" + limit);
-            /*json = "{\n" +
-                    "\"query\":\"" + query + "\",\n" +
-                    "\"limit\":\"" + limit + "\"" +
-                    "}\n";*/
-            /*getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/_all/?query[_all]=" + query +
-                    "& query[city]=" + city + "&query[sponsoring_key]=" + sponsoring_key + "&query[geoloc][latitude]=" + latitude + "&query[geoloc][longitude]=" + longitude +
-                    "&query[geoloc][address]=" + address + "&query[post_code]=" + post_code + "&query[product_category_id]=" + product_category_id +
-                    "&query[product_id]=" + product_id + "&query[type_id]=" + type_id + "&query[specialty_id]=" + specialty_id + "&query[weekday]=" +
-                    weekday + "&query[automatic_booking_confirmation]=" + automatic_booking_confirmation + "&sort[field]=" + field + "&sort[order]=" + order);*/
+
             getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[_all]=" + query + "&limit=" + limit);
 
             String resp = null;
@@ -2296,7 +2571,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
 
     public String recherche_donneegeneral(String query) {
-        getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[_all]=" + query);
+        getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/"+query+"/");
 
         String resp = null;
         try {
@@ -2324,26 +2599,27 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                 try {
 
 
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    //JSONObject jsonObj = new JSONObject(jsonStr);
+                    JSONObject c = new JSONObject(jsonStr);
 
-                    JSONArray contacts = jsonObj.getJSONArray("data");
+                    //JSONArray contacts = jsonObj.getJSONArray("data");
 
                     // looping through All Contacts
-                    for (int i = 0; i < contacts.length(); i++) {
-                        JSONObject c = contacts.getJSONObject(i);
+                    //for (int i = 0; i < contacts.length(); i++) {
+                        //JSONObject c = contacts.getJSONObject(i);
 
-                        String image = c.getString("shop_images");
+                        //String image = c.getString("shop_images");
                         String id_professional = c.getString("id");
 
-                        if (i == 0) {
-                            String shop_images = c.getString("shop_images");
+                        //if (i == 0) {
+                            /*String shop_images = c.getString("shop_images");
                             String resource_manager = c.getString("resource_manager");
                             String avg_grade = c.getString("avg_grade");
                             String comments_count = c.getString("comments_count");
                             premierprofessionel.add(shop_images);
                             premierprofessionel.add(resource_manager);
                             premierprofessionel.add(avg_grade);
-                            premierprofessionel.add(comments_count);
+                            premierprofessionel.add(comments_count);*/
 
 
                             String id = c.getString("id");
@@ -2564,12 +2840,12 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                             System.out.println(PremierProfessionnal.toString());
 
 
-                        }
+                        //}
 
                         specialite.add(id_professional);
                         System.out.println("VAAAAAAAAAAAAAALUE " + id_professional);
 
-                    }
+                    //}
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                 }
@@ -2778,6 +3054,60 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
 
 
 }
+
+
+
+
+
+    public String recherche_place(String query) {
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee SCHEDULE");
+        getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/autocomplete/professional/place/?query=" + query);
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee SCHEDULE");
+        String resp = null;
+        try {
+            resp = getRequest.execute().get();
+            System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+            System.out.println(resp.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return resp;
+    }
+
+    public String[] place_jsonparser(String str){
+        String ls = str;
+        String[] recup2 = new String[]{};
+        //ls = researchTask.getResponse();
+        //recup = jsonparser(ls);
+
+        String recup = "{" + '"' + "Recup" + '"' + " : [";
+        String ahbon = ls.replace("[", recup);
+        String ahbon2 = ahbon.replace("]", "]}");
+
+        try {
+            JSONObject jsonObj = null;
+            jsonObj = new JSONObject(ahbon2);
+            JSONArray contacts = null;
+            contacts = jsonObj.getJSONArray("Recup");
+            recup2 = new String[contacts.length()];
+            for (int i = 0; i < contacts.length(); i++) {
+                JSONObject c = null;
+                c = contacts.getJSONObject(i);
+                String id = c.getString("value");
+                recup2[i]=id;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return recup2;
+    }
+
+
+
+
 
 }
 

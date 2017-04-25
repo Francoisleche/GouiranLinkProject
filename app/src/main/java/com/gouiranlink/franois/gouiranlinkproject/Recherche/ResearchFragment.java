@@ -169,7 +169,7 @@ public class ResearchFragment extends Fragment implements ProfessionalView.OnFra
 
 
         //mLoginFormView = view.findViewById(R.id.login_form);
-        mProgressView = view.findViewById(R.id.research_progress);
+        //mProgressView = view.findViewById(R.id.research_progress);
         recherche_layout = (LinearLayout) view.findViewById(R.id.recherche_layout);
 
         recherche = (EditText) view.findViewById(R.id.bonjour_recherche);

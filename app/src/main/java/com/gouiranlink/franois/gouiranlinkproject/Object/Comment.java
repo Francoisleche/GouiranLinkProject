@@ -15,13 +15,13 @@ public class Comment {
     private PublicProfessional professional;
     private String created_at;
     private String updated_at;
+    private Professional_Product[] professional_products;
 
     public Comment(){
-
     }
 
     public Comment(int id, int grade, String text, boolean published, String professional_response, PublicCustomer customer,
-                   PublicProfessional professional, String created_at, String updated_at){
+                   PublicProfessional professional, String created_at, String updated_at,Professional_Product[] professional_products){
         this.setId(id);
         this.setGrade(grade);
         this.setText(text);
@@ -31,6 +31,7 @@ public class Comment {
         this.setProfessional(professional);
         this.setCreated_at(created_at);
         this.setUpdated_at(updated_at);
+        this.setProfessional_products(professional_products);
     }
 
 
@@ -104,5 +105,13 @@ public class Comment {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Professional_Product[] getProfessional_products() {
+        return professional_products;
+    }
+
+    public void setProfessional_products(Professional_Product[] professional_products) {
+        this.professional_products = professional_products;
     }
 }

@@ -1,11 +1,40 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <ListView
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/maliste">
-    </ListView>
+        android:layout_above="@+id/audessous"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/tiger" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/audessous"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--<TextureView
+            android:visibility="invisible"
+            android:layout_width="500dp"
+            android:layout_height="200dp"
+            android:id="@+id/textureView" />-->
+
+        <ListView
+            android:id="@+id/maliste"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"></ListView>
+
+    </RelativeLayout>
+
+</FrameLayout>

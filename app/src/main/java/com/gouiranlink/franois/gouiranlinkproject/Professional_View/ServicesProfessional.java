@@ -136,9 +136,9 @@ public class ServicesProfessional extends Fragment {
         lstview=(ListView) v.findViewById(R.id.maliste);
 
 
-        String[] items = new String[professional_product.length];
-        String[] items1 = new String[professional_product.length];
-        String[] items2 = new String[professional_product.length];
+        String[] items = new String[professional_product.length+1];
+        String[] items1 = new String[professional_product.length+1];
+        String[] items2 = new String[professional_product.length+1];
         //Liste des categories
         /*
         if(professional.getProduct_categories() != null) {
@@ -155,19 +155,27 @@ public class ServicesProfessional extends Fragment {
 
         //Listes des produits / services
         if(professional_product.length != 0) {
+            items[0] = ("");
+            items1[0] = ("");
+            items2[0] = ("");
+            int g = 1;
             for (int i = 0; i < professional_product.length; i++) {
 
                     /*items[i] = ("Id :" + professional_product[i].getId() +
                             "\n Prestation : " + professional_product[i].getName() +
                             "\n Prix : " + professional_product[i].getPrice()+professional_product[i].getCurrency() +
                             "\n Durée : " + professional_product[i].getDuration());*/
-                    items[i] = ("Prestation : " + professional_product[i].getName());
+                items[g] = ("Prestation : " + professional_product[i].getName());
+                System.out.println("PRESTATION : "+items[g]);
                           /*  "\n Prix : " + professional_product[i].getPrice()+professional_product[i].getCurrency() +
                             "\n Durée : " + professional_product[i].getDuration());*/
 
-                items1[i] = ("Prix : " + professional_product[i].getPrice()+professional_product[i].getCurrency());
-                items2[i] = ("Durée : " + professional_product[i].getDuration());
+                items1[g] = ("Prix : " + professional_product[i].getPrice()+professional_product[i].getCurrency());
+                items2[g] = ("Durée : " + professional_product[i].getDuration());
+                g++;
             }
+
+
         }
 
 
@@ -187,7 +195,9 @@ public class ServicesProfessional extends Fragment {
         //ServicesAdapter adapter=new ServicesAdapter(getActivity(),layout,id,items);
         ServicesAdapter adapter=new ServicesAdapter(getActivity(),layout,id,items,items1,items2);
         // Bind data to the ListView
+        adapter.hide(0);
         lstview.setAdapter(adapter);
+
 
         lstview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -197,33 +207,37 @@ public class ServicesProfessional extends Fragment {
                 System.out.println("CUSTOMER 2:"+ customer.getName());
             if(!customer.getName().equals("")){
 
-                System.out.println("ON A CLIQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-                Toast.makeText(getContext(), "An item of the ListView is clicked.", Toast.LENGTH_LONG).show();
-                //for(int i=0;i<= 40 ;i++){
-                //Intent intent = new Intent(getActivity(),PrendreRdv.class);
-                //intent.putExtra(AGE,position);
-                //startActivity(intent);
-                //}
+                if(position != (0)) {
+
+                    System.out.println("ON A CLIQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                    Toast.makeText(getContext(), "An item of the ListView is clicked.", Toast.LENGTH_LONG).show();
+                    //for(int i=0;i<= 40 ;i++){
+                    //Intent intent = new Intent(getActivity(),PrendreRdv.class);
+                    //intent.putExtra(AGE,position);
+                    //startActivity(intent);
+                    //}
 
 
+                    args.putSerializable("Professionnal", professional);
+                    args.putSerializable("ProfessionnalProduct", professional_product);
+                    args.putSerializable("Customer", customer);
+                    args.putSerializable("service", "ServicesProfessional");
+                    args.putSerializable("position_list_clique", position);
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
 
-                args.putSerializable("Professionnal", professional);
-                args.putSerializable("ProfessionnalProduct", professional_product);
-                args.putSerializable("Customer", customer);
-                args.putSerializable("service", "ServicesProfessional");
-                args.putSerializable("position_list_clique", position);
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
+                    fragment = new PrendreRdv();
+                    fragment.setArguments(args);
 
-                fragment = new PrendreRdv();
-                fragment.setArguments(args);
+                    ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
 
-                ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
-
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.commit();
-
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.commit();
+                }
+                else{
+                    Toast.makeText(getActivity(), "Ne pas appuyer sur le premier", Toast.LENGTH_SHORT).show();
+                }
             }else{
                 Toast.makeText(getActivity(), "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
                 FragmentManager fm = getFragmentManager();

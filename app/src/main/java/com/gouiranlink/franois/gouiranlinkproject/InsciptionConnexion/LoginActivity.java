@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.ParentActivity;
+import com.gouiranlink.franois.gouiranlinkproject.ParentActivity2;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
@@ -224,7 +225,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void nextActivity(String resp) {
-        Intent main = new Intent(LoginActivity.this, ParentActivity.class);
+        Intent main = new Intent(LoginActivity.this, ParentActivity2.class);
         Customer customer = null;
         String accessToken = "";
         try {
@@ -769,7 +770,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 b.putBoolean("connected", false);
                 String mEmail = "";
                 b.putString("email", mEmail);
-                i = new Intent(LoginActivity.this, ParentActivity.class);
+                //i = new Intent(LoginActivity.this, ParentActivity.class);
+                i = new Intent(LoginActivity.this, ParentActivity2.class);
                 i.putExtras(b);
                 startActivity(i);
                 finish();

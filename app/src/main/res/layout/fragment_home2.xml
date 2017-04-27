@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ktm"
+        android:visibility="gone"/>
+
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/homepage"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/welcome_user"
+                android:orientation="horizontal"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:text="@string/welcome_user"/>
+
+            <ImageView
+                android:id="@+id/home_coiffure"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_toEndOf="@id/around_4"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:layout_weight="0.71"
+                android:src="@drawable/home_coiffure"/>
+
+            <ImageView
+                android:id="@+id/home_manucure"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:layout_weight="0.71"
+                android:src="@drawable/home_manucure"/>
+
+            <ImageView
+                android:id="@+id/home_epilation"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:layout_weight="0.71"
+                android:src="@drawable/home_epilation"/>
+
+            <ImageView
+                android:id="@+id/home_coloration"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:layout_weight="0.71"
+                android:src="@drawable/home_coloration"/>
+
+            <ImageView
+                android:id="@+id/home_maquillage"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:layout_weight="0.71"
+                android:src="@drawable/home_maquillage"/>
+
+            <ImageView
+                android:id="@+id/home_soins_visage"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:layout_weight="0.71"
+                android:src="@drawable/home_soins_visage"/>
+
+            <ImageView
+                android:id="@+id/home_barbier"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:layout_weight="0.71"
+                android:src="@drawable/home_barbier"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/invite_your_friends"
+                android:orientation="horizontal"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="20dp"
+                android:text="@string/invite_your_friends"/>
+            
+            <Button
+                android:id="@+id/invite_your_friends_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="400dp"
+                android:layout_marginTop="16dp"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:background="@drawable/invitez_des_amis" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

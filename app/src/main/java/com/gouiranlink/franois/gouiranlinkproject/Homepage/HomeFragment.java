@@ -585,7 +585,6 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
             @Override
             public void run() {
 
-
                 TextView textView = (TextView) getActivity().findViewById(R.id.around_me);
                 ImageView imageView;
                 //textView.setTypeface(font);

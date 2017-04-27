@@ -103,6 +103,10 @@
             android:name="com.gouiranlink.franois.gouiranlinkproject.ParentActivity"
             android:label="@string/title_activity_parent"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.gouiranlink.franois.gouiranlinkproject.ParentActivity2"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"/>
         <activity android:name="com.gouiranlink.franois.gouiranlinkproject.Account.NotificationsActivity" />
         <activity android:name="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.SignUp" />
         <activity android:name="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginFacebookActivity" />

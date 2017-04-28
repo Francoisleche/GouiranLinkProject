@@ -29,69 +29,202 @@
                 android:textColor="@color/black"
                 android:text="@string/welcome_user"/>
 
-            <ImageView
-                android:id="@+id/home_coiffure"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_toEndOf="@id/around_4"
-                android:onClick="onClick"
-                android:clickable="true"
-                android:layout_weight="0.71"
-                android:src="@drawable/home_coiffure"/>
 
-            <ImageView
-                android:id="@+id/home_manucure"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:onClick="onClick"
-                android:clickable="true"
-                android:layout_weight="0.71"
-                android:src="@drawable/home_manucure"/>
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <ImageView
+                    android:id="@+id/home_coiffure"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@drawable/home_coiffure"
+                    android:alpha=".75"
+                    android:clickable="true"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:id="@+id/titre_home_coiffure"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:text="Coiffure"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="30dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
 
-            <ImageView
-                android:id="@+id/home_epilation"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:onClick="onClick"
-                android:clickable="true"
-                android:layout_weight="0.71"
-                android:src="@drawable/home_epilation"/>
 
-            <ImageView
-                android:id="@+id/home_coloration"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:onClick="onClick"
-                android:clickable="true"
-                android:layout_weight="0.71"
-                android:src="@drawable/home_coloration"/>
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <ImageView
+                    android:id="@+id/home_manucure"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@drawable/home_manucure"
+                    android:alpha=".75"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:id="@+id/titre_home_manucure"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:text="Manucure"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="30dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
 
-            <ImageView
-                android:id="@+id/home_maquillage"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:onClick="onClick"
-                android:clickable="true"
-                android:layout_weight="0.71"
-                android:src="@drawable/home_maquillage"/>
 
-            <ImageView
-                android:id="@+id/home_soins_visage"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:onClick="onClick"
-                android:clickable="true"
-                android:layout_weight="0.71"
-                android:src="@drawable/home_soins_visage"/>
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <ImageView
+                    android:id="@+id/home_epilation"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@drawable/home_epilation"
+                    android:alpha=".75"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:id="@+id/titre_home_epilation"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:text="Epilation"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="30dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
 
-            <ImageView
-                android:id="@+id/home_barbier"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:onClick="onClick"
-                android:clickable="true"
-                android:layout_weight="0.71"
-                android:src="@drawable/home_barbier"/>
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <ImageView
+                    android:id="@+id/home_coloration"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@drawable/home_coloration"
+                    android:alpha=".75"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:id="@+id/titre_home_coloration"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:text="Coloration"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="30dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
+
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <ImageView
+                    android:id="@+id/home_maquillage"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@drawable/home_maquillage"
+                    android:alpha=".75"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:id="@+id/titre_home_maquillage"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:text="Maquillage"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="30dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
+
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <ImageView
+                    android:id="@+id/home_soins_visage"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@drawable/home_soins_visage"
+                    android:alpha=".75"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:id="@+id/titre_home_soins_visage"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:text="Soins du visage"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="30dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
+
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <ImageView
+                    android:id="@+id/home_barbier"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:src="@drawable/home_barbier"
+                    android:alpha=".75"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:id="@+id/titre_home_barbier"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:text="Barbier"
+                        android:textAlignment="center"
+                        android:textColor="#ffffff"
+                        android:textSize="30dp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
 
 
             <TextView
@@ -103,7 +236,7 @@
                 android:textColor="@color/black"
                 android:layout_marginTop="20dp"
                 android:text="@string/invite_your_friends"/>
-            
+
             <Button
                 android:id="@+id/invite_your_friends_button"
                 style="?android:textAppearanceSmall"

@@ -246,13 +246,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         main.putExtra("Customer", customer);
         main.putExtra("token",accessToken);
         System.out.println("Toooooooooooooken"+accessToken);
+        System.out.println("CONNECTER GOUIRAN LINK 1");
         startActivity(main);
 
     }
 
     private void nextActivity(Profile profile, String accessToken) {
         if (profile != null) {
-            Intent main = new Intent(LoginActivity.this, ParentActivity.class);
+            Intent main = new Intent(LoginActivity.this, ParentActivity2.class);
             myCustomer.setmFacebook(true);
             myCustomer.setmGoogle(false);
             myCustomer.setmGouiranLink(false);
@@ -303,7 +304,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void nextActivity(GoogleSignInAccount acct) {
         if (acct != null) {
-            Intent main = new Intent(LoginActivity.this, ParentActivity.class);
+            Intent main = new Intent(LoginActivity.this, ParentActivity2.class);
             myCustomer.setmFacebook(false);
             myCustomer.setmGoogle(true);
             myCustomer.setmGouiranLink(false);

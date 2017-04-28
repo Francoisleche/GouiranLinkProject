@@ -179,7 +179,11 @@
                             android:id="@+id/boutton_recherche"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="filtres" />
+                            android:layout_marginTop="10dp"
+                            android:background="#d16677"
+                            android:textColor="@color/white"
+                            android:padding="5dp"
+                            android:text="Lancer la recherche" />
 
 
                     </LinearLayout>
@@ -306,6 +310,7 @@
                     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
                         android:layout_marginBottom="50dp"
                         android:orientation="horizontal"
                         android:gravity="center"
@@ -315,13 +320,51 @@
                             android:id="@+id/carte_research"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="cartes" />
+                            android:background="#9abdc0"
+                            android:textColor="@color/white"
+                            android:padding="5dp"
+                            android:text="Cartes" />
 
                         <Button
                             android:id="@+id/filtre_research"
+                            android:layout_marginLeft="20dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="filtres" />
+                            android:background="#9abdc0"
+                            android:textColor="@color/white"
+                            android:padding="5dp"
+                            android:text="Filtres" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginBottom="50dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:weightSum="1.0">
+
+                        <Button
+                            android:id="@+id/carte_research2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:textColor="#9abdc0"
+                            android:padding="5dp"
+                            android:text="Cartes" />
+
+                        <Button
+                            android:id="@+id/filtre_research2"
+                            android:layout_marginLeft="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:textColor="#9abdc0"
+                            android:padding="5dp"
+                            android:text="Filtres" />
 
                     </LinearLayout>
                 </LinearLayout>

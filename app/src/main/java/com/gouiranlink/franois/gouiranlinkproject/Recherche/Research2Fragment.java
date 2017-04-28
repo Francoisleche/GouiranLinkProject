@@ -74,6 +74,9 @@ import static com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.BaseFragme
 
 public class Research2Fragment extends Fragment implements ProfessionalView.OnFragmentInteractionListener {
 
+    private String homepage_click_imageview = "";
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -155,6 +158,11 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         return firstFragment;
     }
 
+    public Research2Fragment(){
+
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,6 +170,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         if (getArguments() != null) {
             customer = (Customer) getArguments().getSerializable("Customer");
             token = (String) getArguments().getString("token");
+            homepage_click_imageview = (String) getArguments().getString("homepage_click_imageview");
             System.out.println("Toooooooooooooken" + token);
         }
 
@@ -358,6 +367,13 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         TOUT[2204] = "ESSAIE";
         TOUT[2238] = "ESSAIE";
         TOUT[2338] = "ESSAIE";
+
+
+        //Si l'utilisateur a cliqué sur une image de la homepage, on arrive sur la page recherche avec l'autocompletion
+        // deja pré-rempli
+        if(!homepage_click_imageview.equals("")){
+            text.setText(homepage_click_imageview);
+        }
 
 
 

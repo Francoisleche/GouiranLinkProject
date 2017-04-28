@@ -2,7 +2,11 @@ package com.gouiranlink.franois.gouiranlinkproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -18,8 +22,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.gouiranlink.franois.gouiranlinkproject.Account.AccountFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Account.NestedSettingsFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Favourites.Favoris2Fragment;
@@ -28,11 +40,18 @@ import com.gouiranlink.franois.gouiranlinkproject.Gallery.ActivityGallery;
 import com.gouiranlink.franois.gouiranlinkproject.Gallery.GalleryFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2;
+import com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Recherche.Research2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Reservation.Reservation2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.Reservation.ReservationFragment;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.CircleTransform;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Created by François on 27/04/2017.
@@ -46,9 +65,13 @@ public class ParentActivity2 extends AppCompatActivity
         GalleryFragment.OnFragmentInteractionListener, AccountFragment.OnFragmentInteractionListener {
 
 
+    private NavigationView navigationView;
+    private View navHeader;
+    private TextView txtName, txtWebsite;
     private Customer customer;
     private String token;
-    //private Intent emailIntent = null;// = new Intent(android.content.Intent.ACTION_SEND);
+    private static final String urlProfileImg = "R.drawable.image_inconnu";
+    private ImageView imgProfile;
 
 
     @Override
@@ -68,12 +91,34 @@ public class ParentActivity2 extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navHeader = navigationView.getHeaderView(0);
+        txtName = (TextView) navHeader.findViewById(R.id.surname_customer);
+        txtWebsite = (TextView) navHeader.findViewById(R.id.mail_customer);
+        imgProfile = (ImageView) navHeader.findViewById(R.id.imageView);
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                //Ouvre une snackbar (barre du bas)
+                //Snackbar.make(view, "", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Intent email = new Intent(Intent.ACTION_SEND,Uri.fromParts(
+                        "mailto","abc@gmail.com", null));
+                email.setType("text/plain");
+
+                //Obligatoire d'avoir un tableau
+                email.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "Contact@gouiran-link.com" });
+                email.putExtra(Intent.EXTRA_SUBJECT, "Contacter Gouiran Link");
+                email.putExtra(Intent.EXTRA_TEXT, "Saisir votre demande ici...");
+                email.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(Intent.createChooser(email, "Choisir le logiciel"));
+
+
+
             }
         });
 
@@ -88,10 +133,42 @@ public class ParentActivity2 extends AppCompatActivity
 
 
 
+        if (customer != null) {
+            // load nav menu header data
+            txtName.setText(customer.getSurname()+" "+customer.getName());
+            txtWebsite.setText(customer.getEmail());
+
+            // loading header background image
+            /*Glide.with(this).load(urlNavHeaderBg)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imgNavHeaderBg);*/
+
+            // Loading profile image
+            Glide.with(this).load(customer.getImage().getThumbnails().get(0)[2])
+                    .crossFade()
+                    .thumbnail(0.5f)
+                    .bitmapTransform(new CircleTransform(this))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgProfile);
+        }else{
+            Glide.with(this).load(R.drawable.image_inconnu)
+                    .crossFade()
+                    .thumbnail(0.5f)
+                    .bitmapTransform(new CircleTransform(this))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgProfile);
+        }
+
+
+
         Fragment fragment = null;
         Bundle args = new Bundle();
         args.putSerializable("Customer", customer);
         args.putSerializable("token", token);
+
+        //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+customer.getName());
+        //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+token);
 
         fragment = new HomeFragment2();
         fragment.setArguments(args);
@@ -101,6 +178,10 @@ public class ParentActivity2 extends AppCompatActivity
         frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
 
     }
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -126,8 +207,35 @@ public class ParentActivity2 extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(ParentActivity2.this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_deconnexion) {
+                    if (customer != null && customer.ismFacebook()) {
+                        Toast.makeText(this.getApplicationContext(), R.string.logged_out_facebook, Toast.LENGTH_SHORT).show();
+                        LoginManager.getInstance().logOut();
+                        Intent login = new Intent(this, LoginActivity.class);
+                        startActivity(login);
+                        this.finish();
+                    } else if (customer != null && customer.ismGoogle()) {
+                        Toast.makeText(this.getApplicationContext(), R.string.logged_out_google, Toast.LENGTH_SHORT).show();
+                        LoginActivity.signOut(mGoogleApiClient);
+                        Intent intent = new Intent(this, LoginActivity.class);
+                        startActivity(intent);
+                        this.finish();
+                    } else if (customer != null && customer.ismGouiranLink()) {
+                        Toast.makeText(this.getApplicationContext(), R.string.logged_out_gouiran_link, Toast.LENGTH_SHORT).show();
+                        Intent login = new Intent(this, LoginActivity.class);
+                        startActivity(login);
+                        this.finish();
+                    }
+
             return true;
         }
 
@@ -144,11 +252,12 @@ public class ParentActivity2 extends AppCompatActivity
         Bundle args = new Bundle();
         args.putSerializable("Customer", customer);
         args.putSerializable("token", token);
+        args.putSerializable("homepage_click_imageview", "");
 
 
         if (id == R.id.nav_home) {
 
-            fragment = new HomeFragment();
+            fragment = new HomeFragment2();
             fragment.setArguments(args);
 
         } else if (id == R.id.nav_research) {
@@ -164,7 +273,7 @@ public class ParentActivity2 extends AppCompatActivity
             }
             else {
                 Toast.makeText(this, "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
-                fragment = new HomeFragment();
+                fragment = new HomeFragment2();
                 fragment.setArguments(args);
             }
 
@@ -177,7 +286,7 @@ public class ParentActivity2 extends AppCompatActivity
             }
             else {
                 Toast.makeText(this, "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
-                fragment = new HomeFragment();
+                fragment = new HomeFragment2();
                 fragment.setArguments(args);
             }
 
@@ -192,7 +301,7 @@ public class ParentActivity2 extends AppCompatActivity
             }
             else {
                 Toast.makeText(this, "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
-                fragment = new HomeFragment();
+                fragment = new HomeFragment2();
                 fragment.setArguments(args);
             }
         } else if (id == R.id.nav_share) {
@@ -214,7 +323,7 @@ public class ParentActivity2 extends AppCompatActivity
             }
             else {
                 Toast.makeText(this, "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
-                fragment = new HomeFragment();
+                fragment = new HomeFragment2();
                 fragment.setArguments(args);
             }
 

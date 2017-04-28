@@ -8,11 +8,16 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,8 +25,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.R;
+import com.gouiranlink.franois.gouiranlinkproject.Recherche.Research2Fragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,9 +47,16 @@ import static com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.BaseFragme
  * Created by François on 27/04/2017.
  */
 
-public class HomeFragment2 extends Fragment {
+public class HomeFragment2 extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+    private LocationManager locationManager = null;
+    private MyLocationListener locationListener = null;
+    private Boolean connected;
+    private String text;
     private FileInputStream fileInputStream = null;
+    private GoogleApiClient mGoogleApiClient;
+    private Customer customer;
+    private String token;
 
     private HomeFragment2.OnFragmentInteractionListener mListener;
 
@@ -60,6 +76,56 @@ public class HomeFragment2 extends Fragment {
         return firstFragment;
     }
 
+    private synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            String username = getArguments().getString("username");
+            connected = getArguments().getBoolean("connected");
+            token = getArguments().getString("token");
+            customer = (Customer) getArguments().getSerializable("Customer");
+            System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+username);
+            //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+customer.getName());
+            //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+customer.ismGouiranLink());
+            //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+customer.ismFacebook());
+            //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+customer.ismGoogle());
+            System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+connected);
+            if (connected)
+                text = String.format(getResources().getString(R.string.welcome_user), username);
+            else
+                text = "Bonjour,";
+
+            if (customer != null && (customer.ismGouiranLink() || customer.ismFacebook() || customer.ismGoogle())) {
+                System.out.println("On passe dedans du coup !");
+                text = String.format(getResources().getString(R.string.welcome_user), customer.getSurname());
+                connected = true;
+            } else
+                connected = false;
+        }
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new HomeFragment2.MyLocationListener();
+        buildGoogleApiClient();
+
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        } else
+            Toast.makeText(getActivity(), "Not connected...", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,8 +140,113 @@ public class HomeFragment2 extends Fragment {
             e.printStackTrace();
         }*/
 
-        return (inflater.inflate(R.layout.fragment_home2, container, false));
+        View view = inflater.inflate(R.layout.fragment_home2, container, false);
 
+
+        final Fragment[] fragment = {null};
+        final Bundle args = new Bundle();
+        args.putSerializable("Customer", customer);
+        args.putSerializable("token", token);
+
+
+        ImageView img1 = (ImageView) view.findViewById(R.id.home_coiffure);
+        img1.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                args.putSerializable("homepage_click_imageview", "Coiffure");
+                fragment[0] = new Research2Fragment();
+                fragment[0].setArguments(args);
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment[0]).addToBackStack("tag").commit();
+            }
+        });
+
+        ImageView img2 = (ImageView) view.findViewById(R.id.home_manucure);
+        img2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                args.putSerializable("homepage_click_imageview", "Manucure");
+                fragment[0] = new Research2Fragment();
+                fragment[0].setArguments(args);
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment[0]).addToBackStack("tag").commit();
+            }
+        });
+
+        ImageView img3 = (ImageView) view.findViewById(R.id.home_epilation);
+        img3.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                args.putSerializable("homepage_click_imageview", "Epilation");
+                fragment[0] = new Research2Fragment();
+                fragment[0].setArguments(args);
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment[0]).addToBackStack("tag").commit();
+            }
+        });
+
+        ImageView img4 = (ImageView) view.findViewById(R.id.home_coloration);
+        img4.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                args.putSerializable("homepage_click_imageview", "Coloration");
+                fragment[0] = new Research2Fragment();
+                fragment[0].setArguments(args);
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment[0]).addToBackStack("tag").commit();
+            }
+        });
+
+        ImageView img5 = (ImageView) view.findViewById(R.id.home_maquillage);
+        img5.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                args.putSerializable("homepage_click_imageview", "Maquillage");
+                fragment[0] = new Research2Fragment();
+                fragment[0].setArguments(args);
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment[0]).addToBackStack("tag").commit();
+            }
+        });
+
+        ImageView img6 = (ImageView) view.findViewById(R.id.home_soins_visage);
+        img6.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                args.putSerializable("homepage_click_imageview", "Soins visage");
+                fragment[0] = new Research2Fragment();
+                fragment[0].setArguments(args);
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment[0]).addToBackStack("tag").commit();
+            }
+        });
+
+        ImageView img7 = (ImageView) view.findViewById(R.id.home_barbier);
+        img7.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                args.putSerializable("homepage_click_imageview", "Barbier");
+                fragment[0] = new Research2Fragment();
+                fragment[0].setArguments(args);
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment[0]).addToBackStack("tag").commit();
+            }
+        });
+
+
+
+
+
+
+        /*TextView titre_home_coiffure = (TextView) view.findViewById(R.id.titre_home_coiffure);
+        titre_home_coiffure.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                // do whatever we wish!
+            }
+        });*/
+
+        return view;
 
 
     }
@@ -83,7 +254,9 @@ public class HomeFragment2 extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
+        TextView welcomeUser = new TextView(getActivity());
+        welcomeUser = (TextView) getActivity().findViewById(R.id.welcome_user);
+        welcomeUser.setText(text);
     }
 
 
@@ -104,6 +277,7 @@ public class HomeFragment2 extends Fragment {
         mListener = null;
     }
 
+
     public interface OnFragmentInteractionListener {
     }
 
@@ -114,6 +288,22 @@ public class HomeFragment2 extends Fragment {
     }
 
 
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Toast.makeText(getActivity(), "connect", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Toast.makeText(getActivity(), "connection suspended", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(getActivity(), "Failed to connect", Toast.LENGTH_SHORT).show();
+    }
 
 
 

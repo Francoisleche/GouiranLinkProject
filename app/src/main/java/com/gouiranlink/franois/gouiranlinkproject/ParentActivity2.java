@@ -70,6 +70,7 @@ public class ParentActivity2 extends AppCompatActivity
     private TextView txtName, txtWebsite;
     private Customer customer;
     private String token;
+    private String[] place,autocomplete;
     private static final String urlProfileImg = "R.drawable.image_inconnu";
     private ImageView imgProfile;
 
@@ -82,6 +83,8 @@ public class ParentActivity2 extends AppCompatActivity
         if (b != null) {
             customer = (Customer) getIntent().getSerializableExtra("Customer");
             token = (String) getIntent().getStringExtra("token");
+            place = (String[]) getIntent().getStringArrayExtra("place");
+            autocomplete = (String[]) getIntent().getStringArrayExtra("autocomplete");
             System.out.println("Toooooooooooooken" + token);
         }
 
@@ -166,6 +169,8 @@ public class ParentActivity2 extends AppCompatActivity
         Bundle args = new Bundle();
         args.putSerializable("Customer", customer);
         args.putSerializable("token", token);
+        args.putSerializable("place", place);
+        args.putSerializable("autocomplete", autocomplete);
 
         //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+customer.getName());
         //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+token);
@@ -252,6 +257,8 @@ public class ParentActivity2 extends AppCompatActivity
         Bundle args = new Bundle();
         args.putSerializable("Customer", customer);
         args.putSerializable("token", token);
+        args.putSerializable("place", place);
+        args.putSerializable("autocomplete", autocomplete);
         args.putSerializable("homepage_click_imageview", "");
 
 

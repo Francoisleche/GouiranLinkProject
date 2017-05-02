@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Comment;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.CustomerBooking;
@@ -180,6 +182,14 @@ public class Recapitulatif extends Fragment {
                 String ls2 = "";
                 ls2 = researchTask.getResponse();
                 System.out.println("Resultat recapitulatif : "+ls2);
+
+
+
+                //Retour à la homepage après avoir validé le rendez vous
+                Fragment fragment = null;
+                fragment = new HomeFragment2();
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
 
             }
         });

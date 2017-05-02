@@ -100,6 +100,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
     private Customer customer;
     private String token;
+    private String[] place,autocomplete;
 
     private ResearchTask mAuthTask = null;
     //private EditText recherche;
@@ -140,6 +141,8 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     private boolean ville_selectionne = false;
 
 
+
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -171,6 +174,8 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
             customer = (Customer) getArguments().getSerializable("Customer");
             token = (String) getArguments().getString("token");
             homepage_click_imageview = (String) getArguments().getString("homepage_click_imageview");
+            place = (String[]) getArguments().getStringArray("place");
+            autocomplete = (String[]) getArguments().getStringArray("autocomplete");
             System.out.println("Toooooooooooooken" + token);
         }
 
@@ -192,7 +197,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
         text=(AutoCompleteTextView)view.findViewById(R.id.autoCompleteTextView1);
 
-        A = recupToutlesautocomplete("A");
+        /*A = recupToutlesautocomplete("A");
         B = recupToutlesautocomplete("B");
         C = recupToutlesautocomplete("C");
         D = recupToutlesautocomplete("D");
@@ -329,16 +334,6 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         }
 
 
-
-        //Autocomplete
-        /*String[] languages={"Android ","java","IOS","SQL","JDBC","Web services"};
-        for(int g=0;g<TOUT.length;g++){
-            System.out.println("AFFFFICHE TOUT :"+ TOUT[g]);
-        }
-        for(int g=0;g<languages.length;g++){
-            System.out.println("AFFFFICHE languages :"+ languages[g]);
-        }*/
-
         System.out.println("AFFFFICHE TOUT :"+ TOUT.length);
 
         TOUT[0] = "ESSAIE";
@@ -366,7 +361,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         TOUT[2138] = "ESSAIE";
         TOUT[2204] = "ESSAIE";
         TOUT[2238] = "ESSAIE";
-        TOUT[2338] = "ESSAIE";
+        TOUT[2338] = "ESSAIE";*/
 
 
         //Si l'utilisateur a cliqué sur une image de la homepage, on arrive sur la page recherche avec l'autocompletion
@@ -378,7 +373,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
 
         ArrayAdapter adapter = new
-                ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,TOUT);
+                ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,autocomplete);
 
         text.setThreshold(1);
         text.setAdapter(adapter);
@@ -501,6 +496,14 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
         text2=(AutoCompleteTextView)view.findViewById(R.id.autoCompleteTextView2);
 
+        ArrayAdapter adapter2 = new
+                ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,place);
+
+        text2.setThreshold(1);
+        text2.setAdapter(adapter2);
+
+
+
         text2.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -520,13 +523,13 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
             @Override
             public void afterTextChanged(Editable s) {
                 // TODO Auto-generated method stub
-                String [] place  = place_jsonparser(recherche_place(text2.getText().toString()));
+                /*String [] place  = place_jsonparser(recherche_place(text2.getText().toString()));
 
                 ArrayAdapter adapter2 = new
                         ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,place);
 
                 text2.setThreshold(1);
-                text2.setAdapter(adapter2);
+                text2.setAdapter(adapter2);*/
             }
 
 

@@ -34,7 +34,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
-import com.gouiranlink.franois.gouiranlinkproject.ParentActivity;
 import com.gouiranlink.franois.gouiranlinkproject.ParentActivity2;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
@@ -65,6 +64,7 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -105,6 +105,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private ProfileTracker profileTracker;
     LoginButton loginButton;
     SignInButton signInButton;
+
+    private GetRequest getRequest;
+    private String[] languages2;
+    private String[] tab_autocomplete_place, tab_autocomplete_name;
+
+    private Customer customer;
+    private String accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,9 +232,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void nextActivity(String resp) {
-        Intent main = new Intent(LoginActivity.this, ParentActivity2.class);
-        Customer customer = null;
-        String accessToken = "";
+        final Intent main = new Intent(LoginActivity.this, ParentActivity2.class);
+        customer = null;
+        accessToken = "";
         try {
             JSONObject jsonObject = new JSONObject(resp);
             accessToken = jsonObject.getString("access_token");
@@ -243,13 +250,570 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } catch (JSONException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        main.putExtra("Customer", customer);
-        main.putExtra("token",accessToken);
-        System.out.println("Toooooooooooooken"+accessToken);
-        System.out.println("CONNECTER GOUIRAN LINK 1");
-        startActivity(main);
+
+
+
+
+        final ProgressDialog ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Downloading Infos...", true);
+        Thread timer = new Thread() {
+            @Override
+            public void run() {
+                webservice_autocomplete();
+                main.putExtra("place", tab_autocomplete_place);
+                main.putExtra("autocomplete", tab_autocomplete_name);
+                main.putExtra("Customer", customer);
+                main.putExtra("token",accessToken);
+                System.out.println("Toooooooooooooken"+accessToken);
+                System.out.println("CONNECTER GOUIRAN LINK 1");
+                startActivity(main);
+            }
+        };
+        timer.start();
+        ringProgressDialog.setCancelable(true);
+
+
+
 
     }
+
+
+    public void webservice_autocomplete() {
+        String[] A  = place_jsonparser(recherche_place("A"));
+        String[] B  = place_jsonparser(recherche_place("B"));
+        String[] C  = place_jsonparser(recherche_place("C"));
+        String[] D  = place_jsonparser(recherche_place("D"));
+        String[] E  = place_jsonparser(recherche_place("E"));
+        String[] F  = place_jsonparser(recherche_place("F"));
+        String[] G  = place_jsonparser(recherche_place("G"));
+        String[] H  = place_jsonparser(recherche_place("H"));
+        String[] I  = place_jsonparser(recherche_place("I"));
+        String[] J  = place_jsonparser(recherche_place("J"));
+        String[] K  = place_jsonparser(recherche_place("K"));
+        String[] L  = place_jsonparser(recherche_place("L"));
+        String[] M  = place_jsonparser(recherche_place("M"));
+        String[] N  = place_jsonparser(recherche_place("N"));
+        String[] O  = place_jsonparser(recherche_place("O"));
+        String[] P  = place_jsonparser(recherche_place("P"));
+        String[] Q  = place_jsonparser(recherche_place("Q"));
+        String[] R  = place_jsonparser(recherche_place("R"));
+        String[] S  = place_jsonparser(recherche_place("S"));
+        String[] T  = place_jsonparser(recherche_place("T"));
+        String[] U  = place_jsonparser(recherche_place("U"));
+        String[] V  = place_jsonparser(recherche_place("V"));
+        String[] W  = place_jsonparser(recherche_place("W"));
+        String[] X  = place_jsonparser(recherche_place("X"));
+        String[] Y  = place_jsonparser(recherche_place("Y"));
+        String[] Z  = place_jsonparser(recherche_place("Z"));
+
+        tab_autocomplete_place = new String[A.length+B.length+C.length+D.length+E.length+F.length+G.length+H.length+
+                I.length+J.length+K.length+L.length+M.length+N.length+O.length+P.length+Q.length+R.length+
+                S.length+T.length+U.length+V.length+W.length+X.length+Y.length+Z.length];
+
+        ArrayList list = new ArrayList();
+        for (Object object : A) {
+            list.add(object);
+        }
+        for (Object object : B) {
+            list.add(object);
+        }
+        for (Object object : C) {
+            list.add(object);
+        }
+        for (Object object : D) {
+            list.add(object);
+        }
+        for (Object object : E) {
+            list.add(object);
+        }
+        for (Object object : F) {
+            list.add(object);
+        }
+        for (Object object : G) {
+            list.add(object);
+        }
+        for (Object object : H) {
+            list.add(object);
+        }
+        for (Object object : I) {
+            list.add(object);
+        }
+        for (Object object : J) {
+            list.add(object);
+        }
+
+        for (Object object : K) {
+            list.add(object);
+        }
+        for (Object object : L) {
+            list.add(object);
+        }
+        for (Object object : M) {
+            list.add(object);
+        }
+        for (Object object : N) {
+            list.add(object);
+        }
+        for (Object object : O) {
+            list.add(object);
+        }
+
+        for (Object object : P) {
+            list.add(object);
+        }
+        for (Object object : Q) {
+            list.add(object);
+        }
+        for (Object object : R) {
+            list.add(object);
+        }
+        for (Object object : S) {
+            list.add(object);
+        }
+        for (Object object : T) {
+            list.add(object);
+        }
+
+        for (Object object : U) {
+            list.add(object);
+        }
+        for (Object object : V) {
+            list.add(object);
+        }
+        for (Object object : W) {
+            list.add(object);
+        }
+        for (Object object : X) {
+            list.add(object);
+        }
+        for (Object object : Y) {
+            list.add(object);
+        }
+        for (Object object : Z) {
+            list.add(object);
+        }
+
+
+        list.toArray(tab_autocomplete_place);
+
+
+        for(int g = 0; g< tab_autocomplete_place.length; g++){
+            System.out.println("AFFFFICHE tab_autocomplete_name "+g+" : "+ tab_autocomplete_place[g]);
+        }
+
+        A = recupToutlesautocomplete("A");
+        B = recupToutlesautocomplete("B");
+        C = recupToutlesautocomplete("C");
+        D = recupToutlesautocomplete("D");
+        E = recupToutlesautocomplete("E");
+
+        F = recupToutlesautocomplete("F");
+        G = recupToutlesautocomplete("G");
+        H = recupToutlesautocomplete("H");
+        I = recupToutlesautocomplete("I");
+        J = recupToutlesautocomplete("J");
+
+        K = recupToutlesautocomplete("K");
+        L = recupToutlesautocomplete("L");
+        M = recupToutlesautocomplete("M");
+        N = recupToutlesautocomplete("N");
+        O = recupToutlesautocomplete("O");
+
+        P = recupToutlesautocomplete("P");
+        Q = recupToutlesautocomplete("Q");
+        R = recupToutlesautocomplete("R");
+        S = recupToutlesautocomplete("S");
+        T = recupToutlesautocomplete("T");
+
+        U = recupToutlesautocomplete("U");
+        V = recupToutlesautocomplete("V");
+        W = recupToutlesautocomplete("W");
+        X = recupToutlesautocomplete("X");
+        Y = recupToutlesautocomplete("Y");
+        Z = recupToutlesautocomplete("Z");
+
+
+        int taille = A.length+B.length+C.length+D.length+E.length +
+                F.length+G.length+H.length+I.length+J.length+K.length+L.length+M.length+N.length+O.length+
+                P.length+Q.length+R.length+S.length+T.length+U.length+V.length+W.length+X.length+Y.length+Z.length;
+        tab_autocomplete_name = new String[taille];
+
+        ArrayList list2 = new ArrayList();
+        for (Object object : A) {
+            list2.add(object);
+        }
+        for (Object object : B) {
+            list2.add(object);
+        }
+        for (Object object : C) {
+            list2.add(object);
+        }
+        for (Object object : D) {
+            list2.add(object);
+        }
+        for (Object object : E) {
+            list2.add(object);
+        }
+        for (Object object : F) {
+            list2.add(object);
+        }
+        for (Object object : G) {
+            list2.add(object);
+        }
+        for (Object object : H) {
+            list2.add(object);
+        }
+        for (Object object : I) {
+            list2.add(object);
+        }
+        for (Object object : J) {
+            list2.add(object);
+        }
+
+        for (Object object : K) {
+            list2.add(object);
+        }
+        for (Object object : L) {
+            list2.add(object);
+        }
+        for (Object object : M) {
+            list2.add(object);
+        }
+        for (Object object : N) {
+            list2.add(object);
+        }
+        for (Object object : O) {
+            list2.add(object);
+        }
+
+        for (Object object : P) {
+            list2.add(object);
+        }
+        for (Object object : Q) {
+            list2.add(object);
+        }
+        for (Object object : R) {
+            list2.add(object);
+        }
+        for (Object object : S) {
+            list2.add(object);
+        }
+        for (Object object : T) {
+            list2.add(object);
+        }
+
+        for (Object object : U) {
+            list2.add(object);
+        }
+        for (Object object : V) {
+            list2.add(object);
+        }
+        for (Object object : W) {
+            list2.add(object);
+        }
+        for (Object object : X) {
+            list2.add(object);
+        }
+        for (Object object : Y) {
+            list2.add(object);
+        }
+        for (Object object : Z) {
+            list2.add(object);
+        }
+
+
+        list2.toArray(tab_autocomplete_name);
+
+
+        for(int g = 0; g< tab_autocomplete_name.length; g++){
+            System.out.println("AFFFFICHE tab_autocomplete_name "+g+" : "+ tab_autocomplete_name[g]);
+        }
+
+
+        System.out.println("AFFFFICHE tab_autocomplete_name :"+ tab_autocomplete_name.length);
+
+        tab_autocomplete_name[0] = "ESSAIE";
+        tab_autocomplete_name[100] = "ESSAIE";
+        tab_autocomplete_name[200] = "ESSAIE";
+        tab_autocomplete_name[300] = "ESSAIE";
+        tab_autocomplete_name[400] = "ESSAIE";
+        tab_autocomplete_name[500] = "ESSAIE";
+        tab_autocomplete_name[600] = "ESSAIE";
+        tab_autocomplete_name[700] = "ESSAIE";
+        tab_autocomplete_name[800] = "ESSAIE";
+        tab_autocomplete_name[900] = "ESSAIE";
+        tab_autocomplete_name[1000] = "ESSAIE";
+        tab_autocomplete_name[1100] = "ESSAIE";
+        tab_autocomplete_name[1200] = "ESSAIE";
+        tab_autocomplete_name[1300] = "ESSAIE";
+        tab_autocomplete_name[1400] = "ESSAIE";
+        tab_autocomplete_name[1500] = "ESSAIE";
+        tab_autocomplete_name[1600] = "ESSAIE";
+        tab_autocomplete_name[1638] = "ESSAIE";
+        tab_autocomplete_name[1738] = "ESSAIE";
+        tab_autocomplete_name[1838] = "ESSAIE";
+        tab_autocomplete_name[1938] = "ESSAIE";
+        tab_autocomplete_name[2038] = "ESSAIE";
+        tab_autocomplete_name[2138] = "ESSAIE";
+        tab_autocomplete_name[2204] = "ESSAIE";
+        tab_autocomplete_name[2238] = "ESSAIE";
+        tab_autocomplete_name[2338] = "ESSAIE";
+
+
+    }
+
+    public String recherche_place(String query) {
+        getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/autocomplete/professional/place/?query=" + query + "&limit=100");
+        String resp = null;
+        try {
+            resp = getRequest.execute().get();
+            System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+            System.out.println(resp.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return resp;
+    }
+
+    public ArrayList<String> jsonparser(String jsonStr) {
+        String ls = "";
+        ArrayList<String> specialite = new ArrayList<>();
+
+
+        if (jsonStr != null) {
+            if (jsonStr.contains("{")) {
+                try {
+                    //JSONArray jsonObj2 = new JSONArray(jsonStr);
+
+
+
+                            /*JSONObject reader = new JSONObject(jsonStr);
+                            JSONObject sys  = reader.getJSONObject("value");
+                            String country = sys.getString("value");*/
+
+                    String recup = "{" + '"' + "Recup" + '"' + " : [";
+                    String ahbon = jsonStr.replace("[", recup);
+                    String ahbon2 = ahbon.replace("]", "]}");
+
+
+                    JSONObject jsonObj = new JSONObject(ahbon2);
+
+                    JSONArray contacts = jsonObj.getJSONArray("Recup");
+
+                    // looping through All Contacts
+                    for (int i = 0; i < contacts.length(); i++) {
+                        JSONObject c = contacts.getJSONObject(i);
+
+                        String id = c.getString("value");
+
+                        //JSONObject reader = new JSONObject(ahbon2);
+                        //JSONObject sys = reader.getJSONObject("Recup");
+                        //String country = sys.getString("value");
+
+                        specialite.add(id);
+                        System.out.println("VAAAAAAAAAAAAAALUE "+i+" : " + id);
+
+
+                        // Getting JSON Array node
+                        //JSONArray contacts = jsonObj.getJSONArray("contacts");
+
+                        // looping through All Contacts
+                    }
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                }
+            } else {
+                specialite.add(ls);
+                specialite.add(ls);
+                specialite.add(ls);
+                specialite.add(ls);
+                specialite.add(ls);
+            }
+        } else {
+            System.out.println("C'est nul");
+            Log.e(TAG, "Couldn't get json from server.");
+        }
+
+        for (int i = 0; i < specialite.size(); i++) {
+            System.out.println("SPECIALITE : " + specialite.get(i));
+        }
+
+        return specialite;
+    }
+
+    public String[] place_jsonparser(String str){
+        String ls = str;
+        String[] recup2 = new String[]{};
+        //ls = researchTask.getResponse();
+        //recup = jsonparser(ls);
+
+        String recup = "{" + '"' + "Recup" + '"' + " : [";
+        String ahbon = ls.replace("[", recup);
+        String ahbon2 = ahbon.replace("]", "]}");
+
+        try {
+            JSONObject jsonObj = null;
+            jsonObj = new JSONObject(ahbon2);
+            JSONArray contacts = null;
+            contacts = jsonObj.getJSONArray("Recup");
+            recup2 = new String[contacts.length()];
+            for (int i = 0; i < contacts.length(); i++) {
+                JSONObject c = null;
+                c = contacts.getJSONObject(i);
+                String id = c.getString("value");
+                recup2[i]=id;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return recup2;
+    }
+
+    public String[] recupToutlesautocomplete(String s){
+        ParserTask p = new ParserTask(s,100);
+        String ls = "";
+        ArrayList<String> recup = new ArrayList<String>();
+        ls = p.getResponse();
+        recup = jsonparser(ls);
+
+        String[] results ;
+        results = new String[recup.size()];
+
+        for (int i = 1; i < recup.size(); i++) {
+            results[i] = recup.get(i);
+        }
+
+        return results;
+    }
+
+    public class ParserTask extends AsyncTask<Void, Void, Boolean> {
+
+
+
+
+        private String response = "";
+
+        private final String mQuery;
+        private final int mLimit;
+        private final String json;
+        //private final GetRequest getRequest;
+        //private final Boolean connected;
+
+        ParserTask(String query, int limit) {
+            mQuery = query;
+            mLimit = limit;
+            System.out.println("QUERY :" + query + ",LIMIT :" + limit);
+            json = "{\n" +
+                    "\"query\":\"" + query + "\",\n" +
+                    "\"limit\":\"" + limit + "\"" +
+                    "}\n";
+            getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/autocomplete/professional/_all/?query=" + query + "&limit=" + limit);
+            String resp = null;
+            try {
+                resp = getRequest.execute().get();
+                System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+                System.out.println(resp);
+
+                String ls = "";
+                ArrayList<String> recup = new ArrayList<String>();
+                ls = resp;
+                recup = jsonparser(ls);
+
+                String[] results ;
+                results = new String[recup.size()];
+                languages2 = new String[recup.size()];
+
+                for (int i = 1; i < recup.size(); i++) {
+                    results[i] = recup.get(i);
+                    languages2[i] = recup.get(i);
+                    System.out.println("RESULTAT DE  RESULTS : "+results[i]);
+                }
+
+
+                onPostExecute(results);
+
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            response = resp;
+
+        }
+
+        String getResponse() {
+            return response;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
+
+            //return (true);
+
+            //return (connected);
+            return true;
+/*            for (String credential : DUMMY_CREDENTIALS) {
+                String[] pieces = credential.split(":");
+                if (pieces[0].equals(mEmail)) {
+                    // Account exists, return true if the password matches.
+                    return pieces[1].equals(mPassword);
+                }
+            }
+
+            // TODO: register the new account here.
+            return true;*/
+        }
+
+
+        protected void onGetExecute(final Boolean success) {
+            mAuthTask = null;
+
+            if (success) {
+                //Intent i = new Intent();
+                //Bundle b = new Bundle();
+                //b.putString("token_access", "token_access");
+                //b.putString("email", mEmail);
+                //i.putExtras(b);
+                //startActivity(i);
+                //finish();
+            } else {
+                //mPasswordView.setError(getString(R.string.error_incorrect_password));
+                //mPasswordView.requestFocus();
+            }
+        }
+
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+        }
+
+
+        protected String[] onPostExecute(String[] languages) {
+
+            System.out.println("On est passé");
+
+            //ArrayAdapter adapter = new ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,languages);
+
+            //text.setAdapter(adapter);
+
+            return languages;
+        }
+
+
+    }
+
+
+
+
 
     private void nextActivity(Profile profile, String accessToken) {
         if (profile != null) {

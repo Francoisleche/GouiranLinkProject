@@ -58,6 +58,8 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
     private Customer customer;
     private String token;
 
+    private String[] place,autocomplete;
+
     private HomeFragment2.OnFragmentInteractionListener mListener;
 
     public HomeFragment2() {
@@ -92,11 +94,9 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
             connected = getArguments().getBoolean("connected");
             token = getArguments().getString("token");
             customer = (Customer) getArguments().getSerializable("Customer");
+            place = (String[]) getArguments().getStringArray("place");
+            autocomplete = (String[]) getArguments().getStringArray("autocomplete");
             System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+username);
-            //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+customer.getName());
-            //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+customer.ismGouiranLink());
-            //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+customer.ismFacebook());
-            //System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+customer.ismGoogle());
             System.out.println("USeeeeeeeeeeeeeeeeeeeeeeeer : "+connected);
             if (connected)
                 text = String.format(getResources().getString(R.string.welcome_user), username);
@@ -154,6 +154,8 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
             @Override
             public void onClick(View view) {
                 args.putSerializable("homepage_click_imageview", "Coiffure");
+                args.putSerializable("place", place);
+                args.putSerializable("autocomplete", autocomplete);
                 fragment[0] = new Research2Fragment();
                 fragment[0].setArguments(args);
                 FragmentManager frgManager = getFragmentManager();
@@ -165,6 +167,8 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
         img2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                args.putSerializable("place", place);
+                args.putSerializable("autocomplete", autocomplete);
                 args.putSerializable("homepage_click_imageview", "Manucure");
                 fragment[0] = new Research2Fragment();
                 fragment[0].setArguments(args);
@@ -177,6 +181,8 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
         img3.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                args.putSerializable("place", place);
+                args.putSerializable("autocomplete", autocomplete);
                 args.putSerializable("homepage_click_imageview", "Epilation");
                 fragment[0] = new Research2Fragment();
                 fragment[0].setArguments(args);
@@ -189,6 +195,8 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
         img4.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                args.putSerializable("place", place);
+                args.putSerializable("autocomplete", autocomplete);
                 args.putSerializable("homepage_click_imageview", "Coloration");
                 fragment[0] = new Research2Fragment();
                 fragment[0].setArguments(args);
@@ -201,6 +209,8 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
         img5.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                args.putSerializable("place", place);
+                args.putSerializable("autocomplete", autocomplete);
                 args.putSerializable("homepage_click_imageview", "Maquillage");
                 fragment[0] = new Research2Fragment();
                 fragment[0].setArguments(args);
@@ -213,6 +223,8 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
         img6.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                args.putSerializable("place", place);
+                args.putSerializable("autocomplete", autocomplete);
                 args.putSerializable("homepage_click_imageview", "Soins visage");
                 fragment[0] = new Research2Fragment();
                 fragment[0].setArguments(args);
@@ -225,6 +237,8 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
         img7.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                args.putSerializable("place", place);
+                args.putSerializable("autocomplete", autocomplete);
                 args.putSerializable("homepage_click_imageview", "Barbier");
                 fragment[0] = new Research2Fragment();
                 fragment[0].setArguments(args);

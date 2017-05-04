@@ -218,12 +218,7 @@ public class ServicesAdapter extends ArrayAdapter<String> {
         TextView textview= (TextView) layoutItem.findViewById(R.id.txt);
         TextView textviewtarif= (TextView) layoutItem.findViewById(R.id.tarif);
         TextView textviewduree= (TextView) layoutItem.findViewById(R.id.dureepresta);
-        TextView button= (Button) layoutItem.findViewById(R.id.bt);
 
-        //(3) : Renseignement des valeurs
-        textview.setText(item_list[position]);
-        textviewtarif.setText(item_tarif[position]);
-        textviewduree.setText(item_duree[position]);
 
         //(4) Changement de la couleur du fond de notre item
         if (item_list[position].equals("")) {
@@ -231,6 +226,9 @@ public class ServicesAdapter extends ArrayAdapter<String> {
             layoutItem.setVisibility(INVISIBLE);
             layoutItem.setLayoutParams(new LinearLayout.LayoutParams(400, 400));
         } else {
+            textview.setText(item_list[position]);
+            textviewtarif.setText(item_tarif[position]);
+            textviewduree.setText(item_duree[position]);
             //layoutItem.setBackgroundColor(Color.MAGENTA);
             layoutItem.setVisibility(VISIBLE);
             layoutItem.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -245,15 +243,5 @@ public class ServicesAdapter extends ArrayAdapter<String> {
 
 
 
-
-
-
-
-
-
-
-    public void clickMe(View v) {
-        Toast.makeText(this.context, "clickMe", Toast.LENGTH_SHORT).show();
-    }
 
     }

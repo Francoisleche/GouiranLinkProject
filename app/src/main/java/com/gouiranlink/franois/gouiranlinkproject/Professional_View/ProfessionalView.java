@@ -10,12 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.R;
+
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -30,7 +34,7 @@ public class ProfessionalView extends Fragment {
     private Professional_Product[] professional_product;
     private Customer customer;
     private String token;
-
+    HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
 
 
 
@@ -41,6 +45,7 @@ public class ProfessionalView extends Fragment {
             professional = (Professional)getArguments().getSerializable("Professionnal");
             professional_product = (Professional_Product[])getArguments().getSerializable("ProfessionnalProduct");
             customer = (Customer)getArguments().getSerializable("Customer");
+            expandableListDetail = (HashMap<String, List<String>>) getArguments().getSerializable("ExpandableListDetail");
             token = (String)getArguments().getString("token");
             System.out.println("Toooooooooooooken"+token);
         }
@@ -53,7 +58,9 @@ public class ProfessionalView extends Fragment {
         args.putSerializable("Professionnal", professional);
         args.putSerializable("ProfessionnalProduct", professional_product);
         args.putSerializable("Customer",customer);
-        fragment = new ServicesProfessional();
+        args.putSerializable("ExpandableListDetail", expandableListDetail);
+        //fragment = new ServicesProfessional();
+        fragment = new ServicesProfessional2();
         fragment.setArguments(args);
 
         FragmentManager fm = getFragmentManager();
@@ -67,6 +74,8 @@ public class ProfessionalView extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_professional_view,null);
+        TextView nom_professionnel_menu = (TextView) v.findViewById(R.id.nom_professionnel_menu);
+        nom_professionnel_menu.setText(professional.getShop_name());
 
 
         simpleFrameLayout = (FrameLayout) v.findViewById(R.id.simpleFrameLayout);
@@ -93,13 +102,15 @@ public class ProfessionalView extends Fragment {
                 args.putSerializable("Professionnal", professional);
                 args.putSerializable("ProfessionnalProduct",professional_product);
                 args.putSerializable("Customer",customer);
+                args.putSerializable("ExpandableListDetail", expandableListDetail);
                 args.putSerializable("token",token);
                 System.out.println("CUSTOMER 1 :"+ customer.getName());
 
                 Log.i("TAG", "onTabSelected: " + tab.getPosition());
                 switch (tab.getPosition()) {
                     case 0:
-                        fragment = new ServicesProfessional();
+                        //fragment = new ServicesProfessional();
+                        fragment = new ServicesProfessional2();
                         fragment.setArguments(args);
                         break;
                     case 1:

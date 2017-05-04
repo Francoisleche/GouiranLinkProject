@@ -13,8 +13,7 @@ import okhttp3.Response;
 
 public class PostRequest extends AsyncTask<String, Void, String> {
 
-    private static final MediaType JSON
-            = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private String url = "";
     private String json = "";
     private String key = null;

@@ -3,78 +3,107 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-        <LinearLayout
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/commentaire_existant"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:text="Avis et commentaires"/>
+
+        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/moyenne_avis"
+                android:layout_marginRight="5dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/colorAccent"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:text="9.4/10"/>
+
+            <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp"
+                    android:text="Fabuleux"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="175 avis"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Avis clients 100% certifiés"/>
+
+
+                </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/pas_de_commentaire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:text="Il n'y a pas encore d'avis pour cet établissement."/>
 
-            <!--<TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="40dp"
-                android:background="@xml/custom_border_avis"
-                android:text="Avis 1: mon coiffeur était super :) mon lissage brésilien est parfait. Prête pour ma soirée :)"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+        <TextView
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Soyez le premier !"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Jean Tchang"
-                android:textSize="20dp" />
+        <TextView
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="N'hésitez pas à prendre RdV chez ce professionnel pour faire entendre votre voix."/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="40dp"
-                android:background="@xml/custom_border_avis"
-                android:text="Avis 1: mon coiffeur était super :) mon lissage brésilien est parfait. Prête pour ma soirée :)"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+     </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Jean Tchang"
-                android:textSize="20dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="40dp"
-                android:background="@xml/custom_border_avis"
-                android:text="Avis 1: mon coiffeur était super :) mon lissage brésilien est parfait. Prête pour ma soirée :)"
-                android:textSize="20dp"
-                android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Jean Tchang"
-                android:textSize="20dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="40dp"
-                android:background="@xml/custom_border_avis"
-                android:text="Avis 1: mon coiffeur était super :) mon lissage brésilien est parfait. Prête pour ma soirée :)"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Jean Tchang"
-                android:textSize="20dp" />-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -87,7 +116,5 @@
                     android:layout_alignParentTop="true"></ListView>
 
             </RelativeLayout>
-
-        </LinearLayout>
 
 </FrameLayout>

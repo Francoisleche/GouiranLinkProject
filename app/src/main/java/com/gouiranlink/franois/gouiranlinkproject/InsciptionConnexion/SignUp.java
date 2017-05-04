@@ -1,12 +1,14 @@
 package com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
+import com.gouiranlink.franois.gouiranlinkproject.GouiranStart;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
 
@@ -129,6 +131,10 @@ public class SignUp extends AppCompatActivity {
         builder.setMessage(R.string.confirmation_mail_sentence).setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(SignUp.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+
             }
         });
 

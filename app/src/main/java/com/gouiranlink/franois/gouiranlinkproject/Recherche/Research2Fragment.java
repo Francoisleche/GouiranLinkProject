@@ -58,6 +58,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -141,7 +142,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     private boolean ville_selectionne = false;
 
 
-
+    HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
 
     /**
      * Use this factory method to create a new instance of
@@ -794,6 +795,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                                 args.putSerializable("Professionnal", PremierProfessionnal);
                                 args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
                                 args.putSerializable("Customer", customer);
+                                args.putSerializable("ExpandableListDetail", expandableListDetail);
                                 args.putSerializable("token", token);
                                 System.out.println("CUSTOMER :" + customer.getName());
 
@@ -1113,7 +1115,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     private void setInfo(String s) {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
-                final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Downloading Infos...", true);
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Svp patientez ...", "Chargement des données", true);
                 ringProgressDialog.setCancelable(true);
             }
         });
@@ -2513,6 +2515,11 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     public ArrayList<Professional_Product> products_jsonparser(String jsonStr) {
         //Professional_Product product = new Professional_Product();
         ArrayList<Professional_Product> liste_product = new ArrayList<Professional_Product>();
+        List<String> liste_coifure_femme = new ArrayList<String>();
+        List<String> liste_bien_etre = new ArrayList<String>();
+        List<String> liste_beaute = new ArrayList<String>();
+        List<String> liste_homme = new ArrayList<String>();
+        List<String> photo = new ArrayList<String>();
 
         try {
             JSONObject jsonObj = new JSONObject(jsonStr);
@@ -2561,7 +2568,8 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
                 JSONObject json3 = json2.getJSONObject("category");
                 int product_category_id = (int) json3.get("id");
-                String product_category_name = (String) json3.get("name");
+                //String product_category_name = (String) json3.get("name");
+                String product_category_name = (String) json3.getJSONObject("parent").get("name");
                 String product_category_created_at = (String) json3.get("created_at");
                 String product_category_updated_at = (String) json3.get("updated_at");
 
@@ -2577,7 +2585,29 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                 PremierProfessionalProduct2.setProduct(product);
 
                 PremierProfessionalProduct[i] = PremierProfessionalProduct2;
+
+                if(product_category_name.equals("Coiffure Femme")){
+                    liste_coifure_femme.add(product_name);
+                }else if(product_category_name.equals("Bien-Être")){
+                    liste_bien_etre.add(product_name);
+                }else if(product_category_name.equals("Beauté")){
+                    liste_beaute.add(product_name);
+                }else if(product_category_name.equals("Homme")){
+                    liste_homme.add(product_name);
+                }
+
+
             }
+
+            if(!liste_coifure_femme.isEmpty())
+            expandableListDetail.put("Coiffure Femme", liste_coifure_femme);
+            if(!liste_bien_etre.isEmpty())
+            expandableListDetail.put("Bien-Être", liste_bien_etre);
+            if(!liste_beaute.isEmpty())
+            expandableListDetail.put("Beauté", liste_beaute);
+            if(!liste_homme.isEmpty())
+            expandableListDetail.put("Homme", liste_homme);
+            expandableListDetail.put("PHOTOOOOOOOO TEAMS", photo);
 
         } catch (final JSONException e) {
             Log.e(TAG, "Json parsing error: " + e.getMessage());

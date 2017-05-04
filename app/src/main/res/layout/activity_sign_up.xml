@@ -5,7 +5,7 @@
     android:id="@+id/activity_sign_up"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/imagegouiranlink2"
+    android:background="@drawable/connexion_inscription"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -235,7 +235,8 @@
                 android:background="@drawable/pink_rounded_square"
                 android:clickable="true"
                 android:onClick="onClick"
-                android:text="@string/inscription" />
+                android:text="@string/inscription"
+                android:textColor="@color/white"/>
         </RelativeLayout>
     </ScrollView>
 

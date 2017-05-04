@@ -41,6 +41,7 @@ public class PrendreRdv extends Fragment {
     private Professional_Product[] liste_prestations_selectionne;
     private Customer customer;
     private String service_selectionne;
+    private String service_selectionne_expandablelistview;
 
     private Professional_Product professional_product_selectionne;
     private int position_list_clique;
@@ -70,17 +71,41 @@ public class PrendreRdv extends Fragment {
             professional = (Professional)getArguments().getSerializable("Professionnal");
             professional_product = (Professional_Product[])getArguments().getSerializable("ProfessionnalProduct");
             service_selectionne = (String)getArguments().getString("service");
+            service_selectionne_expandablelistview = (String)getArguments().getString("service_selectionne_expandablelistview");
             position_list_clique = (int)getArguments().getInt("position_list_clique");
             customer = (Customer)getArguments().getSerializable("Customer");
+
+
+            //
+            System.out.println("PRRRRRENDRE RDV : " + service_selectionne_expandablelistview);
+
+            //
 
             if(service_selectionne.contains("ServicesProfessional")){
                 //Recupération de l'élement selectionné et changement de la nouvelle liste des prestations
                 liste_prestations_selectionne = new Professional_Product[1];
-                liste_prestations_selectionne[0] = professional_product[position_list_clique];
+                //liste_prestations_selectionne[0] = professional_product[position_list_clique];
+
+
+                //Récupération de l'élément cliqué grace à service_selectionne_expandablelistview (attention au getname et getproduct().getname)
+                int iterateur2=0;
+                for(int iterateur = 0;iterateur<professional_product.length;iterateur++){
+                    if(service_selectionne_expandablelistview.equals(professional_product[iterateur].getProduct().getName())){
+                        liste_prestations_selectionne[0] = professional_product[position_list_clique];
+                        System.out.println("professional_selectionnnnnnnnne :: " + iterateur +" :::: "+ liste_prestations_selectionne[0].getProduct().getName());
+                        iterateur2=iterateur;
+                    }
+                    System.out.println("professional_product ::::: " +professional_product[iterateur].getName());
+                }
+                //liste_prestations_selectionne[0] = professional_product[position_list_clique];
+
+
+                //Initialisation de la liste courante, c'est à dire le reste de la liste de prestations que le client n'a pas encore choisis
                 courante_liste_prestations = new Professional_Product[professional_product.length-1];
                 int j =0;
                 for(int i=0;i<professional_product.length-1;i++){
-                    if(i!=position_list_clique){
+                    //if(i!=position_list_clique){
+                    if(i!=iterateur2){
                         courante_liste_prestations[i] = professional_product[j];
                         System.out.println("PRENDRERDV "+ courante_liste_prestations[i].getName() +" - " + professional_product[j].getName());
                         j++;
@@ -90,6 +115,10 @@ public class PrendreRdv extends Fragment {
                         j++;
                     }
 
+                }
+
+                for(int o =0;o<courante_liste_prestations.length;o++){
+                    System.out.println("courantelisteprestations :::: " +courante_liste_prestations[o].getName());
                 }
                 //courante_liste_prestations[courante_liste_prestations.length]=professional_product[j+1];
 

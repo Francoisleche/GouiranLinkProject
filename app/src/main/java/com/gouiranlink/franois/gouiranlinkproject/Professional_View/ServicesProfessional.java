@@ -155,21 +155,13 @@ public class ServicesProfessional extends Fragment {
 
         //Listes des produits / services
         if(professional_product.length != 0) {
+
             items[0] = ("");
             items1[0] = ("");
             items2[0] = ("");
             int g = 1;
             for (int i = 0; i < professional_product.length; i++) {
-
-                    /*items[i] = ("Id :" + professional_product[i].getId() +
-                            "\n Prestation : " + professional_product[i].getName() +
-                            "\n Prix : " + professional_product[i].getPrice()+professional_product[i].getCurrency() +
-                            "\n Durée : " + professional_product[i].getDuration());*/
                 items[g] = ("Prestation : " + professional_product[i].getName());
-                System.out.println("PRESTATION : "+items[g]);
-                          /*  "\n Prix : " + professional_product[i].getPrice()+professional_product[i].getCurrency() +
-                            "\n Durée : " + professional_product[i].getDuration());*/
-
                 items1[g] = ("Prix : " + professional_product[i].getPrice()+professional_product[i].getCurrency());
                 items2[g] = ("Durée : " + professional_product[i].getDuration());
                 g++;
@@ -190,12 +182,7 @@ public class ServicesProfessional extends Fragment {
         int tarif = R.id.tarif;
         int duree = R.id.dureepresta;
 
-        int id2 = R.id.bt;
-
-        //ServicesAdapter adapter=new ServicesAdapter(getActivity(),layout,id,items);
         ServicesAdapter adapter=new ServicesAdapter(getActivity(),layout,id,items,items1,items2);
-        // Bind data to the ListView
-        adapter.hide(0);
         lstview.setAdapter(adapter);
 
 

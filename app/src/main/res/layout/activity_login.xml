@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/visible"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/imagegouiranlink2"
+    android:background="@drawable/connexion_inscription"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -71,7 +72,7 @@
                     android:layout_marginEnd="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
+                    android:hint="Email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -218,7 +219,8 @@
                         android:id="@+id/FrameLayoutFacebook"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:layout_gravity="center">
 
                         <com.facebook.login.widget.LoginButton
                             android:id="@+id/facebook_login_button"
@@ -251,8 +253,8 @@
 
                         <Button
                             android:id="@+id/google"
-                            android:layout_width="100dp"
-                            android:layout_height="50dp"
+                            android:layout_width="125dp"
+                            android:layout_height="55dp"
                             android:background="@drawable/logo_google_plus_border"
                             android:onClick="onClick"
                             android:textColor="#ffffff"

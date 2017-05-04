@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Comment;
@@ -130,21 +131,37 @@ public class AvisAdapter extends ArrayAdapter<String> {
         TextView textviewprestation= (TextView) layoutItem.findViewById(R.id.comment_prestation);
         TextView textviewtext= (TextView) layoutItem.findViewById(R.id.comment_text);
 
+        RatingBar ratingBar = (RatingBar) layoutItem.findViewById(R.id.RatingBar01);
+
 
         //(3) : Renseignement des valeurs
-        textviewnote.setText(String.valueOf(comment[position].getGrade())+"/5");
-        textviewsurname.setText(comment[position].getCustomer().getName());
-        textviewdate.setText(comment[position].getCreated_at());
-        String s = "";
-        for(int i = 0;i<comment[position].getProfessional_products().length;i++){
 
-            s = s + comment[position].getProfessional_products()[i].getName() + " , ";
+
+
+
+        if (item_list[position].equals("")) {
+            //layoutItem.setBackgroundColor(Color.BLUE);
+            layoutItem.setVisibility(INVISIBLE);
+            layoutItem.setLayoutParams(new LinearLayout.LayoutParams(400, 400));
+        } else {
+            textviewnote.setText(String.valueOf(comment[position].getGrade()) + "/5");
+            textviewsurname.setText(comment[position].getCustomer().getName());
+            textviewdate.setText(comment[position].getCreated_at());
+            String s = "";
+            for (int i = 0; i < comment[position].getProfessional_products().length; i++) {
+
+                s = s + comment[position].getProfessional_products()[i].getName() + " , ";
+            }
+            textviewprestation.setText(s);
+            textviewtext.setText(comment[position].getText());
+
+
+            ratingBar.setRating((float) comment[position].getGrade());
+            layoutItem.setVisibility(VISIBLE);
+            layoutItem.setBackgroundColor(Color.parseColor("#ffffff"));
+            //layoutItem.setLayoutParams(new LinearLayout.LayoutParams(500, 500));
+            layoutItem.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         }
-        textviewprestation.setText(s);
-        textviewtext.setText(comment[position].getText());
-        //System.out.println("COMBIEN YEN A ? "+item_list.length);
-        //textviewnote.setText(item_list[position]);
-
 
         return layoutItem;
     }

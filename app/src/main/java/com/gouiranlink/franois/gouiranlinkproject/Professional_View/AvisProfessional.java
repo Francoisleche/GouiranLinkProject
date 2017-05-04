@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.google.android.gms.analytics.ecommerce.Product;
@@ -62,14 +63,20 @@ public class AvisProfessional extends Fragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_avis_professional, container, false);
 
-
-
         avis_jsonparser(recherche_avis(String.valueOf(professional.getId())));
 
         lstview_comment=(ListView) view.findViewById(R.id.malistecommentaires);
 
+        LinearLayout commentaire_existant = (LinearLayout) view.findViewById(R.id.commentaire_existant);
+        LinearLayout pas_de_commentaire = (LinearLayout) view.findViewById(R.id.pas_de_commentaire);
+
+
+
         //Si le prestataire possède des commentaires
-        if(commentaires != null){
+        if(commentaires.length!=1){
+            commentaire_existant.setVisibility(true ? View.VISIBLE : View.GONE);
+            pas_de_commentaire.setVisibility(true ? View.GONE : View.VISIBLE);
+
             int layout = R.layout.services3;
             int id = R.id.comment_text;
             String[] items = new String[commentaires.length];
@@ -79,8 +86,9 @@ public class AvisProfessional extends Fragment{
             AvisAdapter adapter=new AvisAdapter(getActivity(),layout,id,items,commentaires);
             lstview_comment.setAdapter(adapter);
 
-
-
+        }else{
+            pas_de_commentaire.setVisibility(true ? View.VISIBLE : View.GONE);
+            commentaire_existant.setVisibility(true ? View.GONE : View.VISIBLE);
         }
 
 
@@ -124,7 +132,17 @@ public class AvisProfessional extends Fragment{
 
 
 
-                commentaires = new Comment[tab_comment.length()];
+                commentaires = new Comment[tab_comment.length()+1];
+
+                //Remplir le premier commentaire à vide
+                int iterateur = 1;
+                Comment com1 = new Comment();
+                Customer c1 = new Customer();
+                c1.setName("");
+                com1.setCustomer(c1);
+                commentaires[0]=com1;
+
+                //Remplir la liste des commentaires
                 for (int j = 0; j < tab_comment.length(); j++) {
                     Comment com = new Comment();
                     JSONObject p2 = tab_comment.getJSONObject(j);
@@ -157,14 +175,11 @@ public class AvisProfessional extends Fragment{
                     com.setCreated_at(comment_created_at);
                     com.setProfessional_products(prof);
 
-                    commentaires[j]=com;
-                    //Remplissage des horaires d'ouverture
-                    /*pro_schedule.setId(Integer.parseInt(id_schedule));
-                    pro_schedule.setWeekday(Integer.parseInt(weekeday_schedule));
-                    pro_schedule.setBegin_time(begin_time_schedule);
-                    pro_schedule.setEnd_time(end_time_schedule);
-                    commentaires[j] = pro_schedule;*/
+                    commentaires[iterateur]=com;
+                    iterateur++;
                 }
+            }else{
+                commentaires=null;
             }
 
         } catch (final JSONException e) {

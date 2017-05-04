@@ -68,6 +68,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -254,7 +255,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
 
-        final ProgressDialog ringProgressDialog = ProgressDialog.show(this, "Please wait ...", "Downloading Infos...", true);
+        final ProgressDialog ringProgressDialog = ProgressDialog.show(this, "Svp veuillez patienter ...", "Chargement des données", true);
         Thread timer = new Thread() {
             @Override
             public void run() {
@@ -1116,7 +1117,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 3;
     }
 
     /**
@@ -1325,6 +1326,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 loginButton.performClick();
                 break;
             case R.id.email_sign_up_button:
+                System.out.println("ON VA CREEEEEER UN COMPTE");
                 Toast.makeText(this, "Creating account", Toast.LENGTH_LONG);
                 i = new Intent(this, SignUp.class);
                 startActivity(i);
@@ -1345,7 +1347,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
                 alert.setTitle("Mot de passe oublié");
-                alert.setMessage("Veuillez entrer l'adresse e-mail liée à votre compte.");
+                alert.setMessage("Veuillez entrer l'adresse e-mail utilisé lors de la création de votre compte.");
                 final EditText input = new EditText(this);
                 alert.setView(input);
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -1364,11 +1366,66 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         }
-                        Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_SHORT).show();
+                        System.out.println(resp);
+
+
+                       /* byte [] b =null;
+                        b = resp.getBytes();
+
+
+                        byte[] someBytes = b;
+                        String encodingName = "ISO-8859-1";
+                        String s = "";
+                        try {
+                            s = new String ( resp.getBytes("UTF-8"), encodingName );
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }*/
+                        //System.out.println("SSSSSSSS");
+
+                        String s = null;
+                        try {
+                            String resp2 = resp.replace("\"", "");
+                            s = new String( resp2.getBytes(), "ISO-8859-1" );
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("SSSSSSSS1" + s);
+
+                        s = null;
+                        try {
+                            String resp2 = resp.replace("\"", "");
+                            s = new String( resp2.getBytes(),"UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("SSSSSSSS2" + s);
+
+                        s = null;
+                        try {
+                            String resp2 = resp.replace("\"", "");
+                            s = new String( resp2.getBytes(), "UTF-16" );
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("SSSSSSSS3" + s);
+
+                        s = null;
+                        try {
+                            String resp2 = resp.replace("\"", "");
+                            s = new String( resp2.getBytes("ISO-8859-1"), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("SSSSSSSS4" + s);
+
+                        s = "Il est temps de vérifier votre boite mail ! Un email vient de vous être envoyé pour modifier votre mot de passe";
+
+                        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
                         System.out.println(resp);
                     }
                 });
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                alert.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Canceled.
                     }

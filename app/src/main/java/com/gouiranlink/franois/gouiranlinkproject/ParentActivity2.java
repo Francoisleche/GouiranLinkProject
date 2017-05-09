@@ -336,13 +336,17 @@ public class ParentActivity2 extends AppCompatActivity
 
         }
 
-        fragment.setArguments(args);
-        FragmentManager frgManager = getSupportFragmentManager();
-        frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        if((id != R.id.nav_share)) {
+            fragment.setArguments(args);
+            FragmentManager frgManager = getSupportFragmentManager();
+            frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
+
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
 

@@ -3,6 +3,7 @@ package com.gouiranlink.franois.gouiranlinkproject.Recherche;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -38,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Image_N;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Product_Category_Tag;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Product_Category_WithoutTree;
@@ -143,6 +146,8 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
 
     HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
+
+    ArrayList<String> Shop_image;
 
     /**
      * Use this factory method to create a new instance of
@@ -569,6 +574,8 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
             public void onClick(View v) {
                 if (!text2.getText().toString().isEmpty()) {
 
+                    hideKeyBoard(getActivity());
+
                     recherche_layout.setVisibility(true ? View.GONE : View.VISIBLE);
                     vue_listview.setVisibility(true ? View.VISIBLE : View.GONE);
 
@@ -776,6 +783,11 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                                 System.out.println("PremierProfesionnelSchedule : "+ProfessionnalGenericSchedule[i].getWeekday() + ProfessionnalGenericSchedule[i].getBegin_time());
                             }
 
+                            System.out.println("DEBUT SHOP_IMAGE");
+                            shop_image_jsonparser(recherche_shop_image(id));
+                            for(int i=0;i<Shop_image.size();i++){
+                                System.out.println("Shop_image : "+Shop_image.get(i));
+                            }
 
 
 
@@ -796,6 +808,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                                 args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
                                 args.putSerializable("Customer", customer);
                                 args.putSerializable("ExpandableListDetail", expandableListDetail);
+                                args.putSerializable("Shop_image", Shop_image);
                                 args.putSerializable("token", token);
                                 System.out.println("CUSTOMER :" + customer.getName());
 
@@ -2659,6 +2672,21 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
                         //String image = c.getString("shop_images");
                         String id_professional = c.getString("id");
+                        /*JSONArray pictures = c.getJSONArray("shop_images");
+
+                    Image_N image = new Image_N();
+                    ArrayList<String[]> thumbnails = null;
+                        String picture = "";
+                    for(int i= 0;i<pictures.length();i++){
+                        JSONObject p = pictures.getJSONObject(i);
+                        if(i==0){
+                            picture = p.getJSONObject("image").getString("url");
+                        }
+
+
+                }
+
+                image.setUrl(picture);*/
 
                         //if (i == 0) {
                             /*String shop_images = c.getString("shop_images");
@@ -2682,6 +2710,16 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
                             String max_intervention_distance = c.getString("max_intervention_distance");
                             String logo_image = c.getString("logo_image");
+                            String url = c.getJSONObject("logo_image").getString("url");
+
+                            Image_N image = new Image_N();
+                            ArrayList<String[]> thumbnails = null;
+                            image.setUrl(url);
+
+
+                            PremierProfessionnal.setLogo_image(image);
+
+
                             String automatic_booking_confirmation = c.getString("automatic_booking_confirmation");
                             String customer_can_choose_resource_booking = c.getString("customer_can_choose_resource_booking");
                             premierprofessionel.add(max_intervention_distance);
@@ -2838,8 +2876,6 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                             premierprofessionel.add(awards);
                             premierprofessionel.add(unavailabilities);
                             premierprofessionel.add(schedule);
-
-
 
 
                             //Remplissage du public professionnal
@@ -3152,6 +3188,87 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
         }
 
         return recup2;
+    }
+
+
+
+
+
+
+    //SHOP IMAGE
+    public String recherche_shop_image(String query) {
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee SCHEDULE");
+        getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/shop-image/professional/"+query+"/");
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee SCHEDULE");
+        String resp = null;
+        try {
+            resp = getRequest.execute().get();
+            System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+            System.out.println(resp.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return resp;
+    }
+
+
+    public void shop_image_jsonparser(String jsonStr) {
+        try {
+
+            /*String recup_schedule = "{" + '"' + "data" + '"' + " : [{";
+            String schedule1 = jsonStr.replace("[{", recup_schedule);
+            String schedule2 = schedule1.replace("}]", "}]}");*/
+
+            if (!jsonStr.equals("[]")) {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                //JSONArray contacts = jsonObj.getJSONArray("data");
+                JSONArray Professional_Shop_image = jsonObj.getJSONArray("data");
+
+                System.out.println("AHBON3 :" + jsonStr);
+
+
+                Shop_image = new ArrayList<>();
+                //ProfessionnalGenericSchedule = new Professional_Schedule[Professional_Schedule.length()];
+                for (int j = 0; j < Professional_Shop_image.length(); j++) {
+                    //Professional_Schedule pro_schedule = new Professional_Schedule();
+                    JSONObject p2 = Professional_Shop_image.getJSONObject(j);
+                    String url = p2.getJSONObject("image").getString("url");
+                    //String weekeday_schedule = p2.getString("weekday");
+                    //String begin_time_schedule = p2.getString("begin_time");
+                    //String end_time_schedule = p2.getString("end_time");
+
+                    //Remplissage des horaires d'ouverture
+                    /*pro_schedule.setId(Integer.parseInt(id_schedule));
+                    pro_schedule.setWeekday(Integer.parseInt(weekeday_schedule));
+                    pro_schedule.setBegin_time(begin_time_schedule);
+                    pro_schedule.setEnd_time(end_time_schedule);
+                    ProfessionnalGenericSchedule[j] = pro_schedule;*/
+
+                    Shop_image.add(url);
+                }
+            }
+
+        } catch (final JSONException e) {
+            Log.e(TAG, "Json parsing error: " + e.getMessage());
+        }
+
+    }
+
+
+    public static void hideKeyBoard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
+                0);
+    }
+
+    public static void showKeyBoard(Activity activity){
+        InputMethodManager imm = (InputMethodManager) activity
+                .getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
 

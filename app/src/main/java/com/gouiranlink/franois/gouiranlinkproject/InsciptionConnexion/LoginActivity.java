@@ -3,8 +3,10 @@ package com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +28,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -168,6 +171,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 }
                             }
                         });
+
                 Profile profile = Profile.getCurrentProfile();
                 nextActivity(profile, loginResult.getAccessToken().getToken());
             }
@@ -233,6 +237,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void nextActivity(String resp) {
+        //cacher le clavier
+        hideKeyBoard(this);
+
         final Intent main = new Intent(LoginActivity.this, ParentActivity2.class);
         customer = null;
         accessToken = "";
@@ -1434,6 +1441,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 break;
         }
+    }
+
+    public static void hideKeyBoard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
+                0);
     }
 
 }

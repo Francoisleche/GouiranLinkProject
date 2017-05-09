@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -24,6 +25,7 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.Rendezvous.PrendreRdv;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
 
 /**
  * Created by François on 04/05/2017.
@@ -40,6 +42,9 @@ public class ServicesProfessional2 extends Fragment {
     private Professional professional;
     private Professional_Product[] professional_product;
     private Customer customer;
+    private ArrayList<String> Shop_image;
+
+    private int iterateur_image=0;
 
     public ServicesProfessional2() {
 
@@ -53,6 +58,7 @@ public class ServicesProfessional2 extends Fragment {
             professional = (Professional) getArguments().getSerializable("Professionnal");
             professional_product = (Professional_Product[]) getArguments().getSerializable("ProfessionnalProduct");
             customer = (Customer) getArguments().getSerializable("Customer");
+            Shop_image = (ArrayList<String>) getArguments().getSerializable("Shop_image");
             expandableListDetail = (HashMap<String, List<String>>) getArguments().getSerializable("ExpandableListDetail");
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :" + professional.toString());
@@ -66,18 +72,27 @@ public class ServicesProfessional2 extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_services_professional2, container, false);
 
+        final ImageView image = (ImageView) v.findViewById(R.id.image_service_pro);
+        new DownloadImageTask(image).execute(Shop_image.get(0));
+
         expandableListView = (ExpandableListView) v.findViewById(R.id.expandableListView);
         //expandableListDetail = ExpandableListDataPump.getData();
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         expandableListAdapter = new CustomExpandableListAdapter(getActivity(), expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
+        expandableListView.setOnGroupExpandListener(
+                new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
                 Toast.makeText(getContext(),
-                        expandableListTitle.get(groupPosition) + " List Expanded.",
+                        expandableListTitle.get(groupPosition) + " List Expanded." + " " + iterateur_image,
                         Toast.LENGTH_SHORT).show();
+                if(iterateur_image<Shop_image.size()){
+                    new DownloadImageTask(image).execute(Shop_image.get(iterateur_image++));
+                }else{
+                    iterateur_image =0;
+                    new DownloadImageTask(image).execute(Shop_image.get(iterateur_image));
+                }
             }
         });
 
@@ -86,8 +101,14 @@ public class ServicesProfessional2 extends Fragment {
             @Override
             public void onGroupCollapse(int groupPosition) {
                 Toast.makeText(getContext(),
-                        expandableListTitle.get(groupPosition) + " List Collapsed.",
+                        expandableListTitle.get(groupPosition) + " List Collapsed."+ " " + iterateur_image,
                         Toast.LENGTH_SHORT).show();
+                if(iterateur_image<Shop_image.size()){
+                    new DownloadImageTask(image).execute(Shop_image.get(iterateur_image++));
+                }else{
+                    iterateur_image =0;
+                    new DownloadImageTask(image).execute(Shop_image.get(iterateur_image));
+                }
 
             }
         });
@@ -108,11 +129,6 @@ public class ServicesProfessional2 extends Fragment {
 
                         System.out.println("ON A CLIQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                         Toast.makeText(getContext(), "An item of the ListView is clicked.", Toast.LENGTH_LONG).show();
-                        //for(int i=0;i<= 40 ;i++){
-                        //Intent intent = new Intent(getActivity(),PrendreRdv.class);
-                        //intent.putExtra(AGE,position);
-                        //startActivity(intent);
-                        //}
 
                         Bundle args = new Bundle();
                         args.putSerializable("Professionnal", professional);

@@ -7,7 +7,8 @@
         android:id="@+id/commentaire_existant"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white">
 
         <TextView
             android:layout_marginTop="5dp"
@@ -19,49 +20,36 @@
             android:textColor="@color/black"
             android:text="Avis et commentaires"/>
 
+
+
         <LinearLayout xmlns:tools="http://schemas.android.com/tools"
             android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <RatingBar
+                android:id="@+id/rtbProductRating"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:numStars="5"
+                android:rating="3.5"
+                android:isIndicator="false"
+                style="@style/foodRatingBar"
+                />
 
             <TextView
                 android:id="@+id/moyenne_avis"
-                android:layout_marginRight="5dp"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@color/colorAccent"
-                android:textColor="@color/white"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:text="9.4/10"/>
-
-            <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+                android:layout_marginLeft="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
-                    android:text="Fabuleux"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="175 avis"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="Avis clients 100% certifiés"/>
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:text="3.5/5"/>
 
 
-                </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

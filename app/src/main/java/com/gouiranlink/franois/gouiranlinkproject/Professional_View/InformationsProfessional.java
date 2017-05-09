@@ -103,10 +103,6 @@ public class InformationsProfessional extends Fragment {
         });
 
 
-
-        TextView shop_name=(TextView) view.findViewById(R.id.shop_name);
-        shop_name.setText(professional.getShop_name());
-
         TextView address=(TextView) view.findViewById(R.id.address);
         address.setText(professional.getAddress());
 
@@ -223,7 +219,7 @@ public class InformationsProfessional extends Fragment {
             im.setImageDrawable(monDrawable);
 
         }else{
-            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur1);
+            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur_favoris_pink);
             im.setImageDrawable(monDrawable);
         }
 
@@ -266,7 +262,7 @@ public class InformationsProfessional extends Fragment {
                     PatchReservationList(String.valueOf(professional.getId()));
                 }else{
                     System.out.println("2");
-                        Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur1);
+                        Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur_favoris_pink);
                         im.setImageDrawable(monDrawable);
                     PatchReservationList(String.valueOf(professional.getId()));
                 }

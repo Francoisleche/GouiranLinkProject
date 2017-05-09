@@ -2,176 +2,178 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
 
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-        <LinearLayout
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextureView
-                android:visibility="invisible"
                 android:layout_width="500dp"
-                android:layout_height="200dp" />
-        <LinearLayout
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:background="@color/white">
-
-            <TextView
-            android:id="@+id/shop_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="..."
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"/>
-        <TextView
-            android:id="@+id/address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="34 avenue Jean Du Jardin"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
-        <TextView
-            android:id="@+id/post_code_city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="34090 - Montpellier"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
+                android:layout_height="200dp"
+                android:visibility="invisible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="20dp">
+                android:background="@color/white"
+                android:orientation="vertical">
 
-                <!--<Button
-                    android:id="@+id/shop_phone"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Message"/>
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/shop_email"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="34 avenue Jean Du Jardin"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/post_code_city"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="34090 - Montpellier"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_gravity="right"
+                        android:id="@+id/favorites_info_prof"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:clickable="true"
+                        android:onClick="onCardClicked"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_coeur_favoris_pink"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <!--<Button
+                        android:id="@+id/shop_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Message"/>
+
+                    <Button
+                        android:id="@+id/shop_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Appel"/>-->
+
+                    <at.markushi.ui.CircleButton
+                        android:id="@+id/shop_phone"
+                        android:layout_width="64dp"
+                        android:layout_height="64dip"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="8dip"
+                        android:src="@drawable/ic_phone_white_24dp"
+                        app:cb_color="#d16677" />
+
+                    <at.markushi.ui.CircleButton
+                        android:id="@+id/shop_email"
+                        android:layout_width="64dp"
+                        android:layout_height="64dip"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="8dip"
+                        android:src="@drawable/ic_email_white_24dp"
+                        app:cb_color="#d16677" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/ahbon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Appel"/>-->
+                    android:layout_gravity="center"
+                    android:padding="5dp">
 
-                <at.markushi.ui.CircleButton
-                    android:id="@+id/shop_phone"
-                    android:layout_width="64dp"
-                    android:layout_height="64dip"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="8dip"
-                    android:src="@drawable/ic_phone_black_24dp"
-                    app:cb_color="#99CC00" />
+                </RelativeLayout>
 
-                <at.markushi.ui.CircleButton
-                    android:id="@+id/shop_email"
-                    android:layout_width="64dp"
-                    android:layout_height="64dip"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="8dip"
-                    android:src="@drawable/ic_email_black_24dp"
-                    app:cb_color="#99CC00" />
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/ahbon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:layout_gravity="center">
+                <TextView
+                    android:id="@+id/shop_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="Bienvenue dans mon salon de beauté qui est le meilleur, un espace de détente est  proposé au client, une équipe d'expert est entièrement dédié à votre désir, ...."
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
 
-                <ImageView
-                    android:id="@+id/favorites_info_prof"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/ic_coeur1"
-                    android:scaleType="fitXY"
-                    android:clickable="true"
-                    android:visibility="visible"
-                    android:onClick="onCardClicked"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="Congés annuel"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
-            </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/shop_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Bienvenue dans mon salon de beauté qui est le meilleur, un espace de détente est  proposé au client, une équipe d'expert est entièrement dédié à votre désir, ...."
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:text="Horaires"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
-
-            <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Congés annuel"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Horaires"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
-            <TextView
-                android:id="@+id/horaires"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
+                <TextView
+                    android:id="@+id/horaires"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
         </LinearLayout>

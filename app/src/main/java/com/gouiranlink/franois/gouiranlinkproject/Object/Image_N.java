@@ -15,6 +15,10 @@ public class Image_N implements Serializable{
     //3eme element du tableau : url
     private ArrayList<String[]> thumbnails;
 
+    public Image_N(){
+
+    }
+
 
     public Image_N(String url,ArrayList<String[]> thumbnails){
         this.setUrl(url);

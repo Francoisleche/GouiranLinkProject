@@ -139,7 +139,18 @@
                     android:layout_height="wrap_content"></Spinner>
             </LinearLayout>
 
-            <CalendarView
+
+            <Button
+                android:id="@+id/appuie_horaire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#d16677"
+                android:textColor="@color/white"
+                android:padding="5dp"
+                android:text="Horaires" />
+
+            <!--<CalendarView
                 android:id="@+id/jourouverture"
                 android:layout_width="fill_parent"
                 android:layout_height="360dp"
@@ -252,6 +263,20 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
+
+        </LinearLayout>-->
+
+
+
+            <Button
+                android:id="@+id/reserver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#9abdc0"
+                android:textColor="@color/white"
+                android:padding="5dp"
+                android:text="RESERVER" />
 
         </LinearLayout>
     </ScrollView>

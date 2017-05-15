@@ -160,7 +160,8 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(mContext)
+
+        final GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .enableAutoManage(getActivity(), this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
@@ -171,7 +172,7 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
             logoutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.GoogleRed));
         else if (customer != null && customer.ismGouiranLink())
             logoutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.GouiranLightPink));
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+            logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (customer != null && customer.ismFacebook()) {

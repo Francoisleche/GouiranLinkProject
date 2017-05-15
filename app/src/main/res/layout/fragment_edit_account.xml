@@ -276,7 +276,7 @@
         android:visibility="visible">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -284,11 +284,18 @@
                 android:id="@+id/edit_profile_picture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <Button
-                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:id="@+id/edit_image"
+                android:clickable="true"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit image"
-                android:id="@+id/edit_image"/>
+                android:layout_marginTop="10dp"
+                android:background="#d16677"
+                android:textColor="@color/white"
+                android:padding="5dp"
+                android:text="Modifier Photo de Profil" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -561,19 +568,28 @@
 
 
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:clickable="true"
                 android:id="@+id/edit_modify"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#d16677"
+                android:textColor="@color/white"
+                android:padding="5dp"
                 android:text="Revenir a l'ancienne vie" />
 
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
+                android:layout_gravity="center"
                 android:id="@+id/confirm"
-                android:text="Valider les modifications"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#9abdc0"
+                android:textColor="@color/white"
+                android:padding="5dp"
+                android:clickable="true"
+                android:text="Valider les modifications" />
         </LinearLayout>
 
     </ScrollView>

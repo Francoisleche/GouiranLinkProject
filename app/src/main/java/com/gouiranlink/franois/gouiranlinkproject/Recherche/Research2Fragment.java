@@ -48,6 +48,7 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Schedule;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Subscription_Type;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.Professional_View.InformationsProfessional;
 import com.gouiranlink.franois.gouiranlinkproject.Professional_View.ProfessionalView;
 import com.gouiranlink.franois.gouiranlinkproject.R;
@@ -102,6 +103,10 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
     private Professional_Product[] PremierProfessionalProduct;
 
+    private Resource[] ResourceProfessional;
+
+
+
     private Customer customer;
     private String token;
     private String[] place,autocomplete;
@@ -148,6 +153,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
 
     ArrayList<String> Shop_image;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -730,7 +736,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                 final Fragment[] fragment = {null};
                 final FragmentTransaction[] ft = {null};
 
-                final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Downloading Infos...", true);
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Svp Veuillez patienter ...", "chargement des données...", true);
 
 
                 Thread timer = new Thread() {
@@ -790,6 +796,14 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                             }
 
 
+                            System.out.println("DEBUT RESOURCE");
+                            ressource_jsonparser(recherche_ressource(id));
+                            for(int i=0;i<ResourceProfessional.length;i++){
+                                System.out.println("Resource : "+ResourceProfessional[i]);
+                            }
+
+
+
 
 
 
@@ -808,6 +822,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                                 args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
                                 args.putSerializable("Customer", customer);
                                 args.putSerializable("ExpandableListDetail", expandableListDetail);
+                                args.putSerializable("ResourceProfessional", ResourceProfessional);
                                 args.putSerializable("Shop_image", Shop_image);
                                 args.putSerializable("token", token);
                                 System.out.println("CUSTOMER :" + customer.getName());
@@ -2558,6 +2573,18 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
                 String product_resource_manager = p2.getString("product");
                 String discounts_resource_manager = p2.getString("discounts");
+
+                System.out.println("AFFICHEEEEEER au moins un truc");
+                String discounts = "";
+                System.out.println("AFFICHEEEEEER DISCOUNT :" + discounts_resource_manager);
+                if(!discounts_resource_manager.equals("[]")){
+                    JSONArray discounts_tableau = p2.getJSONArray("discounts");
+                    discounts = discounts_tableau.getJSONObject(0).getString("amount");
+                    System.out.println("AFFICHEEEEEER DISCOUNT :" + discounts);
+                }
+
+
+
                 //System.out.println("LES PRODUCT RESOURCE MANAGER PRODUCT :"+product_resource_manager);
 
 
@@ -2599,14 +2626,16 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
                 PremierProfessionalProduct[i] = PremierProfessionalProduct2;
 
+
+                // pourquoi //// ? parce que / est deja utiliser dans les noms de products
                 if(product_category_name.equals("Coiffure Femme")){
-                    liste_coifure_femme.add(product_name);
+                    liste_coifure_femme.add(product_name+"////"+price_resource_manager+"////"+discounts);
                 }else if(product_category_name.equals("Bien-Être")){
-                    liste_bien_etre.add(product_name);
+                    liste_bien_etre.add(product_name+"////"+price_resource_manager+"////"+discounts);
                 }else if(product_category_name.equals("Beauté")){
-                    liste_beaute.add(product_name);
+                    liste_beaute.add(product_name+"////"+price_resource_manager+"////"+discounts);
                 }else if(product_category_name.equals("Homme")){
-                    liste_homme.add(product_name);
+                    liste_homme.add(product_name+"////"+price_resource_manager+"////"+discounts);
                 }
 
 
@@ -3255,6 +3284,71 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
         }
 
     }
+
+
+
+
+
+    //RESSOURCE
+    public String recherche_ressource(String query) {
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee Resource");
+        getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/resource/professional/"+query+"/");
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee Resource");
+        String resp = null;
+        try {
+            resp = getRequest.execute().get();
+            System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+            System.out.println(resp.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return resp;
+    }
+
+
+    public void ressource_jsonparser(String jsonStr) {
+        try {
+
+            String recup_schedule = "{" + '"' + "data" + '"' + " : [{";
+            String schedule1 = jsonStr.replace("[{", recup_schedule);
+            String schedule2 = schedule1.replace("}]", "}]}");
+
+            if (!jsonStr.equals("[]")) {
+                JSONObject jsonObj = new JSONObject(schedule2);
+                //JSONArray contacts = jsonObj.getJSONArray("data");
+                JSONArray Professional_Shop_image = jsonObj.getJSONArray("data");
+                System.out.println("AHBON3 :" + jsonStr);
+                ResourceProfessional = new Resource[Professional_Shop_image.length()];
+
+                for (int j = 0; j < Professional_Shop_image.length(); j++) {
+                    Resource resource = new Resource();
+                    JSONObject p2 = Professional_Shop_image.getJSONObject(j);
+                    String id = p2.getString("id");
+                    String type = p2.getJSONObject("type").getString("name");
+                    String name = p2.getString("name");
+                    String surname = p2.getString("surname");
+
+                    resource.setId(Integer.parseInt(id));
+                    resource.setName(name);
+                    resource.setSurname(surname);
+
+                    ResourceProfessional[j]=resource;
+                }
+            }
+        } catch (final JSONException e) {
+            Log.e(TAG, "Json parsing error: " + e.getMessage());
+        }
+
+    }
+
+
+
+
+
+
+
 
 
     public static void hideKeyBoard(Activity activity) {

@@ -21,6 +21,10 @@ public class Resource {
     private Resource_Unavailability[] unavailabilities;
     private Resource_Schedule[] schedule;
 
+    public Resource(){
+
+    }
+
 
     public Resource(int id, Resource_Type type, String name, String surname, Image_N image, String color, int digit, boolean is_visible_front,
                     boolean is_manager, Professional_Product[] products, Resource_Unavailability[] unavailabilities, Resource_Schedule[] schedule){

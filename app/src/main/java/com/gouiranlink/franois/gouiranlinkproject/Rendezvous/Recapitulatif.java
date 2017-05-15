@@ -226,6 +226,7 @@ public class Recapitulatif extends Fragment {
         number = String.format("%02d", Integer.parseInt(parts[0]));
         month = String.format("%02d", Integer.parseInt(parts[1]));
         year = String.format("%04d", Integer.parseInt(parts[2]));
+
         parts = hourOld.split("-");
         parts = parts[0].split("h");
         hour = String.format("%02d", Integer.parseInt(parts[0]));
@@ -233,6 +234,7 @@ public class Recapitulatif extends Fragment {
 
         dateConverted = year + "-" + month + "-" + number;
         hourConverted = hour + ":" + minute + ":" + "00";
+
 
         informations[0] = dateConverted + "T" + hourConverted + "Z";
         hour = String.format("%02d", Integer.parseInt(hour) + durationHour);

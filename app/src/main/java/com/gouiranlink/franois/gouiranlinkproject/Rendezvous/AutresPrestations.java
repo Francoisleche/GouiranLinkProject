@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.Professional_View.ServicesAdapter;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 
@@ -31,6 +32,7 @@ public class AutresPrestations extends Fragment {
     private Professional_Product[] courante_liste_prestations;
     public ListView lstview;
     public TextView plusdeservices;
+    private Resource[] ResourceProfessional;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,7 @@ public class AutresPrestations extends Fragment {
             liste_prestations_selectionne = (Professional_Product[]) getArguments().getSerializable("liste_prestations_selectionne");
             courante_liste_prestations = (Professional_Product[]) getArguments().getSerializable("courante_liste_prestations");
             customer = (Customer) getArguments().getSerializable("Customer");
+            ResourceProfessional = (Resource[])getArguments().getSerializable("ResourceProfessional");
 
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :" + professional.toString());
@@ -136,6 +139,7 @@ public class AutresPrestations extends Fragment {
                 //args.putSerializable("position_list_clique", lstview.getSelectedItem());
                 args.putSerializable("position_list_clique", position);
                 args.putSerializable("service", "AutresPrestations");
+                args.putSerializable("ResourceProfessional",ResourceProfessional);
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);

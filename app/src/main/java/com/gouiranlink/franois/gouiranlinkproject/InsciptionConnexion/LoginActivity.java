@@ -277,7 +277,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         };
         timer.start();
-        ringProgressDialog.setCancelable(true);
+        ringProgressDialog.setCancelable(false);
 
 
 

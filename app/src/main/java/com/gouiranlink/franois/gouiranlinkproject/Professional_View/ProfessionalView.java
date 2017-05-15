@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class ProfessionalView extends Fragment {
     private String token;
     HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
     ArrayList<String> Shop_image;
+    private Resource[] ResourceProfessional;
 
 
 
@@ -46,6 +48,7 @@ public class ProfessionalView extends Fragment {
         if (getArguments() != null) {
             professional = (Professional)getArguments().getSerializable("Professionnal");
             professional_product = (Professional_Product[])getArguments().getSerializable("ProfessionnalProduct");
+            ResourceProfessional = (Resource[])getArguments().getSerializable("ResourceProfessional");
             customer = (Customer)getArguments().getSerializable("Customer");
             Shop_image = (ArrayList<String>) getArguments().getSerializable("Shop_image");
             expandableListDetail = (HashMap<String, List<String>>) getArguments().getSerializable("ExpandableListDetail");
@@ -63,6 +66,7 @@ public class ProfessionalView extends Fragment {
         args.putSerializable("Customer",customer);
         args.putSerializable("Shop_image",Shop_image);
         args.putSerializable("ExpandableListDetail", expandableListDetail);
+        args.putSerializable("ResourceProfessional", ResourceProfessional);
         //fragment = new ServicesProfessional();
         fragment = new ServicesProfessional2();
         fragment.setArguments(args);
@@ -108,6 +112,7 @@ public class ProfessionalView extends Fragment {
                 args.putSerializable("Customer",customer);
                 args.putSerializable("Shop_image",Shop_image);
                 args.putSerializable("ExpandableListDetail", expandableListDetail);
+                args.putSerializable("ResourceProfessional", ResourceProfessional);
                 args.putSerializable("token",token);
                 System.out.println("CUSTOMER 1 :"+ customer.getName());
 

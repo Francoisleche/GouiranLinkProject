@@ -23,6 +23,7 @@ import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.Rendezvous.PrendreRdv;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
@@ -41,6 +42,7 @@ public class ServicesProfessional2 extends Fragment {
 
     private Professional professional;
     private Professional_Product[] professional_product;
+    private Resource[] ResourceProfessional;
     private Customer customer;
     private ArrayList<String> Shop_image;
 
@@ -57,6 +59,7 @@ public class ServicesProfessional2 extends Fragment {
         if (getArguments() != null) {
             professional = (Professional) getArguments().getSerializable("Professionnal");
             professional_product = (Professional_Product[]) getArguments().getSerializable("ProfessionnalProduct");
+            ResourceProfessional = (Resource[])getArguments().getSerializable("ResourceProfessional");
             customer = (Customer) getArguments().getSerializable("Customer");
             Shop_image = (ArrayList<String>) getArguments().getSerializable("Shop_image");
             expandableListDetail = (HashMap<String, List<String>>) getArguments().getSerializable("ExpandableListDetail");
@@ -133,9 +136,14 @@ public class ServicesProfessional2 extends Fragment {
                         Bundle args = new Bundle();
                         args.putSerializable("Professionnal", professional);
                         args.putSerializable("ProfessionnalProduct", professional_product);
+                        args.putSerializable("ResourceProfessional", ResourceProfessional);
                         args.putSerializable("Customer", customer);
                         args.putSerializable("service", "ServicesProfessional");
-                        args.putSerializable("service_selectionne_expandablelistview", (Serializable) expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition));
+
+                        String CurrentString = expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition);
+                        String[] separated = CurrentString.split("////");
+                        //args.putSerializable("service_selectionne_expandablelistview", (Serializable) expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition));
+                        args.putSerializable("service_selectionne_expandablelistview", (Serializable) separated[0]);
                         args.putSerializable("position_list_clique", groupPosition);
                         FragmentManager fm = getFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();

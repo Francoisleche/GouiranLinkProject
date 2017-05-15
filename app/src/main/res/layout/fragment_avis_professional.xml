@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/commentaire_existant"
         android:layout_width="match_parent"

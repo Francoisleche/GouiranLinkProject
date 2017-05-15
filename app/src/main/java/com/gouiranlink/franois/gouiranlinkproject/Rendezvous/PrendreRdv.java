@@ -2,10 +2,12 @@ package com.gouiranlink.franois.gouiranlinkproject.Rendezvous;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -21,10 +23,19 @@ import android.widget.Toast;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.concurrent.ExecutionException;
 
+import static android.content.ContentValues.TAG;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -33,7 +44,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class PrendreRdv extends Fragment {
 
-    static final String[] employe = new String[] {"Jacky 1","Jacky 2","Jacky 3","Jacky 4","Jacky 5","Jacky 6"};
+    static String[] employe = new String[] {"Jacky 1","Jacky 2","Jacky 3","Jacky 4","Jacky 5","Jacky 6"};
 
     private Professional professional;
     private Professional_Product[] professional_product;
@@ -42,6 +53,9 @@ public class PrendreRdv extends Fragment {
     private Customer customer;
     private String service_selectionne;
     private String service_selectionne_expandablelistview;
+    private String horaire;
+
+    private Resource[] ResourceProfessional;
 
     private Professional_Product professional_product_selectionne;
     private int position_list_clique;
@@ -51,11 +65,18 @@ public class PrendreRdv extends Fragment {
     private boolean check = false;
     private TextView heure_selectionne;
 
+    private GetRequest getRequest;
+
+    private ArrayList<String> horaires_indisponibilites;
+    double tariftotal = 0.00;
+
 
     private CalendarView calendar;
     private int jour_selectionne;
     private int mois_selectionne;
     private int annee_selectionne;
+
+    private String[] horaires_date =null;
 
     public PrendreRdv(){
 
@@ -70,6 +91,7 @@ public class PrendreRdv extends Fragment {
         if (getArguments() != null) {
             professional = (Professional)getArguments().getSerializable("Professionnal");
             professional_product = (Professional_Product[])getArguments().getSerializable("ProfessionnalProduct");
+            ResourceProfessional = (Resource[])getArguments().getSerializable("ResourceProfessional");
             service_selectionne = (String)getArguments().getString("service");
             service_selectionne_expandablelistview = (String)getArguments().getString("service_selectionne_expandablelistview");
             position_list_clique = (int)getArguments().getInt("position_list_clique");
@@ -171,6 +193,16 @@ public class PrendreRdv extends Fragment {
                     //System.out.println("SA ME GONFLE : " + courante_liste_prestations[0].getName());
 
 
+            }else if(service_selectionne.contains("Horaires")) {
+                //recupere date
+                horaire = (String)getArguments().getString("horaire");
+                horaires_date = horaire.split("////");
+                System.out.println("DATE :"+horaires_date[0] + "/ Horaires :"+horaires_date[1]);
+                courante_liste_prestations = (Professional_Product[])getArguments().getSerializable("courante_liste_prestations");
+                liste_prestations_selectionne = (Professional_Product[]) getArguments().getSerializable("liste_prestations_selectionne");
+
+
+
             }
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
@@ -183,9 +215,88 @@ public class PrendreRdv extends Fragment {
 
         View v = inflater.inflate(R.layout.activity_prendre_rdv, container, false);
 
-        calendar = (CalendarView) v.findViewById(R.id.jourouverture);
-        //Initialisation du calendrier
-        initializeCalendar();
+        for(int i=0; i < liste_prestations_selectionne.length;i++){
+            tariftotal = tariftotal + liste_prestations_selectionne[i].getPrice();
+        }
+
+        /*calendar = (CalendarView) v.findViewById(R.id.jourouverture);
+        initializeCalendar();*/
+
+
+
+        employe = new String[ResourceProfessional.length];
+        for(int i=0;i<ResourceProfessional.length;i++){
+            employe[i]=ResourceProfessional[i].getName()+ResourceProfessional[i].getSurname();
+        }
+
+
+
+
+        final Spinner spinner = (Spinner)v.findViewById(R.id.liste_employe);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,employe);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+
+
+
+
+
+        Button appuie_horaire = (Button) v.findViewById(R.id.appuie_horaire);
+        appuie_horaire.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Toast.makeText(getApplicationContext(), "on a appuyé", Toast.LENGTH_SHORT).show();
+                System.out.println("liste_prestations_selectionne :"+ liste_prestations_selectionne.length);
+                System.out.println("liste_prestations_selectionne :"+ liste_prestations_selectionne[0].getName());
+                ArrayList<String> products = new ArrayList<String>();
+                for(int i =0;i<liste_prestations_selectionne.length;i++){
+                    products.add(String.valueOf(liste_prestations_selectionne[i].getId()));
+                }
+
+
+
+                String id = spinner.getSelectedItem().toString();
+                int position = 0;
+                for (int i = 0; i < spinner.getCount(); i++) {
+                    String value = spinner.getItemAtPosition(i).toString();
+                    if (value.equals(id)) {
+                        position = i;
+                    }
+                }
+                System.out.println("Spinnnnner position"+position);
+
+
+
+                horaires_jsonparser(recherche_horaires(String.valueOf(professional.getId()),"2017-05-05T00:00:00Z","2017-08-17T00:00:00Z",String.valueOf(ResourceProfessional[position].getId()),products));
+
+
+                Fragment fragment = null;
+                Bundle args = new Bundle();
+                args.putSerializable("horaires_indisponibilites", horaires_indisponibilites);
+                args.putSerializable("prix", tariftotal);
+                args.putSerializable("id_employe", id);
+                args.putSerializable("ResourceProfessional",ResourceProfessional);
+
+
+                args.putSerializable("Professionnal", professional);
+                args.putSerializable("liste_prestations_selectionne", liste_prestations_selectionne);
+                args.putSerializable("courante_liste_prestations", courante_liste_prestations);
+                args.putSerializable("Customer", customer);
+
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                fragment = new Horaires();
+                fragment.setArguments(args);
+                ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
+
+            }
+        });
+
+
 
         final TextView duree = (TextView) v.findViewById(R.id.duree_prestations);
         final TextView somme = (TextView) v.findViewById(R.id.somme_prestations);
@@ -194,19 +305,19 @@ public class PrendreRdv extends Fragment {
 
 
 
-        final TextView matinheure1 = (TextView) v.findViewById(R.id.matinheure1);
+        /*final TextView matinheure1 = (TextView) v.findViewById(R.id.matinheure1);
         final TextView matinheure2 = (TextView) v.findViewById(R.id.matinheure2);
         final TextView matinheure3 = (TextView) v.findViewById(R.id.matinheure3);
         final TextView matinheure4 = (TextView) v.findViewById(R.id.matinheure4);
         final TextView matinheure5 = (TextView) v.findViewById(R.id.matinheure5);
         final TextView matinheure6 = (TextView) v.findViewById(R.id.matinheure6);
         final TextView matinheure7 = (TextView) v.findViewById(R.id.matinheure7);
-        final TextView matinheure8 = (TextView) v.findViewById(R.id.matinheure8);
+        final TextView matinheure8 = (TextView) v.findViewById(R.id.matinheure8);*/
 
 
         final int color = R.color.green;
         final int color2 = R.color.white;
-        matinheure1.setOnClickListener(new View.OnClickListener() {
+        /*matinheure1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("J4AI CLIQUER OMG");
@@ -412,28 +523,25 @@ public class PrendreRdv extends Fragment {
                     check = true;
                 }
             }
-        });
+        });*/
 
 
 
 
-        Spinner spinner = (Spinner)v.findViewById(R.id.liste_employe);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,employe);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinner.setAdapter(adapter);
+
+
 
 
 
         //////////////////////////Calcul du Prix et du temps de ou des prestations
-        double tariftotal = 0.00;
+
         int dureetotal = 0;
         int heuretotal = 0 ;
         int minutetotal = 0;
 
-        for(int i=0; i < liste_prestations_selectionne.length;i++){
-            tariftotal = tariftotal + liste_prestations_selectionne[i].getPrice();
-        }
+        System.out.println("liste_prestations_selectionne[i].getPrice()"+liste_prestations_selectionne[0].getPrice());
+
 
         for(int i = 0; i < liste_prestations_selectionne.length;i++){
             StringTokenizer tokens = new StringTokenizer(liste_prestations_selectionne[i].getDuration(), ":");
@@ -467,6 +575,7 @@ public class PrendreRdv extends Fragment {
                 Fragment fragment = null;
                 Bundle args = new Bundle();
                 args.putSerializable("Professionnal", professional);
+                args.putSerializable("ResourceProfessional",ResourceProfessional);
                 //args.putSerializable("position_list_clique", position_list_clique);
                 args.putSerializable("liste_prestations_selectionne", liste_prestations_selectionne);
                 //System.out.println("ESSAYE DE COMPRENDRE : "+ courante_liste_prestations[1].getName());
@@ -494,7 +603,7 @@ public class PrendreRdv extends Fragment {
         reserver.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             System.out.println("Daaaaaaaaaaaaate"+jour_selectionne);
-                if(jour_selectionne!=0){
+                if(horaires_date!=null){
                     Fragment fragment = null;
                     Bundle args = new Bundle();
                     args.putSerializable("Professionnal", professional);
@@ -504,8 +613,10 @@ public class PrendreRdv extends Fragment {
                     recap[2] = String.valueOf(finalHeuretotal) + "h" + String.valueOf(finalMinutetotal) + "min";
                     recap[3] = professional.getShop_name();
                     recap[4] = professional.getAddress() + " - " + professional.getCity() + " - " + professional.getCountry();
-                    recap[5] = String.valueOf(jour_selectionne) + "/" + String.valueOf(mois_selectionne + 1) + "/" + String.valueOf(annee_selectionne);
-                    recap[6] = heure_selectionne.getText().toString();
+                    //recap[5] = String.valueOf(jour_selectionne) + "/" + String.valueOf(mois_selectionne + 1) + "/" + String.valueOf(annee_selectionne);
+                    recap[5] = horaires_date[0];
+                    //recap[6] = heure_selectionne.getText().toString();
+                    recap[6] = horaires_date[1];
 
 
                     //System.out.println("RECAPITULATIF : "+recap[0]+" "+recap[1]);
@@ -591,8 +702,6 @@ public class PrendreRdv extends Fragment {
         // sets the first day of week according to Calendar.
         // here we set Monday as the first day of the Calendar
         calendar.setFirstDayOfWeek(2);
-
-
         //The background color for the selected week.
         calendar.setSelectedWeekBackgroundColor(getResources().getColor(R.color.green));
         //sets the color for the dates of an unfocused month.
@@ -620,6 +729,64 @@ public class PrendreRdv extends Fragment {
             }
 
         });
+
+    }
+
+
+
+    //Horaires
+    public String recherche_horaires(String id_prof,String date_debut,String date_fin,String id_employe,ArrayList<String> id_product) {
+
+        String json = "";
+        for(int i=0;i<id_product.size();i++){
+            json = json + "&query[products]["+i+"]="+ id_product.get(i);
+        }
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee JSON"+json);
+        getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/booking-unavailabilities/professional/" +
+                id_prof+"/?query[begin_date]="+date_debut+"&query[end_date]="+date_fin+"&query[resource]="+id_employe+json);
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee JSON"+json);
+        String resp = null;
+        try {
+            resp = getRequest.execute().get();
+            System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+            System.out.println(resp.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return resp;
+    }
+
+    public void horaires_jsonparser(String jsonStr) {
+        try {
+
+            String recup_schedule = "{" + '"' + "data" + '"' + " : [{";
+            String schedule1 = jsonStr.replace("[{", recup_schedule);
+            String schedule2 = schedule1.replace("}]", "}]}");
+
+            if (!jsonStr.equals("[]")) {
+                JSONObject jsonObj = new JSONObject(schedule2);
+                //JSONArray contacts = jsonObj.getJSONArray("data");
+                JSONArray Professional_Shop_image = jsonObj.getJSONArray("data");
+
+
+                horaires_indisponibilites = new ArrayList<String>();
+
+                for (int j = 0; j < Professional_Shop_image.length(); j++) {
+                    JSONObject p2 = Professional_Shop_image.getJSONObject(j);
+                    String begin_date = p2.getString("begin_date");
+                    String end_date = p2.getString("end_date");
+
+
+                    String s = begin_date +"////"+end_date;
+                    horaires_indisponibilites.add(s);
+                }
+            }
+
+        } catch (final JSONException e) {
+            Log.e(TAG, "Json parsing error: " + e.getMessage());
+        }
 
     }
 

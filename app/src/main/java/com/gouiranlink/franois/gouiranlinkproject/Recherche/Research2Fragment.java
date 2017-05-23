@@ -8,15 +8,18 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -39,6 +42,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gouiranlink.franois.gouiranlinkproject.Manifest;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Image_N;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Product;
@@ -62,12 +66,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.R.id.list;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_APPEND;
@@ -80,6 +87,8 @@ import static com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.BaseFragme
 public class Research2Fragment extends Fragment implements ProfessionalView.OnFragmentInteractionListener {
 
     private String homepage_click_imageview = "";
+
+    private static final int REQUEST_CODE_LOCATION = 123;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -191,6 +200,31 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
             System.out.println("Toooooooooooooken" + token);
         }
 
+
+        //DEMANDE AUTORISATION POUR G2OLOCALISATION
+
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    ACCESS_FINE_LOCATION)) {
+                //Cela signifie que la permission à déjà était
+                //demandé et l'utilisateur l'a refusé
+                //Vous pouvez aussi expliquer à l'utilisateur pourquoi
+                //cette permission est nécessaire et la redemander
+            } else {
+                //Sinon demander la permission
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{ACCESS_FINE_LOCATION},
+                        123);
+            }
+        }
+
+
+
+
+
     }
 
     @Override
@@ -208,6 +242,16 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
 
         text=(AutoCompleteTextView)view.findViewById(R.id.autoCompleteTextView1);
+
+
+
+        //CalendarView calendarjeudi = (CalendarView) view.findViewById(R.id.calendarjeudi);
+        //Calendar cal = Calendar.getInstance(Locale.FRANCE);
+        //cal.add(Calendar.WEEK_OF_YEAR, 1);
+
+
+Log.e("Debug","bonjour");
+
 
         /*A = recupToutlesautocomplete("A");
         B = recupToutlesautocomplete("B");
@@ -1162,6 +1206,9 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 Bundle args = new Bundle();
                 String[] tableau = new String[5];
                 tableau[0] = "Bonjour";
@@ -3363,6 +3410,33 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
                 .getSystemService(Activity.INPUT_METHOD_SERVICE);
         //imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_CODE_LOCATION) {
+            if (permissions.length == 1 &&
+                    permissions[0] == android.Manifest.permission.ACCESS_FINE_LOCATION &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+
+                Toast.makeText(getActivity(), "geolocaliser le portable utilisateur", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "impossible de geolocaliser le portable utilisateur", Toast.LENGTH_SHORT).show();
+                // Permission was denied. Display an error message.
+            }
+        }
     }
 
 

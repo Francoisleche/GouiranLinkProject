@@ -1,10 +1,12 @@
 package com.gouiranlink.franois.gouiranlinkproject.Object;
 
+import java.io.Serializable;
+
 /**
  * Created by François on 20/01/2017.
  */
 
-public class Resource {
+public class Resource implements Serializable {
 
     private int id;
     private Resource_Type type;

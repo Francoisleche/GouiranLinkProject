@@ -1,89 +1,242 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@xml/custom_border_avis"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!--android:background="@xml/custom_border_avis"-->
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-            <TextView
-                android:id="@+id/comment_surname"
-                android:layout_marginLeft="5dp"
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textSize="10dp"
-                android:text="Surname" />
+                android:padding="5dp">
 
-            <TextView
-                android:id="@+id/comment_note"
+                <ImageView
+                    android:id="@+id/grid_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_rond2" />
+
+                <TextView
+                    android:id="@+id/comment_note"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/grid_image"
+                    android:layout_alignEnd="@id/grid_image"
+                    android:layout_alignStart="@id/grid_image"
+                    android:layout_alignTop="@id/grid_image"
+                    android:text="Note"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="5dp">
+
+                <ImageView
+                    android:id="@+id/grid_image2"
+                    android:layout_width="280dp"
+                    android:layout_height="100dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/grid_image2"
+                    android:layout_alignEnd="@id/grid_image2"
+                    android:layout_alignStart="@id/grid_image2"
+                    android:layout_alignTop="@id/grid_image2"
+                    android:background="@drawable/bullefinal1"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/comment_prestation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="Prestation"
+                        android:textColor="#d16677"
+                        android:textSize="8sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:src="@drawable/barre1"/>
+
+                        <TextView
+                            android:id="@+id/comment_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Avis 1: mon coiffeur était super :) mon lissage brésilien est parfait. Prête pour ma soirée :)"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+
+
+                    <TextView
+                        android:id="@+id/comment_surname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:text="Surname"
+                        android:textSize="8sp" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <!--<LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textSize="18dp"
-                android:text="Note" />
+                android:background="@drawable/bulle_message_09"
+                android:orientation="vertical"
+                android:weightSum="1">
 
-            <RatingBar
+
+                <TextView
+                    android:id="@+id/comment_prestation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Prestation"
+                    android:textColor="#d16677" />
+
+                <TextView
+                    android:id="@+id/comment_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Avis 1: mon coiffeur était super :) mon lissage brésilien est parfait. Prête pour ma soirée :)"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/comment_surname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="211dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="7.60"
+                    android:text="Surname"
+                    android:textSize="30sp" />
+
+
+            </LinearLayout>-->
+
+
+            <!--<RatingBar
                 android:id="@+id/RatingBar01"
                 android:layout_width="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_height="wrap_content"
                 android:isIndicator="true">
-            </RatingBar>
+            </RatingBar>-->
 
         </LinearLayout>
 
-        <TextView
+        <!--<TextView
             android:id="@+id/comment_date"
             android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Date" />
-
-        <TextView
-            android:id="@+id/comment_prestation"
-            android:textColor="@color/GoogleRed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Prestation" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/comment_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="40dp"
-                android:text="Avis 1: mon coiffeur était super :) mon lissage brésilien est parfait. Prête pour ma soirée :)"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_marginBottom="5dp"/>
-        </LinearLayout>
-
+            android:text="Date" />-->
 
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!--<TextView
+        android:id="@+id/reponse_pro"
+        android:layout_width="213dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Reponse pro" />
+        android:text="Reponse pro"
+        android:layout_weight="0.25" />-->
+
+
+
+    <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp">
+
+        <ImageView
+            android:id="@+id/grid_image3"
+            android:layout_width="300dp"
+            android:layout_height="80dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/grid_image3"
+            android:layout_alignEnd="@id/grid_image3"
+            android:layout_alignStart="@id/grid_image3"
+            android:layout_alignTop="@id/grid_image3"
+            android:background="@drawable/bullefinal2"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:weightSum="1"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/reponse_pro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Reponse proooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
+
+        </LinearLayout>
+
+        <!--"-->
+
+    </RelativeLayout>
 
 
 </LinearLayout>

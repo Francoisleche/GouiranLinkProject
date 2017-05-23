@@ -19,7 +19,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -36,6 +39,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gouiranlink.franois.gouiranlinkproject.Manifest;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.ParentActivity2;
 import com.gouiranlink.franois.gouiranlinkproject.R;
@@ -77,6 +81,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /*
@@ -85,6 +91,7 @@ Activity for login either with Gouiran Link account or Facebook or Google Plus
 
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final int REQUEST_CODE_LOCATION = 123;
 
     private UserLoginTask mAuthTask = null;
 
@@ -122,6 +129,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+
+
+
+
+
+
+
 
         callbackManager = CallbackManager.Factory.create();
         accessTokenTracker = new AccessTokenTracker() {
@@ -1449,6 +1463,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
                 0);
     }
+
+
+
 
 }
 

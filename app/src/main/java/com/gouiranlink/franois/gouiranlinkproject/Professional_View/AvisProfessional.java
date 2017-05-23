@@ -152,6 +152,7 @@ public class AvisProfessional extends Fragment{
                     String comment_grade = p2.getJSONObject("booking").getJSONObject("comment").getString("grade");
                     String comment_surname = p2.getJSONObject("booking").getJSONObject("comment").getJSONObject("customer").getString("surname");
                     String comment_created_at = p2.getJSONObject("booking").getJSONObject("comment").getString("created_at");
+                    String professional_response = p2.getString("professional_response");
 
                     //String comment_created_at = p2.getJSONObject("booking").getString("created_at");
                     JSONArray tab_comment_products = p2.getJSONObject("booking").getJSONArray("products");
@@ -174,6 +175,7 @@ public class AvisProfessional extends Fragment{
                     com.setCustomer(c);
                     com.setCreated_at(comment_created_at);
                     com.setProfessional_products(prof);
+                    com.setProfessional_response(professional_response);
 
                     commentaires[iterateur]=com;
                     iterateur++;

@@ -1,7 +1,9 @@
 package com.gouiranlink.franois.gouiranlinkproject.Rendezvous;
 
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,11 +23,13 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
+import com.gouiranlink.franois.gouiranlinkproject.Recherche.Research2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 
 import org.json.JSONArray;
@@ -53,7 +58,7 @@ public class PrendreRdv extends Fragment {
     private Customer customer;
     private String service_selectionne;
     private String service_selectionne_expandablelistview;
-    private String horaire;
+    private String horaire = "";
 
     private Resource[] ResourceProfessional;
 
@@ -69,6 +74,9 @@ public class PrendreRdv extends Fragment {
 
     private ArrayList<String> horaires_indisponibilites;
     double tariftotal = 0.00;
+    int dureetotal = 0;
+    int heuretotal = 0 ;
+    int minutetotal = 0;
 
 
     private CalendarView calendar;
@@ -197,9 +205,10 @@ public class PrendreRdv extends Fragment {
                 //recupere date
                 horaire = (String)getArguments().getString("horaire");
                 horaires_date = horaire.split("////");
-                System.out.println("DATE :"+horaires_date[0] + "/ Horaires :"+horaires_date[1]);
+                System.out.println("DATE :"+horaires_date[1] + " "+ horaires_date[1] + "/ Horaires :"+horaires_date[2]);
                 courante_liste_prestations = (Professional_Product[])getArguments().getSerializable("courante_liste_prestations");
                 liste_prestations_selectionne = (Professional_Product[]) getArguments().getSerializable("liste_prestations_selectionne");
+
 
 
 
@@ -214,10 +223,75 @@ public class PrendreRdv extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.activity_prendre_rdv, container, false);
+        final LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.activity_prendrerdv);
+
+        if(!horaire.equals("")) {
+            TextView textview_horaire = (TextView) v.findViewById(R.id.textview_horaire);
+            textview_horaire.setText("DATE : " + horaires_date[0] + " " + horaires_date[1] + "\n Horaire : " + horaires_date[2]);
+        }
+
+        final Button buton_annuler = (Button) v.findViewById(R.id.annuler);
+        buton_annuler.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //getActivity().getSupportFragmentManager().beginTransaction().remove().commit();
+                System.out.println("Maaaaaaaaaaaaaaaarche ???????????");
+                //Fragment myFragment = (Fragment)getFragmentManager().findFragmentByTag("service2");
+
+
+                linearLayout.setVisibility(View.GONE);
+
+                FragmentManager fm2 = getActivity().getSupportFragmentManager();
+                fm2.popBackStack();
+
+
+
+                /*Fragment fragment = new PrendreRdv();
+                fm2.beginTransaction().replace(R.id.fragment_remplace, fragment);*/
+
+
+                /*onDestroyView();
+                FragmentManager fm= getFragmentManager();
+                if(fm.getBackStackEntryCount()>0){
+                    fm.popBackStack();
+                }*/
+
+                //getActivity().getFragmentManager().popBackStack();
+
+                //Fragment rSum = getActivity().getSupportFragmentManager().findFragmentByTag("service2");
+                //getActivity().getSupportFragmentManager().beginTransaction().remove(rSum).commit();
+                //getActivity().finish();
+
+
+                /*Fragment fragment = null;
+                fragment = new HomeFragment2();
+                FragmentManager frgManager = getFragmentManager();
+                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();*/
+
+            }
+        });
+
+        //////////////////////////Calcul du Prix et du temps de ou des prestations
 
         for(int i=0; i < liste_prestations_selectionne.length;i++){
             tariftotal = tariftotal + liste_prestations_selectionne[i].getPrice();
         }
+
+
+
+
+        System.out.println("liste_prestations_selectionne[i].getPrice()"+liste_prestations_selectionne[0].getPrice());
+
+
+        for(int i = 0; i < liste_prestations_selectionne.length;i++){
+            StringTokenizer tokens = new StringTokenizer(liste_prestations_selectionne[i].getDuration(), ":");
+            String first = tokens.nextToken();
+            String second = tokens.nextToken();
+            String third = tokens.nextToken();
+            dureetotal = dureetotal + Integer.parseInt(first)*60+Integer.parseInt(second);
+        }
+
+        heuretotal = (int) dureetotal/60;
+        minutetotal = (int) dureetotal%60;
 
         /*calendar = (CalendarView) v.findViewById(R.id.jourouverture);
         initializeCalendar();*/
@@ -242,7 +316,7 @@ public class PrendreRdv extends Fragment {
 
 
 
-        Button appuie_horaire = (Button) v.findViewById(R.id.appuie_horaire);
+        final Button appuie_horaire = (Button) v.findViewById(R.id.appuie_horaire);
         appuie_horaire.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -275,6 +349,7 @@ public class PrendreRdv extends Fragment {
                 Bundle args = new Bundle();
                 args.putSerializable("horaires_indisponibilites", horaires_indisponibilites);
                 args.putSerializable("prix", tariftotal);
+                args.putSerializable("duree", dureetotal);
                 args.putSerializable("id_employe", id);
                 args.putSerializable("ResourceProfessional",ResourceProfessional);
 
@@ -292,7 +367,6 @@ public class PrendreRdv extends Fragment {
                 ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
-
             }
         });
 
@@ -536,9 +610,9 @@ public class PrendreRdv extends Fragment {
 
         //////////////////////////Calcul du Prix et du temps de ou des prestations
 
-        int dureetotal = 0;
-        int heuretotal = 0 ;
-        int minutetotal = 0;
+        //int dureetotal = 0;
+        //int heuretotal = 0 ;
+        //int minutetotal = 0;
 
         System.out.println("liste_prestations_selectionne[i].getPrice()"+liste_prestations_selectionne[0].getPrice());
 
@@ -589,6 +663,7 @@ public class PrendreRdv extends Fragment {
                 fragment = new AutresPrestations();
                 fragment.setArguments(args);
 
+                //ft.replace(R.id.fragment_remplace, fragment);
                 ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
 
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -602,21 +677,32 @@ public class PrendreRdv extends Fragment {
         final double finalTariftotal = tariftotal;
         reserver.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            System.out.println("Daaaaaaaaaaaaate"+jour_selectionne);
-                if(horaires_date!=null){
+                //Si l'utilisateur n'a pas renseigné de numéro de téléphone
+                if (customer.getMobilephone().equals("null")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Erreur, vous devez d'abord renseigner un numéro de téléphone !").setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else{
+                    System.out.println("Daaaaaaaaaaaaate" + jour_selectionne);
+                if (horaires_date != null) {
                     Fragment fragment = null;
                     Bundle args = new Bundle();
                     args.putSerializable("Professionnal", professional);
                     args.putSerializable("Customer", customer);
-                    recap[0] = String.valueOf(finalTariftotal) ;
+                    recap[0] = String.valueOf(finalTariftotal);
                     recap[1] = liste_prestations_selectionne[0].getCurrency();
                     recap[2] = String.valueOf(finalHeuretotal) + "h" + String.valueOf(finalMinutetotal) + "min";
                     recap[3] = professional.getShop_name();
                     recap[4] = professional.getAddress() + " - " + professional.getCity() + " - " + professional.getCountry();
                     //recap[5] = String.valueOf(jour_selectionne) + "/" + String.valueOf(mois_selectionne + 1) + "/" + String.valueOf(annee_selectionne);
-                    recap[5] = horaires_date[0];
+                    recap[5] = horaires_date[1];
                     //recap[6] = heure_selectionne.getText().toString();
-                    recap[6] = horaires_date[1];
+                    recap[6] = horaires_date[2];
 
 
                     //System.out.println("RECAPITULATIF : "+recap[0]+" "+recap[1]);
@@ -635,9 +721,11 @@ public class PrendreRdv extends Fragment {
 
                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     ft.commit();
-                }else{
-                    Toast.makeText(getApplicationContext(),"Veuillez selectionner une date", Toast.LENGTH_LONG).show();
+                } else {
+                    appuie_horaire.setError("Selectionner une horaire avant de prendre un rendez vous");
+                    Toast.makeText(getApplicationContext(), "Veuillez selectionner une date", Toast.LENGTH_LONG).show();
                 }
+            }
 
             }
         });
@@ -666,6 +754,10 @@ public class PrendreRdv extends Fragment {
         table.addView(row);
 
         for(int i=0;i<liste_prestations_selectionne.length;i++) {
+            Button b1 = new Button(getActivity());
+            b1.setText("Moins");
+
+
             row = new TableRow(getActivity()); // création d'une nouvelle ligne
 
             tv1 = new TextView(getActivity()); // création cellule
@@ -686,6 +778,7 @@ public class PrendreRdv extends Fragment {
             //tv2.setBackgroundResource(R.drawable.back);
             // ajout des cellules à la ligne
             row.addView(tv1);
+            row.addView(b1);
             row.addView(tv2);
             // ajout de la ligne au tableau
             table.addView(row);

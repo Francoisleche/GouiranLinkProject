@@ -12,6 +12,7 @@ import com.gouiranlink.franois.gouiranlinkproject.GouiranStart;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
 
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,7 +68,7 @@ public class SignUp extends AppCompatActivity {
         passwordConfirmation = passwordConfirmationEditText.getText().toString();
         phoneNumber = phoneNumberEditText.getText().toString();
 
-        /*if (!isEmailValid(email)) {
+        if (!isEmailValid(email)) {
             emailEditText.setError(getString(R.string.invalid_email));
             focusView = emailEditText;
             cancel = true;
@@ -115,17 +116,20 @@ public class SignUp extends AppCompatActivity {
                     "\"name\":\"" + name + "\",\n" +
                     "\"surname\":\"" + surname + "\",\n" +
                     "\"email\":\"" + email + "\",\n" +
-                    "\"password\":\"" + password + "\"\n" +
+                    "\"password\":\"" + password + "\",\n" +
+                    "\"mobilephone\":\""+ phoneNumber + "\"\n" +
                     "}\n";
             postRequest = new PostRequest("https://www.gouiran-beaute.com/link/api/v1/customer/", json);
             try {
                 resp = postRequest.execute().get();
+                System.out.println("ON PASSSSSSSE PAR LA ?????");
+                System.out.println(resp);
                 //Toast.makeText(this, resp, Toast.LENGTH_LONG).show();
                 //TODO : Vérifier retour requête 500 Internal Server Error
 
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
-            }*/
+            }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.confirmation_mail_sentence).setNeutralButton("Ok", new DialogInterface.OnClickListener() {
@@ -141,7 +145,19 @@ public class SignUp extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
+    }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Erreur, un champ n'est pas renseigné !").setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
+
+
 }
-//}
+}

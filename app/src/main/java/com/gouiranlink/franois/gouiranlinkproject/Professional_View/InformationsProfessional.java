@@ -121,25 +121,25 @@ public class InformationsProfessional extends Fragment {
             for (int i = 0; i < professional.getSchedule().length; i++) {
                 switch (professional.getSchedule()[i].getWeekday()) {
                     case 1:
-                        date = "Lundi";
+                        date = "Lundi         ";
                         break;
                     case 2:
-                        date = "Mardi";
+                        date = "Mardi         ";
                         break;
                     case 3:
-                        date = "Mercredi";
+                        date = "Mercredi   ";
                         break;
                     case 4:
-                        date = "Jeudi";
+                        date = "Jeudi         ";
                         break;
                     case 5:
-                        date = "Vendredi";
+                        date = "Vendredi   ";
                         break;
                     case 6:
-                        date = "Samedi";
+                        date = "Samedi        ";
                         break;
                     case 7:
-                        date = "Dimanche";
+                        date = "Dimanche   ";
                         break;
                     default:
                         break;
@@ -147,7 +147,8 @@ public class InformationsProfessional extends Fragment {
                 horaire_debut = professional.getSchedule()[i].getBegin_time();
                 horaire_fin = professional.getSchedule()[i].getEnd_time();
 
-                planning = planning + date + "\n" + horaire_debut + " - " + horaire_fin + "\n";
+                planning = planning + date + horaire_debut.substring(0,2) + "h"+ horaire_debut.substring(3,5)+
+                        " - " + horaire_fin.substring(0,2) + "h" + horaire_fin.substring(3,5)+ "\n";
             }
         }else{
             planning = "Horaires indisponible";

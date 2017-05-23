@@ -10,6 +10,7 @@
         android:textSize="25sp"/>
 
     <TextView
+        android:layout_gravity="right"
         android:layout_marginLeft="20dp"
         android:id="@+id/horaire_prix"
         android:layout_width="wrap_content"

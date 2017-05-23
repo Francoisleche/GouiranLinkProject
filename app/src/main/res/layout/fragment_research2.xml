@@ -306,6 +306,21 @@
 
                     </LinearLayout>
 
+                    <!--<com.gouiranlink.franois.gouiranlinkproject.Recherche.scrollCalendar
+                        android:id="@+id/calendarDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="250dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/cb650f">
+                    </com.gouiranlink.franois.gouiranlinkproject.Recherche.scrollCalendar>
+
+                    <CalendarView
+                        android:id="@+id/calendarjeudi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    </CalendarView>-->
+
 
                     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="wrap_content"
@@ -336,6 +351,9 @@
                             android:text="Filtres" />
 
                     </LinearLayout>
+
+
+
 
                 </LinearLayout>
             </ScrollView>

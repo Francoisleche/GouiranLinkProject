@@ -152,7 +152,7 @@ public class ServicesProfessional2 extends Fragment {
                         fragment = new PrendreRdv();
                         fragment.setArguments(args);
 
-                        ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+                        ft.replace(R.id.fragment_remplace, fragment).addToBackStack("service2");
 
                         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         ft.commit();

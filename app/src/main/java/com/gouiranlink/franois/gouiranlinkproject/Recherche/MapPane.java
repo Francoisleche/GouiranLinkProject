@@ -64,6 +64,8 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
     private LocationManager lManager;
     private Location location;
 
+    ListView mesresultats_map;
+
     ArrayList<ArrayList<String>> thumbs2 = new ArrayList<ArrayList<String>>();
 
     @Override
@@ -73,18 +75,18 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
 
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
-        String[] thumbs=(String[])bundle.getSerializable("tableau");
+        //String[] thumbs=(String[])bundle.getSerializable("tableau");
         thumbs2=(ArrayList<ArrayList<String>>)bundle.getSerializable("donnée_geolocalise");
         recherche_bool =(boolean)bundle.getBoolean("recherche_boolean");
 
 
-        ListView mesresultats_map = (ListView)findViewById(R.id.mesresultats_map);
+        mesresultats_map = (ListView)findViewById(R.id.mesresultats_map);
         System.out.println("Boooooooooooooooolean"+recherche_bool);
         if(!recherche_bool){
-            String[] results = thumbs;
+            /*String[] results = thumbs;
             final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
             ArrayAdapter<String> tableau = new ArrayAdapter<String>(this, R.layout.services, resultsList);
-            mesresultats_map.setAdapter(tableau);
+            mesresultats_map.setAdapter(tableau);*/
         }else{
             String[] results = new String[thumbs2.size()];
             System.out.println("Thumbs2 :"+thumbs2.size());
@@ -162,6 +164,14 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
                         mMap.addMarker(new MarkerOptions().position(premier_trouve).title(shopNameList[i]));
                     }
                 }
+                String[] results = shopNameList;
+                final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
+                ArrayAdapter<String> tableau = new ArrayAdapter<String>(this, R.layout.services, resultsList);
+                mesresultats_map.setAdapter(tableau);
+
+                System.out.println("TAIIIIIIIIIIILLE"+shopNameList.length + "   "+results.length+"   "+ resultsList.size());
+
+
             }else{
                 System.out.println("Allo2222");
 
@@ -234,6 +244,7 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
                     return;
                 }
                 mMap.setMyLocationEnabled(true);
+                Toast.makeText(this, "geolocaliser le portable utilisateur", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "impossible de geolocaliser le portable utilisateur", Toast.LENGTH_SHORT).show();
                 // Permission was denied. Display an error message.
@@ -316,6 +327,7 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
     shopNameList = new String[10];
         LatitudeList = new String[10];
         LongitudeList = new String[10];
+
 
     GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[geoloc][latitude]=" + String.valueOf(latitude)
             + "&query[geoloc][longitude]=" + String.valueOf(longitude)+"&query[city]=");

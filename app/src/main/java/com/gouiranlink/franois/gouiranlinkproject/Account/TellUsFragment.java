@@ -62,7 +62,6 @@ public class TellUsFragment extends Fragment {
         TextView nom_smartphone_tellus = (TextView) v.findViewById(R.id.nom_smartphone_tellus);
         TextView constructeur_smartphone_tellus = (TextView) v.findViewById(R.id.constructeur_smartphone_tellus);
 
-        final EditText avis_tellus = (EditText) v.findViewById(R.id.avis_tellus);
         final EditText description_tellus = (EditText) v.findViewById(R.id.description_tellus);
 
         Button erreur_selfie_tellus = (Button) v.findViewById(R.id.erreur_selfie_tellus);
@@ -150,10 +149,10 @@ public class TellUsFragment extends Fragment {
                 //Obligatoire d'avoir un tableau
                 email.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "Contact@gouiran-link.com" });
                 email.putExtra(Intent.EXTRA_SUBJECT, "Avis");
-                if(!avis_tellus.getText().equals("")){
-                    String s = avis_tellus.getText().toString() + description_tellus.getText().toString() + "\n";
+                if(!description_tellus.getText().equals("")){
+                    String s = description_tellus.getText().toString() + "\n";
                     email.putExtra(Intent.EXTRA_TEXT, s);
-                }else if(avis_tellus.getText().equals("")){
+                }else if(description_tellus.getText().equals("")){
                     email.putExtra(Intent.EXTRA_TEXT, "Saisir votre demande ici...");
                 }
 

@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Comment;
@@ -126,12 +128,20 @@ public class AvisAdapter extends ArrayAdapter<String> {
 
         //(2) : Récupération des TextView de notre layout
         TextView textviewnote = (TextView) layoutItem.findViewById(R.id.comment_note);
+
         TextView textviewsurname= (TextView) layoutItem.findViewById(R.id.comment_surname);
-        TextView textviewdate= (TextView) layoutItem.findViewById(R.id.comment_date);
+        //TextView textviewdate= (TextView) layoutItem.findViewById(R.id.comment_date);
         TextView textviewprestation= (TextView) layoutItem.findViewById(R.id.comment_prestation);
         TextView textviewtext= (TextView) layoutItem.findViewById(R.id.comment_text);
+        TextView textviewreponse_pro= (TextView) layoutItem.findViewById(R.id.reponse_pro);
 
-        RatingBar ratingBar = (RatingBar) layoutItem.findViewById(R.id.RatingBar01);
+
+        ImageView image1 = (ImageView) layoutItem.findViewById(R.id.grid_image2);
+        ImageView image2 = (ImageView) layoutItem.findViewById(R.id.grid_image3);
+
+
+
+        //RatingBar ratingBar = (RatingBar) layoutItem.findViewById(R.id.RatingBar01);
 
 
         //(3) : Renseignement des valeurs
@@ -145,18 +155,47 @@ public class AvisAdapter extends ArrayAdapter<String> {
             layoutItem.setLayoutParams(new LinearLayout.LayoutParams(400, 400));
         } else {
             textviewnote.setText(String.valueOf(comment[position].getGrade()) + "/5");
-            textviewsurname.setText(comment[position].getCustomer().getName());
-            textviewdate.setText(comment[position].getCreated_at());
+            textviewsurname.setText("  "+comment[position].getCustomer().getName());
+            //textviewdate.setText(comment[position].getCreated_at());
             String s = "";
             for (int i = 0; i < comment[position].getProfessional_products().length; i++) {
 
-                s = s + comment[position].getProfessional_products()[i].getName() + " , ";
+                //s = s + comment[position].getProfessional_products()[i].getName() + "\n";
+                s = s + comment[position].getProfessional_products()[i].getName() + ", ";
             }
             textviewprestation.setText(s);
             textviewtext.setText(comment[position].getText());
+            textviewreponse_pro.setText(comment[position].getProfessional_response());
+
+            int x1 = taille_des_imagesview(comment[position].getText());
+            int width = 280;
+            int height = x1;
+            if(height==0){
+                height=1;
+            }
+            System.out.println("height part : "+ height);
+            //image1.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+            RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,height*100+100);
+            image1.setLayoutParams(parms);
+
+            if(!comment[position].getProfessional_response().equals("null")){
+                int x2 = taille_des_imagesview(comment[position].getProfessional_response());
+                width = 300;
+                height = x2-1;
+                if(height<=0){
+                    height=1;
+                }
+            }else{
+                height=0;
+            }
+
+            System.out.println("height pro REPOOOOOOOONSE : "+ height + "       "+comment[position].getProfessional_response());
+            //image2.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+            parms = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,height*100);
+            image2.setLayoutParams(parms);
 
 
-            ratingBar.setRating((float) comment[position].getGrade());
+            //ratingBar.setRating((float) comment[position].getGrade());
             layoutItem.setVisibility(VISIBLE);
             layoutItem.setBackgroundColor(Color.parseColor("#ffffff"));
             //layoutItem.setLayoutParams(new LinearLayout.LayoutParams(500, 500));
@@ -164,6 +203,15 @@ public class AvisAdapter extends ArrayAdapter<String> {
         }
 
         return layoutItem;
+    }
+
+
+    public int taille_des_imagesview(String s){
+        int x = s.length();
+        int o = x/40;
+        System.out.println("OOoooooooh"+s +"    "+ x +"    "+ o);
+
+        return o;
     }
 
 

@@ -14,9 +14,9 @@
         <CalendarView
             android:id="@+id/jourouverture_horaire"
             android:layout_width="fill_parent"
-            android:layout_height="360dp"
-            android:layout_marginBottom="10dp"
-            android:background="@xml/customborder" />
+            android:layout_height="300dp"
+            android:background="@xml/customborder"
+            android:shownWeekCount="@integer/mr_controller_volume_group_list_animation_duration_ms"/>
 
     </LinearLayout>
 

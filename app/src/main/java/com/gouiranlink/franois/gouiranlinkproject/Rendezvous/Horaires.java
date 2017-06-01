@@ -223,6 +223,10 @@ public class Horaires extends Fragment{
         calendar = (CalendarView) v.findViewById(R.id.jourouverture_horaire);
         initializeCalendar();
 
+        Calendar currentDate = Calendar.getInstance();
+        currentDate.set(Calendar.MONTH, 11);
+
+
         listView = (ListView) v.findViewById(R.id.meshoraires);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

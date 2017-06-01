@@ -24,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,13 +50,19 @@ public class DoneFragment extends Fragment {
     List<Reservation> reservations;
     private ListView listviewDone;
 
+    private String products_json ="";
+
+
+    private ArrayList<Boolean> boolean_commentaires;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             customer = (Customer) getArguments().getSerializable("Customer");
         }
-        reservations = new ArrayList<Reservation>();
+        //reservations = new ArrayList<Reservation>();
     }
 
     @Override
@@ -85,6 +93,7 @@ public class DoneFragment extends Fragment {
     }
 
     private class Reservation {
+        private String id;
         String picture;
         String institute;
         List<String> type;
@@ -148,6 +157,14 @@ public class DoneFragment extends Fragment {
         public void setAdress(String adress) {
             this.adress = adress;
         }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
     }
 
     private List<Reservation> getReservationList() {
@@ -162,10 +179,14 @@ public class DoneFragment extends Fragment {
         GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/" + String.valueOf(customer.getId()) + "/", headerKey, headerValue);
         try {
             resp = getRequest.execute().get();
+
             String s = resp.replace(",",", \n");
+            System.out.println(resp);
 
             JSONObject jsonObject = new JSONObject(resp);
             JSONArray arr = jsonObject.getJSONArray("data");
+            boolean_commentaires = new ArrayList<>(arr.length());
+            System.out.println("RESERVATIONNNNNNNNNNNNNNNS : "+arr.length());
             for (int i = 0; i < arr.length(); i++) {
                 Reservation reservation = new Reservation();
                 if (arr.getJSONObject(i).has("begin_date") && !arr.getJSONObject(i).isNull("begin_date") && isPassed(arr.getJSONObject(i).getString("begin_date"))) {
@@ -173,6 +194,7 @@ public class DoneFragment extends Fragment {
 //                if (arr.getJSONObject(i).has("confirmed") && arr.getJSONObject(i).getBoolean("confirmed")) {
                     if (arr.getJSONObject(i).getJSONObject("professional").has("shop_name") && !arr.getJSONObject(i).getJSONObject("professional").isNull("shop_name")) {
                         reservation.institute = arr.getJSONObject(i).getJSONObject("professional").getString("shop_name");
+                        reservation.id = arr.getJSONObject(i).getString("id");
                     }
 
                     if (arr.getJSONObject(i).getJSONObject("professional").has("address") &&
@@ -196,6 +218,12 @@ public class DoneFragment extends Fragment {
                             reservation.type.add(arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").getString("name"));
                     }
                     if (arr.getJSONObject(i).has("begin_date") && !arr.getJSONObject(i).isNull("begin_date")) {
+
+                        boolean_commentaires.add(date_commentaire(arr.getJSONObject(i).getString("begin_date")));
+                        products_json = arr.getJSONObject(i).getString("products");
+                        System.out.println("DONNNNNNNE FRAGMENT 1 :" +getDate(arr.getJSONObject(i).getString("begin_date")));
+                        System.out.println("DONNNNNNNE FRAGMENT 2 :" +getHour(arr.getJSONObject(i).getString("begin_date")));
+
                         reservation.date = getDate(arr.getJSONObject(i).getString("begin_date"));
                         reservation.hour = getHour(arr.getJSONObject(i).getString("begin_date"));
                     }
@@ -315,9 +343,11 @@ public class DoneFragment extends Fragment {
         List<String> dates = new ArrayList<String>();
         List<String> hours = new ArrayList<String>();
         List<String> adress = new ArrayList<String>();
+        List<String> id = new ArrayList<String>();
 
         for (int i = 0; i < reservations.size(); i++) {
             institutesNames.add(reservations.get(i).getInstitute());
+            id.add(reservations.get(i).getId());
             types.add(reservations.get(i).getType());
             pictures.add(reservations.get(i).getPicture());
             dates.add(reservations.get(i).getDate());
@@ -329,6 +359,7 @@ public class DoneFragment extends Fragment {
 
         //GridView gridview = (GridView) getActivity().findViewById(R.id.gridviewDone);
         ReservationImageAdapter reservationImageAdapter = new ReservationImageAdapter(getActivity());
+        reservationImageAdapter.setId(id);
         reservationImageAdapter.setInstitutesNames(institutesNames);
         reservationImageAdapter.setTypes(types);
         reservationImageAdapter.setPictures(pictures);
@@ -336,6 +367,14 @@ public class DoneFragment extends Fragment {
         reservationImageAdapter.setHours(hours);
         reservationImageAdapter.setAdress(adress);
         reservationImageAdapter.setType_reservation("Done");
+        reservationImageAdapter.setCustomer(customer);
+        reservationImageAdapter.setBoolean_Commentaire(boolean_commentaires);
+        reservationImageAdapter.setProducts_json(products_json);
+
+        System.out.println("RESERVATIONNNNNNNNNNNNNNNS2 : " + institutesNames.size() + " "+types.size()+"   "+adress.size());
+        for(int i =0;i<dates.size();i++){
+            System.out.println("RESERVATIONNNNNNNNNNNNNNNS3 :"+id.get(i)+"      "+ institutesNames.get(i).toString()+"   "+dates.get(i).toString());
+        }
 
 
         /*gridview.setAdapter(reservationImageAdapter);
@@ -357,6 +396,50 @@ public class DoneFragment extends Fragment {
         });
 
 
+    }
+
+
+
+    public boolean date_commentaire(String date2){
+        boolean boo = false;
+        String format = "dd/MM/yy H:mm:ss";
+
+        java.text.SimpleDateFormat formater = new java.text.SimpleDateFormat( format );
+        java.util.Date date = new java.util.Date();
+
+        System.out.println( formater.format(date) +"     date 2 : "+date2);
+
+
+        String jour1=formater.format(date).toString().substring(0,2);
+        String jour2=date2.toString().substring(8,10);
+        String mois1=formater.format(date).toString().substring(3,5);
+        String mois2=date2.toString().substring(5,7);
+        String annee1="20"+formater.format(date).toString().substring(6,8);
+        String annee2=date2.toString().substring(0,4);
+        String heure1=formater.format(date).toString().substring(9,11);
+        String heure2=date2.toString().substring(11,13);
+
+        if(Integer.parseInt(jour1)>Integer.parseInt(jour2)){
+            boo=  true;
+        }else{
+            if(Integer.parseInt(mois1)>Integer.parseInt(mois2)){
+                boo=  true;
+            }else{
+                if(Integer.parseInt(annee1)>Integer.parseInt(annee2)){
+                    boo=  true;
+                }else{
+                    boo=  false;
+                }
+            }
+        }
+
+
+
+
+
+
+
+        return boo;
     }
 
 }

@@ -21,10 +21,14 @@
         <screen android:screenSize="xlarge" android:screenDensity="xhdpi" />
     </compatible-screens>-->
 
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:anyDensity="true" />
 
-    <uses-sdk
-        android:minSdkVersion="21"
-        android:targetSdkVersion="21" />
+
+    <uses-sdk android:minSdkVersion="1" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -79,6 +83,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_login" />
         <activity android:name="com.gouiranlink.franois.gouiranlinkproject.CamTestActivity" />
         <activity android:name="com.gouiranlink.franois.gouiranlinkproject.AndroidCameraApi" />

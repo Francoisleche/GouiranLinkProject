@@ -1,10 +1,15 @@
 package com.gouiranlink.franois.gouiranlinkproject.Rendezvous;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +32,7 @@ import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
 
 import java.util.Calendar;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -185,6 +191,7 @@ public class Recapitulatif extends Fragment {
 
 
 
+                addNotification();
                 //Retour à la homepage après avoir validé le rendez vous
                 Fragment fragment = null;
                 fragment = new HomeFragment2();
@@ -358,6 +365,33 @@ public class Recapitulatif extends Fragment {
         }
 
 
+    }
+
+
+
+
+
+
+
+
+
+    private void addNotification() {
+        Random random = new Random();
+        int m = random.nextInt(9999 - 1000) + 1000;
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(getActivity())
+                        .setSmallIcon(R.drawable.icon_gouiranlink_contour)
+                        .setContentTitle("Notifications Example")
+                        .setContentText("This is a test notification");
+
+        Intent notificationIntent = new Intent(getActivity(), Recapitulatif.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(getActivity(), m, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // Add as notification
+        NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(m, builder.build());
     }
 
 

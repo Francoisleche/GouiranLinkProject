@@ -36,6 +36,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -127,10 +128,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            tab_autocomplete_place = (String[]) getIntent().getStringArrayExtra("place");
+        }
+
+
+
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
-
+        /*LinearLayout ll = (LinearLayout) findViewById(R.id.visible);
+        ll.setBackground(getDrawable(R.drawable.connexion_inscription));*/
 
 
 
@@ -248,7 +258,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+
+
     }
+
+
+
+
+
+
+
 
     private void nextActivity(String resp) {
         //cacher le clavier
@@ -300,7 +320,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     public void webservice_autocomplete() {
-        String[] A  = place_jsonparser(recherche_place("A"));
+        /*String[] A  = place_jsonparser(recherche_place("A"));
         String[] B  = place_jsonparser(recherche_place("B"));
         String[] C  = place_jsonparser(recherche_place("C"));
         String[] D  = place_jsonparser(recherche_place("D"));
@@ -420,38 +440,38 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         for(int g = 0; g< tab_autocomplete_place.length; g++){
             System.out.println("AFFFFICHE tab_autocomplete_name "+g+" : "+ tab_autocomplete_place[g]);
-        }
+        }*/
 
-        A = recupToutlesautocomplete("A");
-        B = recupToutlesautocomplete("B");
-        C = recupToutlesautocomplete("C");
-        D = recupToutlesautocomplete("D");
-        E = recupToutlesautocomplete("E");
+        String[] A = recupToutlesautocomplete("A");
+        String[] B = recupToutlesautocomplete("B");
+        String[] C = recupToutlesautocomplete("C");
+        String[] D = recupToutlesautocomplete("D");
+        String[] E = recupToutlesautocomplete("E");
 
-        F = recupToutlesautocomplete("F");
-        G = recupToutlesautocomplete("G");
-        H = recupToutlesautocomplete("H");
-        I = recupToutlesautocomplete("I");
-        J = recupToutlesautocomplete("J");
+        String[] F = recupToutlesautocomplete("F");
+        String[] G = recupToutlesautocomplete("G");
+        String[] H = recupToutlesautocomplete("H");
+        String[] I = recupToutlesautocomplete("I");
+        String[] J = recupToutlesautocomplete("J");
 
-        K = recupToutlesautocomplete("K");
-        L = recupToutlesautocomplete("L");
-        M = recupToutlesautocomplete("M");
-        N = recupToutlesautocomplete("N");
-        O = recupToutlesautocomplete("O");
+        String[] K = recupToutlesautocomplete("K");
+        String[] L = recupToutlesautocomplete("L");
+        String[] M = recupToutlesautocomplete("M");
+        String[] N = recupToutlesautocomplete("N");
+        String[] O = recupToutlesautocomplete("O");
 
-        P = recupToutlesautocomplete("P");
-        Q = recupToutlesautocomplete("Q");
-        R = recupToutlesautocomplete("R");
-        S = recupToutlesautocomplete("S");
-        T = recupToutlesautocomplete("T");
+        String[] P = recupToutlesautocomplete("P");
+        String[] Q = recupToutlesautocomplete("Q");
+        String[] R = recupToutlesautocomplete("R");
+        String[] S = recupToutlesautocomplete("S");
+        String[] T = recupToutlesautocomplete("T");
 
-        U = recupToutlesautocomplete("U");
-        V = recupToutlesautocomplete("V");
-        W = recupToutlesautocomplete("W");
-        X = recupToutlesautocomplete("X");
-        Y = recupToutlesautocomplete("Y");
-        Z = recupToutlesautocomplete("Z");
+        String[] U = recupToutlesautocomplete("U");
+        String[] V = recupToutlesautocomplete("V");
+        String[] W = recupToutlesautocomplete("W");
+        String[] X = recupToutlesautocomplete("X");
+        String[] Y = recupToutlesautocomplete("Y");
+        String[] Z = recupToutlesautocomplete("Z");
 
 
         int taille = A.length+B.length+C.length+D.length+E.length +

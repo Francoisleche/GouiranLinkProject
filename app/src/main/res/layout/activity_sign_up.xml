@@ -36,7 +36,7 @@
 
             <LinearLayout
                 android:id="@+id/gender"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="25dp"
                 android:layout_marginTop="25dp"
@@ -45,24 +45,35 @@
                 android:weightSum="3">
 
                 <TextView
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/you_are" />
 
-                <CheckBox
-                    android:id="@+id/woman"
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/radioSex"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/woman" />
+                    android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/man"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/man" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/woman"
+                        android:text="Une femme"
+                        android:textSize="15dp"
+                        android:checked="true"
+                        />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/man"
+                        android:text="Un homme"
+                        android:textSize="15dp"
+                        />
+
+                </RadioGroup>
 
             </LinearLayout>
 
@@ -71,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/gender"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -79,8 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/white_rounded_square">
 
@@ -88,7 +98,7 @@
                         android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginStart="10dp"
                         android:hint="@string/name"
                         android:inputType="textPersonName" />
                 </android.support.design.widget.TextInputLayout>
@@ -98,7 +108,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="25dp"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/white_rounded_square">
 
@@ -116,7 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/personal"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:weightSum="2">
@@ -125,8 +134,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/white_rounded_square">
 
@@ -146,7 +154,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="25dp"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/white_rounded_square">
 
@@ -164,7 +171,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/email_layout"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical"
                 android:weightSum="3">
 
@@ -173,7 +180,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="25dp"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/white_rounded_square">
 

@@ -614,10 +614,11 @@ public class PrendreRdv extends Fragment {
         //int heuretotal = 0 ;
         //int minutetotal = 0;
 
-        System.out.println("liste_prestations_selectionne[i].getPrice()"+liste_prestations_selectionne[0].getPrice());
+        /*System.out.println("liste_prestations_selectionne[i].getPrice()"+liste_prestations_selectionne[0].getPrice());
 
 
         for(int i = 0; i < liste_prestations_selectionne.length;i++){
+            System.out.println("Dureeeeeeeeeeeeeeeeeeeee :"+liste_prestations_selectionne[i].getDuration());
             StringTokenizer tokens = new StringTokenizer(liste_prestations_selectionne[i].getDuration(), ":");
             String first = tokens.nextToken();
             String second = tokens.nextToken();
@@ -626,10 +627,16 @@ public class PrendreRdv extends Fragment {
         }
 
         heuretotal = (int) dureetotal/60;
-        minutetotal = (int) dureetotal%60;
+        minutetotal = (int) dureetotal%60;*/
+
+
+        //Ecriture sur les TextViews
 
         duree.setText(String.valueOf(heuretotal)+"h"+String.valueOf(minutetotal)+"min");
         somme.setText(String.valueOf(tariftotal)+liste_prestations_selectionne[0].getCurrency());
+
+
+
         /////////////////////////////////////////////
 
 

@@ -84,6 +84,15 @@
     android:layout_gravity="center">
 
 
+    <ImageView
+        android:id="@+id/faire_commentaire"
+        android:layout_width="60dip"
+        android:layout_height="64dip"
+        android:src="@drawable/ic_noun_214735_cc"
+        android:gravity="left"
+        android:layout_marginRight="10dp"/>
+
+
 
             <!--<Button
                 android:id="@+id/ok_reservation"

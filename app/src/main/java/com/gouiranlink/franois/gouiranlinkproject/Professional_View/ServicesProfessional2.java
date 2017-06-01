@@ -27,6 +27,7 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.Rendezvous.PrendreRdv;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by François on 04/05/2017.
@@ -76,7 +77,18 @@ public class ServicesProfessional2 extends Fragment {
         View v = inflater.inflate(R.layout.fragment_services_professional2, container, false);
 
         final ImageView image = (ImageView) v.findViewById(R.id.image_service_pro);
-        new DownloadImageTask(image).execute(Shop_image.get(0));
+
+
+
+
+
+        Picasso.with(v.getContext()).load(Shop_image.get(0))
+                .into(image);
+        //new DownloadImageTask(image).execute(Shop_image.get(0));
+
+
+
+
 
         expandableListView = (ExpandableListView) v.findViewById(R.id.expandableListView);
         //expandableListDetail = ExpandableListDataPump.getData();
@@ -91,10 +103,24 @@ public class ServicesProfessional2 extends Fragment {
                         expandableListTitle.get(groupPosition) + " List Expanded." + " " + iterateur_image,
                         Toast.LENGTH_SHORT).show();
                 if(iterateur_image<Shop_image.size()){
-                    new DownloadImageTask(image).execute(Shop_image.get(iterateur_image++));
+                    if(Shop_image.get(iterateur_image++)=="null"){
+
+                    }else
+                    //new DownloadImageTask(image).execute(Shop_image.get(iterateur_image++));
+
+                    Picasso.with(getContext()).load(Shop_image.get(iterateur_image))
+                            .into(image);
+
+
                 }else{
-                    iterateur_image =0;
-                    new DownloadImageTask(image).execute(Shop_image.get(iterateur_image));
+                    if(Shop_image.get(iterateur_image)=="null"){
+
+                    }else {
+                        iterateur_image = 0;
+                        //new DownloadImageTask(image).execute(Shop_image.get(iterateur_image));
+                        Picasso.with(getContext()).load(Shop_image.get(iterateur_image))
+                                .into(image);
+                    }
                 }
             }
         });
@@ -107,10 +133,14 @@ public class ServicesProfessional2 extends Fragment {
                         expandableListTitle.get(groupPosition) + " List Collapsed."+ " " + iterateur_image,
                         Toast.LENGTH_SHORT).show();
                 if(iterateur_image<Shop_image.size()){
-                    new DownloadImageTask(image).execute(Shop_image.get(iterateur_image++));
+                    //new DownloadImageTask(image).execute(Shop_image.get(iterateur_image++));
+                    Picasso.with(getContext()).load(Shop_image.get(iterateur_image++))
+                            .into(image);
                 }else{
                     iterateur_image =0;
-                    new DownloadImageTask(image).execute(Shop_image.get(iterateur_image));
+                    //new DownloadImageTask(image).execute(Shop_image.get(iterateur_image));
+                    Picasso.with(getContext()).load(Shop_image.get(iterateur_image))
+                            .into(image);
                 }
 
             }

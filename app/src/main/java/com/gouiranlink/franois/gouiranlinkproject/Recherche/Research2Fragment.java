@@ -2786,7 +2786,12 @@ Log.e("Debug","bonjour");
 
                             String max_intervention_distance = c.getString("max_intervention_distance");
                             String logo_image = c.getString("logo_image");
-                            String url = c.getJSONObject("logo_image").getString("url");
+                            String url = "null";
+                            if(c.getString("logo_image").equals("null")){
+                                url = "null";
+                            }else{
+                                url = c.getJSONObject("logo_image").getString("url");
+                            }
 
                             Image_N image = new Image_N();
                             ArrayList<String[]> thumbnails = null;
@@ -3035,16 +3040,19 @@ Log.e("Debug","bonjour");
 
 
     public void schedule_jsonparser(String jsonStr) {
-        try {
+        if(jsonStr.equals("[]")){
+            ProfessionnalGenericSchedule = new Professional_Schedule[0];
+        }else {
+            try {
 
-            String recup_schedule = "{" + '"' + "data" + '"' + " : [{";
-            String schedule1 = jsonStr.replace("[{", recup_schedule);
-            String schedule2 = schedule1.replace("}]", "}]}");
+                String recup_schedule = "{" + '"' + "data" + '"' + " : [{";
+                String schedule1 = jsonStr.replace("[{", recup_schedule);
+                String schedule2 = schedule1.replace("}]", "}]}");
 
-            if (!jsonStr.equals("[]")) {
-                JSONObject jsonObj = new JSONObject(schedule2);
-            //JSONArray contacts = jsonObj.getJSONArray("data");
-                JSONArray Professional_Schedule = jsonObj.getJSONArray("data");
+                if (!jsonStr.equals("[]")) {
+                    JSONObject jsonObj = new JSONObject(schedule2);
+                    //JSONArray contacts = jsonObj.getJSONArray("data");
+                    JSONArray Professional_Schedule = jsonObj.getJSONArray("data");
 
                     System.out.println("AHBON3 :" + jsonStr);
 
@@ -3066,8 +3074,9 @@ Log.e("Debug","bonjour");
                     }
                 }
 
-        } catch (final JSONException e) {
-            Log.e(TAG, "Json parsing error: " + e.getMessage());
+            } catch (final JSONException e) {
+                Log.e(TAG, "Json parsing error: " + e.getMessage());
+            }
         }
 
     }
@@ -3291,43 +3300,47 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
 
 
     public void shop_image_jsonparser(String jsonStr) {
-        try {
+        if(jsonStr.equals("[]")){
+            Shop_image = new ArrayList<>();
+        }else {
+            try {
 
             /*String recup_schedule = "{" + '"' + "data" + '"' + " : [{";
             String schedule1 = jsonStr.replace("[{", recup_schedule);
             String schedule2 = schedule1.replace("}]", "}]}");*/
 
-            if (!jsonStr.equals("[]")) {
-                JSONObject jsonObj = new JSONObject(jsonStr);
-                //JSONArray contacts = jsonObj.getJSONArray("data");
-                JSONArray Professional_Shop_image = jsonObj.getJSONArray("data");
+                if (!jsonStr.equals("[]")) {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    //JSONArray contacts = jsonObj.getJSONArray("data");
+                    JSONArray Professional_Shop_image = jsonObj.getJSONArray("data");
 
-                System.out.println("AHBON3 :" + jsonStr);
+                    System.out.println("AHBON3 :" + jsonStr);
 
 
-                Shop_image = new ArrayList<>();
-                //ProfessionnalGenericSchedule = new Professional_Schedule[Professional_Schedule.length()];
-                for (int j = 0; j < Professional_Shop_image.length(); j++) {
-                    //Professional_Schedule pro_schedule = new Professional_Schedule();
-                    JSONObject p2 = Professional_Shop_image.getJSONObject(j);
-                    String url = p2.getJSONObject("image").getString("url");
-                    //String weekeday_schedule = p2.getString("weekday");
-                    //String begin_time_schedule = p2.getString("begin_time");
-                    //String end_time_schedule = p2.getString("end_time");
+                    Shop_image = new ArrayList<>();
+                    //ProfessionnalGenericSchedule = new Professional_Schedule[Professional_Schedule.length()];
+                    for (int j = 0; j < Professional_Shop_image.length(); j++) {
+                        //Professional_Schedule pro_schedule = new Professional_Schedule();
+                        JSONObject p2 = Professional_Shop_image.getJSONObject(j);
+                        String url = p2.getJSONObject("image").getString("url");
+                        //String weekeday_schedule = p2.getString("weekday");
+                        //String begin_time_schedule = p2.getString("begin_time");
+                        //String end_time_schedule = p2.getString("end_time");
 
-                    //Remplissage des horaires d'ouverture
+                        //Remplissage des horaires d'ouverture
                     /*pro_schedule.setId(Integer.parseInt(id_schedule));
                     pro_schedule.setWeekday(Integer.parseInt(weekeday_schedule));
                     pro_schedule.setBegin_time(begin_time_schedule);
                     pro_schedule.setEnd_time(end_time_schedule);
                     ProfessionnalGenericSchedule[j] = pro_schedule;*/
 
-                    Shop_image.add(url);
+                        Shop_image.add(url);
+                    }
                 }
-            }
 
-        } catch (final JSONException e) {
-            Log.e(TAG, "Json parsing error: " + e.getMessage());
+            } catch (final JSONException e) {
+                Log.e(TAG, "Json parsing error: " + e.getMessage());
+            }
         }
 
     }
@@ -3356,36 +3369,40 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
 
 
     public void ressource_jsonparser(String jsonStr) {
-        try {
+        if(jsonStr.equals("[]")){
+            ResourceProfessional = new Resource[0];
+        }else {
+            try {
 
-            String recup_schedule = "{" + '"' + "data" + '"' + " : [{";
-            String schedule1 = jsonStr.replace("[{", recup_schedule);
-            String schedule2 = schedule1.replace("}]", "}]}");
+                String recup_schedule = "{" + '"' + "data" + '"' + " : [{";
+                String schedule1 = jsonStr.replace("[{", recup_schedule);
+                String schedule2 = schedule1.replace("}]", "}]}");
 
-            if (!jsonStr.equals("[]")) {
-                JSONObject jsonObj = new JSONObject(schedule2);
-                //JSONArray contacts = jsonObj.getJSONArray("data");
-                JSONArray Professional_Shop_image = jsonObj.getJSONArray("data");
-                System.out.println("AHBON3 :" + jsonStr);
-                ResourceProfessional = new Resource[Professional_Shop_image.length()];
+                if (!jsonStr.equals("[]")) {
+                    JSONObject jsonObj = new JSONObject(schedule2);
+                    //JSONArray contacts = jsonObj.getJSONArray("data");
+                    JSONArray Professional_Shop_image = jsonObj.getJSONArray("data");
+                    System.out.println("AHBON3 :" + jsonStr);
+                    ResourceProfessional = new Resource[Professional_Shop_image.length()];
 
-                for (int j = 0; j < Professional_Shop_image.length(); j++) {
-                    Resource resource = new Resource();
-                    JSONObject p2 = Professional_Shop_image.getJSONObject(j);
-                    String id = p2.getString("id");
-                    String type = p2.getJSONObject("type").getString("name");
-                    String name = p2.getString("name");
-                    String surname = p2.getString("surname");
+                    for (int j = 0; j < Professional_Shop_image.length(); j++) {
+                        Resource resource = new Resource();
+                        JSONObject p2 = Professional_Shop_image.getJSONObject(j);
+                        String id = p2.getString("id");
+                        String type = p2.getJSONObject("type").getString("name");
+                        String name = p2.getString("name");
+                        String surname = p2.getString("surname");
 
-                    resource.setId(Integer.parseInt(id));
-                    resource.setName(name);
-                    resource.setSurname(surname);
+                        resource.setId(Integer.parseInt(id));
+                        resource.setName(name);
+                        resource.setSurname(surname);
 
-                    ResourceProfessional[j]=resource;
+                        ResourceProfessional[j] = resource;
+                    }
                 }
+            } catch (final JSONException e) {
+                Log.e(TAG, "Json parsing error: " + e.getMessage());
             }
-        } catch (final JSONException e) {
-            Log.e(TAG, "Json parsing error: " + e.getMessage());
         }
 
     }

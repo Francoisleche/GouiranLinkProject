@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/visible"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="620dp"
     android:background="@drawable/connexion_inscription"
     android:gravity="center_horizontal"
     android:orientation="vertical"
@@ -11,7 +11,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity">
+    tools:context="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity"
+    android:layout_weight="1">
 
     <!-- Login progress -->
     <!--<ImageView
@@ -31,14 +32,6 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/masked"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal" />
 
     <ScrollView
         android:id="@+id/login_form"
@@ -76,7 +69,7 @@
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:windowSoftInputMode="stateHidden" />
+                    />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -109,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
-
+                android:layout_marginTop="15dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -148,7 +141,7 @@
                     style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/pink_rounded_square"
                     android:clickable="true"
@@ -210,7 +203,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginBottom="30dp"
                     android:orientation="horizontal"
                     android:weightSum="2">
@@ -230,9 +223,9 @@
 
                         <Button
                             android:id="@+id/fb"
-                            android:layout_width="100dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/logo_facebook_border"
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/picto_facebook_5px"
                             android:onClick="onClick"
                             android:textColor="#ffffff"
                             android:visibility="visible"
@@ -252,10 +245,11 @@
                             android:visibility="gone" />
 
                         <Button
+                            android:layout_marginLeft="30dp"
                             android:id="@+id/google"
-                            android:layout_width="125dp"
-                            android:layout_height="55dp"
-                            android:background="@drawable/logo_google_plus_border"
+                            android:layout_width="80dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/picto_google_5px"
                             android:onClick="onClick"
                             android:textColor="#ffffff"
                             android:textStyle="bold" />

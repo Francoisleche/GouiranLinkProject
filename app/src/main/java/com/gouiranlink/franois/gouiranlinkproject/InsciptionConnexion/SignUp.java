@@ -7,6 +7,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.gouiranlink.franois.gouiranlinkproject.GouiranStart;
 import com.gouiranlink.franois.gouiranlinkproject.R;
@@ -111,10 +113,22 @@ public class SignUp extends AppCompatActivity {
             focusView.requestFocus();
         }
 
+        String gender ="";
+        RadioGroup radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
+        int selectedId = radioSexGroup.getCheckedRadioButtonId();
+        RadioButton radioSexButton = (RadioButton) findViewById(selectedId);
+        if(radioSexButton.getText().equals("Une femme")){
+            gender = "F";
+        }else{
+            gender = "M";
+        }
+
+
         if (!cancel) {
             json = "{\n" +
                     "\"name\":\"" + name + "\",\n" +
                     "\"surname\":\"" + surname + "\",\n" +
+                    "\"gender\":\"" + gender + "\",\n" +
                     "\"email\":\"" + email + "\",\n" +
                     "\"password\":\"" + password + "\",\n" +
                     "\"mobilephone\":\""+ phoneNumber + "\"\n" +

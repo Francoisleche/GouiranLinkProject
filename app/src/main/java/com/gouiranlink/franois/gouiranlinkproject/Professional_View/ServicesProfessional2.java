@@ -1,6 +1,11 @@
 package com.gouiranlink.franois.gouiranlinkproject.Professional_View;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +14,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-
-import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment;
+import com.gouiranlink.franois.gouiranlinkproject.Favourites.MyProsFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
@@ -26,14 +22,21 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.Rendezvous.PrendreRdv;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by François on 04/05/2017.
  */
 
-public class ServicesProfessional2 extends Fragment {
+public class ServicesProfessional2 extends Fragment{
+
+
+
 
 
     ExpandableListView expandableListView;
@@ -52,6 +55,23 @@ public class ServicesProfessional2 extends Fragment {
     public ServicesProfessional2() {
 
     }
+
+   /* @Override
+    public void onPopBackStack() {
+        //getActivity().getSupportFragmentManager().popBackStack();
+        Fragment fragment = null;
+        Bundle args = new Bundle();
+        args.putSerializable("Customer", customer);
+        args.putSerializable("token", token);
+        args.putSerializable("place", place);
+        args.putSerializable("autocomplete", autocomplete);
+        args.putSerializable("homepage_click_imageview", "");
+        fragment = new Favoris2Fragment();
+        fragment.setArguments(args);
+        FragmentManager frgManager = getFragmentManager();
+        frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
+
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +96,44 @@ public class ServicesProfessional2 extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_services_professional2, container, false);
 
+
+        v.setFocusableInTouchMode(true);
+        v.requestFocus();
+        v.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.i(getTag(), "keyCode: " + keyCode);
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    //getActivity().getActionBar().show();
+                    MyProsFragment fragment1 = (MyProsFragment) getFragmentManager().findFragmentByTag("MyProsFragment");
+                    //if (fragment1 != null)
+                    fragment1.getActivity();
+                    Bundle args = new Bundle();
+                    args.putSerializable("Customer", customer);
+                    args.putSerializable("token", "");
+                    args.putSerializable("place", "");
+                    args.putSerializable("autocomplete","");
+                    args.putSerializable("homepage_click_imageview","");
+                    fragment1.onCreate(args);
+
+                    //if (getFragmentManager().getBackStackEntryCount() > 0){
+                        getFragmentManager().popBackStack();
+
+                    //}
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
+
+
+
+
+
+
+
         final ImageView image = (ImageView) v.findViewById(R.id.image_service_pro);
 
 
@@ -99,9 +157,7 @@ public class ServicesProfessional2 extends Fragment {
                 new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getContext(),
-                        expandableListTitle.get(groupPosition) + " List Expanded." + " " + iterateur_image,
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),expandableListTitle.get(groupPosition) + " List Expanded." + " " + iterateur_image,Toast.LENGTH_SHORT).show();
                 if(iterateur_image<Shop_image.size()){
                     if(Shop_image.get(iterateur_image++)=="null"){
 
@@ -110,7 +166,6 @@ public class ServicesProfessional2 extends Fragment {
 
                     Picasso.with(getContext()).load(Shop_image.get(iterateur_image))
                             .into(image);
-
 
                 }else{
                     if(Shop_image.get(iterateur_image)=="null"){
@@ -213,4 +268,16 @@ public class ServicesProfessional2 extends Fragment {
         return v;
     }
 
+    @Override
+    public void onViewCreated(View view ,Bundle savedInstanceState) {
+        getActivity().findViewById(R.id.simpleFrameLayout).setVisibility(View.VISIBLE);
+
+    }
+
+
+
+
+
+
 }
+

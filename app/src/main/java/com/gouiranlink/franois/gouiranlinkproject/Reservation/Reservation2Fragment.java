@@ -1,8 +1,6 @@
 package com.gouiranlink.franois.gouiranlinkproject.Reservation;
 
 
-import android.support.v4.app.Fragment;
-
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -32,7 +30,7 @@ public class Reservation2Fragment extends Fragment {
         FrameLayout simpleFrameLayout;
         TabLayout tabLayout;
         private Customer customer;
-
+        String retour = "";
 
 
         public void onCreate(Bundle savedInstanceState) {
@@ -40,21 +38,39 @@ public class Reservation2Fragment extends Fragment {
 
             if (getArguments() != null) {
                 customer = (Customer)getArguments().getSerializable("Customer");
+                retour = (String)getArguments().getString("Retour");
+            }
+
+
+            if(retour.equals("") || retour.equals("UpcomingFragment")){
+                Fragment fragment = null;
+                Bundle args = new Bundle();
+                args.putSerializable("Customer",customer);
+                fragment = new UpcomingFragment();
+                fragment.setArguments(args);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.simpleFrameLayout,fragment).addToBackStack(null);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
+            }else if(retour.equals("DoneFragment")){
+                Fragment fragment = null;
+                Bundle args = new Bundle();
+                args.putSerializable("Customer",customer);
+                fragment = new DoneFragment();
+                fragment.setArguments(args);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.simpleFrameLayout,fragment).addToBackStack(null);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
             }
 
 
 
-            Fragment fragment = null;
-            Bundle args = new Bundle();
-            args.putSerializable("Customer",customer);
-            fragment = new UpcomingFragment();
-            fragment.setArguments(args);
 
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.simpleFrameLayout,fragment).addToBackStack(null);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            ft.commit();
 
         }
 
@@ -124,8 +140,18 @@ public class Reservation2Fragment extends Fragment {
 
         @Override
         public void onViewCreated(View view ,Bundle savedInstanceState) {
-            getActivity().findViewById(R.id.simpleFrameLayout).setVisibility(View.VISIBLE);
+            if(retour.equals("") || retour.equals("UpcomingFragment")){
+                TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.professional_tabs);
+                TabLayout.Tab tab = tabLayout.getTabAt(0);
+                tab.select();
+            }
+            else if(retour.equals("DoneFragment")){
+                TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.professional_tabs);
+                TabLayout.Tab tab = tabLayout.getTabAt(1);
+                tab.select();
+            }
 
+            getActivity().findViewById(R.id.simpleFrameLayout).setVisibility(View.VISIBLE);
         }
 
 

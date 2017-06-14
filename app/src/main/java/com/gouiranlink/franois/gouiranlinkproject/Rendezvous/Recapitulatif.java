@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,14 +27,21 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.CustomerBooking;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by François on 03/02/2017.
@@ -43,9 +51,12 @@ public class Recapitulatif extends Fragment {
 
     private Professional professional;
     private Customer customer;
+    private Resource resource;
     private Professional_Product[] liste_prestations_selectionne;
     private int position_list_clique;
     private String[] recap;
+
+    private String employe_selectionne;
 
 
     private ResearchFragment.ResearchTask mAuthTask = null;
@@ -58,6 +69,7 @@ public class Recapitulatif extends Fragment {
         //Récupération de l'objet Professionnal
         if (getArguments() != null) {
             customer = (Customer)getArguments().getSerializable("Customer");
+            resource = (Resource)getArguments().getSerializable("Resource");
             professional = (Professional)getArguments().getSerializable("Professionnal");
             recap = (String[])getArguments().getSerializable("recap");
             position_list_clique = (int)getArguments().getInt("position_list_clique");
@@ -65,6 +77,7 @@ public class Recapitulatif extends Fragment {
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
         System.out.println("Numero TELEPHONE :"+customer.getPhone());
+        System.out.println("Resource Name :"+resource.getName());
         //
 
     }
@@ -81,6 +94,7 @@ public class Recapitulatif extends Fragment {
         final TextView tarif = (TextView) v.findViewById(R.id.tariftotal);
         final TextView nomprestataire = (TextView) v.findViewById(R.id.nomprestataire);
         final TextView adresseprestataire = (TextView) v.findViewById(R.id.adresseprestataire);
+        final TextView nomemploye = (TextView) v.findViewById(R.id.nomemploye);
 
         TableLayout table = (TableLayout) v.findViewById(R.id.idTable);
         TableRow row;
@@ -137,6 +151,8 @@ public class Recapitulatif extends Fragment {
         nomprestataire.setText(recap[3]);
         adresseprestataire.setText(recap[4]);
         horairedateprestation.setText(recap[5] + " - " + recap[6]);
+
+        nomemploye.setText(resource.getName());
 
         Button recapitulatif = (Button) v.findViewById(R.id.valider_reservation);
         recapitulatif.setOnClickListener(new View.OnClickListener() {
@@ -283,6 +299,36 @@ public class Recapitulatif extends Fragment {
                     prestDetails += ",\n";
             }
             String[] informations = getDateInformations(recap[5], recap[6]);
+
+
+            System.out.println("DEBUT RESOURCE");
+            ressource_jsonparser(recherche_ressource(String.valueOf(professional.getId())));
+            System.out.println("DEBUT EMPLOYE SELECTIONNE" + employe_selectionne);
+            System.out.println("FIN RESOURCE");
+
+
+
+
+            /*json = "{\n" +
+
+                    "\"begin_date\":\"" + informations[0] + "\"," +
+                    "\"end_date\":\"" + informations[1] + "\"," +
+                    "\"phone\":\"" + customer.getMobilephone() + "\"," +
+                    "\"resource\":\"" + employe_selectionne + "\"," +
+                    "\"products\":[\n" + prestDetails +
+                    "]\n" +
+                    "}\n";*/
+
+            /*json = "{\n" +
+
+                    "\"begin_date\":\"" + informations[0] + "\"," +
+                    "\"end_date\":\"" + informations[1] + "\"," +
+                    "\"phone\":\"" + customer.getMobilephone() + "\"," +
+                    "\"products\":[\n" + prestDetails +
+                    "],\n" +
+                    "\"resource\":" + employe_selectionne  +
+                    "}\n";*/
+
             json = "{\n" +
 
                     "\"begin_date\":\"" + informations[0] + "\"," +
@@ -291,7 +337,6 @@ public class Recapitulatif extends Fragment {
                     "\"products\":[\n" + prestDetails +
                     "]\n" +
                     "}\n";
-
 
 
             headerKey = "Authorization";
@@ -393,6 +438,63 @@ public class Recapitulatif extends Fragment {
         NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(m, builder.build());
     }
+
+
+
+    //RESSOURCE
+    public String recherche_ressource(String query) {
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee Resource");
+        getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/resource/professional/"+query+"/");
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee Resource");
+        String resp = null;
+        try {
+            resp = getRequest.execute().get();
+            System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+            System.out.println(resp.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return resp;
+    }
+
+
+    public void ressource_jsonparser(String jsonStr) {
+        if(jsonStr.equals("[]")){
+
+        }else {
+            try {
+
+                String recup_schedule = "{" + '"' + "data" + '"' + " : [{";
+                String schedule1 = jsonStr.replace("[{", recup_schedule);
+                String schedule2 = schedule1.replace("}]", "}]}");
+
+                if (!jsonStr.equals("[]")) {
+                    JSONObject jsonObj = new JSONObject(schedule2);
+                    //JSONArray contacts = jsonObj.getJSONArray("data");
+                    JSONArray Professional_resource = jsonObj.getJSONArray("data");
+                    System.out.println("AHBON3 :" + jsonStr);
+
+                    for (int j = 0; j < Professional_resource.length(); j++) {
+                        JSONObject p2 = Professional_resource.getJSONObject(j);
+                        String id = p2.getString("id");
+                        System.out.println("IDENTIFIANT BORDEL : "+ id+ "      " + resource.getId());
+
+                        if(id.equals(String.valueOf(resource.getId()))){
+                            employe_selectionne = p2.toString();
+                        }
+                    }
+                }
+            } catch (final JSONException e) {
+                Log.e(TAG, "Json parsing error: " + e.getMessage());
+            }
+        }
+
+    }
+
+
+
 
 
 

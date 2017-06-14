@@ -13,7 +13,7 @@
         <item
             android:id="@+id/nav_reservation"
             android:icon="@drawable/ic_grid_on_black_24dp"
-            android:title="Mes Réservations" />
+            android:title="Mes RdVs" />
         <item
             android:id="@+id/nav_favourites"
             android:icon="@drawable/ic_favorite_black_24dp"
@@ -28,7 +28,7 @@
             android:title="Mon Compte" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="">
         <menu>
             <item
                 android:id="@+id/nav_share"

@@ -23,8 +23,9 @@
                 android:layout_weight="3"
                 android:background="@color/GouiranLightPink"
                 android:gravity="center"
-                android:text="Prendre Rendez Vous"
-                android:textSize="25sp" />
+                android:text="Je prends RdV"
+                android:textSize="25sp"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
@@ -118,7 +119,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Durée total : "
+                            android:text="Durée total du RdV : "
                             android:textSize="25sp" />
 
                         <TextView

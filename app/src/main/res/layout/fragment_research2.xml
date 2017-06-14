@@ -99,6 +99,13 @@
                             android:paddingTop="5dip"
                             android:weightSum="1.0">
 
+                            <ImageView
+                                android:id="@+id/loupe_recherche"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/ic_search_black_24dp"
+                                android:clickable="false" />
 
                             <AutoCompleteTextView
                                 android:id="@+id/autoCompleteTextView1"
@@ -113,17 +120,11 @@
                                 <requestFocus />
                             </AutoCompleteTextView>
 
-                            <ImageView
-                                android:id="@+id/loupe_recherche"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/ic_search_black_24dp"
-                                android:clickable="false" />
+
                         </LinearLayout>
 
                         <TextView
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -151,6 +152,13 @@
                             android:paddingRight="5dip"
                             android:paddingTop="5dip">
 
+                            <ImageView
+                                android:id="@+id/loupe_recherche_ville"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_weight="1"
+                                android:clickable="false"
+                                android:background="@drawable/ic_lieu"/>
 
                             <AutoCompleteTextView
                                 android:id="@+id/autoCompleteTextView2"
@@ -164,13 +172,7 @@
                                 <requestFocus />
                             </AutoCompleteTextView>
 
-                            <ImageView
-                                android:id="@+id/loupe_recherche_ville"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:layout_weight="1"
-                                android:clickable="false"
-                                android:background="@drawable/ic_search_black_24dp"/>
+
                         </LinearLayout>
 
 
@@ -179,154 +181,55 @@
                             android:id="@+id/boutton_recherche"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="25dp"
                             android:background="#d16677"
                             android:textColor="@color/white"
-                            android:padding="5dp"
-                            android:text="Lancer la recherche" />
+                            android:padding="20dp"
+                            android:text="Lancer ma recherche" />
 
+
+                    </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:weightSum="1.0">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/vue_boutonretour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:weightSum="1.0"
+                    android:visibility="gone">
+                    <Button
+                        android:id="@+id/button_retour"
+                        android:text="Retour à la recherche"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#d16677"
+                        android:textColor="@color/white"
+                        android:padding="20dp"/>
 
                     </LinearLayout>
 
                     <View
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:layout_width="fill_parent"
                         android:layout_height="5px"
                         android:background="#FF909090" />
 
-
-                    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:weightSum="1.0">
-
-                        <TextView
-                            android:id="@+id/textView_1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Aucune donnée"
-                            android:theme="@style/result_research"/>
-                    </LinearLayout>
-
                     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1.0">
-
-                        <TextView
-                            android:id="@+id/textView_11"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Aucune donnée"
-                            android:theme="@style/result_research"/>
-                    </LinearLayout>
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1.0">
-
-                        <TextView
-                            android:id="@+id/textView_12"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Aucune donnée"
-                            android:theme="@style/result_research"/>
-                    </LinearLayout>
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1.0">
-
-                        <TextView
-                            android:id="@+id/textView_13"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Aucune donnée"
-                            android:theme="@style/result_research"/>
-                    </LinearLayout>
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1.0">
-
-                        <TextView
-                            android:id="@+id/textView_14"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Aucune donnée"
-                            android:theme="@style/result_research"/>
-                    </LinearLayout>
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1.0">
-
-                        <TextView
-                            android:id="@+id/textView_15"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Aucune donnée"
-                            android:theme="@style/result_research"/>
-                    </LinearLayout>-->
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:id="@+id/vue_listview"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:weightSum="1.0"
-                        android:visibility="gone">
-
-                        <Button
-                            android:id="@+id/button_retour"
-                            android:text="Retour recherche"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                        <ListView
-                            android:id="@+id/mesresultats"
-                            android:layout_width="fill_parent"
-                            android:layout_height="800px"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"></ListView>
-
-                    </LinearLayout>
-
-                    <!--<com.gouiranlink.franois.gouiranlinkproject.Recherche.scrollCalendar
-                        android:id="@+id/calendarDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="250dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/cb650f">
-                    </com.gouiranlink.franois.gouiranlinkproject.Recherche.scrollCalendar>
-
-                    <CalendarView
-                        android:id="@+id/calendarjeudi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                    </CalendarView>-->
-
-
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/deux_bouton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
-                        android:layout_marginBottom="50dp"
                         android:orientation="horizontal"
                         android:gravity="center"
                         android:weightSum="1.0">
@@ -337,8 +240,8 @@
                             android:layout_height="wrap_content"
                             android:background="#9abdc0"
                             android:textColor="@color/white"
-                            android:padding="5dp"
-                            android:text="Cartes" />
+                            android:padding="15dp"
+                            android:text="Autour de moi"/>
 
                         <Button
                             android:id="@+id/filtre_research"
@@ -347,8 +250,31 @@
                             android:layout_height="wrap_content"
                             android:background="#9abdc0"
                             android:textColor="@color/white"
-                            android:padding="5dp"
-                            android:text="Filtres" />
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:paddingRight="40dp"
+                            android:paddingLeft="40dp"
+                            android:text="Filtrer"/>
+
+                    </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/vue_listview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:weightSum="1.0"
+                        android:visibility="gone">
+
+                        <ListView
+                            android:id="@+id/mesresultats"
+                            android:layout_width="fill_parent"
+                            android:layout_height="800px"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"></ListView>
 
                     </LinearLayout>
 

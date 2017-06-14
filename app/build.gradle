@@ -7,8 +7,8 @@ android {
     defaultConfig {
         applicationId "com.gouiranlink.franois.gouiranlinkproject"
         minSdkVersion 21
-        versionCode 8
-        versionName "1.7"
+        versionCode 10
+        versionName "1.9"
         multiDexEnabled true
     }
     buildTypes {
@@ -73,4 +73,6 @@ dependencies {
     compile 'com.trello:rxlifecycle:0.5.0'
     // If you want pre-written Activities and Fragments you can subclass as providers
     compile 'com.trello:rxlifecycle-components:0.5.0'
+
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'
 }

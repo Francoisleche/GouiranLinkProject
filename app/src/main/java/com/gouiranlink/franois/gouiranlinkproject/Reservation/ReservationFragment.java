@@ -98,7 +98,7 @@ public class ReservationFragment extends Fragment {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new UpcomingFragment(), "A venir");
-        adapter.addFragment(new DoneFragment(), "Finis");
+        adapter.addFragment(new DoneFragment(), "Passés");
         viewPager.setAdapter(adapter);
     }
 

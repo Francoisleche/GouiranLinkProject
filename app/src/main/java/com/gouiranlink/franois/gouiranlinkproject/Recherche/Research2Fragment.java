@@ -17,7 +17,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -42,7 +41,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gouiranlink.franois.gouiranlinkproject.Manifest;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Image_N;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Product;
@@ -66,16 +64,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.R.id.list;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_APPEND;
 import static com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.BaseFragment.ARGS_INSTANCE;
@@ -98,7 +91,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
     ArrayList<ArrayList<String>> donnée_geolocalise = new ArrayList<ArrayList<String>>();
     private View mProgressView;
-    private LinearLayout recherche_layout,vue_listview;
+    private LinearLayout recherche_layout,vue_listview,vue_boutonretour,deux_bouton;
     private View mLoginFormView;
 
 
@@ -600,6 +593,9 @@ Log.e("Debug","bonjour");
         //mProgressView = view.findViewById(R.id.research_progress);
         recherche_layout = (LinearLayout) view.findViewById(R.id.recherche_layout);
         vue_listview = (LinearLayout) view.findViewById(R.id.vue_listview);
+        vue_boutonretour = (LinearLayout) view.findViewById(R.id.vue_boutonretour);
+        deux_bouton = (LinearLayout) view.findViewById(R.id.deux_bouton);
+
 
         button_retour_layout = (Button) view.findViewById(R.id.button_retour);
 
@@ -624,10 +620,24 @@ Log.e("Debug","bonjour");
             public void onClick(View v) {
                 if (!text2.getText().toString().isEmpty()) {
 
+                    List<String> pictures = new ArrayList<String>();
+                    List<String> id = new ArrayList<String>();
+                    List<String> institutesNames = new ArrayList<String>();
+                    List<String> avis = new ArrayList<String>();
+                    List<String> favoris = new ArrayList<String>();
+
+
                     hideKeyBoard(getActivity());
 
                     recherche_layout.setVisibility(true ? View.GONE : View.VISIBLE);
                     vue_listview.setVisibility(true ? View.VISIBLE : View.GONE);
+                    vue_boutonretour.setVisibility(true ? View.VISIBLE : View.GONE);
+
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)deux_bouton.getLayoutParams();
+                    params.setMargins(0, 0, 0, 20); //substitute parameters for left, top, right, bottom
+                    deux_bouton.setLayoutParams(params);
+
+
 
                     //ADAPTER pour la listView
                     ResearchTask2 recherche_list_prof = new ResearchTask2(text.getText().toString(), text2.getText().toString(), 5);
@@ -648,13 +658,18 @@ Log.e("Debug","bonjour");
                                         ArrayList<String> personnes = new ArrayList<String>();
                                         JSONObject c = contacts.getJSONObject(i);
 
-                                        String id = c.getString("id");
+                                        id.add(c.getString("id"));
+                                        institutesNames.add(c.getString("shop_name"));
+                                        avis = avis_jsonparser(recherche_avis(id.get(i)));
+                                        favoris.add(recherche_favoris(id.get(i)));
+
+
                                         System.out.println("Iiiiiiiiiiiiiiiiiiiiiiiid"+id);
                                         String geoloc_latitude = c.getString("geoloc_latitude");
                                         String geoloc_longitude = c.getString("geoloc_longitude");
                                         String shop_name = c.getString("shop_name");
                                         System.out.println("shop_nameshop_nameshop_nameshop_name" + shop_name);
-                                        personnes.add(id);
+                                        personnes.add(id.get(i));
                                         personnes.add(geoloc_latitude);
                                         personnes.add(geoloc_longitude);
                                         personnes.add(shop_name);
@@ -663,21 +678,51 @@ Log.e("Debug","bonjour");
                                     }
                                 }
 
+
+
                             } catch (final JSONException e) {
                                 Log.e(TAG, "Json parsing error: " + e.getMessage());
                             }
                         }
                     }
-                    String[] results = new String[]{};
+
+                    ArrayList<String> tableau_image = new ArrayList<String>();
+                    if(id.size()==0){
+
+                    }else{
+                        tableau_image = shop_image_jsonparser2(recherche_shop_image(id.get(0)));
+                    }
+
+                    RechercheResultatAdapter resultatAdapter = new RechercheResultatAdapter(getActivity());
+                    resultatAdapter.setId(id);
+                    resultatAdapter.setInstitutesNames(institutesNames);
+                    resultatAdapter.setAvis(avis);
+                    resultatAdapter.setFavoris(favoris);
+                    resultatAdapter.setPictures(tableau_image);
+
+                    /*System.out.println(resultatAdapter.getId().get(0));
+                    System.out.println(resultatAdapter.getInstitutesNames().get(0));
+                    System.out.println(resultatAdapter.getAvis().get(0));
+                    System.out.println(resultatAdapter.getFavoris().get(0));
+                    System.out.println(resultatAdapter.getPictures().get(0));*/
+
+
+
+
+                    listView.setAdapter(resultatAdapter);
+
+
+
+                    /*String[] results = new String[]{};
                     final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
-                    ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
+                    ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services_resultat_recherche, resultsList);
                     listView.setAdapter(tableau);
                     int g = 0;
                     for (int i = 0; i < recup.size(); i++) {
                         resultsList.add(recup.get(i));
                         tableau.notifyDataSetChanged();
                         g++;
-                    }
+                    }*/
 
 
 
@@ -756,7 +801,7 @@ Log.e("Debug","bonjour");
                     //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
 
                 } else {
-                    Toast.makeText(getActivity(), "Rentrer une ville ou un lieu", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Veuillez préciser une ville ou un lieu", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -769,6 +814,11 @@ Log.e("Debug","bonjour");
 
                 recherche_layout.setVisibility(true ? View.VISIBLE : View.GONE);
                 vue_listview.setVisibility(true ? View.GONE : View.VISIBLE);
+                vue_boutonretour.setVisibility(true ? View.GONE : View.VISIBLE);
+
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)deux_bouton.getLayoutParams();
+                params.setMargins(0, 20, 0, 50); //substitute parameters for left, top, right, bottom
+                deux_bouton.setLayoutParams(params);
 
             }
         });
@@ -777,6 +827,7 @@ Log.e("Debug","bonjour");
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                System.out.println("On viens de cliquer ooooh");
                 final Fragment[] fragment = {null};
                 final FragmentTransaction[] ft = {null};
 
@@ -791,7 +842,8 @@ Log.e("Debug","bonjour");
 
                             try {
                                 fileOutputStream = getContext().openFileOutput("GouiranLink", MODE_APPEND);
-                                fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
+                                //fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
+                                fileOutputStream.write(position);
                                 fileOutputStream.write("`".getBytes());
                                 fileOutputStream.close();
                             } catch (IOException e) {
@@ -799,7 +851,7 @@ Log.e("Debug","bonjour");
                             }
 
 
-                            System.out.println(listView.getItemAtPosition(position).toString());
+                            //System.out.println(listView.getItemAtPosition(position).toString());
 
 
                             //PREMIERE METHODE
@@ -907,7 +959,7 @@ Log.e("Debug","bonjour");
                             }
 
 
-                            ft[0].replace(R.id.fragment_remplace, fragment[0]).addToBackStack(null);
+                            ft[0].replace(R.id.fragment_remplace, fragment[0]).addToBackStack("recherche");
                             ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                             ft[0].commit();
                             ringProgressDialog.cancel();
@@ -2561,8 +2613,7 @@ Log.e("Debug","bonjour");
     public void onResume() {
         super.onResume();
         // Set title
-        getActivity()
-                .setTitle(R.string.research);
+        getActivity().setTitle(R.string.gouiranlinktitle);
     }
 
 
@@ -2652,6 +2703,7 @@ Log.e("Debug","bonjour");
                 JSONObject json2 = p2.getJSONObject("product");
                 int product_id = (int) json2.get("id");
                 String product_name = (String) json2.get("name");
+                String description = (String) json2.get("description");
 
                 JSONObject json3 = json2.getJSONObject("category");
                 int product_category_id = (int) json3.get("id");
@@ -2676,13 +2728,13 @@ Log.e("Debug","bonjour");
 
                 // pourquoi //// ? parce que / est deja utiliser dans les noms de products
                 if(product_category_name.equals("Coiffure Femme")){
-                    liste_coifure_femme.add(product_name+"////"+price_resource_manager+"////"+discounts);
+                    liste_coifure_femme.add(product_name+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }else if(product_category_name.equals("Bien-Être")){
-                    liste_bien_etre.add(product_name+"////"+price_resource_manager+"////"+discounts);
+                    liste_bien_etre.add(product_name+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }else if(product_category_name.equals("Beauté")){
-                    liste_beaute.add(product_name+"////"+price_resource_manager+"////"+discounts);
+                    liste_beaute.add(product_name+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }else if(product_category_name.equals("Homme")){
-                    liste_homme.add(product_name+"////"+price_resource_manager+"////"+discounts);
+                    liste_homme.add(product_name+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }
 
 
@@ -3346,6 +3398,37 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
     }
 
 
+    public ArrayList<String> shop_image_jsonparser2(String jsonStr) {
+        ArrayList<String> tableau_image = new ArrayList<>();
+
+        if(jsonStr.equals("[]")){
+            tableau_image = new ArrayList<>();
+        }else {
+            try {
+
+                if (!jsonStr.equals("[]")) {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    JSONArray Professional_Shop_image = jsonObj.getJSONArray("data");
+
+                    System.out.println("AHBON3 :" + jsonStr);
+
+
+                    tableau_image = new ArrayList<>();
+                    for (int j = 0; j < Professional_Shop_image.length(); j++) {
+                        JSONObject p2 = Professional_Shop_image.getJSONObject(j);
+                        String url = p2.getJSONObject("image").getString("url");
+
+                        tableau_image.add(url);
+                    }
+                }
+            } catch (final JSONException e) {
+                Log.e(TAG, "Json parsing error: " + e.getMessage());
+            }
+        }
+        return tableau_image;
+    }
+
+
 
 
 
@@ -3409,6 +3492,81 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
 
 
 
+    //RESSOURCE
+    public String recherche_favoris(String query) {
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee Resource");
+        getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/favoris/"+query+"/");
+        System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee Resource");
+        String resp = null;
+        try {
+            resp = getRequest.execute().get();
+            System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+            System.out.println(resp.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return resp;
+    }
+
+
+
+
+
+
+    public String recherche_avis(String query) {
+        getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/comment/professional/"+query+"/");
+        String resp = null;
+        try {
+            resp = getRequest.execute().get();
+            System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+            System.out.println(resp.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return resp;
+    }
+
+
+
+    public ArrayList<String> avis_jsonparser(String str) {
+        ArrayList<String> tableau_commentaire = new ArrayList<>();
+        int count_commentaire = 0;
+        try {
+
+            if (!str.equals("[]")) {
+                JSONObject jsonObj = new JSONObject(str);
+                JSONArray tab_comment = jsonObj.getJSONArray("data");
+
+
+                count_commentaire = tab_comment.length();
+
+
+                //Remplir la liste des commentaires
+                for (int j = 0; j < tab_comment.length(); j++) {
+                    JSONObject p2 = tab_comment.getJSONObject(j);
+
+                    String comment_grade = p2.getJSONObject("booking").getJSONObject("comment").getString("grade");
+                    tableau_commentaire.add(comment_grade);
+                }
+            }else{
+                count_commentaire=0;
+            }
+        } catch (final JSONException e) {
+            Log.e(TAG, "Json parsing error: " + e.getMessage());
+        }
+
+        return tableau_commentaire;
+
+    }
+
+
+
+
+
 
 
 
@@ -3439,22 +3597,21 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
+
                     return;
                 }
 
                 Toast.makeText(getActivity(), "geolocaliser le portable utilisateur", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getActivity(), "impossible de geolocaliser le portable utilisateur", Toast.LENGTH_SHORT).show();
-                // Permission was denied. Display an error message.
             }
         }
     }
+
+
+
+
+
 
 
 

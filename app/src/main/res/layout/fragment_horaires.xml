@@ -5,41 +5,329 @@
     android:orientation="vertical">
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/t1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choisissez une date pour votre RdV ..." />
+    </LinearLayout>
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/calendrier"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_below="@+id/calendrier2">
+        android:layout_below="@+id/calendrier2"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+
+        <!--<com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/jourouverture_horaire"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mcv_showOtherDates="all"
+            app:mcv_selectionColor="#00F"
+            />-->
 
         <CalendarView
             android:id="@+id/jourouverture_horaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></CalendarView>
+
+        <!--<CalendarView
+            android:id="@+id/jourouverture_horaire"
             android:layout_width="fill_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:background="@xml/customborder"
             android:verticalScrollbarPosition="left"
             android:descendantFocusability="afterDescendants"
             android:translationY="10dp"
             android:scrollY="50dp"
-
-            android:shownWeekCount="@integer/mr_controller_volume_group_list_animation_duration_ms"/>
+            android:shownWeekCount="@integer/mr_controller_volume_group_list_animation_duration_ms"/>-->
 
     </LinearLayout>
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/t2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="345dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="... Et l'heure de votre choix" />
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/calendrier3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/calendrier"
+        android:layout_marginTop="370dp"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/calendrier">
+
+            <LinearLayout
+                android:id="@+id/bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:baselineAligned="true"
+                android:orientation="horizontal">
+                <!--<LinearLayout
+                    android:id="@+id/horizontalbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="true"
+                    android:orientation="horizontal" >
+                </LinearLayout>-->
+
+                <Button
+                    android:id="@+id/text7h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="07:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text8h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="08:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text9h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="09:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text10h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="10:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text11h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="11:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text12h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="12:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text13h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="13:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text14h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="14:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text15h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="15:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text16h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="16:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text17h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="17:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text18h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="18:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text19h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="19:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text20h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="20:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text21h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="21:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text22h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="22:00"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/text23h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/GouiranDarkPink"
+                    android:text="23:00"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/calendrier4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/calendrier"
+        android:layout_marginTop="340dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <HorizontalScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/calendrier">
+
+            <LinearLayout
+                android:id="@+id/horizontalbar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:baselineAligned="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/text00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:textColor="@color/black" />
+
+                <Button
+                    android:id="@+id/text01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:textColor="@color/black" />
+
+                <Button
+                    android:id="@+id/text02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:textColor="@color/black" />
+
+                <Button
+                    android:id="@+id/text03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/calendrier5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/calendrier"
+        android:layout_marginTop="500dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/suivant_horaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/GouiranDarkPink"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:text="SUIVANT"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/calendrier2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_above="@+id/calendrier"
-        android:layout_marginTop="400dp">
+        android:layout_marginTop="400dp"
+        android:orientation="vertical">
+
+        <!---->
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <ListView
                 android:id="@+id/meshoraires"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="800px"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"></ListView>

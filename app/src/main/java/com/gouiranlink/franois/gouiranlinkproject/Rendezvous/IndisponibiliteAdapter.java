@@ -1,6 +1,8 @@
 package com.gouiranlink.franois.gouiranlinkproject.Rendezvous;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,6 +128,14 @@ public class IndisponibiliteAdapter extends ArrayAdapter<String> {
             layoutItem = (LinearLayout) inflater.inflate(groupid, parent, false);
         } else {
             layoutItem = (LinearLayout) convertView;
+        }
+
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+        if(layoutItem.getY()>(height/2)){
+            layoutItem.setBackgroundColor(Color.parseColor("#d16677"));
+        }else{
+            layoutItem.setBackgroundColor(Color.parseColor("#9abdc0"));
         }
 
         TextView textviewnote = (TextView) layoutItem.findViewById(R.id.horaire);

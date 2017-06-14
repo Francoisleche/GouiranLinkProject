@@ -3,7 +3,10 @@ package com.gouiranlink.franois.gouiranlinkproject.Reservation;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +27,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,6 +49,7 @@ public class DoneFragment extends Fragment {
     private Typeface font;
     private Customer customer;
     List<Reservation> reservations;
+    Reservation reser;
     private ListView listviewDone;
 
     private String products_json ="";
@@ -73,99 +75,14 @@ public class DoneFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_done, null);
         font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
 
-        /*for (int i = 0; i < 10; i++) {
-            int resID = getResources().getIdentifier("reservation" + (i + 1), "id", getActivity().getPackageName());
-            linearLayouts[i] = (LinearLayout)root.findViewById(resID);
-            resID = getResources().getIdentifier("reservation" + (i + 1) + "_part0", "id", getActivity().getPackageName());
-            separatorParts[i] = (LinearLayout)root.findViewById(resID);
-            resID = getResources().getIdentifier("reservation" + (i + 1) + "_part1", "id", getActivity().getPackageName());
-            firstParts[i] = (LinearLayout)root.findViewById(resID);
-            resID = getResources().getIdentifier("reservation" + (i + 1) + "_part2", "id", getActivity().getPackageName());
-            secondParts[i] = (LinearLayout)root.findViewById(resID);
-            resID = getResources().getIdentifier("reservation" + (i + 1) + "_part3", "id", getActivity().getPackageName());
-            thirdParts[i] = (LinearLayout)root.findViewById(resID);
-            buttons[i] = new Button(getActivity());
-        }
-        RelativeLayout layout = (RelativeLayout) root.findViewById(R.id.upcoming_relative);
-        LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        */
+
+
+
+
         return (root);
     }
 
-    private class Reservation {
-        private String id;
-        String picture;
-        String institute;
-        List<String> type;
-        String date;
-        String hour;
-        String adress;
 
-        public Reservation() {
-            picture = "";
-            institute = "";
-            type = new ArrayList<String>();
-            date = "";
-            hour = "";
-            adress = "";
-        }
-
-        public String getPicture() {
-            return picture;
-        }
-
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
-
-        public String getInstitute() {
-            return institute;
-        }
-
-        public void setInstitute(String institute) {
-            this.institute = institute;
-        }
-
-        public List<String> getType() {
-            return type;
-        }
-
-        public void setType(List<String> type) {
-            this.type = type;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public void setDate(String date) {
-            this.date = date;
-        }
-
-        public String getHour() {
-            return hour;
-        }
-
-        public void setHour(String hour) {
-            this.hour = hour;
-        }
-
-        public String getAdress() {
-            return adress;
-        }
-
-        public void setAdress(String adress) {
-            this.adress = adress;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-    }
 
     private List<Reservation> getReservationList() {
         List<Reservation> reservationList = new ArrayList<Reservation>();
@@ -214,13 +131,18 @@ public class DoneFragment extends Fragment {
                         reservation.picture = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
                     for (int j = 0; j < arr.getJSONObject(i).getJSONArray("products").length(); j++) {
                         if (arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").has("name") &&
-                                !arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").isNull("name"))
+                                !arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").isNull("name")) {
+                            System.out.println("Yyyyyyyyyyyyyyh : "+arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product"));
+                            reservation.products.add(arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getString("name"));
                             reservation.type.add(arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").getString("name"));
+                        }
                     }
                     if (arr.getJSONObject(i).has("begin_date") && !arr.getJSONObject(i).isNull("begin_date")) {
 
                         boolean_commentaires.add(date_commentaire(arr.getJSONObject(i).getString("begin_date")));
+                        reservation.boolean_commentaires_date_ok = date_commentaire(arr.getJSONObject(i).getString("begin_date"));
                         products_json = arr.getJSONObject(i).getString("products");
+                        reservation.products_json = arr.getJSONObject(i).getString("products");
                         System.out.println("DONNNNNNNE FRAGMENT 1 :" +getDate(arr.getJSONObject(i).getString("begin_date")));
                         System.out.println("DONNNNNNNE FRAGMENT 2 :" +getHour(arr.getJSONObject(i).getString("begin_date")));
 
@@ -392,6 +314,25 @@ public class DoneFragment extends Fragment {
                                     int position, long id) {
                 Toast.makeText(getActivity(), "" + position,
                         Toast.LENGTH_SHORT).show();
+                Fragment fragment = null;
+                FragmentTransaction ft = null;
+                Bundle args = new Bundle();
+                reser = reservations.get(position);
+                args.putSerializable("Reservation", reser);
+                args.putSerializable("Fragment","DoneFragment");
+                args.putSerializable("Customer",customer);
+                FragmentManager fm = getFragmentManager();
+                //FragmentTransaction ft = fm.beginTransaction();
+                ft = fm.beginTransaction();
+                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                fragment = new DetailRdv();
+                fragment.setArguments(args);
+
+                ft.replace(R.id.fragment_remplace, fragment).addToBackStack("DoneFragment");
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
+                getActivity().findViewById(R.id.fragment_reservations).setVisibility(View.GONE);
             }
         });
 

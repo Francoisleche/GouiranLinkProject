@@ -791,7 +791,7 @@ public class HomeFragment extends Fragment implements ConnectionCallbacks, OnCon
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(R.string.home);
+        getActivity().setTitle(R.string.gouiranlinktitle);
     }
 
 

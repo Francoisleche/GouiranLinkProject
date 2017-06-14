@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.google.android.gms.analytics.ecommerce.Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Comment;
@@ -37,6 +39,7 @@ public class AvisProfessional extends Fragment{
     private GetRequest getRequest;
     private ResearchFragment.ResearchTask mAuthTask = null;
     private Professional professional;
+    private Customer customer;
     private String accessToken;
     public ListView lstview_comment;
     private Comment[] commentaires = null;
@@ -51,6 +54,7 @@ public class AvisProfessional extends Fragment{
         //Récupération de l'objet Professionnal
         if (getArguments() != null) {
             professional = (Professional)getArguments().getSerializable("Professionnal");
+            customer = (Customer) getArguments().getSerializable("Customer");
             accessToken = (String)getArguments().getString("token");
             System.out.println("Toooooooooooooken"+accessToken);
         }
@@ -65,11 +69,15 @@ public class AvisProfessional extends Fragment{
 
         avis_jsonparser(recherche_avis(String.valueOf(professional.getId())));
 
+
+
+        RatingBar rtbProductRating = (RatingBar) view.findViewById(R.id.rtbProductRating);
+        TextView moyenne_avis = (TextView) view.findViewById(R.id.moyenne_avis);
+
         lstview_comment=(ListView) view.findViewById(R.id.malistecommentaires);
 
         LinearLayout commentaire_existant = (LinearLayout) view.findViewById(R.id.commentaire_existant);
         LinearLayout pas_de_commentaire = (LinearLayout) view.findViewById(R.id.pas_de_commentaire);
-
 
 
         //Si le prestataire possède des commentaires
@@ -77,14 +85,28 @@ public class AvisProfessional extends Fragment{
             commentaire_existant.setVisibility(true ? View.VISIBLE : View.GONE);
             pas_de_commentaire.setVisibility(true ? View.GONE : View.VISIBLE);
 
-            int layout = R.layout.services3;
+            int layout = R.layout.services3_avis;
             int id = R.id.comment_text;
             String[] items = new String[commentaires.length];
             for(int i =0;i<commentaires.length;i++){
                 items[i]=commentaires[i].getCustomer().getName();
             }
-            AvisAdapter adapter=new AvisAdapter(getActivity(),layout,id,items,commentaires);
+            AvisAdapter adapter=new AvisAdapter(getActivity(),layout,id,items,commentaires,professional);
             lstview_comment.setAdapter(adapter);
+
+
+            //Moyenne des avis
+            double cal = 0;
+            for(int i =1;i<commentaires.length;i++){
+                System.out.println("Oooooooooooh avis : "+commentaires[i].getGrade());
+                cal = cal+ (double)commentaires[i].getGrade();
+            }
+            cal = cal / (commentaires.length-1);
+            System.out.println("moyeeeeeeennne : "+cal);
+            rtbProductRating.setRating(Float.parseFloat(moyenne(String.valueOf(cal))));
+            System.out.println("moyeeeeeeennne : "+Float.parseFloat(moyenne(String.valueOf(cal))));
+            moyenne_avis.setText(moyenne(String.valueOf(cal))+"/5");
+
 
         }else{
             pas_de_commentaire.setVisibility(true ? View.VISIBLE : View.GONE);
@@ -189,6 +211,26 @@ public class AvisProfessional extends Fragment{
         }
         return commentaires;
     }
+
+
+    public String moyenne(String moy){
+        String moyenn = null;
+
+        System.out.println(moy.substring(0,1));
+        System.out.println(moy.substring(1,2));
+        System.out.println(moy.substring(2,3));
+        if(Integer.parseInt(moy.substring(2,3)) <= 3){
+            moyenn = moy.substring(0,1);
+        }else if(Integer.parseInt(moy.substring(2,3)) >= 4 && Integer.parseInt(moy.substring(2,3)) <= 7){
+            moyenn = moy.substring(0,1) + ".5";
+        }else if(Integer.parseInt(moy.substring(2,3)) >= 8){
+            moyenn = String.valueOf(Integer.parseInt(moy.substring(0,1))+1);
+        }
+
+
+        return moyenn;
+    }
+
 
 
 }

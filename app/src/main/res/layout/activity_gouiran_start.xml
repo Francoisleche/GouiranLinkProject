@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     style="@style/Theme.AppCompat"
@@ -7,14 +8,37 @@
     <ImageView
         android:layout_gravity="center"
         android:layout_width="390dp"
-        android:layout_height="400dp"
+        android:layout_height="370dp"
         android:id="@+id/background"
-        android:background="@drawable/ouverture"/>
+        android:background="@drawable/ouvertureessai3"/>
+        <!--android:background="@drawable/ouverture"/-->
     <TextView
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:id="@+id/presentation_text"/>
+        android:id="@+id/presentation_text1"
+        android:text="LE PARTENAIRE"
+        android:textSize="50sp"
+        android:textColor="@color/GouiranDarkPink"
+        tools:font="fonts/Acrom W00 Medium.ttf"/>
+
+    <TextView
+        android:id="@+id/presentation_text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="DE VOS RENDEZ-VOUS"
+        android:textSize="35sp"
+        android:textColor="@color/GouiranDarkPink"
+        tools:font="fonts/Acrom W00 Medium.ttf"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/presentation_text3"
+        android:text="BEAUTÉ"
+        android:textSize="70sp"
+        android:textColor="@color/GouiranDarkPink"
+        tools:font="fonts/Acrom W00 Medium.ttf"/>
 </LinearLayout>

@@ -3,33 +3,30 @@ package com.gouiranlink.franois.gouiranlinkproject.Rendezvous;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
-import com.gouiranlink.franois.gouiranlinkproject.Recherche.Research2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 
 import org.json.JSONArray;
@@ -61,6 +58,7 @@ public class PrendreRdv extends Fragment {
     private String horaire = "";
 
     private Resource[] ResourceProfessional;
+    private Resource resource;
 
     private Professional_Product professional_product_selectionne;
     private int position_list_clique;
@@ -314,6 +312,20 @@ public class PrendreRdv extends Fragment {
 
 
 
+        /*String id2 = spinner.getSelectedItem().toString();
+        int position2 = 0;
+        for (int i = 0; i < spinner.getCount(); i++) {
+            String value = spinner.getItemAtPosition(i).toString();
+            if (value.equals(id2)) {
+                position2 = i;
+            }
+        }
+        System.out.println("Spinnnnner position"+position2);
+        resource = ResourceProfessional[0];*/
+
+
+
+
 
 
         final Button appuie_horaire = (Button) v.findViewById(R.id.appuie_horaire);
@@ -339,6 +351,14 @@ public class PrendreRdv extends Fragment {
                     }
                 }
                 System.out.println("Spinnnnner position"+position);
+                resource = ResourceProfessional[position];
+                System.out.println("resource position"+resource.getName());
+
+                Resource pivot = ResourceProfessional[position];
+                ResourceProfessional[position] = ResourceProfessional[0];
+                ResourceProfessional[0]=pivot;
+
+
 
 
 
@@ -701,6 +721,8 @@ public class PrendreRdv extends Fragment {
                     Bundle args = new Bundle();
                     args.putSerializable("Professionnal", professional);
                     args.putSerializable("Customer", customer);
+                    System.out.println("RESSSSSSSSSSSSSSSOURCE : "+ResourceProfessional[0]);
+                    args.putSerializable("Resource", ResourceProfessional[0]);
                     recap[0] = String.valueOf(finalTariftotal);
                     recap[1] = liste_prestations_selectionne[0].getCurrency();
                     recap[2] = String.valueOf(finalHeuretotal) + "h" + String.valueOf(finalMinutetotal) + "min";
@@ -710,6 +732,7 @@ public class PrendreRdv extends Fragment {
                     recap[5] = horaires_date[1];
                     //recap[6] = heure_selectionne.getText().toString();
                     recap[6] = horaires_date[2];
+
 
 
                     //System.out.println("RECAPITULATIF : "+recap[0]+" "+recap[1]);
@@ -746,18 +769,17 @@ public class PrendreRdv extends Fragment {
         row = new TableRow(getActivity());
         tv1 = new TextView(getActivity());
         tv2 = new TextView(getActivity());
-        tv1.setText("Services");
+        tv1.setText("Mon moment beauté :");
         tv1.setTypeface(null, Typeface.BOLD);
         tv1.setGravity(Gravity.LEFT);
         tv1.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-        tv2.setText("Prix");
+        /*tv2.setText("Prix");
         tv2.setTypeface(null, Typeface.BOLD);
         tv2.setGravity(Gravity.RIGHT);
-        tv2.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-        //tv1.setBackgroundResource(R.drawable.back);
-        //tv2.setBackgroundResource(R.drawable.back);
+        tv2.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );*/
+
         row.addView(tv1);
-        row.addView(tv2);
+        //row.addView(tv2);
         table.addView(row);
 
         for(int i=0;i<liste_prestations_selectionne.length;i++) {
@@ -776,7 +798,7 @@ public class PrendreRdv extends Fragment {
 
             // idem 2ème cellule
             tv2 = new TextView(getActivity());
-            tv2.setText(String.valueOf(liste_prestations_selectionne[i].getPrice())+liste_prestations_selectionne[i].getCurrency());
+            tv2.setText(String.valueOf(liste_prestations_selectionne[i].getPrice())+"€");
             tv2.setGravity(Gravity.RIGHT);
             //tv2.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
             tv2.setLayoutParams( new TableRow.LayoutParams(0,50,1));

@@ -1,16 +1,10 @@
 package com.gouiranlink.franois.gouiranlinkproject;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -21,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,11 +40,6 @@ import com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Reservation.Reservation2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.Reservation.ReservationFragment;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.CircleTransform;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 /**
  * Created by François on 27/04/2017.
@@ -275,6 +263,7 @@ public class ParentActivity2 extends AppCompatActivity
         } else if (id == R.id.nav_reservation) {
 
             if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {
+                args.putSerializable("Retour","");
                 fragment = new Reservation2Fragment();
                 fragment.setArguments(args);
             }

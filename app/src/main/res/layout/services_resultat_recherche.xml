@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/image_recherche"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:src="@drawable/cb650f"/>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:text="TextView"
+        android:id="@+id/shopname_resultat"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:theme="@style/result_research"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp">
+
+        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+            android:layout_marginLeft="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="left">
+
+            <RatingBar
+                android:id="@+id/rtbProductRating"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:numStars="5"
+                android:rating="3.5"
+                android:isIndicator="true"
+                style="@style/foodRatingBar2"
+                />
+
+            <TextView
+                android:id="@+id/resultat_avis"
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="%1$s/5"/>
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="right">
+
+            <ImageView
+                android:id="@+id/image_coeur"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_coeur_favoris_pink"/>
+
+            <TextView
+                android:layout_alignParentRight="true"
+                android:id="@+id/resultat_favoris"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="%1$s FAVORIS"/>
+
+            </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

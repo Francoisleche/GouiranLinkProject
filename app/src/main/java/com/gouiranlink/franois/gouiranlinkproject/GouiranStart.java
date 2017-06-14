@@ -8,27 +8,18 @@ import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses2.NewsService;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses2.RetrofitProvider;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,15 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import rx.Notification;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 public class GouiranStart extends RxAppCompatActivity {
 
@@ -66,10 +50,10 @@ public class GouiranStart extends RxAppCompatActivity {
         setContentView(R.layout.activity_gouiran_start);
 
         ImageView background = (ImageView) findViewById(R.id.background);
-        final DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        final int width = displayMetrics.widthPixels;
-        final int height = displayMetrics.heightPixels;
+        //final DisplayMetrics displayMetrics = new DisplayMetrics();
+        //getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        //final int width = displayMetrics.widthPixels;
+        //final int height = displayMetrics.heightPixels;
         final Typeface font = Typeface.createFromAsset(getAssets(), "fonts/Acrom W00 Medium.ttf");
 
         /*float heightF = (float) height;
@@ -78,7 +62,7 @@ public class GouiranStart extends RxAppCompatActivity {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, (int) (heightF * twoThird));
         background.setLayoutParams(params);*/
 
-        TextView text = (TextView) findViewById(R.id.presentation_text);
+        /*TextView text = (TextView) findViewById(R.id.presentation_text);
         String content = getString(R.string.presentation_text);
         String[] each = content.split(" ");
         SpannableString ss1 = new SpannableString(each[0]);
@@ -102,7 +86,22 @@ public class GouiranStart extends RxAppCompatActivity {
 
         CharSequence res = TextUtils.concat(ss1, "  ", ss2, "\n", ss3, "  ", ss4, "  ", ss5, "\n", ss6);
         text.setText(res);
-        text.setTypeface(font);
+        text.setTypeface(font);*/
+
+
+
+        TextView text1 = (TextView) findViewById(R.id.presentation_text1);
+        TextView text2 = (TextView) findViewById(R.id.presentation_text2);
+        TextView text3 = (TextView) findViewById(R.id.presentation_text3);
+
+        /*text1.setTypeface(font);
+        text2.setTypeface(font);
+        text3.setTypeface(font);*/
+
+
+
+
+
 
         final Context context = this;
 

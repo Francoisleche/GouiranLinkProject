@@ -11,31 +11,30 @@
         android:orientation="vertical"
         android:background="@color/white">
 
-        <TextView
+        <!--<TextView
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginBottom="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textColor="@color/black"
-            android:text="Avis et commentaires"/>
+            android:text="Avis et commentaires"/>-->
 
 
 
         <LinearLayout xmlns:tools="http://schemas.android.com/tools"
-            android:layout_marginLeft="5dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:orientation="horizontal">
 
             <RatingBar
                 android:id="@+id/rtbProductRating"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:numStars="5"
-                android:rating="3.5"
                 android:isIndicator="false"
                 style="@style/foodRatingBar"
                 />
@@ -43,6 +42,7 @@
             <TextView
                 android:id="@+id/moyenne_avis"
                 android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
@@ -91,19 +91,17 @@
      </LinearLayout>
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp">
 
+        <ListView
+            android:id="@+id/malistecommentaires"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"></ListView>
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ListView
-                    android:id="@+id/malistecommentaires"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"></ListView>
-
-            </RelativeLayout>
+    </RelativeLayout>
 
 </FrameLayout>

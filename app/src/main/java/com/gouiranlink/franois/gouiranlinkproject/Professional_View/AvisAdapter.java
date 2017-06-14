@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Comment;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 
 import java.util.ArrayList;
@@ -30,17 +31,19 @@ public class AvisAdapter extends ArrayAdapter<String> {
     int groupid;
     String[] item_list;
     Comment[] comment;
+    Professional professional;
     ArrayList<String> desc;
     Context context;
     boolean premiere_fois;
     boolean[] hidden = null;
 
-    public AvisAdapter(Context context, int vg, int id,String[] item_list,Comment[] comment){
+    public AvisAdapter(Context context, int vg, int id,String[] item_list,Comment[] comment,Professional professional){
         super(context,vg, id, item_list);
         this.context=context;
         groupid=vg;
         this.item_list=item_list;
         this.comment=comment;
+        this.professional=professional;
 
         hidden = new boolean[item_list.length];
         for (int i = 0; i < item_list.length; i++)
@@ -134,10 +137,8 @@ public class AvisAdapter extends ArrayAdapter<String> {
         TextView textviewprestation= (TextView) layoutItem.findViewById(R.id.comment_prestation);
         TextView textviewtext= (TextView) layoutItem.findViewById(R.id.comment_text);
         TextView textviewreponse_pro= (TextView) layoutItem.findViewById(R.id.reponse_pro);
-
-
-        ImageView image1 = (ImageView) layoutItem.findViewById(R.id.grid_image2);
-        ImageView image2 = (ImageView) layoutItem.findViewById(R.id.grid_image3);
+        TextView textviewequipe_pro= (TextView) layoutItem.findViewById(R.id.equipe_shop_name);
+        LinearLayout reponse = (LinearLayout) layoutItem.findViewById(R.id.reponse);
 
 
 
@@ -152,9 +153,9 @@ public class AvisAdapter extends ArrayAdapter<String> {
         if (item_list[position].equals("")) {
             //layoutItem.setBackgroundColor(Color.BLUE);
             layoutItem.setVisibility(INVISIBLE);
-            layoutItem.setLayoutParams(new LinearLayout.LayoutParams(400, 400));
+            layoutItem.setLayoutParams(new LinearLayout.LayoutParams(400, 300));
         } else {
-            textviewnote.setText(String.valueOf(comment[position].getGrade()) + "/5");
+            textviewnote.setText(String.valueOf(comment[position].getGrade()));
             textviewsurname.setText("  "+comment[position].getCustomer().getName());
             //textviewdate.setText(comment[position].getCreated_at());
             String s = "";
@@ -165,7 +166,19 @@ public class AvisAdapter extends ArrayAdapter<String> {
             }
             textviewprestation.setText(s);
             textviewtext.setText(comment[position].getText());
-            textviewreponse_pro.setText(comment[position].getProfessional_response());
+
+
+            if(comment[position].getProfessional_response().equals("null")){
+                reponse.setVisibility(INVISIBLE);
+            }else{
+                reponse.setVisibility(VISIBLE);
+                textviewreponse_pro.setText(comment[position].getProfessional_response());
+                textviewequipe_pro.setText("- L'équipe de "+professional.getShop_name()+" -");
+            }
+
+
+
+
 
             int x1 = taille_des_imagesview(comment[position].getText());
             int width = 280;
@@ -176,7 +189,7 @@ public class AvisAdapter extends ArrayAdapter<String> {
             System.out.println("height part : "+ height);
             //image1.setLayoutParams(new LinearLayout.LayoutParams(width, height));
             RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,height*100+100);
-            image1.setLayoutParams(parms);
+            //image1.setLayoutParams(parms);
 
             if(!comment[position].getProfessional_response().equals("null")){
                 int x2 = taille_des_imagesview(comment[position].getProfessional_response());
@@ -192,7 +205,7 @@ public class AvisAdapter extends ArrayAdapter<String> {
             System.out.println("height pro REPOOOOOOOONSE : "+ height + "       "+comment[position].getProfessional_response());
             //image2.setLayoutParams(new LinearLayout.LayoutParams(width, height));
             parms = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,height*100);
-            image2.setLayoutParams(parms);
+            //image2.setLayoutParams(parms);
 
 
             //ratingBar.setRating((float) comment[position].getGrade());

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gouiranlink.franois.gouiranlinkproject.R;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +19,21 @@ Adapter which represents the layout for a single favourite
  */
 
 class FavouritesImageAdapter extends BaseAdapter {
+    String[] item;
+    String[] item1;
+    String[] item2;
+    LayoutInflater inflter;
     final private Context mContext;
     private List<String> mThumbPictures = new ArrayList<String>();
     private List<String> mThumbNames = new ArrayList<String>();
     private List<Integer> mIds = new ArrayList<Integer>();
 
-    FavouritesImageAdapter(Context c) {
-        mContext = c;
+    public FavouritesImageAdapter(Context context, String[] item,String[] item1,String[] item2) {
+        this.mContext=context;
+        this.item=item;
+        this.item1=item1;
+        this.item2=item2;
+        inflter = (LayoutInflater.from(context));
     }
 
     public List<Integer> getmIds() {
@@ -50,24 +58,35 @@ class FavouritesImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
+
         View grid;
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         if (convertView == null) {
-            grid = new View(mContext);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             grid = inflater.inflate(R.layout.grid_single_pros, null);
+
+
             TextView textView = (TextView)grid.findViewById(R.id.grid_text);
             ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
+            //textView.setText(item1[position]);
             textView.setText(mThumbNames.get(position));
             //Si le compte est Free, alors il ne possède pas de photo
-            if(!mThumbPictures.get(position).equals("Free")){
-                new DownloadImageTask(imageView).execute(mThumbPictures.get(position));
+            if(!mThumbPictures.get(position).equals("")){
+                //new DownloadImageTask(imageView).execute(mThumbPictures.get(position));
+                System.out.println("Phoooooootoo : "+mIds.get(position));
+                System.out.println("Phoooooootoo : "+mThumbNames.get(position));
+                System.out.println("Phoooooootoo : "+mThumbPictures.get(position));
+                Picasso.with(grid.getContext()).load(mThumbPictures.get(position))
+                        .into(imageView);
+                /*Picasso.with(grid.getContext()).load(item2[position])
+                        .into(imageView);*/
             }else{
                 imageView.setImageResource(R.drawable.logo_free);
             }
-
         } else {
             grid = convertView;
         }
+
         return (grid);
     }
 

@@ -1,26 +1,19 @@
 package com.gouiranlink.franois.gouiranlinkproject.Homepage;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +29,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -298,7 +290,7 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(R.string.home);
+        getActivity().setTitle(R.string.gouiranlinktitle);
     }
 
 

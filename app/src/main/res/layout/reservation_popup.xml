@@ -88,7 +88,7 @@
         android:id="@+id/faire_commentaire"
         android:layout_width="60dip"
         android:layout_height="64dip"
-        android:src="@drawable/ic_noun_214735_cc"
+        android:src="@drawable/ic_commentaire"
         android:gravity="left"
         android:layout_marginRight="10dp"/>
 

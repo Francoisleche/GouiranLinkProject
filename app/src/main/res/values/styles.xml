@@ -100,6 +100,18 @@
             <item name="android:maxHeight">50dip</item>
     </style>
 
+    <style name="foodRatingBar2" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratinglosanges2</item>
+        <item name="android:minHeight">30dip</item>
+        <item name="android:maxHeight">30dip</item>
+    </style>
+
+    <style name="foodRatingBar3" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratinglosanges3</item>
+        <item name="android:minHeight">40dip</item>
+        <item name="android:maxHeight">40dip</item>
+    </style>
+
 
 
 </resources>

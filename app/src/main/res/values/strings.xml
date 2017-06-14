@@ -55,7 +55,7 @@
 
     <string name="acromMedium">"fonts/Acrom W00 Medium.ttf</string>
 
-    <string name="home">"Accueil"</string>
+    <string name="gouiranlinktitle">"Gouiran Link"</string>
     <string name="research">"Recherche"</string>
     <string name="myReservations">"Mes réservations"</string>
     <string name="myFavourites">"Mes favoris"</string>

@@ -9,18 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.formats.NativeAd;
-import com.google.android.gms.vision.text.Text;
-import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
-import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
-import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -29,6 +21,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
+import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PatchRequest;
 
@@ -97,7 +92,7 @@ public class InformationsProfessional extends Fragment {
                 googleMap.addMarker(new MarkerOptions().position(position_prestataire).title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(position_prestataire).zoom(12).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(position_prestataire).zoom(16).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
@@ -111,49 +106,92 @@ public class InformationsProfessional extends Fragment {
         post_code_city.setText(code_postale_ville);
 
 
+
+        TextView savoir_plus=(TextView) view.findViewById(R.id.savoir_plus);
+        savoir_plus.setText(" En savoir plus sur "+professional.getShop_name());
+
+
+
+
         TextView horaires=(TextView) view.findViewById(R.id.horaires);
+        TextView horaires2=(TextView) view.findViewById(R.id.horaires2);
         String planning = "";
-        String date ="";
         String horaire_debut = "";
         String horaire_fin = "";
+        String[] date = new String[7];
 
         if(professional.getSchedule()!=null) {
             for (int i = 0; i < professional.getSchedule().length; i++) {
+
                 switch (professional.getSchedule()[i].getWeekday()) {
                     case 1:
-                        date = "Lundi         ";
+                        date[0] = professional.getSchedule()[i].getBegin_time().substring(0,2) + "h"+ professional.getSchedule()[i].getBegin_time().substring(3,5)+
+                                " - " + professional.getSchedule()[i].getEnd_time().substring(0,2) + "h" + professional.getSchedule()[i].getEnd_time().substring(3,5);
                         break;
                     case 2:
-                        date = "Mardi         ";
+                        date[1] = professional.getSchedule()[i].getBegin_time().substring(0,2) + "h"+ professional.getSchedule()[i].getBegin_time().substring(3,5)+
+                                " - " + professional.getSchedule()[i].getEnd_time().substring(0,2) + "h" + professional.getSchedule()[i].getEnd_time().substring(3,5);
                         break;
                     case 3:
-                        date = "Mercredi   ";
+                        date[2] = professional.getSchedule()[i].getBegin_time().substring(0,2) + "h"+ professional.getSchedule()[i].getBegin_time().substring(3,5)+
+                                " - " + professional.getSchedule()[i].getEnd_time().substring(0,2) + "h" + professional.getSchedule()[i].getEnd_time().substring(3,5);
                         break;
                     case 4:
-                        date = "Jeudi         ";
+                        date[3] = professional.getSchedule()[i].getBegin_time().substring(0,2) + "h"+ professional.getSchedule()[i].getBegin_time().substring(3,5)+
+                                " - " + professional.getSchedule()[i].getEnd_time().substring(0,2) + "h" + professional.getSchedule()[i].getEnd_time().substring(3,5);
                         break;
                     case 5:
-                        date = "Vendredi   ";
+                        date[4] = professional.getSchedule()[i].getBegin_time().substring(0,2) + "h"+ professional.getSchedule()[i].getBegin_time().substring(3,5)+
+                                " - " + professional.getSchedule()[i].getEnd_time().substring(0,2) + "h" + professional.getSchedule()[i].getEnd_time().substring(3,5);
                         break;
                     case 6:
-                        date = "Samedi        ";
+                        date[5] = professional.getSchedule()[i].getBegin_time().substring(0,2) + "h"+ professional.getSchedule()[i].getBegin_time().substring(3,5)+
+                                " - " + professional.getSchedule()[i].getEnd_time().substring(0,2) + "h" + professional.getSchedule()[i].getEnd_time().substring(3,5);
                         break;
                     case 7:
-                        date = "Dimanche   ";
+                        date[6] = professional.getSchedule()[i].getBegin_time().substring(0,2) + "h"+ professional.getSchedule()[i].getBegin_time().substring(3,5)+
+                                " - " + professional.getSchedule()[i].getEnd_time().substring(0,2) + "h" + professional.getSchedule()[i].getEnd_time().substring(3,5);
                         break;
                     default:
                         break;
                 }
-                horaire_debut = professional.getSchedule()[i].getBegin_time();
+                /*horaire_debut = professional.getSchedule()[i].getBegin_time();
                 horaire_fin = professional.getSchedule()[i].getEnd_time();
 
-                planning = planning + date + horaire_debut.substring(0,2) + "h"+ horaire_debut.substring(3,5)+
-                        " - " + horaire_fin.substring(0,2) + "h" + horaire_fin.substring(3,5)+ "\n";
+                planning = planning + horaire_debut.substring(0,2) + "h"+ horaire_debut.substring(3,5)+
+                        " - " + horaire_fin.substring(0,2) + "h" + horaire_fin.substring(3,5)+ "\n";*/
             }
+
+            if(date[0] == null){
+                date[0]="FERMÉ";
+            }
+            if(date[1] == null){
+                date[1]="FERMÉ";
+            }
+            if(date[2] == null){
+                date[2]="FERMÉ";
+            }
+            if(date[3] == null){
+                date[3]="FERMÉ";
+            }
+            if(date[4] == null){
+                date[4]="FERMÉ";
+            }
+            if(date[5] == null){
+                date[5]="FERMÉ";
+            }
+            System.out.println("daaaaaaaaaaaaaaaaaaate : "+date[6]);
+            if(date[6] == null){
+                date[6]="FERMÉ";
+            }
+
+            planning = date[0] +"\n"+ date[1] +"\n"+ date[2] +"\n"+ date[3] +"\n"+ date[4] +"\n"+ date[5] +"\n"+ date[6];
         }else{
             planning = "Horaires indisponible";
         }
 
+
+        horaires2.setText(" Lundi \n Mardi \n Mercredi \n Jeudi \n Vendredi \n Samedi \n Dimanche ");
         horaires.setText(planning);
 
 
@@ -216,7 +254,7 @@ public class InformationsProfessional extends Fragment {
         }
 
         if(deja_favoris){
-            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur2);
+            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur3);
             im.setImageDrawable(monDrawable);
 
         }else{
@@ -251,7 +289,7 @@ public class InformationsProfessional extends Fragment {
                     System.out.println("1");
                     /*for (int i = 0; i < 10; i++) {
                         try {*/
-                            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur2);
+                            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur3);
                             //monDrawable.setAlpha(i * 10);
                             im.setImageDrawable(monDrawable);
                             /*Thread.sleep(2000);

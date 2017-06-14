@@ -3,7 +3,10 @@ package com.gouiranlink.franois.gouiranlinkproject.Reservation;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +49,7 @@ public class UpcomingFragment extends Fragment {
     private Typeface font;
     private Customer customer;
     List<Reservation> reservations;
+    Reservation reser;
     private ListView listviewupcoming;
 
     @Override
@@ -84,91 +88,6 @@ public class UpcomingFragment extends Fragment {
         return (root);
     }
 
-    private class Reservation {
-        String id;
-        String picture;
-        String institute;
-        List<String> type;
-        String date;
-        String hour;
-        String adress;
-        Customer customer;
-
-        public Reservation() {
-            id = "";
-            picture = "";
-            institute = "";
-            type = new ArrayList<String>();
-            date = "";
-            hour = "";
-            adress = "";
-            customer = new Customer();
-        }
-
-        public Customer getCustomer() {
-            return customer;
-        }
-
-        public void setCustomer(Customer customer) {
-            this.customer = customer;
-        }
-
-        public String getAdress() {
-            return adress;
-        }
-
-        public void setAdress(String adress) {
-            this.adress = adress;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getPicture() {
-            return picture;
-        }
-
-        public void setPicture(String picture) {
-            this.picture = picture;
-        }
-
-        public String getInstitute() {
-            return institute;
-        }
-
-        public void setInstitute(String institute) {
-            this.institute = institute;
-        }
-
-        public List<String> getType() {
-            return type;
-        }
-
-        public void setType(List<String> type) {
-            this.type = type;
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public void setDate(String date) {
-            this.date = date;
-        }
-
-        public String getHour() {
-            return hour;
-        }
-
-        public void setHour(String hour) {
-            this.hour = hour;
-        }
-    }
 
     private List<Reservation> getReservationList() {
             List<Reservation> reservationList = new ArrayList<Reservation>();
@@ -210,14 +129,16 @@ public class UpcomingFragment extends Fragment {
                         reservation.picture = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
                     for (int j = 0; j < arr.getJSONObject(i).getJSONArray("products").length(); j++) {
                         if (arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").has("name") &&
-                                !arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").isNull("name"))
+                                !arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").isNull("name")) {
+                            reservation.products.add(arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getString("name"));
                             reservation.type.add(arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").getString("name"));
+                        }
                     }
                     if (arr.getJSONObject(i).has("begin_date") && !arr.getJSONObject(i).isNull("begin_date")) {
                         reservation.date = getDate(arr.getJSONObject(i).getString("begin_date"));
                         reservation.hour = getHour(arr.getJSONObject(i).getString("begin_date"));
                     }
-                    reservation.customer=customer;
+                    reservation.setCustomer(customer);
                     Log.d("UPCOMINGDATE=", arr.getJSONObject(i).getString("begin_date"));
                     reservationList.add(reservation);
 //                }
@@ -378,6 +299,25 @@ public class UpcomingFragment extends Fragment {
                                     int position, long id) {
                 Toast.makeText(getActivity(), "" + position,
                         Toast.LENGTH_SHORT).show();
+                Fragment fragment = null;
+                FragmentTransaction ft = null;
+                Bundle args = new Bundle();
+                reser = reservations.get(position);
+                args.putSerializable("Reservation", reser);
+                args.putSerializable("Fragment","UpcomingFragment" );
+                args.putSerializable("Customer",customer);
+                FragmentManager fm = getFragmentManager();
+                //FragmentTransaction ft = fm.beginTransaction();
+                ft = fm.beginTransaction();
+                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                fragment = new DetailRdv();
+                fragment.setArguments(args);
+
+                ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
+                getActivity().findViewById(R.id.fragment_reservations).setVisibility(View.GONE);
             }
         });
 

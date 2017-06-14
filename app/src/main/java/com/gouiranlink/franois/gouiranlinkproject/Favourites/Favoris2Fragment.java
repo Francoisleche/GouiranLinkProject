@@ -20,7 +20,7 @@ import com.gouiranlink.franois.gouiranlinkproject.R;
 
 public class Favoris2Fragment extends Fragment {
 
-        FrameLayout simpleFrameLayout;
+        FrameLayout simpleFrameLayout_favoris;
         TabLayout tabLayout;
         private Customer customer;
 
@@ -45,7 +45,7 @@ public class Favoris2Fragment extends Fragment {
 
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.simpleFrameLayout,fragment).addToBackStack(null);
+            ft.replace(R.id.simpleFrameLayout_favoris,fragment).addToBackStack(null);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.commit();
 
@@ -56,7 +56,7 @@ public class Favoris2Fragment extends Fragment {
             View v = inflater.inflate(R.layout.fragment2_mesfavoris,null);
 
 
-            simpleFrameLayout = (FrameLayout) v.findViewById(R.id.simpleFrameLayout);
+            simpleFrameLayout_favoris = (FrameLayout) v.findViewById(R.id.simpleFrameLayout_favoris);
             tabLayout = (TabLayout) v.findViewById(R.id.professional_tabs);
 
             //AJOUTE DES PARTIES AU TABLAYOUT
@@ -93,7 +93,7 @@ public class Favoris2Fragment extends Fragment {
 
                     FragmentManager fm = getFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
-                    ft.replace(R.id.simpleFrameLayout,fragment);
+                    ft.replace(R.id.simpleFrameLayout_favoris,fragment);
                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     ft.commit();
 
@@ -116,7 +116,7 @@ public class Favoris2Fragment extends Fragment {
 
         @Override
         public void onViewCreated(View view ,Bundle savedInstanceState) {
-            getActivity().findViewById(R.id.simpleFrameLayout).setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.simpleFrameLayout_favoris).setVisibility(View.VISIBLE);
 
         }
 

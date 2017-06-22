@@ -37,6 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -52,7 +53,7 @@ public class Recapitulatif extends Fragment {
     private Professional professional;
     private Customer customer;
     private Resource resource;
-    private Professional_Product[] liste_prestations_selectionne;
+    private ArrayList<Professional_Product> liste_prestations_selectionne;
     private int position_list_clique;
     private String[] recap;
 
@@ -72,8 +73,8 @@ public class Recapitulatif extends Fragment {
             resource = (Resource)getArguments().getSerializable("Resource");
             professional = (Professional)getArguments().getSerializable("Professionnal");
             recap = (String[])getArguments().getSerializable("recap");
-            position_list_clique = (int)getArguments().getInt("position_list_clique");
-            liste_prestations_selectionne = (Professional_Product[])getArguments().getSerializable("liste_prestations_selectionne");
+            //position_list_clique = (int)getArguments().getInt("position_list_clique");
+            liste_prestations_selectionne = (ArrayList<Professional_Product>)getArguments().getSerializable("liste_prestations_selectionne");
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
         System.out.println("Numero TELEPHONE :"+customer.getPhone());
@@ -117,11 +118,11 @@ public class Recapitulatif extends Fragment {
         row.addView(tv2);
         table.addView(row);
 
-        for(int i=0;i<liste_prestations_selectionne.length;i++) {
+        for(int i=0;i<liste_prestations_selectionne.size();i++) {
             row = new TableRow(getActivity()); // création d'une nouvelle ligne
 
             tv1 = new TextView(getActivity()); // création cellule
-            tv1.setText(liste_prestations_selectionne[i].getName()); // ajout du texte
+            tv1.setText(liste_prestations_selectionne.get(i).getName()); // ajout du texte
             tv1.setGravity(Gravity.LEFT); // centrage dans la cellule
             // adaptation de la largeur de colonne à l'écran :
             //tv1.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
@@ -129,7 +130,7 @@ public class Recapitulatif extends Fragment {
 
             // idem 2ème cellule
             tv2 = new TextView(getActivity());
-            tv2.setText(String.valueOf(liste_prestations_selectionne[i].getPrice())+liste_prestations_selectionne[i].getCurrency());
+            tv2.setText(String.valueOf(liste_prestations_selectionne.get(i).getPrice())+liste_prestations_selectionne.get(i).getCurrency());
             tv2.setGravity(Gravity.RIGHT);
             //tv2.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
             tv2.setLayoutParams( new TableRow.LayoutParams(0,50,1));
@@ -292,10 +293,10 @@ public class Recapitulatif extends Fragment {
             //mEmail = email;
             //TODO Nombre de réservation
             String prestDetails = "";
-            for (int i = 0; i < liste_prestations_selectionne.length; i++) {
-                GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional-product/" + String.valueOf(liste_prestations_selectionne[i].getId()) + "/");
+            for (int i = 0; i < liste_prestations_selectionne.size(); i++) {
+                GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional-product/" + String.valueOf(liste_prestations_selectionne.get(i).getId()) + "/");
                 prestDetails += getRequest.execute().get();
-                if (i + 1 < liste_prestations_selectionne.length)
+                if (i + 1 < liste_prestations_selectionne.size())
                     prestDetails += ",\n";
             }
             String[] informations = getDateInformations(recap[5], recap[6]);

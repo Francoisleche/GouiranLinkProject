@@ -135,6 +135,7 @@ public class DetailRdv extends Fragment {
                                 Fragment fragment = null;
                                 Bundle args = new Bundle();
                                 args.putSerializable("Customer", customer);
+                                args.putSerializable("Retour", fragment_precedent);
                                 fragment = new Reservation2Fragment();
                                 fragment.setArguments(args);
                                 fragment.setArguments(args);
@@ -209,7 +210,9 @@ public class DetailRdv extends Fragment {
                     fragment.setArguments(args);
                     fragment.setArguments(args);
                     FragmentManager frgManager = getFragmentManager();
-                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
+                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                    //frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
+
                 }
                 return true;
             }

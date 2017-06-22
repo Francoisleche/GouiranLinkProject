@@ -263,6 +263,7 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
         TextView welcomeUser = new TextView(getActivity());
         welcomeUser = (TextView) getActivity().findViewById(R.id.welcome_user);
         welcomeUser.setText(text);
+        getActivity().findViewById(R.id.fragmenthomepage).setVisibility(View.VISIBLE);
     }
 
 

@@ -6,27 +6,30 @@
     tools:context="com.gouiranlink.franois.gouiranlinkproject.Account.NestedSettingsFragment">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
-            android:text="Paramètres"
             android:layout_height="?attr/actionBarSize"
-            android:gravity="center"
             android:background="@color/GouiranLightPink"
-            android:textSize="25sp"/>
+            android:gravity="center"
+            android:text="Paramètres"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
 
         <Switch
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="20dp"
-            android:text="Notifications" />
+            android:text="Activer les notifications par défaut" />
 
         <Switch
+            android:layout_marginLeft="20dp"
             android:id="@+id/secouer_recherche"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,69 +38,72 @@
             android:layout_marginTop="20dp"
             android:text="Activer la fonction Secouer pour rechercher" />
 
-        <Switch
+        <View
+            android:layout_width="300dp"
+            android:layout_height="5px"
+            android:layout_marginTop="20dp"
+            android:background="#FF909090"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="20dp"
-            android:text="Erreur rencontrée sur l'application" />
+            android:layout_marginLeft="50dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/versionsmartphone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/modelsmartphone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/nomsmartphone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/manufacturersmartphone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
 
         <View
-            android:layout_width="fill_parent"
+            android:layout_width="300dp"
             android:layout_height="5px"
+            android:layout_marginTop="20dp"
             android:background="#FF909090"
-            android:layout_marginTop="20dp" />
-
-        <TextView
-            android:layout_marginTop="20dp"
-            android:textColor="@color/black"
-            android:id="@+id/versionsmartphone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"/>
-
-        <TextView
-            android:layout_marginTop="20dp"
-            android:textColor="@color/black"
-            android:id="@+id/modelsmartphone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"/>
-
-        <TextView
-            android:layout_marginTop="20dp"
-            android:textColor="@color/black"
-            android:id="@+id/nomsmartphone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"/>
-
-        <TextView
-            android:layout_marginTop="20dp"
-            android:textColor="@color/black"
-            android:id="@+id/manufacturersmartphone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"/>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="5px"
-            android:background="#FF909090"
-            android:layout_marginTop="20dp" />
+            android:layout_gravity="center"/>
 
         <Button
-            android:layout_gravity="center"
             android:id="@+id/logout"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:background="#d16677"
-            android:textColor="@color/white"
-            android:padding="5dp"
-            android:text="Deconnexion" />
+            android:clickable="true"
+            android:paddingRight="25dp"
+            android:paddingLeft="25dp"
+            android:text="Deconnexion"
+            android:textColor="@color/white" />
 
 
     </LinearLayout>

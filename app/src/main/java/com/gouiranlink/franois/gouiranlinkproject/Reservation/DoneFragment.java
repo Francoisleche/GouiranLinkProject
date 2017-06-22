@@ -3,7 +3,6 @@ package com.gouiranlink.franois.gouiranlinkproject.Reservation;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -51,6 +50,7 @@ public class DoneFragment extends Fragment {
     List<Reservation> reservations;
     Reservation reser;
     private ListView listviewDone;
+    private LinearLayout layoutdone;
 
     private String products_json ="";
 
@@ -259,6 +259,20 @@ public class DoneFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         reservations = getReservationList();
+        layoutdone = (LinearLayout) getActivity().findViewById(R.id.layoutdone);
+        listviewDone = (ListView) getActivity().findViewById(R.id.listviewDone);
+
+        if(reservations.size()==0){
+            layoutdone.setVisibility(true ? View.VISIBLE : View.GONE);
+            listviewDone.setVisibility(true ? View.GONE : View.VISIBLE);
+        }else{
+            layoutdone.setVisibility(true ? View.GONE : View.VISIBLE);
+            listviewDone.setVisibility(true ? View.VISIBLE : View.GONE);
+        }
+
+
+
+
         List<String> institutesNames = new ArrayList<String>();
         List<List<String>> types = new ArrayList<List<String>>();
         List<String> pictures = new ArrayList<String>();
@@ -277,7 +291,7 @@ public class DoneFragment extends Fragment {
             adress.add(reservations.get(i).getAdress());
         }
 
-        listviewDone = (ListView) getActivity().findViewById(R.id.listviewDone);
+
 
         //GridView gridview = (GridView) getActivity().findViewById(R.id.gridviewDone);
         ReservationImageAdapter reservationImageAdapter = new ReservationImageAdapter(getActivity());

@@ -134,4 +134,12 @@ public class Professional_Product implements Serializable{
     public void setDiscount(Discount[] discount) {
         this.discount = discount;
     }
+
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+
 }

@@ -1,9 +1,6 @@
 package com.gouiranlink.franois.gouiranlinkproject.Favourites;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,13 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Image_N;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Product;
@@ -35,14 +36,6 @@ import com.gouiranlink.franois.gouiranlinkproject.Professional_View.Informations
 import com.gouiranlink.franois.gouiranlinkproject.Professional_View.ProfessionalView;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -235,6 +228,7 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
                                 args.putSerializable("Shop_image", Shop_image);
                                 args.putSerializable("token", token);
                                 System.out.println("CUSTOMER :" + customer.getName());
+                                args.putSerializable("Fragment","MyCrushes");
 
 
                                 FragmentManager fm = getFragmentManager();
@@ -248,6 +242,7 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
                                 args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
                                 args.putSerializable("Customer", customer);
                                 args.putSerializable("token", token);
+                                args.putSerializable("Fragment","MyCrushes");
 
                                 FragmentManager fm = getFragmentManager();
                                 //FragmentTransaction ft = fm.beginTransaction();
@@ -260,7 +255,8 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
                             }
 
 
-                            ft[0].replace(R.id.fragment_remplace, fragment[0]);
+                            //ft[0].replace(R.id.content_frame, fragment[0],"MyCrushesTag").addToBackStack(null);
+                            ft[0].replace(R.id.content_frame, fragment[0],"MyCrushesTag").addToBackStack(null);
                             ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                             ft[0].commit();
                             ringProgressDialog.cancel();
@@ -276,13 +272,19 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
 
                 //Obligé de faire ça après !
                 System.out.println("On passsssssssssse !!!!!!!!");
-                getActivity().findViewById(R.id.fragment_favorites).setVisibility(View.GONE);
+                //getActivity().findViewById(R.id.fragment_favorites).setVisibility(View.GONE);
+
+
+
+
                 //getActivity().findViewById(R.id.done1).setVisibility(View.GONE);
                 //pro.setVisibility(true ? View.GONE : View.VISIBLE);
                 //coup_coeur.setVisibility(true ? View.GONE : View.VISIBLE);
                 //getActivity().findViewById(R.id.simpleFrameLayout).setVisibility(View.GONE);
             }
         });
+
+
 
 
 
@@ -354,7 +356,6 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
     }
 
     /*    datas = retrieveRequestInformations();

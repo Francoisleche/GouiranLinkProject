@@ -11,9 +11,10 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/GouiranLightPink"
         android:gravity="center"
-        android:text="Modification du Compte"
+        android:text="Modifier mon profil"
+        android:textColor="@color/white"
         android:textSize="25sp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -37,9 +38,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/name"
                 android:gravity="center"
+                android:textColor="#7699a1"
                 android:textSize="20sp"/>
 
             <View
+                android:layout_marginTop="10dp"
                 android:layout_width="fill_parent"
                 android:layout_height="5px"
                 android:background="#FF909090" />
@@ -62,36 +65,42 @@
                         android:id="@+id/key_private_informations"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Informations Privées" />
+                        android:textColor="#7699a1"
+                        android:text="MES INFORMATIONS PERSONNELLES" />
 
                     <TextView
                         android:id="@+id/key_gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sexe" />
+                        android:textColor="#7699a1"
+                        android:text="Genre" />
 
                     <TextView
                         android:id="@+id/key_birth_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="#7699a1"
                         android:text="Date de Naissance" />
 
                     <TextView
                         android:id="@+id/key_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="#7699a1"
                         android:text="Email" />
 
                     <TextView
                         android:id="@+id/key_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="#7699a1"
                         android:text="Téléphone" />
 
                     <TextView
                         android:id="@+id/key_mobile_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="#7699a1"
                         android:text="Téléphone Mobile" />
 
                     <TextView
@@ -178,7 +187,8 @@
                         android:id="@+id/key_optional"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Informations Facultatives" />
+                        android:textColor="#7699a1"
+                        android:text="MES INFORMATIONS COMPLEMENTAIRES" />
 
                     <TextView
                         android:id="@+id/key_country"
@@ -269,6 +279,16 @@
 
     </ScrollView>
 
+
+
+
+
+
+
+
+
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -294,13 +314,16 @@
                 android:layout_marginTop="10dp"
                 android:background="#d16677"
                 android:textColor="@color/white"
-                android:padding="5dp"
-                android:text="Modifier Photo de Profil" />
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="Modifier ma photo" />
 
             <TextView
+                android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/edit_name"
+                android:textColor="#7699a1"
                 android:gravity="center"
                 android:textSize="20sp"/>
 
@@ -309,13 +332,29 @@
                 android:layout_height="5px"
                 android:background="#FF909090" />
 
+
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/edit_key_private_informations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#7699a1"
+                android:textSize="18sp"
+                android:text="MES INFORMATIONS PERSONNELLES" />
+
             <LinearLayout
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
                 <LinearLayout
+                    android:layout_marginLeft="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="start"
@@ -323,29 +362,22 @@
                     android:weightSum="7"
                     android:orientation="vertical">
 
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:id="@+id/edit_key_private_informations"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Informations Privées" />
-
                     <TextView
                         android:layout_weight="1"
                         android:gravity="center"
                         android:id="@+id/edit_key_gender"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sexe" />
+                        android:layout_height="40dp"
+                        android:textColor="#7699a1"
+                        android:text="Genre" />
 
                     <TextView
                         android:layout_weight="1"
                         android:gravity="center"
                         android:id="@+id/edit_key_birth_date"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:textColor="#7699a1"
                         android:text="Date de Naissance" />
 
                     <TextView
@@ -353,7 +385,8 @@
                         android:gravity="center"
                         android:id="@+id/edit_key_email"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:textColor="#7699a1"
                         android:text="Email" />
 
                     <TextView
@@ -361,7 +394,8 @@
                         android:gravity="center"
                         android:id="@+id/edit_key_phone"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:textColor="#7699a1"
                         android:text="Téléphone" />
 
                     <TextView
@@ -369,7 +403,8 @@
                         android:gravity="center"
                         android:id="@+id/edit_key_mobile_phone"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:textColor="#7699a1"
                         android:text="Téléphone Mobile" />
 
                     <TextView
@@ -377,7 +412,8 @@
                         android:gravity="center"
                         android:id="@+id/edit_key_password"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:textColor="#7699a1"
                         android:text="Mot de passe" />
 
 
@@ -391,20 +427,9 @@
                     android:weightSum="7"
                     android:orientation="vertical">
 
-                    <EditText
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="invisible"/>
-
-                    <!--<EditText
-                        android:layout_weight="1"
-                        android:id="@+id/edit_value_gender"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />-->
                     <Spinner
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="40dp"
                         android:prompt="@string/gender_prompt"
                         android:entries="@array/gender_choice"
                         android:spinnerMode="dropdown"
@@ -454,8 +479,22 @@
                 android:layout_height="5px"
                 android:background="#FF909090" />
 
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/edit_key_optional"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#7699a1"
+                android:textSize="18sp"
+                android:text="MES INFORMATIONS COMPLEMENTAIRES" />
+
 
             <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -472,17 +511,10 @@
                     <TextView
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:id="@+id/edit_key_optional"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Informations Facultatives" />
-
-                    <TextView
-                        android:layout_weight="1"
-                        android:gravity="center"
                         android:id="@+id/edit_key_country"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:textColor="#7699a1"
                         android:text="Pays" />
 
                     <TextView
@@ -490,7 +522,8 @@
                         android:gravity="center"
                         android:id="@+id/edit_key_city"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:textColor="#7699a1"
                         android:text="Ville" />
 
                     <TextView
@@ -498,7 +531,8 @@
                         android:gravity="center"
                         android:id="@+id/edit_key_post_code"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:textColor="#7699a1"
                         android:text="Code Postal" />
 
                     <TextView
@@ -506,7 +540,8 @@
                         android:gravity="center"
                         android:id="@+id/edit_key_address"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:textColor="#7699a1"
                         android:text="Adresse" />
 
                     <TextView
@@ -514,7 +549,8 @@
                         android:gravity="center"
                         android:id="@+id/edit_key_profession"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
+                        android:textColor="#7699a1"
                         android:text="Profession" />
 
                 </LinearLayout>
@@ -529,43 +565,49 @@
 
                     <EditText
                         android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="invisible" />
-
-                    <EditText
-                        android:layout_weight="1"
                         android:id="@+id/edit_value_country"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp" />
 
                     <EditText
                         android:layout_weight="1"
                         android:id="@+id/edit_value_city"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp" />
 
                     <EditText
                         android:layout_weight="1"
                         android:id="@+id/edit_value_post_code"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp" />
 
                     <EditText
                         android:layout_weight="1"
                         android:id="@+id/edit_value_address"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp" />
 
                     <EditText
                         android:layout_weight="1"
                         android:id="@+id/edit_value_profession"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="40dp" />
 
                 </LinearLayout>
             </LinearLayout>
 
+            <Button
+                android:layout_gravity="center"
+                android:id="@+id/confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="#d16677"
+                android:textColor="@color/white"
+                android:paddingLeft="80dp"
+                android:paddingRight="80dp"
+                android:clickable="true"
+                android:text="Valider"/>
 
             <Button
                 android:layout_gravity="center"
@@ -574,24 +616,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="#d16677"
-                android:textColor="@color/white"
-                android:padding="5dp"
-                android:text="Revenir a l'ancienne vie" />
-
-            <Button
-                android:layout_gravity="center"
-                android:id="@+id/confirm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:background="#9abdc0"
                 android:textColor="@color/white"
                 android:padding="5dp"
-                android:clickable="true"
-                android:text="Valider les modifications" />
+                android:text="Annuler mes modifications" />
+
         </LinearLayout>
 
     </ScrollView>
 </LinearLayout>
-

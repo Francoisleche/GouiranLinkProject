@@ -90,15 +90,16 @@ public class EditAccountFragment extends Fragment {
         new DownloadImageTask(imageView).execute(customer.getImage().getThumbnails().get(0)[2]);
         TextView textView = (TextView) root.findViewById(R.id.name);
         String name = "";
-        if (customer.getName().equals("null"))
-            name += getString(R.string.not_known);
-        else
-            name += customer.getName();
-        name += " ";
         if (customer.getSurname().equals("null"))
             name += getString(R.string.not_known);
         else
             name += customer.getSurname();
+        name += " ";
+        if (customer.getName().equals("null"))
+            name += getString(R.string.not_known);
+        else
+            name += customer.getName();
+
         textView.setText(name);
 
         textView = (TextView) root.findViewById(R.id.value_gender);
@@ -155,15 +156,15 @@ public class EditAccountFragment extends Fragment {
         new DownloadImageTask(imageView).execute(customer.getImage().getThumbnails().get(0)[2]);
         textView = (TextView) root.findViewById(R.id.edit_name);
         name = "";
-        if (customer.getName().equals("null"))
-            name += getString(R.string.not_known);
-        else
-            name += customer.getName();
-        name += " ";
         if (customer.getSurname().equals("null"))
             name += getString(R.string.not_known);
         else
             name += customer.getSurname();
+        name += " ";
+        if (customer.getName().equals("null"))
+            name += getString(R.string.not_known);
+        else
+            name += customer.getName();
         textView.setText(name);
 
         textView = (TextView) root.findViewById(R.id.value_gender);
@@ -217,14 +218,14 @@ public class EditAccountFragment extends Fragment {
 
 
 
-        Button modify = (Button) root.findViewById(R.id.modify);
+        /*Button modify = (Button) root.findViewById(R.id.modify);
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 root.findViewById(R.id.scrollViewEdit).setVisibility(View.GONE);
                 root.findViewById(R.id.edit_profile_action).setVisibility(View.VISIBLE);
             }
-        });
+        });*/
 
         Button backEdit = (Button) root.findViewById(R.id.edit_modify);
         backEdit.setOnClickListener(new View.OnClickListener() {

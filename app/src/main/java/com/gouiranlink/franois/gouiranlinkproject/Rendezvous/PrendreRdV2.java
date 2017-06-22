@@ -1,10 +1,12 @@
 package com.gouiranlink.franois.gouiranlinkproject.Rendezvous;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +32,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
-
 /**
- * Created by François on 10/05/2017.
+ * Created by François on 15/06/2017.
  */
 
-public class Horaires extends Fragment{
+public class PrendreRdV2 extends Fragment{
 
     private Double prix;
     private int duree;
@@ -44,6 +45,7 @@ public class Horaires extends Fragment{
     private ArrayList<String> recup;
     private ListView listView;
 
+
     private IndisponibiliteAdapter adapter;
 
     private int layout = R.layout.services4_horaires;
@@ -51,9 +53,11 @@ public class Horaires extends Fragment{
 
     private Professional professional;
     private Customer customer;
-    private Professional_Product[] liste_prestations_selectionne;
+    private ArrayList<Professional_Product> liste_prestations_selectionne = new ArrayList<Professional_Product>();
     private Professional_Product[] courante_liste_prestations;
     private Resource[] ResourceProfessional;
+
+    private String[] recap = new String[40];
 
 
     private String dday;
@@ -65,6 +69,7 @@ public class Horaires extends Fragment{
     String heure_deja_choisi = "";
     String heure_deja_choisi2 = "";
 
+    LinearLayout calendrier4;
     Button button_clique = null;
     Button button_clique2 = null;
     Button buton1;
@@ -91,8 +96,10 @@ public class Horaires extends Fragment{
     Button buton03;
     Button suivant_horaire;
 
+    String button_appuye_dernier = "";
 
-    public Horaires() {
+
+    public PrendreRdV2() {
 
     }
 
@@ -102,7 +109,7 @@ public class Horaires extends Fragment{
         if (getArguments() != null) {
             horaires_indisponibilites = (ArrayList<String>) getArguments().getSerializable("horaires_indisponibilites");
             professional = (Professional) getArguments().getSerializable("Professionnal");
-            liste_prestations_selectionne = (Professional_Product[]) getArguments().getSerializable("liste_prestations_selectionne");
+            liste_prestations_selectionne = (ArrayList<Professional_Product>) getArguments().getSerializable("liste_prestations_selectionne");
             courante_liste_prestations = (Professional_Product[]) getArguments().getSerializable("courante_liste_prestations");
             customer = (Customer) getArguments().getSerializable("Customer");
             prix = (Double) getArguments().getDouble("prix");
@@ -160,7 +167,7 @@ public class Horaires extends Fragment{
 
 
 
-        int dureetotal = duree;
+        final int dureetotal = duree;
         int heuretotal = 0 ;
         int minutetotal = 0;
 
@@ -281,42 +288,42 @@ public class Horaires extends Fragment{
         listView = (ListView) v.findViewById(R.id.meshoraires);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-               public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                   System.out.println("ON A CLIQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                System.out.println("ON A CLIQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 
-                   Fragment fragment = null;
-                   Bundle args = new Bundle();
-                   args.putSerializable("Professionnal", professional);
-                   args.putSerializable("Customer",customer);
-                   args.putSerializable("liste_prestations_selectionne", liste_prestations_selectionne);
-                   args.putSerializable("courante_liste_prestations", courante_liste_prestations);
-                   //args.putSerializable("position_list_clique", lstview.getSelectedItem());
-                   args.putSerializable("position_list_clique", position);
-                   args.putSerializable("service", "Horaires");
-                   args.putSerializable("ResourceProfessional",ResourceProfessional);
-                   //String date = String.valueOf(dday) + "/" + String.valueOf(mmonth + 1) + "/" + String.valueOf(yyear) + "////"+ listView.getItemAtPosition(position);
+                Fragment fragment = null;
+                Bundle args = new Bundle();
+                args.putSerializable("Professionnal", professional);
+                args.putSerializable("Customer",customer);
+                args.putSerializable("liste_prestations_selectionne", liste_prestations_selectionne);
+                args.putSerializable("courante_liste_prestations", courante_liste_prestations);
+                //args.putSerializable("position_list_clique", lstview.getSelectedItem());
+                args.putSerializable("position_list_clique", position);
+                args.putSerializable("service", "Horaires");
+                args.putSerializable("ResourceProfessional",ResourceProfessional);
+                //String date = String.valueOf(dday) + "/" + String.valueOf(mmonth + 1) + "/" + String.valueOf(yyear) + "////"+ listView.getItemAtPosition(position);
 
-                   String heure1 = listView.getItemAtPosition(position).toString().replace(":","h");
-                   String heure2 = listView.getItemAtPosition(position+1).toString().replace(":","h");
-                   String date = dayName +"////" +dday + "/" + mmonth + "/" + yyear + "////"+heure1+"-"+heure2;
-                   args.putSerializable("horaire",date);
-                   FragmentManager fm = getFragmentManager();
-                   FragmentTransaction ft = fm.beginTransaction();
-                   //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
+                String heure1 = listView.getItemAtPosition(position).toString().replace(":","h");
+                String heure2 = listView.getItemAtPosition(position+1).toString().replace(":","h");
+                String date = dayName +"////" +dday + "/" + mmonth + "/" + yyear + "////"+heure1+"-"+heure2;
+                args.putSerializable("horaire",date);
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
 
-                   fragment = new PrendreRdv();
-                   fragment.setArguments(args);
+                fragment = new PrendreRdv();
+                fragment.setArguments(args);
 
-                   ft.replace(R.id.fragment_remplace, fragment);
+                ft.replace(R.id.fragment_remplace, fragment);
 
-                   ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                   ft.commit();
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.commit();
 
 
 
-               }
-         });
+            }
+        });
 
 
 
@@ -448,7 +455,7 @@ public class Horaires extends Fragment{
 
 
 
-        final LinearLayout calendrier4 = (LinearLayout)v.findViewById(R.id.calendrier4);
+        calendrier4 = (LinearLayout)v.findViewById(R.id.calendrier4);
 
         buton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1139,51 +1146,69 @@ public class Horaires extends Fragment{
         suivant_horaire.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = null;
-                Bundle args = new Bundle();
-                args.putSerializable("Professionnal", professional);
-                args.putSerializable("Customer",customer);
-                args.putSerializable("liste_prestations_selectionne", liste_prestations_selectionne);
-                args.putSerializable("courante_liste_prestations", courante_liste_prestations);
-                //args.putSerializable("position_list_clique", lstview.getSelectedItem());
-                args.putSerializable("position_list_clique", 2);
-                args.putSerializable("service", "Horaires");
-                args.putSerializable("ResourceProfessional",ResourceProfessional);
-                //String date = String.valueOf(dday) + "/" + String.valueOf(mmonth + 1) + "/" + String.valueOf(yyear) + "////"+ listView.getItemAtPosition(position);
+                //Si l'utilisateur n'a pas renseigné de numéro de téléphone
+                if (customer.getMobilephone().equals("null")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Erreur, vous devez d'abord renseigner un numéro de téléphone !").setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else{
+                    if (null == null) {
+                        Fragment fragment = null;
+                        Bundle args = new Bundle();
+                        args.putSerializable("Professionnal", professional);
+                        args.putSerializable("Customer", customer);
+                        System.out.println("RESSSSSSSSSSSSSSSOURCE : "+ResourceProfessional[0]);
+                        args.putSerializable("Resource", ResourceProfessional[0]);
+                        //recap[0] = String.valueOf(finalTariftotal);
+                        recap[0] = String.valueOf(prix);
+                        recap[1] = liste_prestations_selectionne.get(0).getCurrency();
+                        //recap[2] = String.valueOf(finalHeuretotal) + "h" + String.valueOf(finalMinutetotal) + "min";
+                        recap[2] = String.valueOf(duree);
+                        recap[3] = professional.getShop_name();
+                        recap[4] = professional.getAddress() + " - " + professional.getCity() + " - " + professional.getCountry();
+                        //recap[5] = String.valueOf(jour_selectionne) + "/" + String.valueOf(mois_selectionne + 1) + "/" + String.valueOf(annee_selectionne);
 
-                //String heure1 = listView.getItemAtPosition(position).toString().replace(":","h");
-                //String heure2 = listView.getItemAtPosition(position+1).toString().replace(":","h");
+                        String heure1 = button_clique2.getText().toString().replace(":","h");
+                        String heure2 = String.valueOf(Integer.parseInt(button_clique2.getText().toString().substring(0,2))+1)+"h"+button_clique2.getText().toString().substring(3,5);
+                        String date = dayName +"////" +dday + "/" + mmonth + "/" + yyear + "////"+heure1+"-"+heure2;
+                        args.putSerializable("horaire",date);
 
-                String heure1 = button_clique2.getText().toString().replace(":","h");
-                String heure2 = String.valueOf(Integer.parseInt(button_clique2.getText().toString().substring(0,2))+1)+"h"+button_clique2.getText().toString().substring(3,5);
-                String date = dayName +"////" +dday + "/" + mmonth + "/" + yyear + "////"+heure1+"-"+heure2;
-                args.putSerializable("horaire",date);
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
 
-                fragment = new PrendreRdv();
-                fragment.setArguments(args);
+                        recap[5] = date;
+                        recap[6] = heure1;
+                        /*recap[5] = horaires_date[1];
+                        recap[6] = horaires_date[2];*/
 
-                ft.replace(R.id.fragment_remplace, fragment);
 
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.commit();
+
+                        //System.out.println("RECAPITULATIF : "+recap[0]+" "+recap[1]);
+                        args.putSerializable("recap", recap);
+                        args.putSerializable("liste_prestations_selectionne", liste_prestations_selectionne);
+
+                        FragmentManager fm = getFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
+
+                        fragment = new Recapitulatif();
+                        fragment.setArguments(args);
+
+                        ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        ft.commit();
+                    } else {
+                        //appuie_horaire.setError("Selectionner une horaire avant de prendre un rendez vous");
+                        Toast.makeText(getApplicationContext(), "Veuillez selectionner une date", Toast.LENGTH_LONG).show();
+                    }
+                }
+
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1330,105 +1355,173 @@ public class Horaires extends Fragment{
                     if (Integer.parseInt(liste_indisponibilite[y].getAnnee()) == year && Integer.parseInt(liste_indisponibilite[y].getMois()) == (month + 1) && Integer.parseInt(liste_indisponibilite[y].getJour()) == day) {
                         trouve = true;
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 7 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 7){
-                            buton1.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("1");
+                            if(buton1.getText().equals(button_clique.getText())){
+                                buton1.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton1.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             System.out.println("1");
                             buton1.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 8 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 8){
-                            buton2.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("2");
+                            if(buton2.getText().equals(button_clique.getText())){
+                                buton2.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton2.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton2.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >=9 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 9){
-                            buton3.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("3");
+                            if(buton3.getText().equals(button_clique.getText())){
+                                buton3.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton3.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton3.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 10 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 10){
-                            buton4.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("4");
+                            if(buton4.getText().equals(button_clique.getText())){
+                                buton4.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton4.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 11 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 11){
-                            buton5.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("5");
+                            if(buton5.getText().equals(button_clique.getText())){
+                                buton5.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton5.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton5.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 12 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 12){
-                            buton6.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("6");
+                            if(buton6.getText().equals(button_clique.getText())){
+                                buton6.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton6.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton6.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 13 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 13){
-                            buton7.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("7");
+                            if(buton7.getText().equals(button_clique.getText())){
+                                buton7.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton7.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton7.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 14 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 14){
-                            buton8.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("8");
+                            if(buton8.getText().equals(button_clique.getText())){
+                                buton8.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton8.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton8.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 15 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 15){
-                            buton9.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("9");
+                            if(buton9.getText().equals(button_clique.getText())){
+                                buton9.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton9.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton9.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 16 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 16){
-                            buton10.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("10");
+                            if(buton10.getText().equals(button_clique.getText())){
+                                buton10.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton10.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton10.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 17 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 17){
-                            buton11.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("11");
+                            if(buton11.getText().equals(button_clique.getText())){
+                                buton11.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton11.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton11.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 18 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 18){
-                            buton12.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("12");
+                            if(buton12.getText().equals(button_clique.getText())){
+                                buton12.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton12.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton12.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 19 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 19){
-                            buton13.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("13");
+                            if(buton13.getText().equals(button_clique.getText())){
+                                buton13.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton13.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton13.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 20 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 20){
-                            buton14.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("14");
+                            if(buton14.getText().equals(button_clique.getText())){
+                                buton14.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton14.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton14.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 21 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 21){
-                            buton15.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("15");
+                            if(buton15.getText().equals(button_clique.getText())){
+                                buton15.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton15.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton15.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 22 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 22){
-                            buton16.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("16");
+                            if(buton16.getText().equals(button_clique.getText())){
+                                buton16.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton16.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton16.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 23 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 23){
-                            buton17.setVisibility(true ? View.GONE : View.VISIBLE);
-                            System.out.println("17");
+                            if(buton17.getText().equals(button_clique.getText())){
+                                buton17.setVisibility(true ? View.GONE : View.VISIBLE);
+                                calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else{
+                                buton17.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }
                         }else{
                             buton17.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
@@ -1491,3 +1584,4 @@ public class Horaires extends Fragment{
 
 
 }
+

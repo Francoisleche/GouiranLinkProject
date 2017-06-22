@@ -39,6 +39,7 @@ public class ProfessionalView extends Fragment {
     HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
     ArrayList<String> Shop_image;
     private Resource[] ResourceProfessional;
+    String fragment_precedent;
 
 
 
@@ -54,6 +55,7 @@ public class ProfessionalView extends Fragment {
             expandableListDetail = (HashMap<String, List<String>>) getArguments().getSerializable("ExpandableListDetail");
             token = (String)getArguments().getString("token");
             System.out.println("Toooooooooooooken"+token);
+            fragment_precedent = (String) getArguments().getString("Fragment");
         }
 
         System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
@@ -67,13 +69,14 @@ public class ProfessionalView extends Fragment {
         args.putSerializable("Shop_image",Shop_image);
         args.putSerializable("ExpandableListDetail", expandableListDetail);
         args.putSerializable("ResourceProfessional", ResourceProfessional);
+        args.putSerializable("Retour",fragment_precedent);
         //fragment = new ServicesProfessional();
         fragment = new ServicesProfessional2();
         fragment.setArguments(args);
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.simpleFrameLayout,fragment).addToBackStack(null);
+        ft.replace(R.id.simpleFrameLayout,fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
 
@@ -114,6 +117,7 @@ public class ProfessionalView extends Fragment {
                 args.putSerializable("ExpandableListDetail", expandableListDetail);
                 args.putSerializable("ResourceProfessional", ResourceProfessional);
                 args.putSerializable("token",token);
+                args.putSerializable("Fragment",fragment_precedent);
                 System.out.println("CUSTOMER 1 :"+ customer.getName());
 
                 Log.i("TAG", "onTabSelected: " + tab.getPosition());
@@ -159,6 +163,25 @@ public class ProfessionalView extends Fragment {
     @Override
     public void onViewCreated(View view ,Bundle savedInstanceState) {
         getActivity().findViewById(R.id.simpleFrameLayout).setVisibility(View.VISIBLE);
+
+        Fragment fragment = null;
+        Bundle args = new Bundle();
+        args.putSerializable("Professionnal", professional);
+        args.putSerializable("ProfessionnalProduct", professional_product);
+        args.putSerializable("Customer",customer);
+        args.putSerializable("Shop_image",Shop_image);
+        args.putSerializable("ExpandableListDetail", expandableListDetail);
+        args.putSerializable("ResourceProfessional", ResourceProfessional);
+        args.putSerializable("Fragment",fragment_precedent);
+        //fragment = new ServicesProfessional();
+        fragment = new ServicesProfessional2();
+        fragment.setArguments(args);
+
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.simpleFrameLayout,fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
 
     }
 

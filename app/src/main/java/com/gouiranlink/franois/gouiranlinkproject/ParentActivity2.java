@@ -277,6 +277,7 @@ public class ParentActivity2 extends AppCompatActivity
 
             if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {
                 //fragment = new FavouritesFragment();
+                args.putSerializable("Retour","");
                 fragment = new Favoris2Fragment();
                 fragment.setArguments(args);
             }

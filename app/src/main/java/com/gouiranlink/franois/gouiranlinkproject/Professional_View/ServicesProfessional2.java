@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +12,13 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.gouiranlink.franois.gouiranlinkproject.Favourites.MyProsFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
-import com.gouiranlink.franois.gouiranlinkproject.Rendezvous.PrendreRdv;
+import com.gouiranlink.franois.gouiranlinkproject.Rendezvous.PrendreRdV1;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -51,6 +48,8 @@ public class ServicesProfessional2 extends Fragment{
     private ArrayList<String> Shop_image;
 
     private int iterateur_image=0;
+
+    String fragment_precedent;
 
     public ServicesProfessional2() {
 
@@ -84,6 +83,7 @@ public class ServicesProfessional2 extends Fragment{
             customer = (Customer) getArguments().getSerializable("Customer");
             Shop_image = (ArrayList<String>) getArguments().getSerializable("Shop_image");
             expandableListDetail = (HashMap<String, List<String>>) getArguments().getSerializable("ExpandableListDetail");
+            fragment_precedent = (String) getArguments().getString("Fragment");
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :" + professional.toString());
         //
@@ -97,35 +97,34 @@ public class ServicesProfessional2 extends Fragment{
         View v = inflater.inflate(R.layout.fragment_services_professional2, container, false);
 
 
-        v.setFocusableInTouchMode(true);
+        /*v.setFocusableInTouchMode(true);
         v.requestFocus();
         v.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Log.i(getTag(), "keyCode: " + keyCode);
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    //getActivity().getActionBar().show();
-                    MyProsFragment fragment1 = (MyProsFragment) getFragmentManager().findFragmentByTag("MyProsFragment");
-                    //if (fragment1 != null)
-                    fragment1.getActivity();
-                    Bundle args = new Bundle();
-                    args.putSerializable("Customer", customer);
-                    args.putSerializable("token", "");
-                    args.putSerializable("place", "");
-                    args.putSerializable("autocomplete","");
-                    args.putSerializable("homepage_click_imageview","");
-                    fragment1.onCreate(args);
 
-                    //if (getFragmentManager().getBackStackEntryCount() > 0){
-                        getFragmentManager().popBackStack();
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        Fragment fragment = null;
+                        Bundle args = new Bundle();
+                        args.putSerializable("Customer", customer);
+                        args.putSerializable("Retour", fragment_precedent);
 
-                    //}
-                    return true;
-                } else {
-                    return false;
-                }
+                        if(fragment_precedent.equals("Research2Fragment")){
+                            fragment = new Research2Fragment();
+                            fragment.setArguments(args);
+                        }else{
+                            fragment = new Favoris2Fragment();
+                            fragment.setArguments(args);
+                        }
+
+                        fragment.setArguments(args);
+                        FragmentManager frgManager = getFragmentManager();
+                        frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                    }
+
+                return true;
             }
-        });
+        });*/
 
 
 
@@ -234,10 +233,11 @@ public class ServicesProfessional2 extends Fragment{
                         FragmentTransaction ft = fm.beginTransaction();
                         //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
                         Fragment fragment=null;
-                        fragment = new PrendreRdv();
+                        fragment = new PrendreRdV1();
                         fragment.setArguments(args);
+                        System.out.println("Ooooooooooooooh Prendre RdV1");
 
-                        ft.replace(R.id.fragment_remplace, fragment).addToBackStack("service2");
+                        ft.replace(R.id.content_frame, fragment).addToBackStack("service2");
 
                         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         ft.commit();

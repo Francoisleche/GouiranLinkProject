@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,8 @@ public class InformationsProfessional extends Fragment {
     private GoogleMap googleMap;
     private Professional professional;
     private Customer customer;
+    FragmentManager fragmentManager;
+    String fragment_precedent;
 
     public InformationsProfessional(){
 // Required empty public constructor
@@ -57,6 +60,7 @@ public class InformationsProfessional extends Fragment {
         if (getArguments() != null) {
             professional = (Professional)getArguments().getSerializable("Professionnal");
             customer = (Customer)getArguments().getSerializable("Customer");
+            fragment_precedent = (String) getArguments().getString("Fragment");
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :"+professional.toString());
         //
@@ -67,7 +71,10 @@ public class InformationsProfessional extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 // Inflate the layout for this fragment
-        final View view =  inflater.inflate(R.layout.fragment_informations_professional, container, false);
+        View view =  inflater.inflate(R.layout.fragment_informations_professional, container, false);
+
+
+
 
         mMapView = (MapView) view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -254,11 +261,11 @@ public class InformationsProfessional extends Fragment {
         }
 
         if(deja_favoris){
-            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur3);
+            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur_plein);
             im.setImageDrawable(monDrawable);
 
         }else{
-            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur_favoris_pink);
+            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur_vide);
             im.setImageDrawable(monDrawable);
         }
 
@@ -289,7 +296,7 @@ public class InformationsProfessional extends Fragment {
                     System.out.println("1");
                     /*for (int i = 0; i < 10; i++) {
                         try {*/
-                            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur3);
+                            Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur_plein);
                             //monDrawable.setAlpha(i * 10);
                             im.setImageDrawable(monDrawable);
                             /*Thread.sleep(2000);
@@ -301,25 +308,83 @@ public class InformationsProfessional extends Fragment {
                     PatchReservationList(String.valueOf(professional.getId()));
                 }else{
                     System.out.println("2");
-                        Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur_favoris_pink);
+                        Drawable monDrawable = getResources().getDrawable(R.drawable.ic_coeur_vide);
                         im.setImageDrawable(monDrawable);
                     PatchReservationList(String.valueOf(professional.getId()));
                 }
 
-                /*for(int i=0;i<500;i++){
-                    ViewGroup.LayoutParams params = im.getLayoutParams();
-                    //LinearLayout.LayoutParams params = tx.getLayoutParams();
-                    params. = tx.getWidth()+i;
-                    tx.setLayoutParams(params);
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }*/
-
             }
         });
+
+
+
+
+
+        /*view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.i(getTag(), "keyCode: " + keyCode);
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    //getActivity().getActionBar().show();
+                    //getFragmentManager().executePendingTransactions();
+                    //MyProsFragment fragment1 = (MyProsFragment) getFragmentManager().findFragmentByTag("MyCrushesTag");
+                    //if (fragment1 != null)
+                    fragmentManager = getFragmentManager();
+                    if (fragmentManager.findFragmentByTag("MyCrushesTag") == null) {
+                        fragmentManager.beginTransaction()
+                                .add(R.id.fragment_remplace, new MyCrushes(), "MyCrushesTag")
+                                .addToBackStack("MyCrushesTag")
+                                .commit();
+                    }
+
+                    getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.simpleFrameLayout)).commit();
+
+
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });*/
+
+
+        /*System.out.println("Onpasse0 ????");
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.i(getTag(), "keyCode: " + keyCode);
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    System.out.println("Onpasse2 ????");
+                    Fragment fragment = null;
+                    Bundle args = new Bundle();
+                    args.putSerializable("Customer", customer);
+                    args.putSerializable("Retour", fragment_precedent);
+
+                    if(fragment_precedent.equals("Research2Fragment")){
+                        fragment = new Research2Fragment();
+                        fragment.setArguments(args);
+                    }else{
+                        System.out.println("Onpasse3 ????");
+                        fragment = new Favoris2Fragment();
+                        fragment.setArguments(args);
+                    }
+
+                    fragment.setArguments(args);
+                    FragmentManager frgManager = getFragmentManager();
+                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                }
+
+                return true;
+            }
+        });*/
+
+
+
+
 
         return view;
     }
@@ -402,6 +467,15 @@ public class InformationsProfessional extends Fragment {
         }
 
         return (datas);
+    }
+
+
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // not cleaning up.
     }
 
 

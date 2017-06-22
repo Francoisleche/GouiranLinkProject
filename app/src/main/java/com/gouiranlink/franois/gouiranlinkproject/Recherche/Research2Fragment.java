@@ -37,6 +37,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,7 +80,7 @@ import static com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.BaseFragme
 
 public class Research2Fragment extends Fragment implements ProfessionalView.OnFragmentInteractionListener {
 
-    private String homepage_click_imageview = "";
+    String homepage_click_imageview = "";
 
     private static final int REQUEST_CODE_LOCATION = 123;
 
@@ -190,11 +191,31 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
             homepage_click_imageview = (String) getArguments().getString("homepage_click_imageview");
             place = (String[]) getArguments().getStringArray("place");
             autocomplete = (String[]) getArguments().getStringArray("autocomplete");
-            System.out.println("Toooooooooooooken" + token);
+            //System.out.println("Toooooooooooooken" + token);
         }
 
+        System.out.println("Oooooooooooooooh : "+homepage_click_imageview);
+        if(homepage_click_imageview==null){
+            homepage_click_imageview = "";
+        }
+        System.out.println("Oooooooooooooooh : "+homepage_click_imageview);
 
-        //DEMANDE AUTORISATION POUR G2OLOCALISATION
+        System.out.println("Oooooooooooooooh : "+autocomplete);
+        if(autocomplete==null){
+            autocomplete = new String[1];
+            autocomplete[0] = "";
+        }
+        System.out.println("Oooooooooooooooh : "+autocomplete);
+
+        System.out.println("Oooooooooooooooh : "+place);
+        if(place==null){
+            place = new String[1];
+            place[0] = "";
+        }
+        System.out.println("Oooooooooooooooh : "+place);
+
+
+        //DEMANDE AUTORISATION POUR GeOLOCALISATION
 
         if (ContextCompat.checkSelfPermission(getActivity(),
                 ACCESS_FINE_LOCATION)
@@ -803,6 +824,12 @@ Log.e("Debug","bonjour");
                 } else {
                     Toast.makeText(getActivity(), "Veuillez préciser une ville ou un lieu", Toast.LENGTH_SHORT).show();
                 }
+
+
+
+                //Les 2 lignes du dessous permet de remonter en haut du scrollview
+                ScrollView scrollviewrecherche = (ScrollView) view.findViewById(R.id.scrollviewrecherche);
+                scrollviewrecherche.fullScroll(ScrollView.FOCUS_UP);
             }
         });
 
@@ -922,7 +949,7 @@ Log.e("Debug","bonjour");
                                 args.putSerializable("Shop_image", Shop_image);
                                 args.putSerializable("token", token);
                                 System.out.println("CUSTOMER :" + customer.getName());
-
+                                args.putSerializable("Fragment","Research2Fragment");
 
                                 FragmentManager fm = getFragmentManager();
                                 //FragmentTransaction ft = fm.beginTransaction();
@@ -959,7 +986,7 @@ Log.e("Debug","bonjour");
                             }
 
 
-                            ft[0].replace(R.id.fragment_remplace, fragment[0]).addToBackStack("recherche");
+                            ft[0].replace(R.id.content_frame, fragment[0]).addToBackStack("recherche");
                             ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                             ft[0].commit();
                             ringProgressDialog.cancel();
@@ -2609,12 +2636,12 @@ Log.e("Debug","bonjour");
     }
 
 
-    @Override
+   /* @Override
     public void onResume() {
         super.onResume();
         // Set title
         getActivity().setTitle(R.string.gouiranlinktitle);
-    }
+    }*/
 
 
 

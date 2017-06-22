@@ -11,11 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.R;
+import com.squareup.picasso.Picasso;
 
 /*
 Fragment which shows the settings' page
@@ -56,18 +58,20 @@ public class MainSettings extends Fragment {
 
         TextView textView = (TextView) root.findViewById(R.id.identifiantcustomer);
         String name = "";
-        if (customer.getName().equals("null"))
-            name += getString(R.string.not_known);
-        else
-            name += customer.getName();
-        name += " ";
         if (customer.getSurname().equals("null"))
             name += getString(R.string.not_known);
         else
             name += customer.getSurname();
+        name += " ";
+        if (customer.getName().equals("null"))
+            name += getString(R.string.not_known);
+        else
+            name += customer.getName();
         textView.setText(name);
 
-
+        ImageView profile_image = (ImageView) root.findViewById(R.id.profile_image);
+        //new DownloadImageTask(profile_image).execute(customer.getImage().getThumbnails().get(0)[2]);
+        Picasso.with(root.getContext()).load(customer.getImage().getThumbnails().get(0)[2]).into(profile_image);
 
 
         Button inviteFriends = (Button)root.findViewById(R.id.invite_friends);

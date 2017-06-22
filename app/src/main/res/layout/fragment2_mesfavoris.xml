@@ -29,8 +29,9 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/GouiranLightPink"
                 android:gravity="center"
-                android:text="Favoris"
+                android:text="Mes Favoris"
                 android:textSize="25sp"
+                android:textColor="@color/white"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
             <android.support.design.widget.TabLayout
@@ -48,7 +49,7 @@
                     android:id="@+id/coup_coeur"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Coup de coeur" />
+                    android:text="Mes coups de coeur" />
 
             </android.support.design.widget.TabLayout>
 

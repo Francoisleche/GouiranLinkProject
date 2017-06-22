@@ -64,9 +64,9 @@
 
             <ImageView
                 android:id="@+id/image_coeur"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_coeur_favoris_pink"/>
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_coeur_vide"/>
 
             <TextView
                 android:layout_alignParentRight="true"

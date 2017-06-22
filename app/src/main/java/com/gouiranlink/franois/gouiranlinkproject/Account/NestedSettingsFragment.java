@@ -171,7 +171,7 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
         else if (customer != null && customer.ismGoogle())
             logoutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.GoogleRed));
         else if (customer != null && customer.ismGouiranLink())
-            logoutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.GouiranLightPink));
+            logoutButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.GouiranDarkPink));
             logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

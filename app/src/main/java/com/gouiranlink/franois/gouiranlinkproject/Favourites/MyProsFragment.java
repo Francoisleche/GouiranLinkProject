@@ -226,7 +226,7 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
                                 args.putSerializable("Shop_image", Shop_image);
                                 args.putSerializable("token", token);
                                 System.out.println("CUSTOMER :" + customer.getName());
-
+                                args.putSerializable("Fragment","MyProsFragment");
 
                                 FragmentManager fm = getFragmentManager();
                                 ft[0] = fm.beginTransaction();
@@ -251,7 +251,7 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
                             }
 
 
-                            ft[0].replace(R.id.fragment_remplace, fragment[0]).addToBackStack("MyProsFragment");
+                            ft[0].replace(R.id.content_frame, fragment[0],"InformationsProfessionalTag").addToBackStack(null);
                             ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                             ft[0].commit();
                             ringProgressDialog.cancel();
@@ -266,7 +266,13 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
 
                 //Obligé de faire ça après !
                 System.out.println("On passsssssssssse !!!!!!!!");
-                getActivity().findViewById(R.id.fragment_favorites).setVisibility(View.GONE);
+                //getActivity().findViewById(R.id.fragment_favorites).setVisibility(View.GONE);
+
+
+
+
+
+
                 //getActivity().findViewById(R.id.done1).setVisibility(View.GONE);
                 //pro.setVisibility(true ? View.GONE : View.VISIBLE);
                 //coup_coeur.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -280,7 +286,7 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
 
 
 
-
+        System.out.println("BONJOUR BONJOUR BONJOUR BONJOUR112");
 
         return (root);
     }
@@ -288,8 +294,9 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         System.out.println("BONJOUR BONJOUR BONJOUR BONJOUR12");
-
     }
+
+
 
 
 
@@ -1298,6 +1305,9 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
         }
 
     }
+
+
+
 
 
 }

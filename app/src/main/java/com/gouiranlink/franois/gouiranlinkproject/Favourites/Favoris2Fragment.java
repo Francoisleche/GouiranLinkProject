@@ -23,6 +23,7 @@ public class Favoris2Fragment extends Fragment {
         FrameLayout simpleFrameLayout_favoris;
         TabLayout tabLayout;
         private Customer customer;
+        String retour;
 
 
 
@@ -32,23 +33,21 @@ public class Favoris2Fragment extends Fragment {
 
             if (getArguments() != null) {
                 customer = (Customer)getArguments().getSerializable("Customer");
+                retour = (String)getArguments().getString("Retour");
             }
-
 
             Fragment fragment = null;
             Bundle args = new Bundle();
-            //args.putSerializable("Professionnal", professional);
-            //args.putSerializable("ProfessionnalProduct", professional_product);
             args.putSerializable("Customer",customer);
+
             fragment = new MyProsFragment();
             fragment.setArguments(args);
 
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.simpleFrameLayout_favoris,fragment).addToBackStack(null);
+            ft.replace(R.id.simpleFrameLayout_favoris,fragment);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.commit();
-
         }
 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -116,8 +115,31 @@ public class Favoris2Fragment extends Fragment {
 
         @Override
         public void onViewCreated(View view ,Bundle savedInstanceState) {
+           /*if(retour.equals("") || retour.equals("MyProsFragment")){
+                TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.professional_tabs);
+                TabLayout.Tab tab = tabLayout.getTabAt(0);
+                tab.select();
+            }
+            else if(retour.equals("MyCrushes")){
+                TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.professional_tabs);
+                TabLayout.Tab tab = tabLayout.getTabAt(1);
+                tab.select();
+            }*/
+
             getActivity().findViewById(R.id.simpleFrameLayout_favoris).setVisibility(View.VISIBLE);
 
+            Fragment fragment = null;
+            Bundle args = new Bundle();
+            args.putSerializable("Customer",customer);
+
+            fragment = new MyProsFragment();
+            fragment.setArguments(args);
+
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.simpleFrameLayout_favoris,fragment);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            ft.commit();
         }
 
 

@@ -3,7 +3,6 @@ package com.gouiranlink.franois.gouiranlinkproject.Reservation;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -51,6 +50,7 @@ public class UpcomingFragment extends Fragment {
     List<Reservation> reservations;
     Reservation reser;
     private ListView listviewupcoming;
+    private LinearLayout layoutupcoming;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +68,8 @@ public class UpcomingFragment extends Fragment {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_upcoming, null);
         font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Acrom W00 Medium.ttf");
+
+
 
         /*for (int i = 0; i < 10; i++) {
             int resID = getResources().getIdentifier("reservation" + (i + 1), "id", getActivity().getPackageName());
@@ -246,9 +248,21 @@ public class UpcomingFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState){
 
         reservations = getReservationList();
+        layoutupcoming = (LinearLayout) getActivity().findViewById(R.id.layoutupcoming);
+        listviewupcoming = (ListView) getActivity().findViewById(R.id.listviewUpcoming);
+
+        if(reservations.size()==0){
+            layoutupcoming.setVisibility(true ? View.VISIBLE : View.GONE);
+            listviewupcoming.setVisibility(true ? View.GONE : View.VISIBLE);
+        }else{
+            layoutupcoming.setVisibility(true ? View.GONE : View.VISIBLE);
+            listviewupcoming.setVisibility(true ? View.VISIBLE : View.GONE);
+        }
+
+
         List<String> institutesNames = new ArrayList<String>();
         List<List<String>> types = new ArrayList<List<String>>();
         List<String> pictures = new ArrayList<String>();
@@ -292,7 +306,7 @@ public class UpcomingFragment extends Fragment {
         });*/
 
         //Utiliser une listView pour affichage
-        listviewupcoming = (ListView) getActivity().findViewById(R.id.listviewUpcoming);
+
         listviewupcoming.setAdapter(reservationImageAdapter);
         listviewupcoming.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,

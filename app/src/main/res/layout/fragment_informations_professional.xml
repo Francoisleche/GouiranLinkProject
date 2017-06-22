@@ -78,7 +78,7 @@
                         android:clickable="true"
                         android:onClick="onCardClicked"
                         android:scaleType="fitXY"
-                        android:src="@drawable/ic_coeur_favoris_pink"
+                        android:src="@drawable/ic_coeur_vide"
                         android:visibility="visible"
                         android:layout_alignParentRight="true" />
 

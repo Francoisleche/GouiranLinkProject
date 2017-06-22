@@ -101,9 +101,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         super.onStart();
     }
 
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
         getActivity().setTitle(R.string.myAccount);
-    }
+    }*/
 }

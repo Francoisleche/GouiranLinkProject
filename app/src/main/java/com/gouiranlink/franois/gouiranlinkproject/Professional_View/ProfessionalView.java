@@ -37,6 +37,7 @@ public class ProfessionalView extends Fragment {
     private Customer customer;
     private String token;
     HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
+    HashMap<String, List<String>> expandableListDetailAutrePrestation = new HashMap<String, List<String>>();
     ArrayList<String> Shop_image;
     private Resource[] ResourceProfessional;
     String fragment_precedent;
@@ -53,6 +54,7 @@ public class ProfessionalView extends Fragment {
             customer = (Customer)getArguments().getSerializable("Customer");
             Shop_image = (ArrayList<String>) getArguments().getSerializable("Shop_image");
             expandableListDetail = (HashMap<String, List<String>>) getArguments().getSerializable("ExpandableListDetail");
+            expandableListDetailAutrePrestation = (HashMap<String, List<String>>) getArguments().getSerializable("expandableListDetailAutrePrestation");
             token = (String)getArguments().getString("token");
             System.out.println("Toooooooooooooken"+token);
             fragment_precedent = (String) getArguments().getString("Fragment");
@@ -68,6 +70,7 @@ public class ProfessionalView extends Fragment {
         args.putSerializable("Customer",customer);
         args.putSerializable("Shop_image",Shop_image);
         args.putSerializable("ExpandableListDetail", expandableListDetail);
+        args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
         args.putSerializable("ResourceProfessional", ResourceProfessional);
         args.putSerializable("Retour",fragment_precedent);
         //fragment = new ServicesProfessional();
@@ -115,6 +118,7 @@ public class ProfessionalView extends Fragment {
                 args.putSerializable("Customer",customer);
                 args.putSerializable("Shop_image",Shop_image);
                 args.putSerializable("ExpandableListDetail", expandableListDetail);
+                args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
                 args.putSerializable("ResourceProfessional", ResourceProfessional);
                 args.putSerializable("token",token);
                 args.putSerializable("Fragment",fragment_precedent);
@@ -171,6 +175,7 @@ public class ProfessionalView extends Fragment {
         args.putSerializable("Customer",customer);
         args.putSerializable("Shop_image",Shop_image);
         args.putSerializable("ExpandableListDetail", expandableListDetail);
+        args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
         args.putSerializable("ResourceProfessional", ResourceProfessional);
         args.putSerializable("Fragment",fragment_precedent);
         //fragment = new ServicesProfessional();

@@ -193,7 +193,7 @@ public class GalleryFragment extends Fragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(getActivity()));
+        //gridview.setAdapter(new ImageAdapter(getActivity()));
 
 
 

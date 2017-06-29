@@ -109,12 +109,16 @@ public class PrendreRdV2 extends Fragment{
         if (getArguments() != null) {
             horaires_indisponibilites = (ArrayList<String>) getArguments().getSerializable("horaires_indisponibilites");
             professional = (Professional) getArguments().getSerializable("Professionnal");
-            liste_prestations_selectionne = (ArrayList<Professional_Product>) getArguments().getSerializable("liste_prestations_selectionne");
+            liste_prestations_selectionne = (ArrayList<Professional_Product>) getArguments().getSerializable("liste_prestations_selectionne_PrendreRdV1");
             courante_liste_prestations = (Professional_Product[]) getArguments().getSerializable("courante_liste_prestations");
             customer = (Customer) getArguments().getSerializable("Customer");
             prix = (Double) getArguments().getDouble("prix");
             duree = (int) getArguments().getInt("duree");
             ResourceProfessional = (Resource[])getArguments().getSerializable("ResourceProfessional");
+        }
+
+        for(int i=0;i<liste_prestations_selectionne.size();i++){
+            System.out.println("PRENDRERDV222222 : "+liste_prestations_selectionne.get(i).getName());
         }
 
 
@@ -1157,7 +1161,7 @@ public class PrendreRdV2 extends Fragment{
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 } else{
-                    if (null == null) {
+                    if (button_clique2 != null && dday!=null) {
                         Fragment fragment = null;
                         Bundle args = new Bundle();
                         args.putSerializable("Professionnal", professional);
@@ -1197,13 +1201,16 @@ public class PrendreRdV2 extends Fragment{
                         fragment = new Recapitulatif();
                         fragment.setArguments(args);
 
-                        ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
-
+                        ft.replace(R.id.content_frame, fragment).addToBackStack(null);
                         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         ft.commit();
                     } else {
                         //appuie_horaire.setError("Selectionner une horaire avant de prendre un rendez vous");
-                        Toast.makeText(getApplicationContext(), "Veuillez selectionner une date", Toast.LENGTH_LONG).show();
+                        buton00.setError("Selectionner une heure");
+                        buton01.setError("Selectionner une heure");
+                        buton02.setError("Selectionner une heure");
+                        buton03.setError("Selectionner une heure");
+                        Toast.makeText(getApplicationContext(), "Veuillez selectionner une date et une heure", Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -1355,8 +1362,13 @@ public class PrendreRdV2 extends Fragment{
                     if (Integer.parseInt(liste_indisponibilite[y].getAnnee()) == year && Integer.parseInt(liste_indisponibilite[y].getMois()) == (month + 1) && Integer.parseInt(liste_indisponibilite[y].getJour()) == day) {
                         trouve = true;
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 7 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 7){
-                            if(buton1.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton1.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton1.getText().equals(button_clique.getText())){
+                                buton1.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton1.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1366,8 +1378,13 @@ public class PrendreRdV2 extends Fragment{
                             buton1.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 8 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 8){
-                            if(buton2.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton2.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton2.getText().equals(button_clique.getText())){
+                                buton2.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton2.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1376,8 +1393,13 @@ public class PrendreRdV2 extends Fragment{
                             buton2.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >=9 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 9){
-                            if(buton3.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton3.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton3.getText().equals(button_clique.getText())){
+                                buton3.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton3.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1386,8 +1408,13 @@ public class PrendreRdV2 extends Fragment{
                             buton3.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 10 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 10){
-                            if(buton4.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton4.getText().equals(button_clique.getText())){
+                                buton4.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton4.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1396,8 +1423,13 @@ public class PrendreRdV2 extends Fragment{
                             buton4.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 11 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 11){
-                            if(buton5.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton5.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton5.getText().equals(button_clique.getText())){
+                                buton5.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton5.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1406,8 +1438,13 @@ public class PrendreRdV2 extends Fragment{
                             buton5.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 12 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 12){
-                            if(buton6.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton6.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton6.getText().equals(button_clique.getText())){
+                                buton6.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton6.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1416,8 +1453,13 @@ public class PrendreRdV2 extends Fragment{
                             buton6.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 13 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 13){
-                            if(buton7.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton7.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton7.getText().equals(button_clique.getText())){
+                                buton7.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton7.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1426,8 +1468,13 @@ public class PrendreRdV2 extends Fragment{
                             buton7.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 14 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 14){
-                            if(buton8.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton8.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton8.getText().equals(button_clique.getText())){
+                                buton8.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton8.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1436,8 +1483,13 @@ public class PrendreRdV2 extends Fragment{
                             buton8.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 15 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 15){
-                            if(buton9.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton9.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton9.getText().equals(button_clique.getText())){
+                                buton9.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton9.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1446,8 +1498,13 @@ public class PrendreRdV2 extends Fragment{
                             buton9.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 16 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 16){
-                            if(buton10.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton10.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton10.getText().equals(button_clique.getText())){
+                                buton10.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton10.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1456,8 +1513,13 @@ public class PrendreRdV2 extends Fragment{
                             buton10.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 17 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 17){
-                            if(buton11.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton11.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton11.getText().equals(button_clique.getText())){
+                                buton11.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton11.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1466,8 +1528,13 @@ public class PrendreRdV2 extends Fragment{
                             buton11.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 18 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 18){
-                            if(buton12.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton12.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton12.getText().equals(button_clique.getText())){
+                                buton12.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton12.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1476,8 +1543,13 @@ public class PrendreRdV2 extends Fragment{
                             buton12.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 19 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 19){
-                            if(buton13.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton13.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton13.getText().equals(button_clique.getText())){
+                                buton13.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton13.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1486,8 +1558,13 @@ public class PrendreRdV2 extends Fragment{
                             buton13.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 20 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 20){
-                            if(buton14.getText().equals(button_clique.getText())){
+                            if(button_clique == null){
                                 buton14.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton14.getText().equals(button_clique.getText())){
+                                buton14.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton14.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1496,8 +1573,13 @@ public class PrendreRdV2 extends Fragment{
                             buton14.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 21 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 21){
-                            if(buton15.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton15.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton15.getText().equals(button_clique.getText())){
+                                buton15.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton15.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1506,8 +1588,13 @@ public class PrendreRdV2 extends Fragment{
                             buton15.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 22 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 22){
-                            if(buton16.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton16.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton16.getText().equals(button_clique.getText())){
+                                buton16.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton16.setVisibility(true ? View.GONE : View.VISIBLE);
@@ -1516,8 +1603,13 @@ public class PrendreRdV2 extends Fragment{
                             buton16.setVisibility(true ? View.VISIBLE : View.GONE);
                         }
                         if(Integer.parseInt(liste_indisponibilite2[y].getHeure()) >= 23 && Integer.parseInt(liste_indisponibilite[y].getHeure()) <= 23){
-                            if(buton17.getText().equals(button_clique.getText())){
+                            if(button_clique == null) {
                                 buton17.setVisibility(true ? View.GONE : View.VISIBLE);
+                            }else if(buton17.getText().equals(button_clique.getText())){
+                                buton17.setVisibility(true ? View.GONE : View.VISIBLE);
+                                button_clique.setBackgroundColor(Color.parseColor("#d16677"));
+                                button_clique.setTextColor(Color.parseColor("#ffffff"));
+                                button_clique =null;
                                 calendrier4.setVisibility(true ? View.GONE : View.VISIBLE);
                             }else{
                                 buton17.setVisibility(true ? View.GONE : View.VISIBLE);

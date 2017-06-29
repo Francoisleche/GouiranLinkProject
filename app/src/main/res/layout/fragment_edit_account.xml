@@ -435,12 +435,43 @@
                         android:spinnerMode="dropdown"
                         android:id="@+id/gender_spinner"/>
 
-                    <EditText
-                        android:layout_weight="1"
-                        android:id="@+id/edit_value_birth_date"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:inputType="date"/>
+                        android:orientation="horizontal">
+                        <EditText
+                            android:layout_weight="1"
+                            android:id="@+id/edit_value_birth_date"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:maxLength="4"
+                            android:inputType="date"
+                            android:hint="YYYY"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="/"/>
+                        <EditText
+                            android:layout_weight="1"
+                            android:id="@+id/edit_value_birth_date2"
+                            android:layout_width="35dp"
+                            android:layout_height="wrap_content"
+                            android:maxLength="2"
+                            android:inputType="date"
+                            android:hint="MM"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="/"/>
+                        <EditText
+                            android:layout_weight="1"
+                            android:id="@+id/edit_value_birth_date3"
+                            android:layout_width="35dp"
+                            android:layout_height="wrap_content"
+                            android:maxLength="2"
+                            android:inputType="date"
+                            android:hint="DD"/>
+                    </LinearLayout>
 
                     <EditText
                         android:layout_weight="1"
@@ -552,6 +583,13 @@
                         android:layout_height="40dp"
                         android:textColor="#7699a1"
                         android:text="Profession" />
+                    <TextView
+                        android:text=""
+                        android:layout_weight="1"
+                        android:id="@+id/edit_value_profession2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 
@@ -587,11 +625,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp" />
 
+                    <Spinner
+                        android:id="@+id/spinnerprofession"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp">
+                    </Spinner>
+
                     <EditText
                         android:layout_weight="1"
                         android:id="@+id/edit_value_profession"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp" />
+                        android:layout_height="40dp"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </LinearLayout>

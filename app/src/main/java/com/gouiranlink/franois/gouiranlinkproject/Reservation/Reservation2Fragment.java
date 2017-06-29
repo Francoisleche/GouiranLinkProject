@@ -51,7 +51,7 @@ public class Reservation2Fragment extends Fragment {
 
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.simpleFrameLayout,fragment).addToBackStack(null);
+                ft.replace(R.id.simpleFrameLayout,fragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
             }else if(retour.equals("DoneFragment")){
@@ -63,7 +63,7 @@ public class Reservation2Fragment extends Fragment {
 
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.simpleFrameLayout,fragment).addToBackStack(null);
+                ft.replace(R.id.simpleFrameLayout,fragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
             }

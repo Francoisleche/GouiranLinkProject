@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:weightSum="1">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/prendredrdv1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/section1_bg">
@@ -69,6 +70,23 @@
                 android:id="@+id/liste_services_prendrerdv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"></Spinner>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/ajouter_autre_prestation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#d16677"
+                android:padding="5dp"
+                android:textColor="@color/white"
+                android:text="Ajouter une autre prestation"/>
+
+
         </LinearLayout>
 
 
@@ -173,5 +191,80 @@
 
         </LinearLayout>
     </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:id="@+id/autresprestations2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="3"
+                android:background="@color/GouiranLightPink"
+                android:gravity="center"
+                android:text="Je prends RdV"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="Sélectionnez d'autres prestations pour votre RdV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/valider_autresprestations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/GouiranLightPink"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:layout_gravity="center"
+            android:text="Valider"
+            android:textColor="@color/white"/>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            tools:context=".MainActivity">
+
+            <ExpandableListView
+                android:id="@+id/expandableListView_autresprestations"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="0.5dp"
+                android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+                android:divider="#f00"
+                android:listSelector="#0f0"/>
+
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+
 
     </FrameLayout>

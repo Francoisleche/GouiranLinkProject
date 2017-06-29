@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetCustomerProfil
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostFileRequest;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PutRequest;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -53,7 +55,7 @@ public class EditAccountFragment extends Fragment {
     String city;
     String post_code;
     String address;
-    String profession;
+    String profession = "Profession";
     String[] gender;
 
     private OnFragmentInteractionListener mListener;
@@ -83,6 +85,51 @@ public class EditAccountFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_edit_account, container, false);
+
+
+        final Spinner spinnerprofession = (Spinner) root.findViewById(R.id.spinnerprofession);
+        ArrayList<String> liste_profession = new ArrayList<>();
+        liste_profession.add("Chef d'entreprise");
+        liste_profession.add("Profession libérale");
+        liste_profession.add("Salarié(e) du privé ou du public");
+        liste_profession.add("Retraité");
+        liste_profession.add("Autres");
+        ArrayAdapter<String> adapter_services = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item,liste_profession);
+        adapter_services.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerprofession.setAdapter(adapter_services);
+
+        final EditText editText2 = (EditText) root.findViewById(R.id.edit_value_profession);
+        final TextView editText3 = (TextView) root.findViewById(R.id.edit_value_profession2);
+        //final String pro = spinnerprofession.getSelectedItem().toString();
+        spinnerprofession.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                // TODO Auto-generated method stub
+                String msupplier=spinnerprofession.getSelectedItem().toString();
+                //Log.e("Selected item : ",msupplier);
+                //System.out.println("Ooooooooooooh"+spinnerprofession.getSelectedItem().toString());
+                if(msupplier.equals("Autres")){
+                    editText2.setVisibility(true ? View.VISIBLE : View.GONE);
+                    editText3.setVisibility(true ? View.VISIBLE : View.GONE);
+                }else{
+                    editText2.setVisibility(true ? View.GONE : View.VISIBLE);
+                    editText3.setVisibility(true ? View.GONE : View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+
+
+
+
 
 
         customer = new GetCustomerProfile().getCustomerProfile(customer.getToken());
@@ -268,8 +315,17 @@ public class EditAccountFragment extends Fragment {
 
         final String gender = editText.getText().toString();*/
         EditText editText = (EditText) root.findViewById(R.id.edit_value_birth_date);
+        EditText editTex2 = (EditText) root.findViewById(R.id.edit_value_birth_date2);
+        EditText editTex3 = (EditText) root.findViewById(R.id.edit_value_birth_date3);
         editText.setHint(((TextView) root.findViewById(R.id.value_birth_date)).getText());
-        birth_date = editText.getText().toString();
+        birth_date = editText.getText().toString()+"/"+editTex2.getText().toString()+"/"+editTex3.getText().toString();
+        editText.setHint(customer.getBirthday_date().substring(0,4));
+        editTex2.setHint(customer.getBirthday_date().substring(5,7));
+        editTex3.setHint(customer.getBirthday_date().substring(8,10));
+        editText.setText(customer.getBirthday_date().substring(0,4));
+        editTex2.setText(customer.getBirthday_date().substring(5,7));
+        editTex3.setText(customer.getBirthday_date().substring(8,10));
+
         editText = (EditText) root.findViewById(R.id.edit_value_email);
         editText.setHint(((TextView) root.findViewById(R.id.value_email)).getText());
         email = editText.getText().toString();
@@ -291,9 +347,9 @@ public class EditAccountFragment extends Fragment {
         editText = (EditText) root.findViewById(R.id.edit_value_address);
         editText.setHint(((TextView) root.findViewById(R.id.value_address)).getText());
         address = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_profession);
-        editText.setHint(((TextView) root.findViewById(R.id.value_profession)).getText());
-        profession = editText.getText().toString();
+        //editText = (EditText) root.findViewById(R.id.edit_value_profession);
+        //editText.setHint(((TextView) root.findViewById(R.id.value_profession)).getText());
+        //profession = editText.getText().toString();
 
         if (birth_date.isEmpty() || birth_date.equals("") || birth_date == null)
             birth_date = customer.getBirthday_date();
@@ -323,6 +379,33 @@ public class EditAccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
+
+                    //Date d'anniversaire
+                    EditText editText = (EditText) root.findViewById(R.id.edit_value_birth_date);
+                    EditText editText2 = (EditText) root.findViewById(R.id.edit_value_birth_date2);
+                    EditText editText3 = (EditText) root.findViewById(R.id.edit_value_birth_date3);
+                    birth_date = editText.getText().toString()+"-"+editText2.getText().toString()+"-"+editText3.getText().toString();
+                    if (birth_date.isEmpty() || birth_date.equals("") || birth_date == null){
+                        birth_date = customer.getBirthday_date();
+                    }
+
+                    //Ville
+                    editText = (EditText) root.findViewById(R.id.edit_value_city);
+                    city = editText.getText().toString();
+                    if (city.isEmpty() || city.equals("") || city == null)
+                        city = customer.getCity();
+
+
+                    //PostCode
+                    editText = (EditText) root.findViewById(R.id.edit_value_post_code);
+                    post_code = editText.getText().toString();
+                    if (post_code.isEmpty() || post_code.equals("") || post_code == null)
+                        post_code = customer.getPost_code();
+
+
+
+
+
                     Toast.makeText(getActivity(), "3- gender = [" + gender[0] + "]", Toast.LENGTH_SHORT).show();
                     if (gender != null && gender[0].equals("Homme"))
                         gender[0] = "M";
@@ -346,6 +429,9 @@ public class EditAccountFragment extends Fragment {
                     String resp;
                     PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json, "Authorization", "Token " + customer.getToken());
                     resp = putRequest.execute().get();
+                    System.out.println("Puuuuuuuuut : "+city);
+                    System.out.println("Puuuuuuuuut : "+birth_date);
+                    System.out.println("Puuuuuuuuut : "+resp);
                     Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
                     Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_LONG).show();
                     Log.d("reponse", resp);

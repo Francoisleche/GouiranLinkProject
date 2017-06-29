@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -244,13 +245,18 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
 
 
 
-        /*TextView titre_home_coiffure = (TextView) view.findViewById(R.id.titre_home_coiffure);
-        titre_home_coiffure.setOnClickListener(new View.OnClickListener(){
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                // do whatever we wish!
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // TODO Auto-generated method stub
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                }
+                return true;
             }
-        });*/
+        });
 
         return view;
 

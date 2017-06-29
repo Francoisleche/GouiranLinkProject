@@ -20,7 +20,7 @@
             android:title="Mes Favoris" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_photo_camera_black_24dp"
+            android:icon="@drawable/ic_photo_camera_white_24dp"
             android:title="Ma Galerie" />
         <item
             android:id="@+id/nav_compte"

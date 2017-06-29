@@ -48,12 +48,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         if (getArguments() != null) {
             customer = (Customer)getArguments().getSerializable("Customer");
         }
-
         Fragment fragment = new MainSettings();
         Bundle args = new Bundle();
         args.putSerializable("Customer", customer);
         fragment.setArguments(args);
-        fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack("tag").commit();
+        fragmentTransaction.replace(R.id.frameLayout, fragment).commit();
     }
 
     @Override

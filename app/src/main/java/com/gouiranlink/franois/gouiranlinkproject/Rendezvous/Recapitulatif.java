@@ -4,20 +4,18 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,12 +79,35 @@ public class Recapitulatif extends Fragment {
         System.out.println("Resource Name :"+resource.getName());
         //
 
+        for(int i=0;i<liste_prestations_selectionne.size();i++){
+            System.out.println("RECAPITULATIF     : "+liste_prestations_selectionne.get(i).getName());
+        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_recapitulatif, container, false);
+        //View v = inflater.inflate(R.layout.activity_recapitulatif, container, false);
+        View v = inflater.inflate(R.layout.fragment_recapitulatif2, container, false);
+
+
+        LinearLayout myRoot = (LinearLayout) v.findViewById(R.id.liste_service_recapitulatif);
+
+        for(int i= 0;i<liste_prestations_selectionne.size();i++){
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.services_recapitulatif,null);
+            TextView t = (TextView) view.findViewById(R.id.text_recap);
+            t.setText(liste_prestations_selectionne.get(i).getName());
+            myRoot.addView(view);
+        }
+
+        final EditText recapitulatif_commentaire = (EditText) v.findViewById(R.id.recapitulatif_commentaire);
+        recapitulatif_commentaire.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                recapitulatif_commentaire.setVisibility(true ? View.VISIBLE : View.GONE);
+            }
+        });
+
 
 
 
@@ -97,7 +118,7 @@ public class Recapitulatif extends Fragment {
         final TextView adresseprestataire = (TextView) v.findViewById(R.id.adresseprestataire);
         final TextView nomemploye = (TextView) v.findViewById(R.id.nomemploye);
 
-        TableLayout table = (TableLayout) v.findViewById(R.id.idTable);
+        /*TableLayout table = (TableLayout) v.findViewById(R.id.idTable);
         TableRow row;
 
         TextView tv1,tv2;
@@ -142,16 +163,25 @@ public class Recapitulatif extends Fragment {
             row.addView(tv2);
             // ajout de la ligne au tableau
             table.addView(row);
-        }
+        }*/
 
 
         System.out.println("RECAPITULATIF : "+recap[0]+" "+recap[1]);
+        System.out.println("RECAPITULATIF2 : "+recap[2]+" "+recap[3]);
+        System.out.println("RECAPITULATIF3 : "+recap[4]+" "+recap[4]);
+        System.out.println("RECAPITULATIF4 : "+recap[5]+" "+recap[6]);
 
         tarif.setText(recap[0]+recap[1]);
         duree.setText(recap[2]);
-        nomprestataire.setText(recap[3]);
+        nomprestataire.setText(professional.getShop_name());
         adresseprestataire.setText(recap[4]);
-        horairedateprestation.setText(recap[5] + " - " + recap[6]);
+        //horairedateprestation.setText(recap[5] + " - " + recap[6]);
+        String[] part_5 = recap[5].split("////");
+
+
+        //horairedateprestation.setText(part_5[0]+" "+part_5[1]+ " à "+part_5[2].substring(0,5));
+        horairedateprestation.setText(part_5[0]+" "+part_5[1]+ " à "+ recap[6]);
+
 
         nomemploye.setText(resource.getName());
 
@@ -221,6 +251,30 @@ public class Recapitulatif extends Fragment {
         return v;
     }
 
+
+    public void onClick(final View v) {
+        switch (v.getId()) {
+            case R.id.textview_recapitulatif:
+                EditText recapitulatif_commentaire = (EditText) v.findViewById(R.id.recapitulatif_commentaire);
+                recapitulatif_commentaire.setVisibility(true ? View.VISIBLE : View.GONE);
+                break;
+        }
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
     /* Prend en paramètre une date au format DD/MM/YYYY et une heure au format HHhMM
     *  Renvoie dans string[0] Date et heure de début au format YYYY-MM-DDTHH:MM:SSZ
     *  Renvoie dans string[1] Date et heure de fin au format YYYY-MM-DDTHH:MM:SSZ
@@ -240,6 +294,7 @@ public class Recapitulatif extends Fragment {
         int durationHour;
         String[] informations = new String[2];
 
+        System.out.print("Ooooooooooooh : "+recap[2]);
         cpy = recap[2];
         durationHour = Integer.valueOf(cpy.substring(0, cpy.indexOf('h')));
         cpy = recap[2];
@@ -299,7 +354,10 @@ public class Recapitulatif extends Fragment {
                 if (i + 1 < liste_prestations_selectionne.size())
                     prestDetails += ",\n";
             }
-            String[] informations = getDateInformations(recap[5], recap[6]);
+            //String[] informations = getDateInformations(recap[5], recap[6]);
+            String[] informations = new String[2];
+            informations[0] = "2017-05-27T12:00:00Z";
+            informations[1] = "2017-05-27T14:00:00Z";
 
 
             System.out.println("DEBUT RESOURCE");
@@ -310,15 +368,15 @@ public class Recapitulatif extends Fragment {
 
 
 
-            /*json = "{\n" +
+            json = "{\n" +
 
                     "\"begin_date\":\"" + informations[0] + "\"," +
                     "\"end_date\":\"" + informations[1] + "\"," +
                     "\"phone\":\"" + customer.getMobilephone() + "\"," +
-                    "\"resource\":\"" + employe_selectionne + "\"," +
+                    "\"resource\":" + employe_selectionne + "\n," +
                     "\"products\":[\n" + prestDetails +
                     "]\n" +
-                    "}\n";*/
+                    "}\n";
 
             /*json = "{\n" +
 
@@ -330,14 +388,16 @@ public class Recapitulatif extends Fragment {
                     "\"resource\":" + employe_selectionne  +
                     "}\n";*/
 
-            json = "{\n" +
+
+            //CElui la c'est le bon, c'est lui qui fonctionne
+            /*json = "{\n" +
 
                     "\"begin_date\":\"" + informations[0] + "\"," +
                     "\"end_date\":\"" + informations[1] + "\"," +
                     "\"phone\":\"" + customer.getMobilephone() + "\"," +
                     "\"products\":[\n" + prestDetails +
                     "]\n" +
-                    "}\n";
+                    "}\n";*/
 
 
             headerKey = "Authorization";

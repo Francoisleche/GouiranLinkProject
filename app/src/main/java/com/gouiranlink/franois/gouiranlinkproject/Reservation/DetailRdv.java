@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -313,16 +314,23 @@ public class DetailRdv extends Fragment {
         String resp;
         String json,json2;
 
-        String format = "dd/MM/yy H:mm:ss";
+            String format = "dd/MM/yyyy HH:mm:ss.SS";
 
+        Calendar cal = Calendar.getInstance();
         java.text.SimpleDateFormat formater = new java.text.SimpleDateFormat( format );
+        String strDate = formater.format(cal.getTime());
         java.util.Date date = new java.util.Date();
+        System.out.println("Pas poli : "+strDate);
+        System.out.println("Pas poli2 : "+date);
         String jour1=formater.format(date).toString().substring(0,2);
         String mois1=formater.format(date).toString().substring(3,5);
-        String annee1="20"+formater.format(date).toString().substring(6,8);
-        String heure1=formater.format(date).toString().substring(9,11);
+        String annee1=formater.format(date).toString().substring(6,10);
 
-        String date2 = annee1+"/"+mois1+"/"+jour1+"T"+formater.format(date).toString().substring(9,17) + "Z";
+
+
+        System.out.println("Pas poli : " + annee1+"/"+mois1+"/"+jour1+"T"+formater.format(date).toString().substring(11,19) + "Z");
+        String date2 = annee1+"/"+mois1+"/"+jour1+"T"+formater.format(date).toString().substring(11,19) + "Z";
+        System.out.println("Pas poli2 : "+ date2);
 
         json2 = "{\n" +
                 "\"id\":\"" + String.valueOf(customer.getId()) + "\"," +

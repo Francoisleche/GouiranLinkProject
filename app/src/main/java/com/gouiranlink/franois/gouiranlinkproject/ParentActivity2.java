@@ -29,7 +29,7 @@ import com.gouiranlink.franois.gouiranlinkproject.Account.AccountFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Account.NestedSettingsFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Favourites.Favoris2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.Favourites.FavouritesFragment;
-import com.gouiranlink.franois.gouiranlinkproject.Gallery.ActivityGallery;
+import com.gouiranlink.franois.gouiranlinkproject.Gallery.FragmentGallery2;
 import com.gouiranlink.franois.gouiranlinkproject.Gallery.GalleryFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2;
@@ -107,9 +107,6 @@ public class ParentActivity2 extends AppCompatActivity
                 email.putExtra(Intent.EXTRA_TEXT, "Saisir votre demande ici...");
                 email.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(Intent.createChooser(email, "Choisir le logiciel"));
-
-
-
             }
         });
 
@@ -289,7 +286,8 @@ public class ParentActivity2 extends AppCompatActivity
 
         } else if (id == R.id.nav_gallery) {
 
-            fragment = new ActivityGallery();
+            //fragment = new ActivityGallery();
+            fragment = new FragmentGallery2();
 
         } else if (id == R.id.nav_compte) {
             if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {

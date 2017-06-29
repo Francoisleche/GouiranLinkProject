@@ -40,6 +40,7 @@ public class ServicesProfessional2 extends Fragment{
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
+    HashMap<String, List<String>> expandableListDetailAutrePrestation;
 
     private Professional professional;
     private Professional_Product[] professional_product;
@@ -83,6 +84,7 @@ public class ServicesProfessional2 extends Fragment{
             customer = (Customer) getArguments().getSerializable("Customer");
             Shop_image = (ArrayList<String>) getArguments().getSerializable("Shop_image");
             expandableListDetail = (HashMap<String, List<String>>) getArguments().getSerializable("ExpandableListDetail");
+            expandableListDetailAutrePrestation = (HashMap<String, List<String>>) getArguments().getSerializable("expandableListDetailAutrePrestation");
             fragment_precedent = (String) getArguments().getString("Fragment");
         }
         System.out.println("Maaaaaaaaaaaaaaaarche bien :" + professional.toString());
@@ -214,6 +216,7 @@ public class ServicesProfessional2 extends Fragment{
 
                     if(groupPosition != (0)) {
 
+
                         System.out.println("ON A CLIQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                         Toast.makeText(getContext(), "An item of the ListView is clicked.", Toast.LENGTH_LONG).show();
 
@@ -229,16 +232,17 @@ public class ServicesProfessional2 extends Fragment{
                         //args.putSerializable("service_selectionne_expandablelistview", (Serializable) expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition));
                         args.putSerializable("service_selectionne_expandablelistview", (Serializable) separated[0]);
                         args.putSerializable("position_list_clique", groupPosition);
+
+
+                        //Deuxieme HashMap car sinon probleme d'identifiant
+                        args.putSerializable("ExpandableListDetail", groupPosition+"////"+childPosition);
                         FragmentManager fm = getFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
                         //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
                         Fragment fragment=null;
                         fragment = new PrendreRdV1();
                         fragment.setArguments(args);
-                        System.out.println("Ooooooooooooooh Prendre RdV1");
-
-                        ft.replace(R.id.content_frame, fragment).addToBackStack("service2");
-
+                        ft.replace(R.id.content_frame, fragment).addToBackStack(null);
                         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         ft.commit();
                     }

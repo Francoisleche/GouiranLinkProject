@@ -9,24 +9,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="3"
+        android:background="@color/GouiranLightPink">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/GouiranLightPink"
             android:gravity="center"
-            android:text="Gallerie"
+            android:text="Ma Galerie"
+            android:textColor="@color/white"
             android:textSize="25sp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:layout_weight="2.76" />
 
         <Button
             android:id="@+id/selfie"
+            android:layout_marginRight="10dp"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.29"
-            android:background="@drawable/ic_photo_camera_black_24dp"
+            android:background="@drawable/ic_photo_camera_white_24dp"
             android:clickable="true" />
     </LinearLayout>
 
@@ -43,6 +46,19 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:numColumns="2"></GridView>
+
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:textAlignment="center"
+            android:id="@+id/textview_magallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Sauvegardez dans votre gallerie toutes vos idées et tendances beauté en images. \n \n
+Vous n'aurez plus qu'à les montrer à votre professionnel de beauté pour l'inspirer durant votre RdV !"
+            android:visibility="gone"/>
+
 
 
     </RelativeLayout>

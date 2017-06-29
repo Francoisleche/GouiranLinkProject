@@ -154,6 +154,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
 
     HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
+    HashMap<String, List<String>> expandableListDetailAutrePrestation = new HashMap<String, List<String>>();
 
     ArrayList<String> Shop_image;
 
@@ -945,6 +946,7 @@ Log.e("Debug","bonjour");
                                 args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
                                 args.putSerializable("Customer", customer);
                                 args.putSerializable("ExpandableListDetail", expandableListDetail);
+                                args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
                                 args.putSerializable("ResourceProfessional", ResourceProfessional);
                                 args.putSerializable("Shop_image", Shop_image);
                                 args.putSerializable("token", token);
@@ -2669,9 +2671,13 @@ Log.e("Debug","bonjour");
         //Professional_Product product = new Professional_Product();
         ArrayList<Professional_Product> liste_product = new ArrayList<Professional_Product>();
         List<String> liste_coifure_femme = new ArrayList<String>();
+        List<String> liste_coifure_femme2 = new ArrayList<String>();
         List<String> liste_bien_etre = new ArrayList<String>();
+        List<String> liste_bien_etre2 = new ArrayList<String>();
         List<String> liste_beaute = new ArrayList<String>();
+        List<String> liste_beaute2 = new ArrayList<String>();
         List<String> liste_homme = new ArrayList<String>();
+        List<String> liste_homme2 = new ArrayList<String>();
         List<String> photo = new ArrayList<String>();
 
         try {
@@ -2729,7 +2735,12 @@ Log.e("Debug","bonjour");
                 System.out.println("LES PRODUCT RESOURCE MANAGER PRODUCT 2222 :" + product_resource_manager);
                 JSONObject json2 = p2.getJSONObject("product");
                 int product_id = (int) json2.get("id");
+
+                //////////////NE pas utiliser, ceci est l'ancien nom
                 String product_name = (String) json2.get("name");
+                /////////////////////////////////////////////
+
+
                 String description = (String) json2.get("description");
 
                 JSONObject json3 = json2.getJSONObject("category");
@@ -2744,6 +2755,7 @@ Log.e("Debug","bonjour");
                 product_category_withoutTree.setCreated_at(product_category_created_at);
                 product_category_withoutTree.setUpdated_at(product_category_updated_at);
 
+                product.setDescription(description);
                 product.setId(product_id);
                 product.setName(product_name);
                 product.setCategory(product_category_withoutTree);
@@ -2755,26 +2767,38 @@ Log.e("Debug","bonjour");
 
                 // pourquoi //// ? parce que / est deja utiliser dans les noms de products
                 if(product_category_name.equals("Coiffure Femme")){
-                    liste_coifure_femme.add(product_name+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_coifure_femme.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_coifure_femme2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }else if(product_category_name.equals("Bien-Être")){
-                    liste_bien_etre.add(product_name+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_bien_etre.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_bien_etre2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }else if(product_category_name.equals("Beauté")){
-                    liste_beaute.add(product_name+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_beaute.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_beaute2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }else if(product_category_name.equals("Homme")){
-                    liste_homme.add(product_name+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_homme.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_homme2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }
 
 
             }
 
-            if(!liste_coifure_femme.isEmpty())
-            expandableListDetail.put("Coiffure Femme", liste_coifure_femme);
-            if(!liste_bien_etre.isEmpty())
-            expandableListDetail.put("Bien-Être", liste_bien_etre);
-            if(!liste_beaute.isEmpty())
-            expandableListDetail.put("Beauté", liste_beaute);
-            if(!liste_homme.isEmpty())
-            expandableListDetail.put("Homme", liste_homme);
+            if(!liste_coifure_femme.isEmpty()) {
+                expandableListDetail.put("Coiffure Femme", liste_coifure_femme);
+                expandableListDetailAutrePrestation.put("Coiffure Femme", liste_coifure_femme2);
+            }
+            if(!liste_bien_etre.isEmpty()) {
+                expandableListDetail.put("Bien-Être", liste_bien_etre);
+                expandableListDetailAutrePrestation.put("Bien-Être", liste_bien_etre2);
+            }
+            if(!liste_beaute.isEmpty()) {
+                expandableListDetail.put("Beauté", liste_beaute);
+                expandableListDetailAutrePrestation.put("Beauté", liste_beaute2);
+            }
+            if(!liste_homme.isEmpty()) {
+                expandableListDetail.put("Homme", liste_homme);
+                expandableListDetailAutrePrestation.put("Homme", liste_homme2);
+            }
             expandableListDetail.put("PHOTOOOOOOOO TEAMS", photo);
 
         } catch (final JSONException e) {

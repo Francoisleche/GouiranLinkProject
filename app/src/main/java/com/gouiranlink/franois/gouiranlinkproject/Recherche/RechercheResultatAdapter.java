@@ -1,7 +1,6 @@
 package com.gouiranlink.franois.gouiranlinkproject.Recherche;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,7 +100,7 @@ public class RechercheResultatAdapter extends BaseAdapter {
         //textViewfavoris.setText(getFavoris().get(position));
 
         //Marche Impeccablement bien :)
-        if(pictures.size() == 0){
+        if(pictures.get(position) == ""){
             imageView.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.unknown));
         }else{
             Picasso.with(grid.getContext()).load(pictures.get(position))
@@ -117,16 +116,14 @@ public class RechercheResultatAdapter extends BaseAdapter {
 
         }else{
             for(int i =0;i<avis.size();i++){
-                System.out.println("Nooooooooooote avis : "+avis.get(i));
                 moyenne = moyenne + Double.parseDouble(avis.get(i));
             }
             moyenne = moyenne/avis.size();
         }
-        System.out.println("moyeeeeeeennne : "+moyenne);
         ratingbar.setRating(Float.parseFloat(moyenne(String.valueOf(moyenne))));
-        System.out.println("moyeeeeeeennne : "+Float.parseFloat(moyenne(String.valueOf(moyenne))));
         String ss  = String.format("%1$s/5", moyenne(String.valueOf(moyenne)));
         textViewavis.setText(ss);
+
         String s  = String.format("%1$s FAVORIS", getFavoris().get(position));
         textViewfavoris.setText(s);
 

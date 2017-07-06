@@ -158,25 +158,15 @@ public class ServicesProfessional2 extends Fragment{
                 new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                //Toast.makeText(getContext(),expandableListTitle.get(groupPosition) + " List Expanded." + " " + iterateur_image,Toast.LENGTH_SHORT).show();
                 if(iterateur_image<Shop_image.size()){
-                    if(Shop_image.get(iterateur_image++)=="null"){
-
-                    }else
-                    //new DownloadImageTask(image).execute(Shop_image.get(iterateur_image++));
-
                     Picasso.with(getContext()).load(Shop_image.get(iterateur_image))
                             .into(image);
-
+                    iterateur_image++;
                 }else{
-                    if(Shop_image.get(iterateur_image)=="null"){
-
-                    }else {
-                        iterateur_image = 0;
-                        //new DownloadImageTask(image).execute(Shop_image.get(iterateur_image));
-                        Picasso.with(getContext()).load(Shop_image.get(iterateur_image))
+                    iterateur_image = 0;
+                    Picasso.with(getContext()).load(Shop_image.get(iterateur_image))
                                 .into(image);
-                    }
+
                 }
             }
         });
@@ -190,8 +180,9 @@ public class ServicesProfessional2 extends Fragment{
                         Toast.LENGTH_SHORT).show();
                 if(iterateur_image<Shop_image.size()){
                     //new DownloadImageTask(image).execute(Shop_image.get(iterateur_image++));
-                    Picasso.with(getContext()).load(Shop_image.get(iterateur_image++))
+                    Picasso.with(getContext()).load(Shop_image.get(iterateur_image))
                             .into(image);
+                    iterateur_image++;
                 }else{
                     iterateur_image =0;
                     //new DownloadImageTask(image).execute(Shop_image.get(iterateur_image));

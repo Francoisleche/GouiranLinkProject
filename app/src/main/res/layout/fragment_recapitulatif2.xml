@@ -216,8 +216,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:textSize="20sp"
+                        android:clickable="true"
                         android:text="Ajouter un commentaire "
-                        android:textColor="@color/GouiranDarkPink" />
+                        android:textColor="@color/GouiranDarkPink"/>
 
                     <TextView
                         android:layout_width="wrap_content"

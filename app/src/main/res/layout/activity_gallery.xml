@@ -59,7 +59,5 @@
 Vous n'aurez plus qu'à les montrer à votre professionnel de beauté pour l'inspirer durant votre RdV !"
             android:visibility="gone"/>
 
-
-
     </RelativeLayout>
 </LinearLayout>

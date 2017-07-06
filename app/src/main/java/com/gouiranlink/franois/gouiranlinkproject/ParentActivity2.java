@@ -1,10 +1,12 @@
 package com.gouiranlink.franois.gouiranlinkproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -61,6 +63,13 @@ public class ParentActivity2 extends AppCompatActivity
     private String[] place,autocomplete;
     private static final String urlProfileImg = "R.drawable.image_inconnu";
     private ImageView imgProfile;
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
 
     @Override

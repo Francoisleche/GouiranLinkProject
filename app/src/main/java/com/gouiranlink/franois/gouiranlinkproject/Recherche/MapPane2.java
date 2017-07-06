@@ -5,29 +5,22 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -39,8 +32,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -75,9 +69,13 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class MapPane extends FragmentActivity implements OnMapReadyCallback {
+public class MapPane2 extends Fragment{
+
+    ProgressDialog mProgressDialog;
+
 
     private FileOutputStream fileOutputStream = null;
 
@@ -106,7 +104,7 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
     public String bestProvider;
     public boolean recherche_bool = false;
 
-    private GoogleMap mMap;
+    private MapView mMap;
     private static final int REQUEST_CODE_LOCATION = 123;
     private LocationManager lManager;
     private Location location;
@@ -120,7 +118,8 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
     LinearLayout linear_button_professionnal;
     LinearLayout linear_text_cacher;
 
-    ArrayList<ArrayList<String>> thumbs2 = new ArrayList<ArrayList<String>>();
+
+
 
     private Marker currentMarker = null;
 
@@ -151,369 +150,367 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cartes2);
 
-        Intent intent = this.getIntent();
-        Bundle bundle = intent.getExtras();
+        if (getArguments() != null) {
+
+                shopIdList = (String[]) getArguments().getStringArray("liste_id_professionnal");
+                shopImageList = (String[]) getArguments().getSerializable("liste_image_professionnal");
+                shopNameList = (String[]) getArguments().getSerializable("liste_name_professionnal");
+                shopFavorisList = (String[]) getArguments().getSerializable("liste_favoris_professionnal");
+                shopAvisList = (String[]) getArguments().getSerializable("liste_avis_professionnal");
+                LatitudeList = (String[]) getArguments().getSerializable("liste_latitude_professionnal");
+                LongitudeList = (String[]) getArguments().getSerializable("liste_longitude_professionnal");
+
+
+            recherche_bool =(boolean)getArguments().getBoolean("recherche_boolean");
+            System.out.println("Boooooooooooooooolean" + recherche_bool);
+            if (!recherche_bool) {
+                Professional PremierProfessionnal = new Professional();
+
+            } else {
 
 
 
-
-
-        thumbs2=(ArrayList<ArrayList<String>>)bundle.getSerializable("donnée_geolocalise");
-        recherche_bool =(boolean)bundle.getBoolean("recherche_boolean");
-
-
-        mesresultats_map = (ListView)findViewById(R.id.mesresultats_map);
-        System.out.println("Boooooooooooooooolean"+recherche_bool);
-        if(!recherche_bool){
-            /*String[] results = thumbs;
-            final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
-            ArrayAdapter<String> tableau = new ArrayAdapter<String>(this, R.layout.services, resultsList);
-            mesresultats_map.setAdapter(tableau);*/
-        }else{
-            String[] results = new String[thumbs2.size()];
-            System.out.println("Thumbs2 :"+thumbs2.size());
-            for(int i =0; i<thumbs2.size();i++){
-                System.out.println("Boooooooooooooooolean et thumbs2 :"+thumbs2.get(i).get(3));
-                results[i] =  thumbs2.get(i).get(3);
+                //Ce qu'on récupere
+                PremierProfessionnal = (Professional) getArguments().getSerializable("Professionnal");
+                PremierProfessionalProduct = (Professional_Product[]) getArguments().getSerializable("ProfessionnalProduct");
+                ResourceProfessional = (Resource[]) getArguments().getSerializable("ResourceProfessional");
+                customer = (Customer) getArguments().getSerializable("Customer");
+                Shop_image = (ArrayList<String>) getArguments().getSerializable("Shop_image");
+                expandableListDetail = (HashMap<String, List<String>>) getArguments().getSerializable("ExpandableListDetail");
+                expandableListDetailAutrePrestation = (HashMap<String, List<String>>) getArguments().getSerializable("expandableListDetailAutrePrestation");
+                token = (String) getArguments().getString("token");
+                fragment_precedent = (String) getArguments().getString("Fragment");
             }
-            final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
-            ArrayAdapter<String> tableau = new ArrayAdapter<String>(this, R.layout.services, resultsList);
-            mesresultats_map.setAdapter(tableau);
 
 
 
+            //System.out.println("ILMEFAUTUNCUSTOMER : "+customer.getName());
 
-            //Ce qu'on récupere
-            PremierProfessionnal = (Professional)bundle.getSerializable("Professionnal");
-            PremierProfessionalProduct = (Professional_Product[])bundle.getSerializable("ProfessionnalProduct");
-            ResourceProfessional = (Resource[])bundle.getSerializable("ResourceProfessional");
-            customer = (Customer)bundle.getSerializable("Customer");
-            Shop_image = (ArrayList<String>) bundle.getSerializable("Shop_image");
-            expandableListDetail = (HashMap<String, List<String>>) bundle.getSerializable("ExpandableListDetail");
-            expandableListDetailAutrePrestation = (HashMap<String, List<String>>) bundle.getSerializable("expandableListDetailAutrePrestation");
-            token = (String)bundle.getString("token");
-            fragment_precedent = (String) bundle.getString("Fragment");
+            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                // mMap.setMyLocationEnabled(false);
+                System.out.println("maaaaaaaaaaaaaaaaarche localisation :)");
+            } else {
+                String[] permissionRequested = {android.Manifest.permission.ACCESS_FINE_LOCATION};
+                requestPermissions(permissionRequested, REQUEST_CODE_LOCATION);
+                System.out.println("maaaaaaaaaaaaaaaaarche pas localisation");
+            }
+
+
         }
-
-
-
-        lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            // mMap.setMyLocationEnabled(false);
-            System.out.println("maaaaaaaaaaaaaaaaarche localisation :)");
-        } else {
-            String[] permissionRequested = {android.Manifest.permission.ACCESS_FINE_LOCATION};
-            requestPermissions(permissionRequested, REQUEST_CODE_LOCATION);
-            System.out.println("maaaaaaaaaaaaaaaaarche pas localisation");
-        }
-
-
-
-        shopname_resultat = (TextView) findViewById(R.id.shopname_resultat);
-        logo_entreprise = (ImageView) findViewById(R.id.logo_entreprise);
-        rtbProductRating = (RatingBar) findViewById(R.id.rtbProductRating);
-        text_avis = (TextView) findViewById(R.id.text_avis);
-        text_favoris = (TextView) findViewById(R.id.text_favoris);
-        linear_button_professionnal = (LinearLayout) findViewById(R.id.linear_button_professionnal);
-        linear_text_cacher = (LinearLayout) findViewById(R.id.linear_text_cacher);
-
-
-        //Initialiser la vue
-        linear_text_cacher.setVisibility(true ? View.VISIBLE : View.GONE);
-        linear_button_professionnal.setVisibility(true ? View.GONE : View.VISIBLE);
     }
 
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        View rootView = inflater.inflate(R.layout.cartes2, container, false);
+
+        for (int i=0; i < 3; i++)
+        {
+            Toast.makeText(getActivity(), "Cliquez sur vos Professionnels", Toast.LENGTH_LONG).show();
+        }
+
+            shopname_resultat = (TextView) rootView.findViewById(R.id.shopname_resultat);
+            logo_entreprise = (ImageView) rootView.findViewById(R.id.logo_entreprise);
+            rtbProductRating = (RatingBar) rootView.findViewById(R.id.rtbProductRating);
+            text_avis = (TextView) rootView.findViewById(R.id.text_avis);
+            text_favoris = (TextView) rootView.findViewById(R.id.text_favoris);
+            linear_button_professionnal = (LinearLayout) rootView.findViewById(R.id.linear_button_professionnal);
+            linear_text_cacher = (LinearLayout) rootView.findViewById(R.id.linear_text_cacher);
 
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }else {
+            //Initialiser la vue
+            linear_text_cacher.setVisibility(true ? View.VISIBLE : View.GONE);
+            linear_button_professionnal.setVisibility(true ? View.GONE : View.VISIBLE);
+
+        mesresultats_map = (ListView) rootView.findViewById(R.id.mesresultats_map);
+
+        mMap = (MapView) rootView.findViewById(R.id.map);
+        mMap.onCreate(savedInstanceState);
+
+        mMap.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mMap.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap mMap) {
 
 
-            if(!recherche_bool){
-                locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-                mMap.setMyLocationEnabled(true);
-                criteria = new Criteria();
-                bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true));
-                Location location1 = locationManager.getLastKnownLocation(bestProvider);
-                latitude = location1.getLatitude();
-                longitude = location1.getLongitude();
-
-                LatLng latLng = new LatLng(latitude, longitude);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,12));
-
-                System.out.println("latitude " + latitude +" longitude "+ longitude);
-
-                recherche_autour(latitude,longitude);
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                } else {
 
 
-                for(int i =0;i<10;i++){
-                    if (LatitudeList[i]==null) {
+                    if (!recherche_bool) {
+                        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                        mMap.setMyLocationEnabled(true);
+                        criteria = new Criteria();
+                        bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true));
+                        Location location1 = locationManager.getLastKnownLocation(bestProvider);
+                        latitude = location1.getLatitude();
+                        longitude = location1.getLongitude();
 
-                    }
-                    else{
-                        System.out.println("LATITUDE de " + i +" : "+ LatitudeList[i]);
-                        System.out.println("Longitude de " + i +" : "+ LongitudeList[i]);
-                        LatLng premier_trouve = new LatLng(Double.parseDouble(LatitudeList[i]),Double.parseDouble(LongitudeList[i]));
+                        LatLng latLng = new LatLng(latitude, longitude);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
 
-                        //MARCHE , ne pas supprimer
-                        mMap.addMarker(new MarkerOptions().position(premier_trouve)
-                                //.title(shopNameList[i]+"////"+shopImageList[i]+"////"+shopAvisList[i]+"////"+shopFavorisList[i])
-                                .title(String.valueOf(i))
-                                .icon(getMarkerIcon("#d16677")));
+                        System.out.println("latitude " + latitude + " longitude " + longitude);
 
-                        //Marche autre façon de faire un marquerur
-                        //mMap.addMarker(new MarkerOptions()
-                         //       .position(premier_trouve)
-                         //       .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.cb650f))));
-
-
-
-
-                        //Click d'un marKer
-                        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
-                        {
+                        /*mProgressDialog = ProgressDialog.show(getActivity(), "Please wait",
+                                "Long operation starts...", true);
+                        new Thread(new Runnable() {
                             @Override
-                            public boolean onMarkerClick(Marker marker) {
+                            public void run() {
+
+                                recherche_autour(latitude, longitude);
+                                mProgressDialog.cancel();
+                            }
+                        }).start();*/
+
+                        // ...
+
+                        //recherche_autour(latitude, longitude);
+
+                        //shopImageList = new String[5];
+                        //shopNameList = new String[5];
+                        for (int i = 0; i < LatitudeList.length; i++) {
+                            if (LatitudeList[i] == null) {
+
+                            } else {
+                                System.out.println("LATITUDE de " + i + " : " + LatitudeList[i]);
+                                System.out.println("Longitude de " + i + " : " + LongitudeList[i]);
+                                LatLng premier_trouve = new LatLng(Double.parseDouble(LatitudeList[i]), Double.parseDouble(LongitudeList[i]));
+
+                                //MARCHE , ne pas supprimer
+                                mMap.addMarker(new MarkerOptions().position(premier_trouve)
+                                        //.title(shopNameList[i]+"////"+shopImageList[i]+"////"+shopAvisList[i]+"////"+shopFavorisList[i])
+                                        .title(String.valueOf(i))
+                                        .icon(getMarkerIcon("#d16677")));
+
+                                //Marche autre façon de faire un marquerur
+                                //mMap.addMarker(new MarkerOptions()
+                                //       .position(premier_trouve)
+                                //       .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.cb650f))));
+
+
+                                //Click d'un marKer
+                                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(Marker marker) {
 
                 /*if (marker.getPosition().equals(userMarker.getPosition())) {
                     return true;
                 }*/
-                                //arg0.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                                        //arg0.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
 
-                                if(currentMarker == null){
-                                    marker.setIcon(getMarkerIcon("#7699a1"));
-                                    currentMarker = marker;
-                                    linear_button_professionnal.setVisibility(true ? View.VISIBLE : View.GONE);
-                                    linear_text_cacher.setVisibility(true ? View.GONE : View.VISIBLE);
-                                }else if(currentMarker.getTitle().equals(marker.getTitle())){
-                                    marker.setIcon(getMarkerIcon("#d16677"));
-                                    currentMarker = null;
-                                    linear_text_cacher.setVisibility(true ? View.VISIBLE : View.GONE);
-                                    linear_button_professionnal.setVisibility(true ? View.GONE : View.VISIBLE);
-                                }else{
-                                    currentMarker.setIcon(getMarkerIcon("#d16677"));
-                                    marker.setIcon(getMarkerIcon("#7699a1"));
-                                    currentMarker = marker;
-                                }
+                                        if (currentMarker == null) {
+                                            marker.setIcon(getMarkerIcon("#7699a1"));
+                                            currentMarker = marker;
+                                            linear_button_professionnal.setVisibility(true ? View.VISIBLE : View.GONE);
+                                            linear_text_cacher.setVisibility(true ? View.GONE : View.VISIBLE);
+                                        } else if (currentMarker.getTitle().equals(marker.getTitle())) {
+                                            marker.setIcon(getMarkerIcon("#d16677"));
+                                            currentMarker = null;
+                                            linear_text_cacher.setVisibility(true ? View.VISIBLE : View.GONE);
+                                            linear_button_professionnal.setVisibility(true ? View.GONE : View.VISIBLE);
+                                        } else {
+                                            currentMarker.setIcon(getMarkerIcon("#d16677"));
+                                            marker.setIcon(getMarkerIcon("#7699a1"));
+                                            currentMarker = marker;
+                                        }
 
-                                //String[] separated_position = marker.getTitle().split("////");
-                                final int numero = Integer.parseInt(marker.getTitle());
-                                shopname_resultat.setText(shopNameList[numero]);
-                                Picasso.with(getApplicationContext()).load(shopImageList[numero])
-                                        .into(logo_entreprise);
+                                        //String[] separated_position = marker.getTitle().split("////");
+                                        final int numero = Integer.parseInt(marker.getTitle());
+                                        shopname_resultat.setText(shopNameList[numero]);
+                                        if(shopImageList[numero] == ""){
+                                            logo_entreprise.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.unknown));
+                                        }else{
+                                            Picasso.with(getContext()).load(shopImageList[numero])
+                                                    .into(logo_entreprise);
+                                        }
 
-                                rtbProductRating.setRating(Float.parseFloat(shopAvisList[numero]));
-                                text_avis.setText(" "+shopAvisList[numero]+"/5");
-                                text_favoris.setText(" "+shopFavorisList[numero]+" FAVORIS");
-
-
-                                linear_button_professionnal.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Toast.makeText(MapPane.this, "Bonjjjjjjjjour" + shopIdList[numero],Toast.LENGTH_SHORT).show();
+                                        rtbProductRating.setRating(Float.parseFloat(shopAvisList[numero]));
+                                        text_avis.setText(" " + shopAvisList[numero] + "/5");
+                                        text_favoris.setText(" " + shopFavorisList[numero] + " FAVORIS");
 
 
-                                        System.out.println("On viens de cliquer ooooh");
-                                        final Fragment[] fragment = {null};
-                                        final FragmentTransaction[] ft = {null};
-
-                                        final ProgressDialog ringProgressDialog = ProgressDialog.show(MapPane.this, "Svp Veuillez patienter ...", "chargement des données...", true);
-
-
-                                        Thread timer = new Thread() {
+                                        linear_button_professionnal.setOnClickListener(new View.OnClickListener() {
                                             @Override
-                                            public void run() {
+                                            public void onClick(View v) {
+                                                Toast.makeText(getActivity(), "Bonjjjjjjjjour" + shopIdList[numero], Toast.LENGTH_SHORT).show();
 
-                                                try {
 
-                                                    try {
-                                                        fileOutputStream = getApplicationContext().openFileOutput("GouiranLink", MODE_APPEND);
-                                                        //fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
-                                                        fileOutputStream.write(12);
-                                                        fileOutputStream.write("`".getBytes());
-                                                        fileOutputStream.close();
-                                                    } catch (IOException e) {
-                                                        e.printStackTrace();
+                                                System.out.println("On viens de cliquer ooooh");
+                                                final Fragment[] fragment = {null};
+                                                final FragmentTransaction[] ft = {null};
+
+                                                final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Svp Veuillez patienter ...", "chargement des données...", true);
+
+
+                                                Thread timer = new Thread() {
+                                                    @Override
+                                                    public void run() {
+
+                                                        try {
+
+                                                            try {
+                                                                fileOutputStream = getContext().openFileOutput("GouiranLink", Context.MODE_APPEND);
+                                                                //fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
+                                                                fileOutputStream.write(12);
+                                                                fileOutputStream.write("`".getBytes());
+                                                                fileOutputStream.close();
+                                                            } catch (IOException e) {
+                                                                e.printStackTrace();
+                                                            }
+
+
+                                                            //System.out.println(listView.getItemAtPosition(position).toString());
+
+
+                                                            //PREMIERE METHODE
+                                                            //ResearchTask3 researchTask3 = new ResearchTask3(listView.getItemAtPosition(position).toString());
+                                                            //String ls2 = "";
+                                                            //ArrayList<String> recup2 = new ArrayList<String>();
+                                                            //recup2 = jsonparser2(ls2);
+
+
+                                                            //DEUXIEME METHODE
+                                                            //Recupérer liste des produits
+                                                            //System.out.println("DEBUT DONNEE GENERALE");
+                                                            //System.out.println("D "+ recup2.get(0).get(0));
+                                                            //System.out.println("D" + position);
+                                                            //donneegeneral_jsonparser(recherche_donneegeneral(listView.getItemAtPosition(position).toString()));
+
+
+                                                            donneegeneral_jsonparser(recherche_donneegeneral(shopIdList[numero]));
+                                                            String id = String.valueOf(shopIdList[numero]);
+
+                                                            System.out.println("DEBUT PRODUCT");
+                                                            System.out.println("D " + id);
+                                                            products_jsonparser(recherche_product(id));
+                                                            for (int i = 0; i < PremierProfessionalProduct.length; i++) {
+                                                                System.out.println("PremierProfesionnelProduct : " + PremierProfessionalProduct[i].getName() + PremierProfessionalProduct[i].getPrice());
+                                                            }
+
+                                                            System.out.println("DEBUT SCHEDULE");
+                                                            schedule_jsonparser(recherche_schedule(id));
+                                                            PremierProfessionnal.setSchedule(ProfessionnalGenericSchedule);
+                                                            for (int i = 0; i < ProfessionnalGenericSchedule.length; i++) {
+                                                                System.out.println("PremierProfesionnelSchedule : " + ProfessionnalGenericSchedule[i].getWeekday() + ProfessionnalGenericSchedule[i].getBegin_time());
+                                                            }
+
+                                                            System.out.println("DEBUT SHOP_IMAGE");
+                                                            shop_image_jsonparser(recherche_shop_image(id));
+                                                            for (int i = 0; i < Shop_image.size(); i++) {
+                                                                System.out.println("Shop_image : " + Shop_image.get(i));
+                                                            }
+
+
+                                                            System.out.println("DEBUT RESOURCE");
+                                                            ressource_jsonparser(recherche_ressource(id));
+                                                            for (int i = 0; i < ResourceProfessional.length; i++) {
+                                                                System.out.println("Resource : " + ResourceProfessional[i]);
+                                                            }
+
+
+                                                            if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Full")) {
+                                                                //Fragment fragment = null;
+                                                                Bundle args = new Bundle();
+                                                                args.putSerializable("Professionnal", PremierProfessionnal);
+                                                                args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                                                                args.putSerializable("Customer", customer);
+                                                                args.putSerializable("ExpandableListDetail", expandableListDetail);
+                                                                args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
+                                                                args.putSerializable("ResourceProfessional", ResourceProfessional);
+                                                                args.putSerializable("Shop_image", Shop_image);
+                                                                args.putSerializable("token", token);
+                                                                //System.out.println("CUSTOMER :" + customer.getName());
+                                                                args.putSerializable("Fragment", "Research2Fragment");
+
+                                                                FragmentManager fm = getFragmentManager();
+                                                                //FragmentTransaction ft = fm.beginTransaction();
+                                                                ft[0] = fm.beginTransaction();
+                                                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                                                                fragment[0] = new ProfessionalView();
+                                                                fragment[0].setArguments(args);
+
+                                                                //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+
+                                                                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                                //ft.commit();
+                                                            } else if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Free")) {
+                                                                //Fragment fragment = null;
+                                                                Bundle args = new Bundle();
+                                                                args.putSerializable("Professionnal", PremierProfessionnal);
+                                                                args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                                                                args.putSerializable("Customer", customer);
+                                                                args.putSerializable("token", token);
+
+                                                                FragmentManager fm = getFragmentManager();
+                                                                //FragmentTransaction ft = fm.beginTransaction();
+                                                                ft[0] = fm.beginTransaction();
+                                                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                                                                fragment[0] = new InformationsProfessional();
+                                                                fragment[0].setArguments(args);
+
+                                                                //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+
+                                                                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                                //ft.commit();
+                                                            }
+
+
+                                                            ft[0].replace(R.id.content_frame, fragment[0]).addToBackStack(null);
+                                                            //ft[0].replace(R.id.content_frame, fragment[0]).addToBackStack("recherche");
+                                                            ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                            ft[0].commit();
+                                                            ringProgressDialog.cancel();
+                                                        } catch (Exception e) {
+                                                            System.out.println("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSE PAS");
+                                                            e.printStackTrace();
+                                                        }
+
                                                     }
+                                                };
+                                                timer.start();
+                                                ringProgressDialog.setCancelable(false);
 
+                                                //Obligé de faire ça après !
+                                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
 
-                                                    //System.out.println(listView.getItemAtPosition(position).toString());
-
-
-                                                    //PREMIERE METHODE
-                                                    //ResearchTask3 researchTask3 = new ResearchTask3(listView.getItemAtPosition(position).toString());
-                                                    //String ls2 = "";
-                                                    //ArrayList<String> recup2 = new ArrayList<String>();
-                                                    //recup2 = jsonparser2(ls2);
-
-
-
-                                                    //DEUXIEME METHODE
-                                                    //Recupérer liste des produits
-                                                    //System.out.println("DEBUT DONNEE GENERALE");
-                                                    //System.out.println("D "+ recup2.get(0).get(0));
-                                                    //System.out.println("D" + position);
-                                                    //donneegeneral_jsonparser(recherche_donneegeneral(listView.getItemAtPosition(position).toString()));
-
-
-
-
-                                                    donneegeneral_jsonparser(recherche_donneegeneral(shopIdList[numero]));
-                                                    String id = String.valueOf(shopIdList[numero]);
-
-                                                    System.out.println("DEBUT PRODUCT");
-                                                    System.out.println("D "+id);
-                                                    products_jsonparser(recherche_product(id));
-                                                    for(int i=0;i<PremierProfessionalProduct.length;i++){
-                                                        System.out.println("PremierProfesionnelProduct : "+PremierProfessionalProduct[i].getName()+PremierProfessionalProduct[i].getPrice());
-                                                    }
-
-                                                    System.out.println("DEBUT SCHEDULE");
-                                                    schedule_jsonparser(recherche_schedule(id));
-                                                    PremierProfessionnal.setSchedule(ProfessionnalGenericSchedule);
-                                                    for(int i=0;i<ProfessionnalGenericSchedule.length;i++){
-                                                        System.out.println("PremierProfesionnelSchedule : "+ProfessionnalGenericSchedule[i].getWeekday() + ProfessionnalGenericSchedule[i].getBegin_time());
-                                                    }
-
-                                                    System.out.println("DEBUT SHOP_IMAGE");
-                                                    shop_image_jsonparser(recherche_shop_image(id));
-                                                    for(int i=0;i<Shop_image.size();i++){
-                                                        System.out.println("Shop_image : "+Shop_image.get(i));
-                                                    }
-
-
-                                                    System.out.println("DEBUT RESOURCE");
-                                                    ressource_jsonparser(recherche_ressource(id));
-                                                    for(int i=0;i<ResourceProfessional.length;i++){
-                                                        System.out.println("Resource : "+ResourceProfessional[i]);
-                                                    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                    if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Full")) {
-                                                        //Fragment fragment = null;
-                                                        Bundle args = new Bundle();
-                                                        args.putSerializable("Professionnal", PremierProfessionnal);
-                                                        args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
-                                                        args.putSerializable("Customer", customer);
-                                                        args.putSerializable("ExpandableListDetail", expandableListDetail);
-                                                        args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
-                                                        args.putSerializable("ResourceProfessional", ResourceProfessional);
-                                                        args.putSerializable("Shop_image", Shop_image);
-                                                        args.putSerializable("token", token);
-                                                        //System.out.println("CUSTOMER :" + customer.getName());
-                                                        args.putSerializable("Fragment","Research2Fragment");
-
-                                                        FragmentManager fm = getSupportFragmentManager();
-                                                        //FragmentTransaction ft = fm.beginTransaction();
-                                                        ft[0] = fm.beginTransaction();
-                                                        //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
-
-                                                        fragment[0] = new ProfessionalView();
-                                                        fragment[0].setArguments(args);
-
-                                                        //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
-
-                                                        //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                                        //ft.commit();
-                                                    } else if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Free")) {
-                                                        //Fragment fragment = null;
-                                                        Bundle args = new Bundle();
-                                                        args.putSerializable("Professionnal", PremierProfessionnal);
-                                                        args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
-                                                        args.putSerializable("Customer", customer);
-                                                        args.putSerializable("token", token);
-
-                                                        FragmentManager fm = getSupportFragmentManager();
-                                                        //FragmentTransaction ft = fm.beginTransaction();
-                                                        ft[0] = fm.beginTransaction();
-                                                        //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
-
-                                                        fragment[0] = new InformationsProfessional();
-                                                        fragment[0].setArguments(args);
-
-                                                        //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
-
-                                                        //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                                        //ft.commit();
-                                                    }
-
-
-                                                    //ft[0].replace(R.id.cartes2, fragment[0]).addToBackStack("recherche");
-                                                    //ft[0].replace(R.id.content_frame, fragment[0]).addToBackStack("recherche");
-                                                    ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                                    ft[0].commit();
-                                                    ringProgressDialog.cancel();
-                                                } catch (Exception e) {
-                                                    System.out.println("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSE PAS");
-                                                    e.printStackTrace();
-                                                }
 
                                             }
-                                        };
-                                        timer.start();
-                                        ringProgressDialog.setCancelable(true);
-
-                                        //Obligé de faire ça après !
-                                        //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+                                        });
 
 
+                                        //if(arg0.getTitle().equals("MyHome")) // if marker source is clicked
+                                        //if(true){
+                                        //arg0.showInfoWindow();
+                                        //arg0.setAnchor(0.5f, 1.0f);
+                                        //Toast.makeText(MapPane.this, marker.getTitle(),Toast.LENGTH_SHORT).show();
+                                        // if marker source is clicked
+                                        //}
+                                        // display toast
+                                        return true;
                                     }
+
                                 });
-
-
-
-
-
-
-
-                                //if(arg0.getTitle().equals("MyHome")) // if marker source is clicked
-                                //if(true){
-                                    //arg0.showInfoWindow();
-                                    //arg0.setAnchor(0.5f, 1.0f);
-                                    //Toast.makeText(MapPane.this, marker.getTitle(),Toast.LENGTH_SHORT).show();
-                                    // if marker source is clicked
-                                //}
-                                // display toast
-                                return true;
-                            }
-
-                        });
 
 
 
@@ -541,99 +538,306 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
                                 .anchor(0.5f, 1));*/
 
 
-                    }
-                }
-                String[] results = shopNameList;
-                final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
-                ArrayAdapter<String> tableau = new ArrayAdapter<String>(this, R.layout.services, resultsList);
-                mesresultats_map.setAdapter(tableau);
+                            }
+                        }
+                        String[] results = shopNameList;
+                        final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
+                        ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
+                        mesresultats_map.setAdapter(tableau);
 
-                System.out.println("TAIIIIIIIIIIILLE"+shopNameList.length + "   "+results.length+"   "+ resultsList.size());
+                        System.out.println("TAIIIIIIIIIIILLE" + shopNameList.length + "   " + results.length + "   " + resultsList.size());
 
-
-            }else{
-                System.out.println("Allo2222");
-
-                String[] tableau_shop_name = new String[10];
-                String[] tableau_latitude = new String[10];
-                String[] tableau_longitude = new String[10];
-                for (int i = 0; i < thumbs2.size(); i++) {
-                    tableau_latitude[i] = thumbs2.get(i).get(1);
-                    tableau_longitude[i] = thumbs2.get(i).get(2);
-                    tableau_shop_name[i] = thumbs2.get(i).get(3);
-                }
-
-                locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-                mMap.setMyLocationEnabled(true);
-                criteria = new Criteria();
-                bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
-                Location location1 = locationManager.getLastKnownLocation(bestProvider);
-                latitude = location1.getLatitude();
-                longitude = location1.getLongitude();
-
-                LatLng latLng = new LatLng(latitude, longitude);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
-
-                System.out.println("latitude " + latitude + " longitude " + longitude);
-                //recherche_autour(latitude,longitude);
-                //shopImageList = new String[5];
-                //shopNameList = new String[5];
-                for (int i = 0; i < 5; i++) {
-                    if (tableau_latitude[i] == null) {
 
                     } else {
-                        System.out.println("LATITUDE de " + i + " : " + tableau_latitude[i]);
-                        System.out.println("Longitude de " + i + " : " + tableau_longitude[i]);
-                        LatLng premier_trouve = new LatLng(Double.parseDouble(tableau_latitude[i]), Double.parseDouble(tableau_longitude[i]));
+                        System.out.println("Allo2222");
 
-                        //Marche bien, ne pas supprimer
-                        //mMap.addMarker(new MarkerOptions().position(premier_trouve).title(tableau_shop_name[i]));
+                        String[] tableau_shop_name = new String[10];
+                        String[] tableau_latitude = new String[10];
+                        String[] tableau_longitude = new String[10];
+                        for (int i = 0; i < shopIdList.length; i++) {
+                            tableau_latitude[i] = LatitudeList[i];
+                            tableau_longitude[i] = LongitudeList[i];
+                            tableau_shop_name[i] = shopNameList[i];
+                        }
+
+                        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                        mMap.setMyLocationEnabled(true);
+                        criteria = new Criteria();
+                        bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+                        Location location1 = locationManager.getLastKnownLocation(bestProvider);
+                        latitude = location1.getLatitude();
+                        longitude = location1.getLongitude();
+
+                        LatLng latLng = new LatLng(latitude, longitude);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+
+                        System.out.println("latitude " + latitude + " longitude " + longitude);
+                        //recherche_autour(latitude,longitude);
+                        //shopImageList = new String[5];
+                        //shopNameList = new String[5];
+                        for (int i = 0; i < 10; i++) {
+                            if (tableau_latitude[i] == null) {
+
+                            } else {
+                                System.out.println("LATITUDE de " + i + " : " + tableau_latitude[i]);
+                                System.out.println("Longitude de " + i + " : " + tableau_longitude[i]);
+                                LatLng premier_trouve = new LatLng(Double.parseDouble(tableau_latitude[i]), Double.parseDouble(tableau_longitude[i]));
+
+                                //Marche bien, ne pas supprimer
+                                //mMap.addMarker(new MarkerOptions().position(premier_trouve).title(tableau_shop_name[i]));
+                                mMap.addMarker(new MarkerOptions().position(premier_trouve)
+                                        .title(String.valueOf(i))
+                                        .icon(getMarkerIcon("#d16677")));
+
+
+                                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(Marker marker) {
+
+                /*if (marker.getPosition().equals(userMarker.getPosition())) {
+                    return true;
+                }*/
+                                        //arg0.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+
+                                        if (currentMarker == null) {
+                                            marker.setIcon(getMarkerIcon("#7699a1"));
+                                            currentMarker = marker;
+                                            linear_button_professionnal.setVisibility(true ? View.VISIBLE : View.GONE);
+                                            linear_text_cacher.setVisibility(true ? View.GONE : View.VISIBLE);
+                                        } else if (currentMarker.getTitle().equals(marker.getTitle())) {
+                                            marker.setIcon(getMarkerIcon("#d16677"));
+                                            currentMarker = null;
+                                            linear_text_cacher.setVisibility(true ? View.VISIBLE : View.GONE);
+                                            linear_button_professionnal.setVisibility(true ? View.GONE : View.VISIBLE);
+                                        } else {
+                                            currentMarker.setIcon(getMarkerIcon("#d16677"));
+                                            marker.setIcon(getMarkerIcon("#7699a1"));
+                                            currentMarker = marker;
+                                        }
+
+
+                                        final int numero = Integer.parseInt(marker.getTitle());
+                                        shopname_resultat.setText(shopNameList[numero]);
+
+                                        if(shopImageList[numero] == ""){
+                                            logo_entreprise.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.unknown));
+                                        }else{
+                                            Picasso.with(getContext()).load(shopImageList[numero])
+                                                    .into(logo_entreprise);
+                                        }
+
+                                        rtbProductRating.setRating(Float.parseFloat(shopAvisList[numero]));
+                                        text_avis.setText(" " + shopAvisList[numero] + "/5");
+                                        text_favoris.setText(" " + shopFavorisList[numero] + " FAVORIS");
+
+
+                                        linear_button_professionnal.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Toast.makeText(getActivity(), "Bonjjjjjjjjour" + shopIdList[numero], Toast.LENGTH_SHORT).show();
+
+
+                                                System.out.println("On viens de cliquer ooooh");
+                                                final Fragment[] fragment = {null};
+                                                final FragmentTransaction[] ft = {null};
+
+                                                final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Svp Veuillez patienter ...", "chargement des données...", true);
+
+
+                                                Thread timer = new Thread() {
+                                                    @Override
+                                                    public void run() {
+
+                                                        try {
+
+                                                            try {
+                                                                fileOutputStream = getContext().openFileOutput("GouiranLink", Context.MODE_APPEND);
+                                                                //fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
+                                                                fileOutputStream.write(12);
+                                                                fileOutputStream.write("`".getBytes());
+                                                                fileOutputStream.close();
+                                                            } catch (IOException e) {
+                                                                e.printStackTrace();
+                                                            }
+
+
+                                                            //System.out.println(listView.getItemAtPosition(position).toString());
+
+
+                                                            //PREMIERE METHODE
+                                                            //ResearchTask3 researchTask3 = new ResearchTask3(listView.getItemAtPosition(position).toString());
+                                                            //String ls2 = "";
+                                                            //ArrayList<String> recup2 = new ArrayList<String>();
+                                                            //recup2 = jsonparser2(ls2);
+
+
+                                                            //DEUXIEME METHODE
+                                                            //Recupérer liste des produits
+                                                            //System.out.println("DEBUT DONNEE GENERALE");
+                                                            //System.out.println("D "+ recup2.get(0).get(0));
+                                                            //System.out.println("D" + position);
+                                                            //donneegeneral_jsonparser(recherche_donneegeneral(listView.getItemAtPosition(position).toString()));
+
+
+                                                            donneegeneral_jsonparser(recherche_donneegeneral(shopIdList[numero]));
+                                                            String id = String.valueOf(shopIdList[numero]);
+
+                                                            System.out.println("DEBUT PRODUCT");
+                                                            System.out.println("D " + id);
+                                                            products_jsonparser(recherche_product(id));
+                                                            for (int i = 0; i < PremierProfessionalProduct.length; i++) {
+                                                                System.out.println("PremierProfesionnelProduct : " + PremierProfessionalProduct[i].getName() + PremierProfessionalProduct[i].getPrice());
+                                                            }
+
+                                                            System.out.println("DEBUT SCHEDULE");
+                                                            schedule_jsonparser(recherche_schedule(id));
+                                                            PremierProfessionnal.setSchedule(ProfessionnalGenericSchedule);
+                                                            for (int i = 0; i < ProfessionnalGenericSchedule.length; i++) {
+                                                                System.out.println("PremierProfesionnelSchedule : " + ProfessionnalGenericSchedule[i].getWeekday() + ProfessionnalGenericSchedule[i].getBegin_time());
+                                                            }
+
+                                                            System.out.println("DEBUT SHOP_IMAGE");
+                                                            shop_image_jsonparser(recherche_shop_image(id));
+                                                            for (int i = 0; i < Shop_image.size(); i++) {
+                                                                System.out.println("Shop_image : " + Shop_image.get(i));
+                                                            }
+
+
+                                                            System.out.println("DEBUT RESOURCE");
+                                                            ressource_jsonparser(recherche_ressource(id));
+                                                            for (int i = 0; i < ResourceProfessional.length; i++) {
+                                                                System.out.println("Resource : " + ResourceProfessional[i]);
+                                                            }
+
+
+                                                            if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Full")) {
+                                                                //Fragment fragment = null;
+                                                                Bundle args = new Bundle();
+                                                                args.putSerializable("Professionnal", PremierProfessionnal);
+                                                                args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                                                                args.putSerializable("Customer", customer);
+                                                                args.putSerializable("ExpandableListDetail", expandableListDetail);
+                                                                args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
+                                                                args.putSerializable("ResourceProfessional", ResourceProfessional);
+                                                                args.putSerializable("Shop_image", Shop_image);
+                                                                args.putSerializable("token", token);
+                                                                //System.out.println("CUSTOMER :" + customer.getName());
+                                                                args.putSerializable("Fragment", "Research2Fragment");
+
+                                                                FragmentManager fm = getFragmentManager();
+                                                                //FragmentTransaction ft = fm.beginTransaction();
+                                                                ft[0] = fm.beginTransaction();
+                                                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                                                                fragment[0] = new ProfessionalView();
+                                                                fragment[0].setArguments(args);
+
+                                                                //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+
+                                                                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                                //ft.commit();
+                                                            } else if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Free")) {
+                                                                //Fragment fragment = null;
+                                                                Bundle args = new Bundle();
+                                                                args.putSerializable("Professionnal", PremierProfessionnal);
+                                                                args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                                                                args.putSerializable("Customer", customer);
+                                                                args.putSerializable("token", token);
+
+                                                                FragmentManager fm = getFragmentManager();
+                                                                //FragmentTransaction ft = fm.beginTransaction();
+                                                                ft[0] = fm.beginTransaction();
+                                                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                                                                fragment[0] = new InformationsProfessional();
+                                                                fragment[0].setArguments(args);
+
+                                                                //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+
+                                                                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                                //ft.commit();
+                                                            }
+
+
+                                                            ft[0].replace(R.id.content_frame, fragment[0]).addToBackStack("recherche");
+                                                            //ft[0].replace(R.id.content_frame, fragment[0]).addToBackStack("recherche");
+                                                            ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                            ft[0].commit();
+                                                            ringProgressDialog.cancel();
+                                                        } catch (Exception e) {
+                                                            System.out.println("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSE PAS");
+                                                            e.printStackTrace();
+                                                        }
+
+                                                    }
+                                                };
+                                                timer.start();
+                                                ringProgressDialog.setCancelable(true);
+
+                                                //Obligé de faire ça après !
+                                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+
+                                            }
+                                        });
+
+
+                                        return true;
+                                    }
+                                });
+
 
                         /*mMap.addMarker(new MarkerOptions()
                                 .position(premier_trouve)
                                 .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.cb650f))));*/
 
 
-                        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-                        Bitmap bmp = Bitmap.createBitmap(80, 80, conf);
-                        Canvas canvas1 = new Canvas(bmp);
+                                //Créer son propre marqueur
+                                /*Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+                                Bitmap bmp = Bitmap.createBitmap(80, 80, conf);
+                                Canvas canvas1 = new Canvas(bmp);
 
-                        // paint defines the text color, stroke width and size
-                        Paint color = new Paint();
-                        color.setTextSize(35);
-                        color.setColor(Color.BLACK);
+                                // paint defines the text color, stroke width and size
+                                Paint color = new Paint();
+                                color.setTextSize(35);
+                                color.setColor(Color.BLACK);
 
-                        // modify canvas
-                        canvas1.drawBitmap(BitmapFactory.decodeResource(getResources(),
-                                R.drawable.cb650f), 0,0, color);
-                        canvas1.drawText("User Name!", 30, 40, color);
-                        // add marker to Map
-                        mMap.addMarker(new MarkerOptions().position(premier_trouve)
-                                .icon(BitmapDescriptorFactory.fromBitmap(bmp))
-                                // Specifies the anchor to be at a particular point in the marker image.
-                                .anchor(0.5f, 1));
+                                // modify canvas
+                                canvas1.drawBitmap(BitmapFactory.decodeResource(getResources(),
+                                        R.drawable.cb650f), 0, 0, color);
+                                canvas1.drawText("User Name!", 30, 40, color);
+                                // add marker to Map
+                                mMap.addMarker(new MarkerOptions().position(premier_trouve)
+                                        .icon(BitmapDescriptorFactory.fromBitmap(bmp))
+                                        // Specifies the anchor to be at a particular point in the marker image.
+                                        .anchor(0.5f, 1));*/
 
 
+                            }
+                        }
 
                     }
+
+
+                    //mMap.setMyLocationEnabled(true);
+
+                    // Add a marker in Sydney and move the cameramgr
+                    //LatLng sydney = new LatLng(-34, 151);
+
+
+                    //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+                    //mMap.addMarker(new MarkerOptions().position(moi).title("Marker in Sydney"));
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
                 }
-
             }
+        });
+        return rootView;
+
+        };
 
 
 
-
-            //mMap.setMyLocationEnabled(true);
-
-            // Add a marker in Sydney and move the cameramgr
-            //LatLng sydney = new LatLng(-34, 151);
-
-
-            //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            //mMap.addMarker(new MarkerOptions().position(moi).title("Marker in Sydney"));
-            //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -641,7 +845,7 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
             if (permissions.length == 1 &&
                     permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -651,10 +855,13 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-                mMap.setMyLocationEnabled(true);
-                Toast.makeText(this, "geolocaliser le portable utilisateur", Toast.LENGTH_SHORT).show();
+
+                //TROUVER SA POSITION
+                //mMap.setMyLocationEnabled(true);
+
+                Toast.makeText(getActivity(), "geolocaliser le portable utilisateur", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "impossible de geolocaliser le portable utilisateur", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "impossible de geolocaliser le portable utilisateur", Toast.LENGTH_SHORT).show();
                 // Permission was denied. Display an error message.
             }
         }
@@ -674,7 +881,7 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
         //Lorsque la position change...
         Log.i("Tuto géolocalisation", "La position a changé.");
         //... on stop le cercle de chargement
-        setProgressBarIndeterminateVisibility(false);
+        //setProgressBarIndeterminateVisibility(false);
         //... on active le bouton pour afficher l'adresse
         //findViewById(R.id.afficherAdresse).setEnabled(true);
         //... on sauvegarde la position
@@ -682,7 +889,7 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
         //... on l'affiche
         //afficherLocation();
         //... et on spécifie au service que l'on ne souhaite plus avoir de mise à jour
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -698,12 +905,12 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
 
     protected void getLocation() {
         if (true) {
-            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             criteria = new Criteria();
             bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
 
             //You can still do this if you like, you might get lucky:
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
@@ -718,7 +925,7 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
                 Log.e("TAG", "GPS is on");
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
-                Toast.makeText(MapPane.this, "latitude:" + latitude + " longitude:" + longitude, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "latitude:" + latitude + " longitude:" + longitude, Toast.LENGTH_SHORT).show();
                 //searchNearestPlace(voice2text);
             }
             else{
@@ -736,67 +943,70 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
     public void recherche_autour(double latitude, double longitude){
 
 
-    String resp = null;
-    JSONObject obj;
-    JSONArray arr;
+        String resp = null;
+        JSONObject obj;
+        JSONArray arr;
 
-    shopImageList = new String[10];
-    shopNameList = new String[10];
+        shopImageList = new String[10];
+        shopNameList = new String[10];
         LatitudeList = new String[10];
         LongitudeList = new String[10];
 
 
-    GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[geoloc][latitude]=" + String.valueOf(latitude)
-            + "&query[geoloc][longitude]=" + String.valueOf(longitude)+"&query[city]=");
+        GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[geoloc][latitude]=" + String.valueOf(latitude)
+                + "&query[geoloc][longitude]=" + String.valueOf(longitude)+"&query[city]=");
 
         try {
-        resp = getRequest.execute().get();
-        obj = new JSONObject(resp);
-        arr = obj.getJSONArray("data");
+            resp = getRequest.execute().get();
+            obj = new JSONObject(resp);
+            arr = obj.getJSONArray("data");
 
-        for (int i = 0; i < arr.length() && i < 10; i++) {
+            for (int i = 0; i < arr.length() && i < 10; i++) {
 
-            if (arr.getJSONObject(i).getString("shop_name") != null) {
-                String id = arr.getJSONObject(i).getString("id");
-                shopIdList[i] = id;
-                shopNameList[i] = arr.getJSONObject(i).getString("shop_name");
+                if (arr.getJSONObject(i).getString("shop_name") != null) {
+                    String id = arr.getJSONObject(i).getString("id");
+                    shopIdList[i] = id;
+                    shopNameList[i] = arr.getJSONObject(i).getString("shop_name");
 
-                //premiere image uniquement
-                ArrayList<String> tableau_image = new ArrayList<String>();
-                tableau_image = shop_image_jsonparser2(recherche_shop_image(id));
-                shopImageList[i] = tableau_image.get(0);
+                    //premiere image uniquement
+                    ArrayList<String> tableau_image = new ArrayList<String>();
+                    tableau_image = shop_image_jsonparser2(recherche_shop_image(id));
+                    shopImageList[i] = tableau_image.get(0);
 
-                LatitudeList[i] = arr.getJSONObject(i).getString("geoloc_latitude");
-                LongitudeList[i] = arr.getJSONObject(i).getString("geoloc_longitude");
-                shopFavorisList[i] = recherche_favoris(id);
-                ArrayList<String> avis = avis_jsonparser(recherche_avis(id));
+                    LatitudeList[i] = arr.getJSONObject(i).getString("geoloc_latitude");
+                    LongitudeList[i] = arr.getJSONObject(i).getString("geoloc_longitude");
+                    shopFavorisList[i] = recherche_favoris(id);
+                    ArrayList<String> avis = avis_jsonparser(recherche_avis(id));
 
-                //Moyenne des avis
-                double moyenne = 0;
-                if(avis.size() == 0){
+                    //Moyenne des avis
+                    double moyenne = 0;
+                    if(avis.size() == 0){
 
-                }else{
-                    for(int y =0;y<avis.size();y++){
-                        moyenne = moyenne + Double.parseDouble(avis.get(y));
+                    }else{
+                        for(int y =0;y<avis.size();y++){
+                            moyenne = moyenne + Double.parseDouble(avis.get(y));
+                        }
+                        moyenne = moyenne/avis.size();
                     }
-                    moyenne = moyenne/avis.size();
+                    String ss  = String.format("%1$s", moyenne(String.valueOf(moyenne)));
+                    shopAvisList[i] = String.valueOf(ss);
+                    //System.out.println("moyeeeeeeennne : "+moyenne);
+                    //ratingbar.setRating(Float.parseFloat(moyenne(String.valueOf(moyenne))));
+                    //System.out.println("moyeeeeeeennne : "+Float.parseFloat(moyenne(String.valueOf(moyenne))));
+
+
                 }
-                String ss  = String.format("%1$s", moyenne(String.valueOf(moyenne)));
-                shopAvisList[i] = String.valueOf(ss);
-                //System.out.println("moyeeeeeeennne : "+moyenne);
-                //ratingbar.setRating(Float.parseFloat(moyenne(String.valueOf(moyenne))));
-                //System.out.println("moyeeeeeeennne : "+Float.parseFloat(moyenne(String.valueOf(moyenne))));
 
 
             }
 
 
+        } catch (InterruptedException | JSONException | ExecutionException e) {
+            e.printStackTrace();
         }
 
-    } catch (InterruptedException | JSONException | ExecutionException e) {
-        e.printStackTrace();
+
     }
-}
 
 
 
@@ -804,7 +1014,7 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
 
 
 
-//RECUPERATION DONNEE
+    //RECUPERATION DONNEE
     public String recherche_product(String query) {
         getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional-product/professional/"+Integer.parseInt(query)+"/?query[show_all]=true");
 
@@ -937,6 +1147,9 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
 
             }
 
+            expandableListDetail = new HashMap<String, List<String>>();
+            expandableListDetailAutrePrestation = new HashMap<String, List<String>>();
+
             if(!liste_coifure_femme.isEmpty()) {
                 expandableListDetail.put("Coiffure Femme", liste_coifure_femme);
                 expandableListDetailAutrePrestation.put("Coiffure Femme", liste_coifure_femme2);
@@ -1054,9 +1267,11 @@ public class MapPane extends FragmentActivity implements OnMapReadyCallback {
                     ArrayList<String[]> thumbnails = null;
                     image.setUrl(url);
 
+                    System.out.println("URL : +++ "+url);
+                    PremierProfessionnal = new Professional();
 
                     //MArche pas ??????????????????
-                    //PremierProfessionnal.setLogo_image(image);
+                    PremierProfessionnal.setLogo_image(image);
                     //PremierProfessionnal.setLogo_image(image);
 
 

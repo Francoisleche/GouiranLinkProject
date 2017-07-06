@@ -23,8 +23,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gouiranlink.franois.gouiranlinkproject.AndroidCameraApi;
 import com.gouiranlink.franois.gouiranlinkproject.R;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses2.AndroidCameraApi4;
 
 import java.util.ArrayList;
 
@@ -97,21 +97,15 @@ public class FragmentGallery2 extends Fragment {
         Button selfie = (Button) view.findViewById(R.id.selfie);
         selfie.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //CamTestActivity cam = new CamTestActivity();
                 //Intent intent = new Intent(getActivity(), AndroidCameraApi.class);
-                //AndroidCameraApi2 api = new AndroidCameraApi2();
-                Intent intent = new Intent(getActivity(), AndroidCameraApi.class);
-                getActivity().startActivity(intent);
-                /*Fragment fragment = null;
-                Bundle args = new Bundle();
-                args.putSerializable("value", 0);
-                fragment = new AndroidCameraApi3();
-                fragment.setArguments(args);
+                //getActivity().startActivity(intent);
 
-                FragmentManager fm = getFragmentManager();
-                fm.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();*/
+                Intent intent = new Intent(getActivity(), AndroidCameraApi4.class);
+                getActivity().startActivity(intent);
             }
         });
+
+
 
         if ((ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(getContext(),

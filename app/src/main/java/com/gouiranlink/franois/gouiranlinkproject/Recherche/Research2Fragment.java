@@ -1,5 +1,6 @@
 package com.gouiranlink.franois.gouiranlinkproject.Recherche;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -7,8 +8,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -26,7 +29,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -37,11 +39,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Image_N;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Product;
@@ -52,17 +56,16 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Schedule;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Subscription_Type;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
-import com.gouiranlink.franois.gouiranlinkproject.Professional_View.InformationsProfessional;
 import com.gouiranlink.franois.gouiranlinkproject.Professional_View.ProfessionalView;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -71,7 +74,7 @@ import java.util.concurrent.ExecutionException;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.ContentValues.TAG;
-import static android.content.Context.MODE_APPEND;
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.BaseFragment.ARGS_INSTANCE;
 
 /**
@@ -80,7 +83,18 @@ import static com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.BaseFragme
 
 public class Research2Fragment extends Fragment implements ProfessionalView.OnFragmentInteractionListener {
 
+    //PAS DE RECHERCHE -> AUTOUR DE MOI
+    public double latitude;
+    public double longitude;
+    public LocationManager locationManager;
+    public Criteria criteria;
+    public String bestProvider;
+    ////////////////////////////////////
+
+
     String homepage_click_imageview = "";
+
+    Boolean button_clicke_boolean = false;
 
     private static final int REQUEST_CODE_LOCATION = 123;
 
@@ -92,7 +106,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
     ArrayList<ArrayList<String>> donnée_geolocalise = new ArrayList<ArrayList<String>>();
     private View mProgressView;
-    private LinearLayout recherche_layout,vue_listview,vue_boutonretour,deux_bouton;
+    private LinearLayout recherche_layout, vue_listview, vue_boutonretour, deux_bouton;
     private View mLoginFormView;
 
 
@@ -109,16 +123,15 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     private Resource[] ResourceProfessional;
 
 
-
     private Customer customer;
     private String token;
-    private String[] place,autocomplete;
+    private String[] place, autocomplete;
 
     private ResearchTask mAuthTask = null;
     //private EditText recherche;
     private EditText recherche_ville;
     private TextView resultat1, resultat2, resultat3, resultat4, resultat5, resultat6;
-    private Button carte,button_retour_layout,boutton_recherche;
+    private Button carte, button_retour_layout, boutton_recherche;
     private GetRequest getRequest;
 
     private FileOutputStream fileOutputStream = null;
@@ -135,7 +148,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     private ImageView loupe_recherche;
     private ImageView loupe_recherche_ville;
 
-    private AutoCompleteTextView text,text2;
+    private AutoCompleteTextView text, text2;
     ParserTask parserTask;
     private String[] languages2;
 
@@ -145,8 +158,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     private String[] D;
     private String[] E;
 
-    private String[] F,G,H,I,J,K,L,M,N,O,P,Q,Ri,S,T,U,V,W,X,Y,Z;
-
+    private String[] F, G, H, I, J, K, L, M, N, O, P, Q, Ri, S, T, U, V, W, X, Y, Z;
 
 
     private ListView listView;
@@ -157,6 +169,15 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     HashMap<String, List<String>> expandableListDetailAutrePrestation = new HashMap<String, List<String>>();
 
     ArrayList<String> Shop_image;
+
+
+    private String[] shopIdList = new String[10];
+    private String[] shopNameList = new String[10];
+    private String[] shopImageList = new String[10];
+    private String[] shopFavorisList = new String[10];
+    private String[] shopAvisList = new String[10];
+    private String[] LatitudeList = new String[10];
+    private String[] LongitudeList = new String[10];
 
 
     /**
@@ -177,7 +198,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         return firstFragment;
     }
 
-    public Research2Fragment(){
+    public Research2Fragment() {
 
     }
 
@@ -195,25 +216,25 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
             //System.out.println("Toooooooooooooken" + token);
         }
 
-        System.out.println("Oooooooooooooooh : "+homepage_click_imageview);
-        if(homepage_click_imageview==null){
+        System.out.println("Oooooooooooooooh : " + homepage_click_imageview);
+        if (homepage_click_imageview == null) {
             homepage_click_imageview = "";
         }
-        System.out.println("Oooooooooooooooh : "+homepage_click_imageview);
+        System.out.println("Oooooooooooooooh : " + homepage_click_imageview);
 
-        System.out.println("Oooooooooooooooh : "+autocomplete);
-        if(autocomplete==null){
+        System.out.println("Oooooooooooooooh : " + autocomplete);
+        if (autocomplete == null) {
             autocomplete = new String[1];
             autocomplete[0] = "";
         }
-        System.out.println("Oooooooooooooooh : "+autocomplete);
+        System.out.println("Oooooooooooooooh : " + autocomplete);
 
-        System.out.println("Oooooooooooooooh : "+place);
-        if(place==null){
+        System.out.println("Oooooooooooooooh : " + place);
+        if (place == null) {
             place = new String[1];
             place[0] = "";
         }
-        System.out.println("Oooooooooooooooh : "+place);
+        System.out.println("Oooooooooooooooh : " + place);
 
 
         //DEMANDE AUTORISATION POUR GeOLOCALISATION
@@ -237,9 +258,6 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         }
 
 
-
-
-
     }
 
     @Override
@@ -252,12 +270,11 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        button_clicke_boolean = false;
         final View view = inflater.inflate(R.layout.fragment_research2, container, false);
 
 
-        text=(AutoCompleteTextView)view.findViewById(R.id.autoCompleteTextView1);
-
+        text = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView1);
 
 
         //CalendarView calendarjeudi = (CalendarView) view.findViewById(R.id.calendarjeudi);
@@ -265,7 +282,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         //cal.add(Calendar.WEEK_OF_YEAR, 1);
 
 
-Log.e("Debug","bonjour");
+        Log.e("Debug", "bonjour");
 
 
         /*A = recupToutlesautocomplete("A");
@@ -437,14 +454,13 @@ Log.e("Debug","bonjour");
 
         //Si l'utilisateur a cliqué sur une image de la homepage, on arrive sur la page recherche avec l'autocompletion
         // deja pré-rempli
-        if(!homepage_click_imageview.equals("")){
+        if (!homepage_click_imageview.equals("")) {
             text.setText(homepage_click_imageview);
         }
 
 
-
         ArrayAdapter adapter = new
-                ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,autocomplete);
+                ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, autocomplete);
 
         text.setThreshold(1);
         text.setAdapter(adapter);
@@ -558,29 +574,22 @@ Log.e("Debug","bonjour");
         });*/
 
 
-
         //
 
 
-
-
-
-        text2=(AutoCompleteTextView)view.findViewById(R.id.autoCompleteTextView2);
+        text2 = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView2);
 
         ArrayAdapter adapter2 = new
-                ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,place);
+                ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, place);
 
         text2.setThreshold(1);
         text2.setAdapter(adapter2);
-
 
 
         text2.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
 
 
             }
@@ -607,10 +616,6 @@ Log.e("Debug","bonjour");
         });
 
 
-
-
-
-
         //mLoginFormView = view.findViewById(R.id.login_form);
         //mProgressView = view.findViewById(R.id.research_progress);
         recherche_layout = (LinearLayout) view.findViewById(R.id.recherche_layout);
@@ -629,8 +634,6 @@ Log.e("Debug","bonjour");
         loupe_recherche_ville = (ImageView) view.findViewById(R.id.loupe_recherche_ville);
 
 
-
-
         carte = (Button) view.findViewById(R.id.carte_research);
 
 
@@ -642,12 +645,17 @@ Log.e("Debug","bonjour");
             public void onClick(View v) {
                 if (!text2.getText().toString().isEmpty()) {
 
+
+                    button_clicke_boolean = true;
+
                     List<String> pictures = new ArrayList<String>();
                     List<String> id = new ArrayList<String>();
                     List<String> institutesNames = new ArrayList<String>();
-                    List<String> avis = new ArrayList<String>();
+                    ArrayList<String> avis = new ArrayList<String>();
                     List<String> favoris = new ArrayList<String>();
-
+                    List<String> geoloc_latitude = new ArrayList<String>();
+                    List<String> geoloc_longitude = new ArrayList<String>();
+                    ArrayList<ArrayList<String>> tableau_image = new ArrayList<ArrayList<String>>();
 
                     hideKeyBoard(getActivity());
 
@@ -655,14 +663,13 @@ Log.e("Debug","bonjour");
                     vue_listview.setVisibility(true ? View.VISIBLE : View.GONE);
                     vue_boutonretour.setVisibility(true ? View.VISIBLE : View.GONE);
 
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)deux_bouton.getLayoutParams();
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) deux_bouton.getLayoutParams();
                     params.setMargins(0, 0, 0, 20); //substitute parameters for left, top, right, bottom
                     deux_bouton.setLayoutParams(params);
 
 
-
                     //ADAPTER pour la listView
-                    ResearchTask2 recherche_list_prof = new ResearchTask2(text.getText().toString(), text2.getText().toString(), 5);
+                    ResearchTask2 recherche_list_prof = new ResearchTask2(text.getText().toString(), text2.getText().toString(), 20);
                     String json_prof = "";
                     json_prof = recherche_list_prof.getResponse();
                     final List<String> list_nom_prof_afficher = null;
@@ -675,8 +682,19 @@ Log.e("Debug","bonjour");
                                 JSONObject jsonObj = new JSONObject(json_prof);
                                 JSONArray contacts = jsonObj.getJSONArray("data");
 
+                                System.out.println("Ooooooooooooh TAILLE DES RESULTATS : " + contacts.length());
+
+
+                                shopIdList = new String[contacts.length()];
+                                shopNameList = new String[contacts.length()];
+                                shopImageList = new String[contacts.length()];
+                                shopFavorisList = new String[contacts.length()];
+                                shopAvisList = new String[contacts.length()];
+                                LatitudeList = new String[contacts.length()];
+                                LongitudeList = new String[contacts.length()];
+
                                 for (int i = 0; i < contacts.length(); i++) {
-                                    if (i == 0) {
+                                    //if (i == 0) {
                                         ArrayList<String> personnes = new ArrayList<String>();
                                         JSONObject c = contacts.getJSONObject(i);
 
@@ -686,20 +704,67 @@ Log.e("Debug","bonjour");
                                         favoris.add(recherche_favoris(id.get(i)));
 
 
-                                        System.out.println("Iiiiiiiiiiiiiiiiiiiiiiiid"+id);
-                                        String geoloc_latitude = c.getString("geoloc_latitude");
-                                        String geoloc_longitude = c.getString("geoloc_longitude");
+                                        System.out.println("Iiiiiiiiiiiiiiiiiiiiiiiid" + id);
+                                        String geoloc_lat = c.getString("geoloc_latitude");
+                                        String geoloc_long = c.getString("geoloc_longitude");
+
+                                        geoloc_latitude.add(geoloc_lat);
+                                        geoloc_longitude.add(geoloc_long);
+
                                         String shop_name = c.getString("shop_name");
                                         System.out.println("shop_nameshop_nameshop_nameshop_name" + shop_name);
                                         personnes.add(id.get(i));
-                                        personnes.add(geoloc_latitude);
-                                        personnes.add(geoloc_longitude);
+                                        personnes.add(geoloc_lat);
+                                        personnes.add(geoloc_long);
                                         personnes.add(shop_name);
                                         recup2.add(personnes);
                                         recup.add(shop_name);
-                                    }
-                                }
 
+
+                                        /*shopIdList[i] = id.get(i);
+                                        shopNameList[i] = institutesNames.get(i);
+                                        shopAvisList[i] = avis.get(i);
+                                        shopFavorisList[i] = favoris.get(i);
+                                        LatitudeList[i] = geoloc_latitude.get(i);
+                                        LongitudeList[i] = geoloc_longitude.get(i);*/
+
+
+
+                                    //IMAGE
+                                    tableau_image.add(shop_image_jsonparser2(recherche_shop_image(id.get(i))));
+
+
+
+                                    //Moyenne des avis
+                                    double moyenne = 0;
+                                    if(avis.size() == 0){
+
+                                    }else{
+                                        for(int y =0;y<avis.size();y++){
+                                            moyenne = moyenne + Double.parseDouble(avis.get(y));
+                                        }
+                                        moyenne = moyenne/avis.size();
+                                    }
+                                    String ss  = String.format("%1$s", moyenne(String.valueOf(moyenne)));
+                                    shopAvisList[i] = String.valueOf(ss);
+
+
+
+                                        System.out.println("Ooooooooooooh liste resultat : "+ i);
+                                        shopIdList[i] = id.get(i);
+                                        shopNameList[i] = institutesNames.get(i);
+                                        //shopAvisList[i] = avis.get(i);
+                                        shopFavorisList[i] = favoris.get(i);
+                                        LatitudeList[i] = geoloc_latitude.get(i);
+                                        LongitudeList[i] = geoloc_longitude.get(i);
+                                        if(tableau_image.get(i).size()==0){
+                                            shopImageList[i] = "";
+                                        }else{
+                                            shopImageList[i] = tableau_image.get(i).get(0);
+                                        }
+
+                                    //}
+                                }
 
 
                             } catch (final JSONException e) {
@@ -708,111 +773,69 @@ Log.e("Debug","bonjour");
                         }
                     }
 
-                    ArrayList<String> tableau_image = new ArrayList<String>();
-                    if(id.size()==0){
-
-                    }else{
-                        tableau_image = shop_image_jsonparser2(recherche_shop_image(id.get(0)));
+                    //List image a dapté à la recherche (Adapter)
+                    ArrayList<String> iopi = new ArrayList<String>();
+                    for(int o = 0; o < tableau_image.size();o++){
+                        iopi.add(shopImageList[0]);
                     }
 
-                    RechercheResultatAdapter resultatAdapter = new RechercheResultatAdapter(getActivity());
+
+
+
+                    LinearLayout myRoot = (LinearLayout) view.findViewById(R.id.vue_listview);
+
+                    for(int i= 0;i<id.size();i++){
+                        System.out.println("COMBIEN DE FOIS : "+i);
+                        View view2 = LayoutInflater.from(getActivity()).inflate(R.layout.services_resultat_recherche,null);
+                        TextView textViewshopname = (TextView) view2.findViewById(R.id.shopname_resultat);
+                        TextView textViewavis = (TextView) view2.findViewById(R.id.resultat_avis);
+                        TextView textViewfavoris = (TextView) view2.findViewById(R.id.resultat_favoris);
+                        ImageView imageView = (ImageView) view2.findViewById(R.id.image_recherche);
+                        RatingBar ratingbar = (RatingBar) view2.findViewById(R.id.rtbProductRating);
+
+
+                        if(iopi.get(i) == ""){
+                            imageView.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.unknown));
+                        }else{
+                            Picasso.with(view2.getContext()).load(iopi.get(i))
+                                    .into(imageView);
+                        }
+
+                        //Moyenne des avis
+                        double moyenne = 0;
+                        if(avis.size() == 0){
+
+                        }else{
+                            for(int y =0;y<avis.size();y++){
+                                moyenne = moyenne + Double.parseDouble(avis.get(y));
+                            }
+                            moyenne = moyenne/avis.size();
+                        }
+                        ratingbar.setRating(Float.parseFloat(moyenne(String.valueOf(moyenne))));
+                        String ss  = String.format("%1$s/5", moyenne(String.valueOf(moyenne)));
+                        textViewavis.setText(ss);
+
+                        String s  = String.format("%1$s FAVORIS", favoris.get(i));
+                        textViewfavoris.setText(s);
+
+                        textViewshopname.setText(institutesNames.get(i));
+
+                        myRoot.addView(view2);
+                    }
+
+
+
+
+
+                    /*RechercheResultatAdapter resultatAdapter = new RechercheResultatAdapter(getActivity());
                     resultatAdapter.setId(id);
                     resultatAdapter.setInstitutesNames(institutesNames);
                     resultatAdapter.setAvis(avis);
                     resultatAdapter.setFavoris(favoris);
-                    resultatAdapter.setPictures(tableau_image);
+                    resultatAdapter.setPictures(iopi);
 
-                    /*System.out.println(resultatAdapter.getId().get(0));
-                    System.out.println(resultatAdapter.getInstitutesNames().get(0));
-                    System.out.println(resultatAdapter.getAvis().get(0));
-                    System.out.println(resultatAdapter.getFavoris().get(0));
-                    System.out.println(resultatAdapter.getPictures().get(0));*/
+                    listView.setAdapter(resultatAdapter);*/
 
-
-
-
-                    listView.setAdapter(resultatAdapter);
-
-
-
-                    /*String[] results = new String[]{};
-                    final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
-                    ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services_resultat_recherche, resultsList);
-                    listView.setAdapter(tableau);
-                    int g = 0;
-                    for (int i = 0; i < recup.size(); i++) {
-                        resultsList.add(recup.get(i));
-                        tableau.notifyDataSetChanged();
-                        g++;
-                    }*/
-
-
-
-
-
-
-
-                    // Récupération de la liste de String
-                    /*ResearchTask researchTask = new ResearchTask(text.getText().toString(), 5);
-                    String ls = "";
-                    ArrayList<String> recup = new ArrayList<String>();
-                    ls = researchTask.getResponse();
-                    System.out.println("ALllllllllllllo");
-                    recup = jsonparser(ls);
-
-                    System.out.println("ALllllllllllllo");
-                    String[] results = new String[]{};
-                    final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
-                    ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
-                    listView.setAdapter(tableau);
-                    int g = 0;
-                    for (int i = 0; i < recup.size(); i++) {
-                        resultsList.add(recup.get(i));
-                        tableau.notifyDataSetChanged();
-                        g++;
-                    }*/
-
-                    // Récupération des données de géoloc pour chacun des éléments
-                   /*ArrayList<ArrayList<String>> recup2 = new ArrayList<ArrayList<String>>();
-                    for (int j = 0; j < 5; j++) {
-                        System.out.println("LATAIIIIIIILLLLLLLEESTDE :" + recup.get(j).length());
-                        System.out.println("LAPERSOOOOOONEESTDE :" + recup.get(j));
-                        String ls2 = "";
-                        ResearchTask2 researchTask2 = new ResearchTask2(recup.get(j), 1);
-                        ls2 = researchTask2.getResponse();
-                        System.out.println("repooooooooooooooooonse" + ls2);
-                        //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
-                        if (ls2 != null) {
-                            if (ls2.contains("{")) {
-                                try {
-
-                                    JSONObject jsonObj = new JSONObject(ls2);
-                                    JSONArray contacts = jsonObj.getJSONArray("data");
-
-                                    for (int i = 0; i < contacts.length(); i++) {
-                                        if (i == 0) {
-                                            ArrayList<String> personnes = new ArrayList<String>();
-                                            JSONObject c = contacts.getJSONObject(i);
-
-                                            String id = c.getString("id");
-                                            String geoloc_latitude = c.getString("geoloc_latitude");
-                                            String geoloc_longitude = c.getString("geoloc_longitude");
-                                            String shop_name = c.getString("shop_name");
-                                            System.out.println("shop_nameshop_nameshop_nameshop_name" + shop_name);
-                                            personnes.add(id);
-                                            personnes.add(geoloc_latitude);
-                                            personnes.add(geoloc_longitude);
-                                            personnes.add(shop_name);
-                                            recup2.add(personnes);
-                                        }
-                                    }
-
-                                } catch (final JSONException e) {
-                                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                                }
-                            }
-                        }
-                    }*/
 
 
 
@@ -827,7 +850,6 @@ Log.e("Debug","bonjour");
                 }
 
 
-
                 //Les 2 lignes du dessous permet de remonter en haut du scrollview
                 ScrollView scrollviewrecherche = (ScrollView) view.findViewById(R.id.scrollviewrecherche);
                 scrollviewrecherche.fullScroll(ScrollView.FOCUS_UP);
@@ -835,23 +857,26 @@ Log.e("Debug","bonjour");
         });
 
 
-
         button_retour_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                button_clicke_boolean = false;
 
                 recherche_layout.setVisibility(true ? View.VISIBLE : View.GONE);
                 vue_listview.setVisibility(true ? View.GONE : View.VISIBLE);
                 vue_boutonretour.setVisibility(true ? View.GONE : View.VISIBLE);
 
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)deux_bouton.getLayoutParams();
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) deux_bouton.getLayoutParams();
                 params.setMargins(0, 20, 0, 50); //substitute parameters for left, top, right, bottom
                 deux_bouton.setLayoutParams(params);
 
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        //A GARDER
+        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -889,54 +914,41 @@ Log.e("Debug","bonjour");
                             //recup2 = jsonparser2(ls2);
 
 
-
                             //DEUXIEME METHODE
                             //Recupérer liste des produits
                             System.out.println("DEBUT DONNEE GENERALE");
-                            System.out.println("D "+ recup2.get(0).get(0));
+                            System.out.println("D " + recup2.get(0).get(0));
                             System.out.println("D" + position);
                             //donneegeneral_jsonparser(recherche_donneegeneral(listView.getItemAtPosition(position).toString()));
                             donneegeneral_jsonparser(recherche_donneegeneral(recup2.get(position).get(0)));
                             String id = String.valueOf(PremierProfessionnal.getId());
 
                             System.out.println("DEBUT PRODUCT");
-                            System.out.println("D "+id);
+                            System.out.println("D " + id);
                             products_jsonparser(recherche_product(id));
-                            for(int i=0;i<PremierProfessionalProduct.length;i++){
-                                System.out.println("PremierProfesionnelProduct : "+PremierProfessionalProduct[i].getName()+PremierProfessionalProduct[i].getPrice());
+                            for (int i = 0; i < PremierProfessionalProduct.length; i++) {
+                                System.out.println("PremierProfesionnelProduct : " + PremierProfessionalProduct[i].getName() + PremierProfessionalProduct[i].getPrice());
                             }
 
                             System.out.println("DEBUT SCHEDULE");
                             schedule_jsonparser(recherche_schedule(id));
                             PremierProfessionnal.setSchedule(ProfessionnalGenericSchedule);
-                            for(int i=0;i<ProfessionnalGenericSchedule.length;i++){
-                                System.out.println("PremierProfesionnelSchedule : "+ProfessionnalGenericSchedule[i].getWeekday() + ProfessionnalGenericSchedule[i].getBegin_time());
+                            for (int i = 0; i < ProfessionnalGenericSchedule.length; i++) {
+                                System.out.println("PremierProfesionnelSchedule : " + ProfessionnalGenericSchedule[i].getWeekday() + ProfessionnalGenericSchedule[i].getBegin_time());
                             }
 
                             System.out.println("DEBUT SHOP_IMAGE");
                             shop_image_jsonparser(recherche_shop_image(id));
-                            for(int i=0;i<Shop_image.size();i++){
-                                System.out.println("Shop_image : "+Shop_image.get(i));
+                            for (int i = 0; i < Shop_image.size(); i++) {
+                                System.out.println("Shop_image : " + Shop_image.get(i));
                             }
 
 
                             System.out.println("DEBUT RESOURCE");
                             ressource_jsonparser(recherche_ressource(id));
-                            for(int i=0;i<ResourceProfessional.length;i++){
-                                System.out.println("Resource : "+ResourceProfessional[i]);
+                            for (int i = 0; i < ResourceProfessional.length; i++) {
+                                System.out.println("Resource : " + ResourceProfessional[i]);
                             }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                             if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Full")) {
@@ -951,7 +963,7 @@ Log.e("Debug","bonjour");
                                 args.putSerializable("Shop_image", Shop_image);
                                 args.putSerializable("token", token);
                                 System.out.println("CUSTOMER :" + customer.getName());
-                                args.putSerializable("Fragment","Research2Fragment");
+                                args.putSerializable("Fragment", "Research2Fragment");
 
                                 FragmentManager fm = getFragmentManager();
                                 //FragmentTransaction ft = fm.beginTransaction();
@@ -1007,258 +1019,10 @@ Log.e("Debug","bonjour");
 
 
             }
-        });
-
-
-        /*recherche_ville.addTextChangedListener(new TextWatcher() {
-            boolean isTyping = false;
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            private Timer timer = new Timer();
-            private final long DELAY = 2500;
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!isTyping) {
-                    isTyping = true;
-                }
-
-                timer.cancel();
-                timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        isTyping = false;
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                final Dialog dialog = new Dialog(getContext());
-                                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-                                View contentView = layoutInflater.inflate(R.layout.research_popup, null);
-                                final LinearLayout root = (LinearLayout) contentView.findViewById(R.id.proRootLayout);
-                                System.out.println("Ooooooooooooooooooh tablea ?" + recherche_ville.getText().toString());
-                                ResearchTask4 researchTask = new ResearchTask4(recherche_ville.getText().toString());
-                                String ls = "";
-                                final ArrayList<String> recup2 = new ArrayList<String>();
-                                ls = researchTask.getResponse();
-
-                                String recup = "{" + '"' + "Recup" + '"' + " : [";
-                                String ahbon = ls.replace("[", recup);
-                                String ahbon2 = ahbon.replace("]", "]}");
-
-
-                                JSONObject jsonObj = null;
-                                try {
-                                    jsonObj = new JSONObject(ahbon2);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                JSONArray contacts = null;
-                                try {
-                                    contacts = jsonObj.getJSONArray("Recup");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                // looping through All Contacts
-                                for (int i = 0; i < contacts.length(); i++) {
-                                    JSONObject c = null;
-                                    try {
-                                        c = contacts.getJSONObject(i);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    String id = null;
-                                    try {
-                                        id = c.getString("value");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    recup2.add(id);
-                                    System.out.println("VAAAAAAAAAAAAAALUE " + id);
-
-                                }
-
-
-                                ListView listview = (ListView) root.findViewById(R.id.mesresultats_ville);
-
-                                String[] results = new String[]{};
-                                final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
-                                ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
-                                listview.setAdapter(tableau);
-                                for (int i = 0; i < recup2.size(); i++) {
-                                    resultsList.add(recup2.get(i));
-                                    tableau.notifyDataSetChanged();
-                                }
-                                if (!recup2.isEmpty()) {
-                                    dialog.setContentView(root);
-                                    dialog.show();
-                                }
-
-                                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        recherche_ville.setText(recup2.get(position));
-                                        dialog.cancel();
-
-                                        //Recupérer liste des produits
-                                        System.out.println("DEBUT PRODUCT");
-                                        products_jsonparser(recherche_product("376"));
-                                        for(int i=0;i<PremierProfessionalProduct.length;i++){
-                                            System.out.println("PremierProfesionnelProduct : "+PremierProfessionalProduct[i].getName()+PremierProfessionalProduct[i].getPrice());
-                                        }
-
-                                        System.out.println("DEBUT SCHEDULE");
-                                        schedule_jsonparser(recherche_schedule("376"));
-                                        for(int i=0;i<ProfessionnalGenericSchedule.length;i++){
-                                            System.out.println("PremierProfesionnelSchedule : "+ProfessionnalGenericSchedule[i].getWeekday() + ProfessionnalGenericSchedule[i].getBegin_time());
-                                        }
-
-                                        System.out.println("DEBUT DONNEE GENERALE");
-                                        donneegeneral_jsonparser(recherche_donneegeneral(""));
-
-                                    }
-                                });
-                                System.out.println("LSSSSSSSSSS" + ls);
-
-
-                            }
-                        });
-                    }
-                }, DELAY);
-            }
         });*/
 
 
-        /*recherche.addTextChangedListener(new TextWatcher() {
-            boolean isTyping = false;
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            private Timer timer = new Timer();
-            private final long DELAY = 2500;
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!isTyping) {
-                    isTyping = true;
-                }
-
-
-                timer.cancel();
-                timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        isTyping = false;
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                if (!recherche_ville.getText().toString().isEmpty()) {
-
-                                    // Récupération de la liste de String
-                                    ResearchTask researchTask = new ResearchTask(recherche.getText().toString(), 5);
-                                    String ls = "";
-                                    ArrayList<String> recup = new ArrayList<String>();
-                                    ls = researchTask.getResponse();
-                                    System.out.println("ALllllllllllllo");
-                                    recup = jsonparser(ls);
-
-
-                                    System.out.println("ALllllllllllllo");
-                                    String[] results = new String[]{};
-                                    final List<String> resultsList = new ArrayList<String>(Arrays.asList(results));
-                                    ArrayAdapter<String> tableau = new ArrayAdapter<String>(getActivity(), R.layout.services, resultsList);
-                                    listView.setAdapter(tableau);
-                                    int g = 0;
-                                    for (int i = 0; i < recup.size(); i++) {
-                                        resultsList.add(recup.get(i));
-                                        tableau.notifyDataSetChanged();
-                                        g++;
-                                    }
-
-                                    // Récupération des données de géoloc pour chacun des éléments
-                                    ArrayList<ArrayList<String>> recup2 = new ArrayList<ArrayList<String>>();
-                                    for (int j = 0; j < g; j++) {
-                                        System.out.println("LATAIIIIIIILLLLLLLEESTDE :" + recup.get(j).length());
-                                        System.out.println("LAPERSOOOOOONEESTDE :" + recup.get(j));
-                                        String ls2 = "";
-                                        ResearchTask2 researchTask2 = new ResearchTask2(recup.get(j), 1);
-                                        ls2 = researchTask2.getResponse();
-                                        System.out.println("repooooooooooooooooonse" + ls2);
-                                        //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
-                                        if (ls2 != null) {
-                                            if (ls2.contains("{")) {
-                                                try {
-
-                                                    JSONObject jsonObj = new JSONObject(ls2);
-                                                    JSONArray contacts = jsonObj.getJSONArray("data");
-
-                                                    for (int i = 0; i < contacts.length(); i++) {
-                                                        if (i == 0) {
-                                                            ArrayList<String> personnes = new ArrayList<String>();
-                                                            JSONObject c = contacts.getJSONObject(i);
-
-                                                            String id = c.getString("id");
-                                                            String geoloc_latitude = c.getString("geoloc_latitude");
-                                                            String geoloc_longitude = c.getString("geoloc_longitude");
-                                                            String shop_name = c.getString("shop_name");
-                                                            System.out.println("shop_nameshop_nameshop_nameshop_name" + shop_name);
-                                                            personnes.add(id);
-                                                            personnes.add(geoloc_latitude);
-                                                            personnes.add(geoloc_longitude);
-                                                            personnes.add(shop_name);
-                                                            recup2.add(personnes);
-                                                        }
-                                                    }
-
-                                                } catch (final JSONException e) {
-                                                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                                                }
-                                            }
-                                        }
-                                    }
-
-
-                                    //ls = researchTask.getResponse();
-                                    //recup2 = jsonparser3(ls);
-
-                                    donnée_geolocalise = recup2;
-                                    for (int i = 0; i < donnée_geolocalise.size(); i++) {
-                                        System.out.println("ppppppppppppppppppppppppppppppp" + donnée_geolocalise.get(i).get(3));
-                                    }
-                                    //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
-
-
-
-                                } else {
-                                    Toast.makeText(getActivity(), "Rentrer une ville ou un lieu", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-                }, DELAY);
-            }
-        });*/
         initUI(view);
         return view;
     }
@@ -1289,30 +1053,155 @@ Log.e("Debug","bonjour");
             public void onClick(View v) {
 
 
+                /*if (text.getText().toString().isEmpty() && !text2.getText().toString().isEmpty()) {
+                    text.setError("ce champ est vide");
+                } else if (!text.getText().toString().isEmpty() && text2.getText().toString().isEmpty()) {
+                    text2.setError("ce champ est vide");
+                } else if (!text.getText().toString().isEmpty() && !text2.getText().toString().isEmpty()) {*/
 
-                Bundle args = new Bundle();
-                String[] tableau = new String[5];
-                tableau[0] = "Bonjour";
-                tableau[1] = "Bonjour1";
-                tableau[2] = "Bonjour2";
-                tableau[3] = "Bonjour3";
-                tableau[4] = "Bonjour4";
+                    if (button_clicke_boolean) {
+                        //boutton_recherche.setError("Cliqué d'abord sur la recherche");
+                    //} else {
+
+                        Bundle args = new Bundle();
+
+                        boolean recherche_boolean = false;
+                        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOh comprend pas" + text.getText().toString());
+                        if (text.getText().toString().isEmpty()) {
+                            recherche_boolean = false;
+                        } else {
+                            recherche_boolean = true;
+                        }
+
+                        Fragment fragment = null;
+                        //recherche_boolean
+                        args.putSerializable("liste_id_professionnal", shopIdList);
+                        args.putSerializable("liste_image_professionnal", shopImageList);
+                        args.putSerializable("liste_name_professionnal", shopNameList);
+                        args.putSerializable("liste_favoris_professionnal", shopFavorisList);
+                        args.putSerializable("liste_avis_professionnal", shopAvisList);
+                        args.putSerializable("liste_latitude_professionnal", LatitudeList);
+                        args.putSerializable("liste_longitude_professionnal", LongitudeList);
 
 
-                boolean recherche_boolean = false;
-                System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOh comprend pas" + text.getText().toString());
-                if (text.getText().toString().isEmpty()) {
-                    recherche_boolean = false;
+                        args.putSerializable("Professionnal", PremierProfessionnal);
+                        args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                        args.putSerializable("Customer", customer);
+                        args.putSerializable("ExpandableListDetail", expandableListDetail);
+                        args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
+                        args.putSerializable("ResourceProfessional", ResourceProfessional);
+                        args.putSerializable("Shop_image", Shop_image);
+                        args.putSerializable("token", token);
+                        args.putSerializable("Fragment", "Research2Fragment");
+
+
+                        args.putBoolean("recherche_boolean", recherche_boolean);
+                        args.putSerializable("donnée_geolocalise", donnée_geolocalise);
+                        fragment = new MapPane2();
+                        fragment.setArguments(args);
+
+                        FragmentManager fm = getFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        ft.replace(R.id.content_frame, fragment).addToBackStack("recherche");
+                        ;
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        ft.commit();
+
+                        /*
+                        Intent intent = new Intent(getActivity(), MapPane.class);
+                        intent.putExtras(args);
+                        startActivity(intent);*/
+                    //}
+
                 } else {
-                    recherche_boolean = true;
-                }
-                //recherche_boolean
-                args.putBoolean("recherche_boolean", recherche_boolean);
-                args.putSerializable("tableau", tableau);
-                args.putSerializable("donnée_geolocalise", donnée_geolocalise);
-                Intent intent = new Intent(getActivity(), MapPane.class);
-                intent.putExtras(args);
-                startActivity(intent);
+
+
+                    final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Svp Veuillez patienter ...", "chargement des données...", true);
+                    Thread timer = new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+
+
+                                locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                                //mMap.setMyLocationEnabled(true);
+                                criteria = new Criteria();
+                                bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true));
+                                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                    // TODO: Consider calling
+                                    //    ActivityCompat#requestPermissions
+                                    // here to request the missing permissions, and then overriding
+                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                    //                                          int[] grantResults)
+                                    // to handle the case where the user grants the permission. See the documentation
+                                    // for ActivityCompat#requestPermissions for more details.
+                                        return;
+                                    }
+                                            Location location1 = locationManager.getLastKnownLocation(bestProvider);
+                                            latitude = location1.getLatitude();
+                                            longitude = location1.getLongitude();
+
+                                            LatLng latLng = new LatLng(latitude, longitude);
+                                            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+                                            recherche_autour(latitude, longitude);
+
+
+                                            boolean recherche_boolean = false;
+                                            System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOh comprend pas" + text.getText().toString());
+                                            if (text.getText().toString().isEmpty()) {
+                                                recherche_boolean = false;
+                                            } else {
+                                                recherche_boolean = true;
+                                            }
+
+                                            final Bundle args = new Bundle();
+                                            final Fragment[] fragment = {null};
+
+
+                                            args.putSerializable("liste_id_professionnal", shopIdList);
+                                            args.putSerializable("liste_image_professionnal", shopImageList);
+                                            args.putSerializable("liste_name_professionnal", shopNameList);
+                                            args.putSerializable("liste_favoris_professionnal", shopFavorisList);
+                                            args.putSerializable("liste_avis_professionnal", shopAvisList);
+                                            args.putSerializable("liste_latitude_professionnal", LatitudeList);
+                                            args.putSerializable("liste_longitude_professionnal", LongitudeList);
+
+
+                                            args.putBoolean("recherche_boolean", recherche_boolean);
+                                            args.putSerializable("donnée_geolocalise", donnée_geolocalise);
+                                            fragment[0] = new MapPane2();
+                                            fragment[0].setArguments(args);
+
+
+                                            FragmentManager fm = getFragmentManager();
+                                            FragmentTransaction ft = fm.beginTransaction();
+                                            ft.replace(R.id.content_frame, fragment[0]).addToBackStack("recherche");
+                                            ;
+                                            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                            ft.commit();
+
+
+                                            //Obligé de faire ça après !
+                                            //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+
+                                        } catch (Exception e) {
+                                            System.out.println("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSE PAS");
+                                            e.printStackTrace();
+                                        }
+
+
+                                        ringProgressDialog.cancel();
+                                    }
+                                };
+                                timer.start();
+                                ringProgressDialog.setCancelable(false);
+
+
+                            }
+
+
+
             }
         });
 
@@ -1509,6 +1398,7 @@ Log.e("Debug","bonjour");
 
                                     JSONObject jsonObj = new JSONObject(ls2);
                                     JSONArray contacts = jsonObj.getJSONArray("data");
+
 
                                     for (int i = 0; i < contacts.length(); i++) {
                                         if (i == 0) {
@@ -3468,7 +3358,6 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
                     for (int j = 0; j < Professional_Shop_image.length(); j++) {
                         JSONObject p2 = Professional_Shop_image.getJSONObject(j);
                         String url = p2.getJSONObject("image").getString("url");
-
                         tableau_image.add(url);
                     }
                 }
@@ -3543,7 +3432,7 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
 
 
 
-    //RESSOURCE
+    //FAVORIS
     public String recherche_favoris(String query) {
         System.out.println("Rechercheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee Resource");
         getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/favoris/"+query+"/");
@@ -3657,6 +3546,101 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
                 Toast.makeText(getActivity(), "impossible de geolocaliser le portable utilisateur", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+
+
+
+    //Pas de recherche -> Autour de moi
+    public void recherche_autour(double latitude, double longitude){
+
+
+        String resp = null;
+        JSONObject obj;
+        JSONArray arr;
+
+        shopIdList = new String[10];
+        shopNameList = new String[10];
+        shopImageList = new String[10];
+        shopFavorisList = new String[10];
+        shopAvisList = new String[10];
+        LatitudeList = new String[10];
+        LongitudeList = new String[10];
+
+
+        GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/professional/?query[geoloc][latitude]=" + String.valueOf(latitude)
+                + "&query[geoloc][longitude]=" + String.valueOf(longitude)+"&query[city]=");
+
+        try {
+            resp = getRequest.execute().get();
+            obj = new JSONObject(resp);
+            arr = obj.getJSONArray("data");
+
+            for (int i = 0; i < arr.length() && i < 10; i++) {
+
+                if (arr.getJSONObject(i).getString("shop_name") != null) {
+                    String id = arr.getJSONObject(i).getString("id");
+                    shopIdList[i] = id;
+                    shopNameList[i] = arr.getJSONObject(i).getString("shop_name");
+
+                    //premiere image uniquement
+                    ArrayList<String> tableau_image = new ArrayList<String>();
+                    tableau_image = shop_image_jsonparser2(recherche_shop_image(id));
+                    shopImageList[i] = tableau_image.get(0);
+
+                    LatitudeList[i] = arr.getJSONObject(i).getString("geoloc_latitude");
+                    LongitudeList[i] = arr.getJSONObject(i).getString("geoloc_longitude");
+                    shopFavorisList[i] = recherche_favoris(id);
+                    ArrayList<String> avis = avis_jsonparser(recherche_avis(id));
+
+                    //Moyenne des avis
+                    double moyenne = 0;
+                    if(avis.size() == 0){
+
+                    }else{
+                        for(int y =0;y<avis.size();y++){
+                            moyenne = moyenne + Double.parseDouble(avis.get(y));
+                        }
+                        moyenne = moyenne/avis.size();
+                    }
+                    String ss  = String.format("%1$s", moyenne(String.valueOf(moyenne)));
+                    shopAvisList[i] = String.valueOf(ss);
+                    //System.out.println("moyeeeeeeennne : "+moyenne);
+                    //ratingbar.setRating(Float.parseFloat(moyenne(String.valueOf(moyenne))));
+                    //System.out.println("moyeeeeeeennne : "+Float.parseFloat(moyenne(String.valueOf(moyenne))));
+
+
+                }
+
+
+            }
+
+
+        } catch (InterruptedException | JSONException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
+    public String moyenne(String moy){
+        String moyenn = null;
+
+        System.out.println(moy.substring(0,1));
+        System.out.println(moy.substring(1,2));
+        System.out.println(moy.substring(2,3));
+        if(Integer.parseInt(moy.substring(2,3)) <= 3){
+            moyenn = moy.substring(0,1);
+        }else if(Integer.parseInt(moy.substring(2,3)) >= 4 && Integer.parseInt(moy.substring(2,3)) <= 7){
+            moyenn = moy.substring(0,1) + ".5";
+        }else if(Integer.parseInt(moy.substring(2,3)) >= 8){
+            moyenn = String.valueOf(Integer.parseInt(moy.substring(0,1))+1);
+        }
+
+
+        return moyenn;
     }
 
 

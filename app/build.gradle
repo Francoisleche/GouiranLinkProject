@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "com.gouiranlink.franois.gouiranlinkproject"
-        minSdkVersion 21
-        versionCode 13
+        minSdkVersion 22
+        versionCode 14
         versionName "2.2"
         multiDexEnabled true
     }
@@ -82,5 +82,5 @@ dependencies {
     compile files('libs/additionnal.jar')
     compile files('libs/mail.jar')
 
-
+    compile 'com.android.support:multidex:1.0.1'
 }

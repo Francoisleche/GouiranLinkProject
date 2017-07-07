@@ -56,6 +56,7 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Schedule;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Subscription_Type;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
+import com.gouiranlink.franois.gouiranlinkproject.Professional_View.InformationsProfessional;
 import com.gouiranlink.franois.gouiranlinkproject.Professional_View.ProfessionalView;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
@@ -782,11 +783,16 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
 
 
-                    LinearLayout myRoot = (LinearLayout) view.findViewById(R.id.vue_listview);
+                    final LinearLayout myRoot = (LinearLayout) view.findViewById(R.id.vue_listview);
+                    List<View> list = new ArrayList<View>();
+                    List<LinearLayout> list2 = new ArrayList<LinearLayout>();
 
-                    for(int i= 0;i<id.size();i++){
-                        System.out.println("COMBIEN DE FOIS : "+i);
-                        View view2 = LayoutInflater.from(getActivity()).inflate(R.layout.services_resultat_recherche,null);
+
+                    for(int i= 0;i<id.size();i++) {
+                        System.out.println("COMBIEN DE FOIS : " + i);
+                        final View view2 = LayoutInflater.from(getActivity()).inflate(R.layout.services_resultat_recherche, null);
+                        view2.setId(i);
+                        myRoot.setId(i);
                         TextView textViewshopname = (TextView) view2.findViewById(R.id.shopname_resultat);
                         TextView textViewavis = (TextView) view2.findViewById(R.id.resultat_avis);
                         TextView textViewfavoris = (TextView) view2.findViewById(R.id.resultat_favoris);
@@ -794,33 +800,192 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                         RatingBar ratingbar = (RatingBar) view2.findViewById(R.id.rtbProductRating);
 
 
-                        if(iopi.get(i) == ""){
+                        if (iopi.get(i) == "") {
                             imageView.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.unknown));
-                        }else{
+                        } else {
                             Picasso.with(view2.getContext()).load(iopi.get(i))
                                     .into(imageView);
                         }
 
                         //Moyenne des avis
                         double moyenne = 0;
-                        if(avis.size() == 0){
+                        if (avis.size() == 0) {
 
-                        }else{
-                            for(int y =0;y<avis.size();y++){
+                        } else {
+                            for (int y = 0; y < avis.size(); y++) {
                                 moyenne = moyenne + Double.parseDouble(avis.get(y));
                             }
-                            moyenne = moyenne/avis.size();
+                            moyenne = moyenne / avis.size();
                         }
                         ratingbar.setRating(Float.parseFloat(moyenne(String.valueOf(moyenne))));
-                        String ss  = String.format("%1$s/5", moyenne(String.valueOf(moyenne)));
+                        String ss = String.format("%1$s/5", moyenne(String.valueOf(moyenne)));
                         textViewavis.setText(ss);
 
-                        String s  = String.format("%1$s FAVORIS", favoris.get(i));
+                        String s = String.format("%1$s FAVORIS", favoris.get(i));
                         textViewfavoris.setText(s);
 
                         textViewshopname.setText(institutesNames.get(i));
 
+                        list.add(view2);
+
                         myRoot.addView(view2);
+
+                    }
+
+                    for(final View view11111 : list){
+                        view11111.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(final View v) {
+                                // ADD your action here
+                                //Toast.makeText(getContext(), "Bonjooooooooour" + index, Toast.LENGTH_LONG).show();
+                                //v.getContext().
+
+                                System.out.println("INDEX2 : "+view11111.getId());
+                                System.out.println("INDEX3 : "+myRoot.getId());
+                                System.out.println("INDEX4 : "+v.getId());
+
+                                final Fragment[] fragment = {null};
+                                final FragmentTransaction[] ft = {null};
+
+                                final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Svp Veuillez patienter ...", "chargement des données...", true);
+
+
+                                Thread timer = new Thread() {
+                                    @Override
+                                    public void run() {
+
+                                        try {
+
+                                            /*try {
+                                                fileOutputStream = getContext().openFileOutput("GouiranLink", MODE_APPEND);
+                                                //fileOutputStream.write(listView.getItemAtPosition(position).toString().getBytes());
+                                                fileOutputStream.write(position);
+                                                fileOutputStream.write("`".getBytes());
+                                                fileOutputStream.close();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }*/
+
+
+                                            //System.out.println(listView.getItemAtPosition(position).toString());
+
+
+                                            //PREMIERE METHODE
+                                            //ResearchTask3 researchTask3 = new ResearchTask3(listView.getItemAtPosition(position).toString());
+                                            //String ls2 = "";
+                                            //ArrayList<String> recup2 = new ArrayList<String>();
+                                            //recup2 = jsonparser2(ls2);
+
+
+                                            //DEUXIEME METHODE
+                                            //Recupérer liste des produits
+                                            System.out.println("DEBUT DONNEE GENERALE");
+                                            System.out.println("D " + recup2.get(0).get(0));
+                                            //System.out.println("D" + position);
+                                            //donneegeneral_jsonparser(recherche_donneegeneral(listView.getItemAtPosition(position).toString()));
+                                            donneegeneral_jsonparser(recherche_donneegeneral(shopIdList[v.getId()]));
+                                            String id = String.valueOf(PremierProfessionnal.getId());
+
+                                            System.out.println("DEBUT PRODUCT");
+                                            System.out.println("D " + id);
+                                            products_jsonparser(recherche_product(id));
+                                            for (int i = 0; i < PremierProfessionalProduct.length; i++) {
+                                                System.out.println("PremierProfesionnelProduct : " + PremierProfessionalProduct[i].getName() + PremierProfessionalProduct[i].getPrice());
+                                            }
+
+                                            System.out.println("DEBUT SCHEDULE");
+                                            schedule_jsonparser(recherche_schedule(id));
+                                            PremierProfessionnal.setSchedule(ProfessionnalGenericSchedule);
+                                            for (int i = 0; i < ProfessionnalGenericSchedule.length; i++) {
+                                                System.out.println("PremierProfesionnelSchedule : " + ProfessionnalGenericSchedule[i].getWeekday() + ProfessionnalGenericSchedule[i].getBegin_time());
+                                            }
+
+                                            System.out.println("DEBUT SHOP_IMAGE");
+                                            shop_image_jsonparser(recherche_shop_image(id));
+                                            for (int i = 0; i < Shop_image.size(); i++) {
+                                                System.out.println("Shop_image : " + Shop_image.get(i));
+                                            }
+
+
+                                            System.out.println("DEBUT RESOURCE");
+                                            ressource_jsonparser(recherche_ressource(id));
+                                            for (int i = 0; i < ResourceProfessional.length; i++) {
+                                                System.out.println("Resource : " + ResourceProfessional[i]);
+                                            }
+
+
+                                            if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Full")) {
+                                                //Fragment fragment = null;
+                                                Bundle args = new Bundle();
+                                                args.putSerializable("Professionnal", PremierProfessionnal);
+                                                args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                                                args.putSerializable("Customer", customer);
+                                                args.putSerializable("ExpandableListDetail", expandableListDetail);
+                                                args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
+                                                args.putSerializable("ResourceProfessional", ResourceProfessional);
+                                                args.putSerializable("Shop_image", Shop_image);
+                                                args.putSerializable("token", token);
+                                                System.out.println("CUSTOMER :" + customer.getName());
+                                                args.putSerializable("Fragment", "Research2Fragment");
+
+                                                FragmentManager fm = getFragmentManager();
+                                                //FragmentTransaction ft = fm.beginTransaction();
+                                                ft[0] = fm.beginTransaction();
+                                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                                                fragment[0] = new ProfessionalView();
+                                                fragment[0].setArguments(args);
+
+                                                //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+
+                                                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                //ft.commit();
+                                            } else if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Free")) {
+                                                //Fragment fragment = null;
+                                                Bundle args = new Bundle();
+                                                args.putSerializable("Professionnal", PremierProfessionnal);
+                                                args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                                                args.putSerializable("Customer", customer);
+                                                args.putSerializable("token", token);
+
+                                                FragmentManager fm = getFragmentManager();
+                                                //FragmentTransaction ft = fm.beginTransaction();
+                                                ft[0] = fm.beginTransaction();
+                                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                                                fragment[0] = new InformationsProfessional();
+                                                fragment[0].setArguments(args);
+
+                                                //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+
+                                                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                //ft.commit();
+                                            }
+
+
+                                            ft[0].replace(R.id.content_frame, fragment[0]).addToBackStack("recherche");
+                                            ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                            ft[0].commit();
+                                            ringProgressDialog.cancel();
+                                        } catch (Exception e) {
+                                            System.out.println("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSE PAS");
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                };
+                                timer.start();
+                                ringProgressDialog.setCancelable(true);
+
+                                //Obligé de faire ça après !
+                                getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+
+                            }
+
+
+                        });
                     }
 
 

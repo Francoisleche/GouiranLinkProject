@@ -27,7 +27,6 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetCustomerProfile;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostFileRequest;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PutRequest;
 
 import java.util.ArrayList;
@@ -162,8 +161,10 @@ public class EditAccountFragment extends Fragment {
                 break;
         }
         textView = (TextView) root.findViewById(R.id.value_birth_date);
-        if (customer.getBirthday_date().equals("null"))
-            textView.setText(getString(R.string.not_known));
+        if (customer.getBirthday_date().equals("null")){
+
+        }
+            //textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getBirthday_date());
         textView = (TextView) root.findViewById(R.id.value_email);
@@ -319,12 +320,21 @@ public class EditAccountFragment extends Fragment {
         EditText editTex3 = (EditText) root.findViewById(R.id.edit_value_birth_date3);
         editText.setHint(((TextView) root.findViewById(R.id.value_birth_date)).getText());
         birth_date = editText.getText().toString()+"/"+editTex2.getText().toString()+"/"+editTex3.getText().toString();
-        editText.setHint(customer.getBirthday_date().substring(0,4));
-        editTex2.setHint(customer.getBirthday_date().substring(5,7));
-        editTex3.setHint(customer.getBirthday_date().substring(8,10));
-        editText.setText(customer.getBirthday_date().substring(0,4));
-        editTex2.setText(customer.getBirthday_date().substring(5,7));
-        editTex3.setText(customer.getBirthday_date().substring(8,10));
+
+        System.out.println("Birthdayyyyyy : "+ customer.getBirthday_date());
+
+        if(customer.getBirthday_date().equals("null")){
+
+        }else{
+            editText.setHint(customer.getBirthday_date().substring(0,4));
+            editTex2.setHint(customer.getBirthday_date().substring(5,7));
+            editTex3.setHint(customer.getBirthday_date().substring(8,10));
+            editText.setText(customer.getBirthday_date().substring(0,4));
+            editTex2.setText(customer.getBirthday_date().substring(5,7));
+            editTex3.setText(customer.getBirthday_date().substring(8,10));
+        }
+
+
 
         editText = (EditText) root.findViewById(R.id.edit_value_email);
         editText.setHint(((TextView) root.findViewById(R.id.value_email)).getText());
@@ -492,7 +502,9 @@ public class EditAccountFragment extends Fragment {
                 return;
             }
             uri = data.getData();
-            PostFileRequest postFileRequest = new PostFileRequest("https://www.gouiran-beaute.com/link/api/v1/customer/upload/image/customer/" + customer.getId() + "/", String.valueOf(customer.getId()), getRealPathFromURI(uri), "Authorization", "Token " + customer.getToken());
+
+            //Fonctionne mais je dois enlever
+            /*PostFileRequest postFileRequest = new PostFileRequest("https://www.gouiran-beaute.com/link/api/v1/customer/upload/image/customer/" + customer.getId() + "/", String.valueOf(customer.getId()), getRealPathFromURI(uri), "Authorization", "Token " + customer.getToken());
             String resp = null;
             try {
                 resp = postFileRequest.execute().get();
@@ -505,7 +517,7 @@ public class EditAccountFragment extends Fragment {
                         .commit();
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 

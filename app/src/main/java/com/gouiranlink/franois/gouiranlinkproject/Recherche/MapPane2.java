@@ -1147,8 +1147,10 @@ public class MapPane2 extends Fragment{
 
             }
 
+
             expandableListDetail = new HashMap<String, List<String>>();
             expandableListDetailAutrePrestation = new HashMap<String, List<String>>();
+
 
             if(!liste_coifure_femme.isEmpty()) {
                 expandableListDetail.put("Coiffure Femme", liste_coifure_femme);

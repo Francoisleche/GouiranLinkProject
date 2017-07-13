@@ -11,6 +11,8 @@ public class Professional_Type {
     private boolean has_distance_limit;
     private boolean show_on_googlemap;
 
+    public Professional_Type(){}
+
     public Professional_Type(int id,String name,boolean has_distance_limit,boolean show_on_googlemap){
         this.setId(id);
         this.setName(name);

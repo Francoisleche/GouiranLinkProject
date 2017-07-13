@@ -3,12 +3,15 @@ package com.gouiranlink.franois.gouiranlinkproject.Rendezvous;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +31,10 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetCustomerProfile;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PutRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,12 +46,15 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by François on 03/02/2017.
  */
 
 public class Recapitulatif extends Fragment {
+
+    private String m_Text = "";
 
     private Professional professional;
     private Customer customer;
@@ -89,7 +97,37 @@ public class Recapitulatif extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //View v = inflater.inflate(R.layout.activity_recapitulatif, container, false);
-        View v = inflater.inflate(R.layout.fragment_recapitulatif2, container, false);
+        final View v = inflater.inflate(R.layout.fragment_recapitulatif2, container, false);
+        final EditText recapitulatif_commentaire = (EditText) v.findViewById(R.id.recapitulatif_commentaire);
+
+
+        final TextView horairedateprestation = (TextView) v.findViewById(R.id.horairedateprestation);
+        final TextView duree = (TextView) v.findViewById(R.id.dureetotal);
+        final TextView tarif = (TextView) v.findViewById(R.id.tariftotal);
+        final TextView nomprestataire = (TextView) v.findViewById(R.id.nomprestataire);
+        final TextView adresseprestataire = (TextView) v.findViewById(R.id.adresseprestataire);
+        final TextView nomemploye = (TextView) v.findViewById(R.id.nomemploye);
+
+
+
+        TextView textviewrecap = (TextView) v.findViewById(R.id.textview_recapitulatif);
+        textviewrecap.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v2) {
+                recapitulatif_commentaire.setVisibility(true ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        LinearLayout complement_adresse = (LinearLayout) v.findViewById(R.id.complement_adresse);
+        if(professional.getType().getName().contains("domicile")){
+            complement_adresse.setVisibility(true ? View.VISIBLE : View.GONE);
+            adresseprestataire.setText(customer.getAddress());
+        }else{
+            adresseprestataire.setText(recap[4]);
+        }
+
+
+
+
 
 
         LinearLayout myRoot = (LinearLayout) v.findViewById(R.id.liste_service_recapitulatif);
@@ -101,22 +139,18 @@ public class Recapitulatif extends Fragment {
             myRoot.addView(view);
         }
 
-        final EditText recapitulatif_commentaire = (EditText) v.findViewById(R.id.recapitulatif_commentaire);
+
+        /*final EditText recapitulatif_commentaire = (EditText) v.findViewById(R.id.recapitulatif_commentaire);
         recapitulatif_commentaire.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 recapitulatif_commentaire.setVisibility(true ? View.VISIBLE : View.GONE);
             }
-        });
+        });*/
 
 
 
 
-        final TextView horairedateprestation = (TextView) v.findViewById(R.id.horairedateprestation);
-        final TextView duree = (TextView) v.findViewById(R.id.dureetotal);
-        final TextView tarif = (TextView) v.findViewById(R.id.tariftotal);
-        final TextView nomprestataire = (TextView) v.findViewById(R.id.nomprestataire);
-        final TextView adresseprestataire = (TextView) v.findViewById(R.id.adresseprestataire);
-        final TextView nomemploye = (TextView) v.findViewById(R.id.nomemploye);
+
 
         /*TableLayout table = (TableLayout) v.findViewById(R.id.idTable);
         TableRow row;
@@ -174,7 +208,7 @@ public class Recapitulatif extends Fragment {
         tarif.setText(recap[0]+recap[1]);
         duree.setText(recap[2]);
         nomprestataire.setText(professional.getShop_name());
-        adresseprestataire.setText(recap[4]);
+
         //horairedateprestation.setText(recap[5] + " - " + recap[6]);
         String[] part_5 = recap[5].split("////");
 
@@ -188,63 +222,222 @@ public class Recapitulatif extends Fragment {
         Button recapitulatif = (Button) v.findViewById(R.id.valider_reservation);
         recapitulatif.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-                //Toast.makeText(this,"Yes",Toast.LENGTH_SHORT).show();
-                //CamTestActivity cam = new CamTestActivity();
-                //Intent intent = new Intent(getContext(), ReservationFragment.class);
-                //startActivity(intent);
 
+                //A DOMICILE SANS ADRESSE
+                if (customer.getAddress().equals("null") && professional.getType().getName().contains("domicile")) {
 
-                CustomerBooking booking = new CustomerBooking();
-                booking.setId(1000);
-                booking.setCreated_at("");
-                booking.setUpdated_at("");
-                booking.setBegin_date(recap[5]);
-                booking.setEnd_date(recap[5]);
-                booking.setPrice(Double.parseDouble(recap[0]));
-                booking.setCurrency(recap[1]);
-                booking.setConfirmed(true);
-                booking.setCancelled(false);
-                booking.setNo_show(false);
-                booking.setNo_show_comment("");
-                booking.setFirst_booking(false);
-                booking.setFirst_booking_comment("");
-                booking.setHome_address(professional.getAddress());
-                booking.setHome_post_code(professional.getPost_code());
-                booking.setHome_city(professional.getCity());
-                booking.setHome_country(professional.getCountry());
-                booking.setPhone(professional.getShop_phone());
-                booking.setProfessional(professional);
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
+                    builder2.setMessage("Erreur, vous devez d'abord renseigner votre adresse !").setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("Entrez votre adresse !");
 
+                            // Set up the input
+                            final EditText input = new EditText(getActivity());
+                            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                            //input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            input.setInputType(InputType.TYPE_CLASS_TEXT);
+                            builder.setView(input);
 
+                            // Set up the buttons
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    m_Text = input.getText().toString();
 
-                Comment comment = new Comment();
+                                    try{
 
+                                        String json = "{\n" +
+                                                "\"email\":\"" + customer.getEmail() + "\",\n" +
+                                                "\"name\":\"" + customer.getName() + "\",\n" +
+                                                "\"surname\":\"" + customer.getSurname() + "\",\n" +
+                                                "\"address\":\"" + m_Text + "\""+
+                                                "}\n";
+                                        String resp;
+                                        PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json, "Authorization", "Token " + customer.getToken());
+                                        resp = putRequest.execute().get();
+                                        //System.out.println("Puuuuuuuuut : "+city);
+                                        //System.out.println("Puuuuuuuuut : "+birth_date);
+                                        //System.out.println("Puuuuuuuuut : "+resp);
+                                        Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_LONG).show();
+                                        Log.d("reponse", resp);
+                                        customer = new GetCustomerProfile().getCustomerProfile(customer.getToken(), customer);
+                                        //onCreateView(inflater, container, savedInstanceState);
+                                        duree.setText(customer.getAddress());
 
-                booking.setProfessional(professional);
+                                    } catch (InterruptedException | ExecutionException e) {
+                                        e.printStackTrace();
+                                    }
 
-                ResearchTask researchTask = null;
-                try {
-                    researchTask = new ResearchTask(booking,customer);
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                            builder.show();
+
+                        }
+                    });
+                    AlertDialog dialog = builder2.create();
+                    dialog.show();
+
                 }
-                String ls2 = "";
-                ls2 = researchTask.getResponse();
-                System.out.println("Resultat recapitulatif : "+ls2);
 
 
 
-                addNotification();
-                //Retour à la homepage après avoir validé le rendez vous
-                Fragment fragment = null;
-                fragment = new HomeFragment2();
-                FragmentManager frgManager = getFragmentManager();
-                frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
 
+
+
+
+
+
+                //SANS NUMERO DE TELEPHONE
+                if (customer.getMobilephone().equals("null")) {
+
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
+                    builder2.setMessage("Erreur, vous devez d'abord renseigner un numéro de téléphone !").setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("Entrez votre numéro de téléphone portable !");
+
+                            // Set up the input
+                            final EditText input = new EditText(getActivity());
+                            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                            //input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            input.setInputType(InputType.TYPE_CLASS_PHONE);
+                            builder.setView(input);
+
+                            // Set up the buttons
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    m_Text = input.getText().toString();
+
+                                    try{
+
+                                    /*String json = "{\n" +
+                                            "\"email\":\"" + customer.getEmail() + "\",\n" +
+                                            "\"name\":\"" + customer.getName() + "\",\n" +
+                                            "\"surname\":\"" + customer.getSurname() + "\",\n" +
+                                            "\"birthday_date\":\"" + customer.getBirthday_date() + "\",\n" +
+                                            "\"phone\":\"" + customer.getPhone() + "\",\n" +
+                                            "\"gender\":\"" + customer.getGender() + "\",\n" +
+                                            "\"mobilephone\":\"" + m_Text + "\",\n" +
+                                            "\"country\":\"" + customer.getCountry() + "\",\n" +
+                                            "\"city\":\"" + customer.getCity() + "\",\n" +
+                                            "\"address\":\"" + customer.getAddress() + "\",\n" +
+                                            //TODO "\"profession\":\"" + profession + "\",\n" +
+                                            "\"post_code\":\"" + customer.getPost_code() + "\"\n" +
+                                            "}\n";*/
+
+                                        String json = "{\n" +
+                                                "\"email\":\"" + customer.getEmail() + "\",\n" +
+                                                "\"name\":\"" + customer.getName() + "\",\n" +
+                                                "\"surname\":\"" + customer.getSurname() + "\",\n" +
+                                                "\"mobilephone\":\"" + m_Text + "\""+
+                                                "}\n";
+                                        String resp;
+                                        PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json, "Authorization", "Token " + customer.getToken());
+                                        resp = putRequest.execute().get();
+                                        //System.out.println("Puuuuuuuuut : "+city);
+                                        //System.out.println("Puuuuuuuuut : "+birth_date);
+                                        //System.out.println("Puuuuuuuuut : "+resp);
+                                        Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_LONG).show();
+                                        Log.d("reponse", resp);
+                                        customer = new GetCustomerProfile().getCustomerProfile(customer.getToken(), customer);
+                                        //onCreateView(inflater, container, savedInstanceState);
+                                    } catch (InterruptedException | ExecutionException e) {
+                                        e.printStackTrace();
+                                    }
+
+
+
+
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                            builder.show();
+
+
+                        }
+                    });
+                    AlertDialog dialog = builder2.create();
+                    dialog.show();
+
+                }else {
+
+
+                    // Perform action on click
+                    //Toast.makeText(this,"Yes",Toast.LENGTH_SHORT).show();
+                    //CamTestActivity cam = new CamTestActivity();
+                    //Intent intent = new Intent(getContext(), ReservationFragment.class);
+                    //startActivity(intent);
+
+
+                    CustomerBooking booking = new CustomerBooking();
+                    booking.setId(1000);
+                    booking.setCreated_at("");
+                    booking.setUpdated_at("");
+                    booking.setBegin_date(recap[5]);
+                    booking.setEnd_date(recap[5]);
+                    booking.setPrice(Double.parseDouble(recap[0]));
+                    booking.setCurrency(recap[1]);
+                    booking.setConfirmed(true);
+                    booking.setCancelled(false);
+                    booking.setNo_show(false);
+                    booking.setNo_show_comment("");
+                    booking.setFirst_booking(false);
+                    booking.setFirst_booking_comment("");
+                    booking.setHome_address(professional.getAddress());
+                    booking.setHome_post_code(professional.getPost_code());
+                    booking.setHome_city(professional.getCity());
+                    booking.setHome_country(professional.getCountry());
+                    booking.setPhone(professional.getShop_phone());
+                    booking.setProfessional(professional);
+
+
+                    Comment comment = new Comment();
+
+
+                    booking.setProfessional(professional);
+
+                    ResearchTask researchTask = null;
+                    try {
+                        researchTask = new ResearchTask(booking, customer);
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    String ls2 = "";
+                    ls2 = researchTask.getResponse();
+                    System.out.println("Resultat recapitulatif : " + ls2);
+
+
+                    addNotification();
+                    //Retour à la homepage après avoir validé le rendez vous
+                    Fragment fragment = null;
+                    fragment = new HomeFragment2();
+                    FragmentManager frgManager = getFragmentManager();
+                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
+
+                }
             }
         });
 
@@ -252,20 +445,6 @@ public class Recapitulatif extends Fragment {
     }
 
 
-    public void onClick(final View v) {
-        switch (v.getId()) {
-            case R.id.textview_recapitulatif:
-                EditText recapitulatif_commentaire = (EditText) v.findViewById(R.id.recapitulatif_commentaire);
-                recapitulatif_commentaire.setVisibility(true ? View.VISIBLE : View.GONE);
-                break;
-        }
-
-
-
-
-
-
-    }
 
 
 

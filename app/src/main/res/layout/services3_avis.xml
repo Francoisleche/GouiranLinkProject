@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginLeft="20dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,16 +19,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textSize="30sp"
+                android:textSize="35sp"
                 android:text="Note"
-                android:textColor="@color/GouiranDarkBlue"/>
+                android:textColor="@color/GouiranDarkBlue"
+                android:textStyle="bold"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textSize="30sp"
+                android:textSize="35sp"
                 android:textColor="#918c8d"
-                android:text="/5" />
+                android:text="/5"/>
 
             <TextView
                 android:id="@+id/comment_surname"
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textSize="30sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 android:text="Surname" />
 
@@ -57,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:textSize="12sp"
             android:text="Prestation" />
 
         <LinearLayout
@@ -69,10 +70,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:textSize="15sp"
                 android:text="Avis 1: mon coiffeur était super :) mon lissage brésilien est parfait. Prête pour ma soirée :)"
-                android:textColor="#918c8d"
-                android:layout_marginBottom="5dp"/>
+                android:textColor="#918c8d" />
         </LinearLayout>
 
 
@@ -91,16 +93,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:gravity="right"
             android:text="Reponse pro"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textStyle="italic"/>
 
         <TextView
+            android:layout_marginTop="8dp"
             android:id="@+id/equipe_shop_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="L'équipe de %1$s"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textStyle="italic"/>
+
+        <!--espacement pour le bas-->
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Foire Aux Questions"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="3"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:background="@color/GouiranLightPink"
+            android:textColor="@color/white"
+            android:textSize="25sp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Besoin d'aide sur Gouiran Link ? Toutes les réponses à vos questions beauté les plus fréquentes sont dans notre FAQ !"/>
+
+
+
+</LinearLayout>

@@ -147,16 +147,17 @@
                 </LinearLayout>
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_gravity="left"
+                        android:layout_alignParentLeft="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                     <TextView
+                        android:id="@+id/textview_duree"
                         android:text="Durée du RdV : "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -165,16 +166,18 @@
                         android:id="@+id/dureetotal"
                         android:text=""
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/textview_duree"/>
 
                         </LinearLayout>
 
                     <LinearLayout
-                        android:layout_gravity="right"
+                        android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/textview_tarif"
                         android:text="Prix indicatif : "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -183,9 +186,10 @@
                         android:id="@+id/tariftotal"
                         android:text=""
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/textview_tarif"/>
                     </LinearLayout>
-                </LinearLayout>
+                </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -203,6 +207,40 @@
             </LinearLayout>
 
 
+                <LinearLayout
+                    android:id="@+id/complement_adresse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/textview_complement_adresse"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:textSize="20sp"
+                        android:clickable="true"
+                        android:text="Mon adresse : "/>
+
+                        <EditText
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/commentaire_adresse"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/back2"
+                            android:gravity="top|left"
+                            android:inputType="textMultiLine"
+                            android:lines="8"
+                            android:padding="5dp"
+                            android:maxLines="10"
+                            android:minLines="4"
+                            android:scrollbars="vertical" />
+
+                </LinearLayout>
+
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -218,6 +256,7 @@
                         android:textSize="20sp"
                         android:clickable="true"
                         android:text="Ajouter un commentaire "
+                        android:onClick="onClick"
                         android:textColor="@color/GouiranDarkPink"/>
 
                     <TextView

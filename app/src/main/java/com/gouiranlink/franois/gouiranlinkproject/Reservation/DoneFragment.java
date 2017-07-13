@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
@@ -51,6 +52,7 @@ public class DoneFragment extends Fragment {
     Reservation reser;
     private ListView listviewDone;
     private LinearLayout layoutdone;
+    private TextView textdone;
 
     private String products_json ="";
 
@@ -260,11 +262,14 @@ public class DoneFragment extends Fragment {
 
         reservations = getReservationList();
         layoutdone = (LinearLayout) getActivity().findViewById(R.id.layoutdone);
+        textdone = (TextView) getActivity().findViewById(R.id.textdone);
         listviewDone = (ListView) getActivity().findViewById(R.id.listviewDone);
 
         if(reservations.size()==0){
             layoutdone.setVisibility(true ? View.VISIBLE : View.GONE);
             listviewDone.setVisibility(true ? View.GONE : View.VISIBLE);
+            String s = "Vous n'avez aucune réservation passée pour le moment... \n \n Mais pas de panique, si ce n'est pas encore fait, réservez sans plus attendre votre prochain moment beauté depuis l'onglet \"Recherche\" ";
+            textdone.setText(s);
         }else{
             layoutdone.setVisibility(true ? View.GONE : View.VISIBLE);
             listviewDone.setVisibility(true ? View.VISIBLE : View.GONE);
@@ -284,7 +289,7 @@ public class DoneFragment extends Fragment {
         for (int i = 0; i < reservations.size(); i++) {
             institutesNames.add(reservations.get(i).getInstitute());
             id.add(reservations.get(i).getId());
-            types.add(reservations.get(i).getType());
+            types.add(reservations.get(i).getProducts());
             pictures.add(reservations.get(i).getPicture());
             dates.add(reservations.get(i).getDate());
             hours.add(reservations.get(i).getHour());
@@ -343,7 +348,7 @@ public class DoneFragment extends Fragment {
                 fragment = new DetailRdv();
                 fragment.setArguments(args);
 
-                ft.replace(R.id.fragment_remplace, fragment).addToBackStack("DoneFragment");
+                ft.replace(R.id.content_frame, fragment).addToBackStack("DoneFragment");
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
                 getActivity().findViewById(R.id.fragment_reservations).setVisibility(View.GONE);

@@ -4,12 +4,13 @@
 
     <!-- View background color -->
     <!--<solid
-        android:color="#FF909090" >
+        android:color="#ccc0c0" >
     </solid>-->
 
     <!-- View border color and width -->
     <stroke
-        android:width="2dp">
+        android:width="2dp"
+        android:color="#ccc0c0">
         <!--android:color="#FF909090" -->
     </stroke>
 

@@ -190,9 +190,12 @@ public class ReservationImageAdapter extends BaseAdapter {
             textView = (TextView)grid.findViewById(R.id.type);
             type = "";
             for (int i = 0; i < types.get(position).size(); i++) {
-                type += types.get(position).get(i);
-                if (i + 1 < types.get(position).size())
-                    type += " ";
+                if(i<2){
+                    type += types.get(position).get(i) + "\n";
+                }
+                if(i==2){
+                    type += "...";
+                }
             }
             textView.setText(type);
             textView = (TextView)grid.findViewById(R.id.date);

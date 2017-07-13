@@ -222,8 +222,15 @@ public class InformationsProfessional extends Fragment {
         });
 
 
+        System.out.println("EMAILLLLLLL : " +professional.getShop_email());
         //Récupérer l'adresse email de l'utilisateur
         //Button shop_email=(Button) view.findViewById(R.id.shop_email);
+        if(professional.getShop_email().equals("null")){
+            view.findViewById(R.id.shop_email2).setVisibility(true ? View.VISIBLE : View.GONE);
+            view.findViewById(R.id.shop_email).setVisibility(true ? View.GONE : View.VISIBLE);
+        }
+
+
         //shop_email.setText(professional.getShop_email());
         view.findViewById(R.id.shop_email).setOnClickListener(new View.OnClickListener() {
 

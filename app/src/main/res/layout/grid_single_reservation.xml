@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="VOIR LE DETAIL"
-                android:textSize="15sp" />
+                android:textSize="7sp" />
         </LinearLayout>
 
 

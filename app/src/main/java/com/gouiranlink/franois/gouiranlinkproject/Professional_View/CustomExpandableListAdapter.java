@@ -5,7 +5,6 @@ package com.gouiranlink.franois.gouiranlinkproject.Professional_View;
  */
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import java.util.List;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static java.security.AccessController.getContext;
 
 public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -74,7 +72,20 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         prix_expandedListItem.setText(separated[1]+" €");
         //prix_expandedListItem.setLayoutParams(new LinearLayout.LayoutParams(800, LinearLayout.LayoutParams.MATCH_PARENT));
 
-        duree_expandedListItem.setText(separated[2]+" min");
+
+        System.out.println("A QUEL HEUUUUUURE : "+ separated[2].substring(0,2) + "   " +separated[2].substring(3,5));
+
+        if(separated[2].substring(0,2).equals("00")){
+            duree_expandedListItem.setText(separated[2].substring(3,5) +" min");
+        }else if(!separated[2].substring(0,2).equals("00") && separated[2].substring(3,5).equals("00")){
+            duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h");
+        }else{
+            duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h" + separated[2].substring(3,5) +" min");
+        }
+
+
+
+        //duree_expandedListItem.setText(separated[2].substring(0,5) +" min");
         //duree_expandedListItem.setLayoutParams(new LinearLayout.LayoutParams(500, LinearLayout.LayoutParams.MATCH_PARENT));
 
         text_expandedListItem.setText(separated[3]);

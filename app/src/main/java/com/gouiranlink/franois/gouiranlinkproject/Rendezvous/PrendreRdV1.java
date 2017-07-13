@@ -187,7 +187,6 @@ public class PrendreRdV1 extends Fragment {
                 expandableListAdapter2 = new AutresPrestations2Adapter(getActivity(), expandableListTitle, expandableListDetail,liste_service_selectionne);
                 expandableListView.setAdapter(expandableListAdapter2);
 
-
             }
         });
 
@@ -267,10 +266,12 @@ public class PrendreRdV1 extends Fragment {
         //Liste des employés
         employe = new String[ResourceProfessional.length];
         for (int i = 0; i < ResourceProfessional.length; i++) {
-            employe[i] = ResourceProfessional[i].getName() + ResourceProfessional[i].getSurname();
+            //employe[i] = ResourceProfessional[i].getName() + ResourceProfessional[i].getSurname();
+            employe[i] = ResourceProfessional[i].getName();
         }
+
         final Spinner spinner = (Spinner) v.findViewById(R.id.liste_employe_prendrerdv1);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, employe);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity() , android.R.layout.simple_spinner_item , employe);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter2);
 
@@ -369,7 +370,7 @@ public class PrendreRdV1 extends Fragment {
 
 
 
-        //////////////////////////////////////AUTRES PRESTATIONS ///////////////
+        ////////////////////////////////////// AUTRES PRESTATIONS ////////////////////////////////////
         for(int i=0;i<expandableListDetail.size();i++){
             System.out.println("Detaiiiiiiiiil : "  + expandableListDetail.keySet());
         }
@@ -389,8 +390,8 @@ public class PrendreRdV1 extends Fragment {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-                Toast.makeText(getContext(), " Clicked on :: " + expandableListTitle.get(groupPosition)
-                        + "/" + expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), " Clicked on :: " + expandableListTitle.get(groupPosition)
+                //        + "/" + expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition), Toast.LENGTH_LONG).show();
 
                 String CurrentString = expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition);
                 System.out.println(CurrentString);

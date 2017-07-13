@@ -1,7 +1,6 @@
 package com.gouiranlink.franois.gouiranlinkproject.Rendezvous;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,29 +121,50 @@ public class AutresPrestations2Adapter extends BaseExpandableListAdapter {
                 expandedListTextView.setTypeface(null, Typeface.BOLD);
                 expandedListTextView.setText(separated[0]);
                 prix_expandedListItem.setText(separated[1]+" €");
-                duree_expandedListItem.setText(separated[2]+" min");
+                //duree_expandedListItem.setText(separated[2]+" min");
+                if(separated[2].substring(0,2).equals("00")){
+                    duree_expandedListItem.setText(separated[2].substring(3,5) +" min");
+                }else if(!separated[2].substring(0,2).equals("00") && separated[2].substring(3,5).equals("00")){
+                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h");
+                }else{
+                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h" + separated[2].substring(3,5) +" min");
+                }
                 text_expandedListItem.setText(separated[3]);
                 plus.setImageResource(R.drawable.ic_check_circle_pink_24dp);
-                list_item2_linear.setBackgroundColor(Color.BLUE);
+                //list_item2_linear.setBackgroundColor(Color.BLUE);
                 notifyDataSetChanged();
             }else{
                 expandedListTextView.setTypeface(null, Typeface.BOLD);
                 expandedListTextView.setText(separated[0]);
                 prix_expandedListItem.setText(separated[1]+" €");
-                duree_expandedListItem.setText(separated[2]+" min");
+                //duree_expandedListItem.setText(separated[2]+" min");
+                if(separated[2].substring(0,2).equals("00")){
+                    duree_expandedListItem.setText(separated[2].substring(3,5) +" min");
+                }else if(!separated[2].substring(0,2).equals("00") && separated[2].substring(3,5).equals("00")){
+                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h");
+                }else{
+                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h" + separated[2].substring(3,5) +" min");
+                }
                 text_expandedListItem.setText(separated[3]);
                 plus.setImageResource(R.drawable.ic_plus_24dp);
-                list_item2_linear.setBackgroundColor(Color.WHITE);
+                //list_item2_linear.setBackgroundColor(Color.WHITE);
                 notifyDataSetChanged();
             }
         }else{
             expandedListTextView.setTypeface(null, Typeface.BOLD);
             expandedListTextView.setText(separated[0]);
             prix_expandedListItem.setText(separated[1]+" €");
-            duree_expandedListItem.setText(separated[2]+" min");
+            //duree_expandedListItem.setText(separated[2]+" min");
+            if(separated[2].substring(0,2).equals("00")){
+                duree_expandedListItem.setText(separated[2].substring(3,5) +" min");
+            }else if(!separated[2].substring(0,2).equals("00") && separated[2].substring(3,5).equals("00")){
+                duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h");
+            }else{
+                duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h" + separated[2].substring(3,5) +" min");
+            }
             text_expandedListItem.setText(separated[3]);
             plus.setImageResource(R.drawable.ic_plus_24dp);
-            list_item2_linear.setBackgroundColor(Color.WHITE);
+            //list_item2_linear.setBackgroundColor(Color.WHITE);
             notifyDataSetChanged();
         }
 

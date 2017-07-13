@@ -36,19 +36,30 @@
                 android:layout_width="wrap_content"
                 android:numStars="5"
                 android:isIndicator="false"
-                style="@style/foodRatingBar"
+                style="@style/foodRatingBar2"
+                android:layout_gravity="center"
                 />
 
             <TextView
                 android:id="@+id/moyenne_avis"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:gravity="center"
-                android:textSize="25sp"
-                android:text="3.5/5"/>
+                android:textSize="45sp"
+                android:text="Note"
+                android:textColor="@color/GouiranDarkBlue"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="45sp"
+                android:textColor="#918c8d"
+                android:text="/5"/>
 
 
         </LinearLayout>
@@ -94,7 +105,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp">
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
         <ListView
             android:id="@+id/malistecommentaires"

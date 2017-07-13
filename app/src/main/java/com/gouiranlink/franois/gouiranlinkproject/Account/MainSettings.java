@@ -1,7 +1,6 @@
 package com.gouiranlink.franois.gouiranlinkproject.Account;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.R;
@@ -74,25 +72,33 @@ public class MainSettings extends Fragment {
         Picasso.with(root.getContext()).load(customer.getImage().getThumbnails().get(0)[2]).into(profile_image);
 
 
-        Button inviteFriends = (Button)root.findViewById(R.id.invite_friends);
+        Button inviteFriends = (Button)root.findViewById(R.id.faq);
         inviteFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "TEXTE", Toast.LENGTH_LONG).show();
+                /*Toast.makeText(getActivity(), "TEXTE", Toast.LENGTH_LONG).show();
 
                 final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                 emailIntent.setType("plain/text");
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.gouiran_link_invitation));
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.gouiran_link_invite_mail));
-                getContext().startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
+                getContext().startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));*/
+                Fragment fragment = new FaqFragment();
+                Bundle args = new Bundle();
+                args.putSerializable("Customer", customer);
+                fragment.setArguments(args);
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, fragment).addToBackStack(null);
+                fragmentTransaction.commit();
+                getActivity().findViewById(R.id.frame_layout).setVisibility(View.GONE);
             }
         });
 
-        Button settingsButton = (Button)root.findViewById(R.id.settings_button);
+        Button settingsButton = (Button)root.findViewById(R.id.confidential_button);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new NestedSettingsFragment();
+                Fragment fragment = new ConfidentialFragment();
                 Bundle args = new Bundle();
                 args.putSerializable("Customer", customer);
                 fragment.setArguments(args);

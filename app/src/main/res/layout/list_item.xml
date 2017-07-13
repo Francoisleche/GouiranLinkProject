@@ -20,6 +20,7 @@
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingLeft="5dp"
         android:background="@color/white">
 
         <TextView
@@ -28,7 +29,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:gravity="center"/>
+            android:gravity="left"/>
 
         <TextView
             android:id="@+id/duree_expandedListItem"
@@ -36,7 +37,8 @@
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:layout_alignParentLeft="true"/>
 
         <TextView
             android:id="@+id/prix_expandedListItem"
@@ -44,7 +46,8 @@
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:layout_alignParentLeft="true"/>
 
     </LinearLayout>
     <TextView
@@ -53,5 +56,6 @@
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp" />
+        android:paddingTop="10dp"
+        android:layout_alignParentLeft="true"/>
 </LinearLayout>

@@ -32,6 +32,7 @@
                 android:visibility="invisible" />
 
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
@@ -110,6 +111,18 @@
                         android:layout_marginBottom="8dip"
                         android:src="@drawable/ic_email_white_24dp"
                         app:cb_color="#d16677" />
+
+                    <at.markushi.ui.CircleButton
+                        android:clickable="false"
+                        android:id="@+id/shop_email2"
+                        android:layout_width="64dp"
+                        android:layout_height="64dip"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="8dip"
+                        android:src="@drawable/ic_email_white_24dp"
+                        app:cb_color="#ccc0c0"
+                        android:visibility="gone"/>
                 </LinearLayout>
 
                 <LinearLayout

@@ -315,6 +315,7 @@ public class MapPane2 extends Fragment{
                 /*if (marker.getPosition().equals(userMarker.getPosition())) {
                     return true;
                 }*/
+                                        System.out.println("On viens de cliquer sur : " + marker.getTitle() );
                                         //arg0.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
 
                                         if (currentMarker == null) {
@@ -551,9 +552,9 @@ public class MapPane2 extends Fragment{
                     } else {
                         System.out.println("Allo2222");
 
-                        String[] tableau_shop_name = new String[10];
-                        String[] tableau_latitude = new String[10];
-                        String[] tableau_longitude = new String[10];
+                        String[] tableau_shop_name = new String[shopIdList.length];
+                        String[] tableau_latitude = new String[shopIdList.length];
+                        String[] tableau_longitude = new String[shopIdList.length];
                         for (int i = 0; i < shopIdList.length; i++) {
                             tableau_latitude[i] = LatitudeList[i];
                             tableau_longitude[i] = LongitudeList[i];
@@ -575,10 +576,14 @@ public class MapPane2 extends Fragment{
                         //recherche_autour(latitude,longitude);
                         //shopImageList = new String[5];
                         //shopNameList = new String[5];
-                        for (int i = 0; i < 10; i++) {
+
+
+                        for (int i = 0; i < shopIdList.length; i++) {
+
                             if (tableau_latitude[i] == null) {
 
                             } else {
+
                                 System.out.println("LATITUDE de " + i + " : " + tableau_latitude[i]);
                                 System.out.println("Longitude de " + i + " : " + tableau_longitude[i]);
                                 LatLng premier_trouve = new LatLng(Double.parseDouble(tableau_latitude[i]), Double.parseDouble(tableau_longitude[i]));

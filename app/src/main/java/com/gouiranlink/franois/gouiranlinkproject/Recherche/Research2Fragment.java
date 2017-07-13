@@ -55,6 +55,7 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Schedule;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Subscription_Type;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Type;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.Professional_View.InformationsProfessional;
 import com.gouiranlink.franois.gouiranlinkproject.Professional_View.ProfessionalView;
@@ -83,6 +84,8 @@ import static com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.BaseFragme
  */
 
 public class Research2Fragment extends Fragment implements ProfessionalView.OnFragmentInteractionListener {
+
+    Button button1;
 
     //PAS DE RECHERCHE -> AUTOUR DE MOI
     public double latitude;
@@ -646,80 +649,124 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
             public void onClick(View v) {
                 if (!text2.getText().toString().isEmpty()) {
 
+                    /*
+                    LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    params2.setMargins(200, 10, 200, 10);*/
+                    //params.setMargins(left, top, right, bottom);
 
-                    button_clicke_boolean = true;
-
-                    List<String> pictures = new ArrayList<String>();
-                    List<String> id = new ArrayList<String>();
-                    List<String> institutesNames = new ArrayList<String>();
-                    ArrayList<String> avis = new ArrayList<String>();
-                    List<String> favoris = new ArrayList<String>();
-                    List<String> geoloc_latitude = new ArrayList<String>();
-                    List<String> geoloc_longitude = new ArrayList<String>();
-                    ArrayList<ArrayList<String>> tableau_image = new ArrayList<ArrayList<String>>();
-
-                    hideKeyBoard(getActivity());
+                    button1.setText("CARTE");
+                    button1.setPadding(100, 10, 100, 10);
 
                     recherche_layout.setVisibility(true ? View.GONE : View.VISIBLE);
                     vue_listview.setVisibility(true ? View.VISIBLE : View.GONE);
                     vue_boutonretour.setVisibility(true ? View.VISIBLE : View.GONE);
 
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) deux_bouton.getLayoutParams();
-                    params.setMargins(0, 0, 0, 20); //substitute parameters for left, top, right, bottom
-                    deux_bouton.setLayoutParams(params);
+                    final List<String> pictures = new ArrayList<String>();
+                    final List<String> id = new ArrayList<String>();
+                    final List<String> institutesNames = new ArrayList<String>();
+                    final List<String> avis = new ArrayList<String>();
+                    final List<String> favoris = new ArrayList<String>();
+                    final List<String> geoloc_latitude = new ArrayList<String>();
+                    final List<String> geoloc_longitude = new ArrayList<String>();
+                    final ArrayList<ArrayList<String>> tableau_image = new ArrayList<ArrayList<String>>();
 
+                    final LinearLayout myRoot = (LinearLayout) view.findViewById(R.id.vue_listview);
+                    final List<View> list = new ArrayList<View>();
 
-                    //ADAPTER pour la listView
-                    ResearchTask2 recherche_list_prof = new ResearchTask2(text.getText().toString(), text2.getText().toString(), 20);
-                    String json_prof = "";
-                    json_prof = recherche_list_prof.getResponse();
-                    final List<String> list_nom_prof_afficher = null;
-                    final List<String> list_id_prof_afficher = null;
-                    ArrayList<String> recup = new ArrayList<String>();
-                    if (json_prof != null) {
-                        if (json_prof.contains("{")) {
+                    final ProgressDialog ringProgressDialog2 = ProgressDialog.show(getActivity(), "Svp Veuillez patienter ...", "chargement des données...", true);
+                    Thread timer2 = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
                             try {
 
-                                JSONObject jsonObj = new JSONObject(json_prof);
-                                JSONArray contacts = jsonObj.getJSONArray("data");
-
-                                System.out.println("Ooooooooooooh TAILLE DES RESULTATS : " + contacts.length());
 
 
-                                shopIdList = new String[contacts.length()];
-                                shopNameList = new String[contacts.length()];
-                                shopImageList = new String[contacts.length()];
-                                shopFavorisList = new String[contacts.length()];
-                                shopAvisList = new String[contacts.length()];
-                                LatitudeList = new String[contacts.length()];
-                                LongitudeList = new String[contacts.length()];
+                                button_clicke_boolean = true;
 
-                                for (int i = 0; i < contacts.length(); i++) {
-                                    //if (i == 0) {
-                                        ArrayList<String> personnes = new ArrayList<String>();
-                                        JSONObject c = contacts.getJSONObject(i);
+                                //Enlever le clavier
+                                hideKeyBoard(getActivity());
 
-                                        id.add(c.getString("id"));
-                                        institutesNames.add(c.getString("shop_name"));
-                                        avis = avis_jsonparser(recherche_avis(id.get(i)));
-                                        favoris.add(recherche_favoris(id.get(i)));
+                                final LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) deux_bouton.getLayoutParams();
+                                params.setMargins(0, 0, 0, 20); //substitute parameters for left, top, right, bottom
+                                getActivity().runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        deux_bouton.setLayoutParams(params);
+                                    }
+                                });
 
 
-                                        System.out.println("Iiiiiiiiiiiiiiiiiiiiiiiid" + id);
-                                        String geoloc_lat = c.getString("geoloc_latitude");
-                                        String geoloc_long = c.getString("geoloc_longitude");
 
-                                        geoloc_latitude.add(geoloc_lat);
-                                        geoloc_longitude.add(geoloc_long);
+                                //ADAPTER pour la listView
+                                ResearchTask2 recherche_list_prof = new ResearchTask2(text.getText().toString(), text2.getText().toString(), 20);
+                                String json_prof = "";
+                                json_prof = recherche_list_prof.getResponse();
+                                final List<String> list_nom_prof_afficher = null;
+                                final List<String> list_id_prof_afficher = null;
+                                ArrayList<String> recup = new ArrayList<String>();
+                                if (json_prof != null) {
+                                    if (json_prof.contains("{")) {
+                                        try {
 
-                                        String shop_name = c.getString("shop_name");
-                                        System.out.println("shop_nameshop_nameshop_nameshop_name" + shop_name);
-                                        personnes.add(id.get(i));
-                                        personnes.add(geoloc_lat);
-                                        personnes.add(geoloc_long);
-                                        personnes.add(shop_name);
-                                        recup2.add(personnes);
-                                        recup.add(shop_name);
+                                            JSONObject jsonObj = new JSONObject(json_prof);
+                                            JSONArray contacts = jsonObj.getJSONArray("data");
+
+                                            System.out.println("Ooooooooooooh TAILLE DES RESULTATS : " + contacts.length());
+
+
+                                            shopIdList = new String[contacts.length()];
+                                            shopNameList = new String[contacts.length()];
+                                            shopImageList = new String[contacts.length()];
+                                            shopFavorisList = new String[contacts.length()];
+                                            shopAvisList = new String[contacts.length()];
+                                            LatitudeList = new String[contacts.length()];
+                                            LongitudeList = new String[contacts.length()];
+
+                                            for (int i = 0; i < contacts.length(); i++) {
+                                                //if (i == 0) {
+                                                ArrayList<String> personnes = new ArrayList<String>();
+                                                JSONObject c = contacts.getJSONObject(i);
+
+                                                id.add(c.getString("id"));
+                                                institutesNames.add(c.getString("shop_name"));
+
+
+                                                //Moyenne des avis
+                                                ArrayList<String> tous_les_avis = avis_jsonparser(recherche_avis(id.get(i)));
+
+                                                double moyenne = 0;
+                                                if (tous_les_avis.size() == 0) {
+
+                                                } else {
+                                                    for (int y = 0; y < tous_les_avis.size(); y++) {
+                                                        moyenne = moyenne + Double.parseDouble(tous_les_avis.get(y));
+                                                    }
+                                                    moyenne = moyenne / tous_les_avis.size();
+                                                }
+                                                String ss = String.format("%1$s", moyenne(String.valueOf(moyenne)));
+                                                shopAvisList[i] = String.valueOf(ss);
+                                                avis.add(String.valueOf(ss));
+
+                                                favoris.add(recherche_favoris(id.get(i)));
+
+
+                                                System.out.println("Iiiiiiiiiiiiiiiiiiiiiiiid" + id);
+                                                String geoloc_lat = c.getString("geoloc_latitude");
+                                                String geoloc_long = c.getString("geoloc_longitude");
+
+                                                geoloc_latitude.add(geoloc_lat);
+                                                geoloc_longitude.add(geoloc_long);
+
+                                                String shop_name = c.getString("shop_name");
+                                                System.out.println("shop_nameshop_nameshop_nameshop_name" + shop_name);
+                                                personnes.add(id.get(i));
+                                                personnes.add(geoloc_lat);
+                                                personnes.add(geoloc_long);
+                                                personnes.add(shop_name);
+                                                recup2.add(personnes);
+                                                recup.add(shop_name);
 
 
                                         /*shopIdList[i] = id.get(i);
@@ -730,132 +777,152 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                                         LongitudeList[i] = geoloc_longitude.get(i);*/
 
 
-
-                                    //IMAGE
-                                    tableau_image.add(shop_image_jsonparser2(recherche_shop_image(id.get(i))));
-
+                                                //IMAGE
+                                                tableau_image.add(shop_image_jsonparser2(recherche_shop_image(id.get(i))));
 
 
-                                    //Moyenne des avis
-                                    double moyenne = 0;
-                                    if(avis.size() == 0){
+                                                //Moyenne des avis
+                                                /*double moyenne = 0;
+                                                if (avis.size() == 0) {
 
-                                    }else{
-                                        for(int y =0;y<avis.size();y++){
-                                            moyenne = moyenne + Double.parseDouble(avis.get(y));
+                                                } else {
+                                                    for (int y = 0; y < avis.size(); y++) {
+                                                        moyenne = moyenne + Double.parseDouble(avis.get(y));
+                                                    }
+                                                    moyenne = moyenne / avis.size();
+                                                }
+                                                String ss = String.format("%1$s", moyenne(String.valueOf(moyenne)));
+                                                shopAvisList[i] = String.valueOf(ss);*/
+
+
+                                                System.out.println("Ooooooooooooh liste resultat : " + i);
+                                                shopIdList[i] = id.get(i);
+                                                shopNameList[i] = institutesNames.get(i);
+                                                //shopAvisList[i] = avis.get(i);
+                                                shopFavorisList[i] = favoris.get(i);
+                                                LatitudeList[i] = geoloc_latitude.get(i);
+                                                LongitudeList[i] = geoloc_longitude.get(i);
+                                                if (tableau_image.get(i).size() == 0) {
+                                                    shopImageList[i] = "";
+                                                } else {
+                                                    shopImageList[i] = tableau_image.get(i).get(0);
+                                                }
+
+                                                //}
+                                            }
+
+
+                                        } catch (final JSONException e) {
+                                            Log.e(TAG, "Json parsing error: " + e.getMessage());
                                         }
-                                        moyenne = moyenne/avis.size();
                                     }
-                                    String ss  = String.format("%1$s", moyenne(String.valueOf(moyenne)));
-                                    shopAvisList[i] = String.valueOf(ss);
-
-
-
-                                        System.out.println("Ooooooooooooh liste resultat : "+ i);
-                                        shopIdList[i] = id.get(i);
-                                        shopNameList[i] = institutesNames.get(i);
-                                        //shopAvisList[i] = avis.get(i);
-                                        shopFavorisList[i] = favoris.get(i);
-                                        LatitudeList[i] = geoloc_latitude.get(i);
-                                        LongitudeList[i] = geoloc_longitude.get(i);
-                                        if(tableau_image.get(i).size()==0){
-                                            shopImageList[i] = "";
-                                        }else{
-                                            shopImageList[i] = tableau_image.get(i).get(0);
-                                        }
-
-                                    //}
                                 }
 
 
-                            } catch (final JSONException e) {
-                                Log.e(TAG, "Json parsing error: " + e.getMessage());
-                            }
-                        }
-                    }
-
-                    //List image a dapté à la recherche (Adapter)
-                    ArrayList<String> iopi = new ArrayList<String>();
-                    for(int o = 0; o < tableau_image.size();o++){
-                        iopi.add(shopImageList[0]);
-                    }
 
 
+                                //List image a dapté à la recherche (Adapter)
+                                final ArrayList<String> iopi = new ArrayList<String>();
+                                for (int o = 0; o < shopImageList.length; o++) {
+                                    iopi.add(shopImageList[o]);
+                                }
 
 
-                    final LinearLayout myRoot = (LinearLayout) view.findViewById(R.id.vue_listview);
-                    List<View> list = new ArrayList<View>();
-                    List<LinearLayout> list2 = new ArrayList<LinearLayout>();
+                                //final LinearLayout myRoot = (LinearLayout) view.findViewById(R.id.vue_listview);
+                                //List<View> list = new ArrayList<View>();
+                                List<LinearLayout> list2 = new ArrayList<LinearLayout>();
+
+                                System.out.println("TAILLE DE id : " + id.size());
+                                for (int i = 0; i < id.size(); i++) {
+                                    System.out.println("COMBIEN DE FOIS : " + i);
+                                    final View view2 = LayoutInflater.from(getActivity()).inflate(R.layout.services_resultat_recherche, null);
+                                    view2.setId(i);
+                                    myRoot.setId(i);
+                                    TextView textViewshopname = (TextView) view2.findViewById(R.id.shopname_resultat);
+                                    TextView textViewavis = (TextView) view2.findViewById(R.id.resultat_avis);
+                                    TextView textViewfavoris = (TextView) view2.findViewById(R.id.resultat_favoris);
+                                    final ImageView imageView = (ImageView) view2.findViewById(R.id.image_recherche);
+                                    RatingBar ratingbar = (RatingBar) view2.findViewById(R.id.rtbProductRating);
 
 
-                    for(int i= 0;i<id.size();i++) {
-                        System.out.println("COMBIEN DE FOIS : " + i);
-                        final View view2 = LayoutInflater.from(getActivity()).inflate(R.layout.services_resultat_recherche, null);
-                        view2.setId(i);
-                        myRoot.setId(i);
-                        TextView textViewshopname = (TextView) view2.findViewById(R.id.shopname_resultat);
-                        TextView textViewavis = (TextView) view2.findViewById(R.id.resultat_avis);
-                        TextView textViewfavoris = (TextView) view2.findViewById(R.id.resultat_favoris);
-                        ImageView imageView = (ImageView) view2.findViewById(R.id.image_recherche);
-                        RatingBar ratingbar = (RatingBar) view2.findViewById(R.id.rtbProductRating);
+                                    if (iopi.get(i) == "") {
+                                        imageView.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.unknown));
+                                    } else {
+                                        final int finalI = i;
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                //Log.i("Imageeeeeeeeeeeee", "After");
+                                                System.out.println("Imaaaaaaaageeeeeee  : "+finalI + "   " +iopi.get(finalI));
+                                                Picasso.with(view2.getContext()).load(iopi.get(finalI))
+                                                        .into(imageView);
+                                            }
+                                        });
+                                    }
+
+                                    //Moyenne des avis
+                                    double moyenne = 0;
+                                    if (avis.size() == 0) {
+
+                                    } else {
+                                        for (int y = 0; y < avis.size(); y++) {
+                                            moyenne = moyenne + Double.parseDouble(avis.get(y));
+                                        }
+                                        moyenne = moyenne / avis.size();
+                                    }
+                                    ratingbar.setRating(Float.parseFloat(moyenne(String.valueOf(moyenne))));
+                                    String ss = String.format("%1$s/5", moyenne(String.valueOf(moyenne)));
+                                    textViewavis.setText(ss);
+
+                                    String s = String.format("%1$s FAVORIS", favoris.get(i));
+                                    textViewfavoris.setText(s);
+
+                                    textViewshopname.setText(institutesNames.get(i));
+
+                                    list.add(view2);
+
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            Log.i("Check", "After");
+
+                                            myRoot.addView(view2);
+                                        }
+                                    });
+
+                                    //myRoot.addView(view2);
+
+                                }
 
 
-                        if (iopi.get(i) == "") {
-                            imageView.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.unknown));
-                        } else {
-                            Picasso.with(view2.getContext()).load(iopi.get(i))
-                                    .into(imageView);
-                        }
-
-                        //Moyenne des avis
-                        double moyenne = 0;
-                        if (avis.size() == 0) {
-
-                        } else {
-                            for (int y = 0; y < avis.size(); y++) {
-                                moyenne = moyenne + Double.parseDouble(avis.get(y));
-                            }
-                            moyenne = moyenne / avis.size();
-                        }
-                        ratingbar.setRating(Float.parseFloat(moyenne(String.valueOf(moyenne))));
-                        String ss = String.format("%1$s/5", moyenne(String.valueOf(moyenne)));
-                        textViewavis.setText(ss);
-
-                        String s = String.format("%1$s FAVORIS", favoris.get(i));
-                        textViewfavoris.setText(s);
-
-                        textViewshopname.setText(institutesNames.get(i));
-
-                        list.add(view2);
-
-                        myRoot.addView(view2);
-
-                    }
-
-                    for(final View view11111 : list){
-                        view11111.setOnClickListener(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(final View v) {
-                                // ADD your action here
-                                //Toast.makeText(getContext(), "Bonjooooooooour" + index, Toast.LENGTH_LONG).show();
-                                //v.getContext().
-
-                                System.out.println("INDEX2 : "+view11111.getId());
-                                System.out.println("INDEX3 : "+myRoot.getId());
-                                System.out.println("INDEX4 : "+v.getId());
-
-                                final Fragment[] fragment = {null};
-                                final FragmentTransaction[] ft = {null};
-
-                                final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Svp Veuillez patienter ...", "chargement des données...", true);
 
 
-                                Thread timer = new Thread() {
-                                    @Override
-                                    public void run() {
 
-                                        try {
+
+
+
+                                for (final View view11111 : list) {
+                                    view11111.setOnClickListener(new View.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(final View v) {
+                                            // ADD your action here
+                                            //Toast.makeText(getContext(), "Bonjooooooooour" + index, Toast.LENGTH_LONG).show();
+                                            //v.getContext().
+
+                                            System.out.println("INDEX2 : " + view11111.getId());
+                                            System.out.println("INDEX3 : " + myRoot.getId());
+                                            System.out.println("INDEX4 : " + v.getId());
+
+                                            final Fragment[] fragment = {null};
+                                            final FragmentTransaction[] ft = {null};
+
+                                            final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Svp Veuillez patienter ...", "chargement des données...", true);
+
+
+                                            Thread timer = new Thread() {
+                                                @Override
+                                                public void run() {
+
+                                                    try {
 
                                             /*try {
                                                 fileOutputStream = getContext().openFileOutput("GouiranLink", MODE_APPEND);
@@ -868,125 +935,127 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                                             }*/
 
 
-                                            //System.out.println(listView.getItemAtPosition(position).toString());
+                                                        //System.out.println(listView.getItemAtPosition(position).toString());
 
 
-                                            //PREMIERE METHODE
-                                            //ResearchTask3 researchTask3 = new ResearchTask3(listView.getItemAtPosition(position).toString());
-                                            //String ls2 = "";
-                                            //ArrayList<String> recup2 = new ArrayList<String>();
-                                            //recup2 = jsonparser2(ls2);
+                                                        //PREMIERE METHODE
+                                                        //ResearchTask3 researchTask3 = new ResearchTask3(listView.getItemAtPosition(position).toString());
+                                                        //String ls2 = "";
+                                                        //ArrayList<String> recup2 = new ArrayList<String>();
+                                                        //recup2 = jsonparser2(ls2);
 
 
-                                            //DEUXIEME METHODE
-                                            //Recupérer liste des produits
-                                            System.out.println("DEBUT DONNEE GENERALE");
-                                            System.out.println("D " + recup2.get(0).get(0));
-                                            //System.out.println("D" + position);
-                                            //donneegeneral_jsonparser(recherche_donneegeneral(listView.getItemAtPosition(position).toString()));
-                                            donneegeneral_jsonparser(recherche_donneegeneral(shopIdList[v.getId()]));
-                                            String id = String.valueOf(PremierProfessionnal.getId());
+                                                        //DEUXIEME METHODE
+                                                        //Recupérer liste des produits
+                                                        System.out.println("DEBUT DONNEE GENERALE");
+                                                        System.out.println("D " + recup2.get(0).get(0));
+                                                        //System.out.println("D" + position);
+                                                        //donneegeneral_jsonparser(recherche_donneegeneral(listView.getItemAtPosition(position).toString()));
+                                                        donneegeneral_jsonparser(recherche_donneegeneral(shopIdList[v.getId()]));
+                                                        String id = String.valueOf(PremierProfessionnal.getId());
 
-                                            System.out.println("DEBUT PRODUCT");
-                                            System.out.println("D " + id);
-                                            products_jsonparser(recherche_product(id));
-                                            for (int i = 0; i < PremierProfessionalProduct.length; i++) {
-                                                System.out.println("PremierProfesionnelProduct : " + PremierProfessionalProduct[i].getName() + PremierProfessionalProduct[i].getPrice());
-                                            }
+                                                        System.out.println("DEBUT PRODUCT");
+                                                        System.out.println("D " + id);
+                                                        products_jsonparser(recherche_product(id));
+                                                        for (int i = 0; i < PremierProfessionalProduct.length; i++) {
+                                                            System.out.println("PremierProfesionnelProduct : " + PremierProfessionalProduct[i].getName() + PremierProfessionalProduct[i].getPrice());
+                                                        }
 
-                                            System.out.println("DEBUT SCHEDULE");
-                                            schedule_jsonparser(recherche_schedule(id));
-                                            PremierProfessionnal.setSchedule(ProfessionnalGenericSchedule);
-                                            for (int i = 0; i < ProfessionnalGenericSchedule.length; i++) {
-                                                System.out.println("PremierProfesionnelSchedule : " + ProfessionnalGenericSchedule[i].getWeekday() + ProfessionnalGenericSchedule[i].getBegin_time());
-                                            }
+                                                        System.out.println("DEBUT SCHEDULE");
+                                                        schedule_jsonparser(recherche_schedule(id));
+                                                        PremierProfessionnal.setSchedule(ProfessionnalGenericSchedule);
+                                                        for (int i = 0; i < ProfessionnalGenericSchedule.length; i++) {
+                                                            System.out.println("PremierProfesionnelSchedule : " + ProfessionnalGenericSchedule[i].getWeekday() + ProfessionnalGenericSchedule[i].getBegin_time());
+                                                        }
 
-                                            System.out.println("DEBUT SHOP_IMAGE");
-                                            shop_image_jsonparser(recherche_shop_image(id));
-                                            for (int i = 0; i < Shop_image.size(); i++) {
-                                                System.out.println("Shop_image : " + Shop_image.get(i));
-                                            }
-
-
-                                            System.out.println("DEBUT RESOURCE");
-                                            ressource_jsonparser(recherche_ressource(id));
-                                            for (int i = 0; i < ResourceProfessional.length; i++) {
-                                                System.out.println("Resource : " + ResourceProfessional[i]);
-                                            }
+                                                        System.out.println("DEBUT SHOP_IMAGE");
+                                                        shop_image_jsonparser(recherche_shop_image(id));
+                                                        for (int i = 0; i < Shop_image.size(); i++) {
+                                                            System.out.println("Shop_image : " + Shop_image.get(i));
+                                                        }
 
 
-                                            if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Full")) {
-                                                //Fragment fragment = null;
-                                                Bundle args = new Bundle();
-                                                args.putSerializable("Professionnal", PremierProfessionnal);
-                                                args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
-                                                args.putSerializable("Customer", customer);
-                                                args.putSerializable("ExpandableListDetail", expandableListDetail);
-                                                args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
-                                                args.putSerializable("ResourceProfessional", ResourceProfessional);
-                                                args.putSerializable("Shop_image", Shop_image);
-                                                args.putSerializable("token", token);
-                                                System.out.println("CUSTOMER :" + customer.getName());
-                                                args.putSerializable("Fragment", "Research2Fragment");
-
-                                                FragmentManager fm = getFragmentManager();
-                                                //FragmentTransaction ft = fm.beginTransaction();
-                                                ft[0] = fm.beginTransaction();
-                                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
-
-                                                fragment[0] = new ProfessionalView();
-                                                fragment[0].setArguments(args);
-
-                                                //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
-
-                                                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                                //ft.commit();
-                                            } else if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Free")) {
-                                                //Fragment fragment = null;
-                                                Bundle args = new Bundle();
-                                                args.putSerializable("Professionnal", PremierProfessionnal);
-                                                args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
-                                                args.putSerializable("Customer", customer);
-                                                args.putSerializable("token", token);
-
-                                                FragmentManager fm = getFragmentManager();
-                                                //FragmentTransaction ft = fm.beginTransaction();
-                                                ft[0] = fm.beginTransaction();
-                                                //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
-
-                                                fragment[0] = new InformationsProfessional();
-                                                fragment[0].setArguments(args);
-
-                                                //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
-
-                                                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                                //ft.commit();
-                                            }
+                                                        System.out.println("DEBUT RESOURCE");
+                                                        ressource_jsonparser(recherche_ressource(id));
+                                                        for (int i = 0; i < ResourceProfessional.length; i++) {
+                                                            System.out.println("Resource : " + ResourceProfessional[i]);
+                                                        }
 
 
-                                            ft[0].replace(R.id.content_frame, fragment[0]).addToBackStack("recherche");
-                                            ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                                            ft[0].commit();
-                                            ringProgressDialog.cancel();
-                                        } catch (Exception e) {
-                                            System.out.println("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSE PAS");
-                                            e.printStackTrace();
+                                                        if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Full")) {
+                                                            //Fragment fragment = null;
+                                                            Bundle args = new Bundle();
+                                                            args.putSerializable("Professionnal", PremierProfessionnal);
+                                                            args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                                                            args.putSerializable("Customer", customer);
+                                                            args.putSerializable("ExpandableListDetail", expandableListDetail);
+                                                            args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
+                                                            args.putSerializable("ResourceProfessional", ResourceProfessional);
+                                                            args.putSerializable("Shop_image", Shop_image);
+                                                            args.putSerializable("token", token);
+                                                            System.out.println("CUSTOMER :" + customer.getName());
+                                                            args.putSerializable("Fragment", "Research2Fragment");
+
+                                                            FragmentManager fm = getFragmentManager();
+                                                            //FragmentTransaction ft = fm.beginTransaction();
+                                                            ft[0] = fm.beginTransaction();
+                                                            //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                                                            fragment[0] = new ProfessionalView();
+                                                            fragment[0].setArguments(args);
+
+                                                            //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+
+                                                            //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                            //ft.commit();
+                                                        } else if (PremierProfessionnal.getProfessional_subscription_type().getName().equals("Free")) {
+                                                            //Fragment fragment = null;
+                                                            Bundle args = new Bundle();
+                                                            args.putSerializable("Professionnal", PremierProfessionnal);
+                                                            args.putSerializable("ProfessionnalProduct", PremierProfessionalProduct);
+                                                            args.putSerializable("Customer", customer);
+                                                            args.putSerializable("token", token);
+
+                                                            FragmentManager fm = getFragmentManager();
+                                                            //FragmentTransaction ft = fm.beginTransaction();
+                                                            ft[0] = fm.beginTransaction();
+                                                            //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                                                            fragment[0] = new InformationsProfessional();
+                                                            fragment[0].setArguments(args);
+
+                                                            //ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+
+                                                            //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                            //ft.commit();
+                                                        }
+
+
+                                                        ft[0].replace(R.id.content_frame, fragment[0]).addToBackStack("recherche");
+                                                        ft[0].setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                                        ft[0].commit();
+                                                        ringProgressDialog.cancel();
+                                                    } catch (Exception e) {
+                                                        System.out.println("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSE PAS");
+                                                        e.printStackTrace();
+                                                    }
+
+                                                }
+                                            };
+                                            timer.start();
+                                            ringProgressDialog.setCancelable(true);
+
+                                            //Obligé de faire ça après !
+                                            getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+
                                         }
 
-                                    }
-                                };
-                                timer.start();
-                                ringProgressDialog.setCancelable(true);
 
-                                //Obligé de faire ça après !
-                                getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+                                    });
+                                }
 
 
-                            }
-
-
-                        });
-                    }
 
 
 
@@ -1002,13 +1071,30 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                     listView.setAdapter(resultatAdapter);*/
 
 
+                                donnée_geolocalise = recup2;
+                                for (int i = 0; i < donnée_geolocalise.size(); i++) {
+                                    System.out.println("ppppppppppppppppppppppppppppppp" + donnée_geolocalise.get(i).get(3));
+                                }
+                                //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
 
 
-                    donnée_geolocalise = recup2;
-                    for (int i = 0; i < donnée_geolocalise.size(); i++) {
-                        System.out.println("ppppppppppppppppppppppppppppppp" + donnée_geolocalise.get(i).get(3));
-                    }
-                    //ArrayList<ArrayList <String>> vue_personnes_sur_carte = new ArrayList<ArrayList <String>>();
+
+                            }catch (Exception e) {
+                                System.out.println("PASSSSSSSSSSSSSSSSSSSSSSSSSSSSE PAS");
+                                e.printStackTrace();
+                            }
+
+                            ringProgressDialog2.cancel();
+                        }
+                    });
+                    timer2.start();
+                    ringProgressDialog2.setCancelable(false);
+
+
+
+
+
+
 
                 } else {
                     Toast.makeText(getActivity(), "Veuillez préciser une ville ou un lieu", Toast.LENGTH_SHORT).show();
@@ -1025,6 +1111,9 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         button_retour_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                button1.setText("AUTOUR DE MOI");
+                button1.setPadding(20,10,20,10);
 
                 button_clicke_boolean = false;
 
@@ -1211,7 +1300,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
     private void initUI(View v) {
 
-        Button button1 = (Button) v.findViewById(R.id.carte_research);
+        button1 = (Button) v.findViewById(R.id.carte_research);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1845,6 +1934,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         ArrayList<String> listeprestationpremierprofessionnel = new ArrayList<>();
         ArrayList<String> listelabelprestationpremierprofessionnel = new ArrayList<>();
 
+
         if (jsonStr != null) {
             if (jsonStr.contains("{")) {
                 try {
@@ -2036,6 +2126,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                             premierprofessionel.add(city);
                             premierprofessionel.add(country);
                             premierprofessionel.add(type);
+
 
                             String shop_phone = c.getString("shop_phone");
                             String shop_email = c.getString("shop_email");
@@ -3030,6 +3121,18 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                             premierprofessionel.add(city);
                             premierprofessionel.add(country);
                             premierprofessionel.add(type);
+
+                            //RECUPERATION TYPE DU PRO (A domicile ou Salon)
+                            JSONObject type_pro = new JSONObject(type);
+                            String id_type_pro = type_pro.getString("id");
+                            String name_type = type_pro.getString("name");
+                            String has_distance_limit_type = type_pro.getString("has_distance_limit");
+                            Professional_Type Professional_Type = new Professional_Type();
+                            Professional_Type.setId(Integer.parseInt(id_type_pro));
+                            Professional_Type.setName(name_type);
+                            Professional_Type.setHas_distance_limit(Boolean.parseBoolean(has_distance_limit_type));
+                            PremierProfessionnal.setType(Professional_Type);
+
 
                             String shop_phone = c.getString("shop_phone");
                             String shop_email = c.getString("shop_email");

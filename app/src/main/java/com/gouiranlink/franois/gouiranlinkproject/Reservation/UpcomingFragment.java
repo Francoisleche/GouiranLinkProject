@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
@@ -51,6 +53,7 @@ public class UpcomingFragment extends Fragment {
     Reservation reser;
     private ListView listviewupcoming;
     private LinearLayout layoutupcoming;
+    private TextView textupcoming;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +90,25 @@ public class UpcomingFragment extends Fragment {
         RelativeLayout layout = (RelativeLayout) root.findViewById(R.id.upcoming_relative);
         LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         */
+
+        root.setFocusableInTouchMode(true);
+        root.requestFocus();
+        root.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // TODO Auto-generated method stub
+                if (keyCode == android.view.KeyEvent.KEYCODE_BACK) {
+                    getActivity().findViewById(R.id.fragment_reservations).setVisibility(View.GONE);
+                    return false;
+                }
+                return false;
+            }
+        });
+
+
+
+
+
         return (root);
     }
 
@@ -252,11 +274,14 @@ public class UpcomingFragment extends Fragment {
 
         reservations = getReservationList();
         layoutupcoming = (LinearLayout) getActivity().findViewById(R.id.layoutupcoming);
+        textupcoming = (TextView) getActivity().findViewById(R.id.textupcoming);
         listviewupcoming = (ListView) getActivity().findViewById(R.id.listviewUpcoming);
 
         if(reservations.size()==0){
             layoutupcoming.setVisibility(true ? View.VISIBLE : View.GONE);
             listviewupcoming.setVisibility(true ? View.GONE : View.VISIBLE);
+            String s = "Vous n'avez aucune réservation à venir pour le moment... \n \n Mais pas de panique, réservez sans plus attendre votre prochain moment beauté depuis l'onglet \"Recherche\" ";
+            textupcoming.setText(s);
         }else{
             layoutupcoming.setVisibility(true ? View.GONE : View.VISIBLE);
             listviewupcoming.setVisibility(true ? View.VISIBLE : View.GONE);
@@ -328,7 +353,7 @@ public class UpcomingFragment extends Fragment {
                 fragment = new DetailRdv();
                 fragment.setArguments(args);
 
-                ft.replace(R.id.fragment_remplace, fragment).addToBackStack(null);
+                ft.replace(R.id.content_frame, fragment).addToBackStack(null);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
                 getActivity().findViewById(R.id.fragment_reservations).setVisibility(View.GONE);
@@ -338,5 +363,16 @@ public class UpcomingFragment extends Fragment {
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
 
 }

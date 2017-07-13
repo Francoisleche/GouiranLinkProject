@@ -175,9 +175,8 @@ public class ServicesProfessional2 extends Fragment{
 
             @Override
             public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getContext(),
-                        expandableListTitle.get(groupPosition) + " List Collapsed."+ " " + iterateur_image,
-                        Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(getContext(),expandableListTitle.get(groupPosition) + " List Collapsed."+ " " + iterateur_image,
+                        Toast.LENGTH_SHORT).show();*/
                 if(iterateur_image<Shop_image.size()){
                     //new DownloadImageTask(image).execute(Shop_image.get(iterateur_image++));
                     Picasso.with(getContext()).load(Shop_image.get(iterateur_image))

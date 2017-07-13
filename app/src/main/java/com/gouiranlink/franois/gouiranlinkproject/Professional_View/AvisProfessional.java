@@ -1,6 +1,5 @@
 package com.gouiranlink.franois.gouiranlinkproject.Professional_View;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,12 +11,10 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.google.android.gms.analytics.ecommerce.Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Comment;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
-import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Schedule;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
@@ -105,7 +102,7 @@ public class AvisProfessional extends Fragment{
             System.out.println("moyeeeeeeennne : "+cal);
             rtbProductRating.setRating(Float.parseFloat(moyenne(String.valueOf(cal))));
             System.out.println("moyeeeeeeennne : "+Float.parseFloat(moyenne(String.valueOf(cal))));
-            moyenne_avis.setText(moyenne(String.valueOf(cal))+"/5");
+            moyenne_avis.setText(moyenne(String.valueOf(cal)));
 
 
         }else{

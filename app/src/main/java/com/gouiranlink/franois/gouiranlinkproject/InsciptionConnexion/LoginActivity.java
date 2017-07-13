@@ -19,10 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -36,18 +33,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gouiranlink.franois.gouiranlinkproject.Manifest;
-import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
-import com.gouiranlink.franois.gouiranlinkproject.ParentActivity2;
-import com.gouiranlink.franois.gouiranlinkproject.R;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.RetrieveCustomerInformationFromRequest;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -71,6 +59,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
+import com.gouiranlink.franois.gouiranlinkproject.ParentActivity2;
+import com.gouiranlink.franois.gouiranlinkproject.R;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.RetrieveCustomerInformationFromRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,8 +77,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /*
@@ -1388,7 +1381,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
                 alert.setTitle("Mot de passe oublié");
-                alert.setMessage("Veuillez entrer l'adresse e-mail utilisé lors de la création de votre compte.");
+                alert.setMessage("Veuillez entrer l'adresse e-mail utilisée lors de la création de votre compte.");
                 final EditText input = new EditText(this);
                 alert.setView(input);
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -1462,7 +1455,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         s = "Il est temps de vérifier votre boite mail ! Un email vient de vous être envoyé pour modifier votre mot de passe";
 
-                        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                        for (int i=0; i < 2; i++)
+                        {
+                            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                        }
+
                         System.out.println(resp);
                     }
                 });

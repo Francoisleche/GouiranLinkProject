@@ -151,7 +151,7 @@ public class Reservation2Fragment extends Fragment {
                 tab.select();
             }
 
-            getActivity().findViewById(R.id.simpleFrameLayout).setVisibility(View.VISIBLE);
+            //getActivity().findViewById(R.id.simpleFrameLayout).setVisibility(View.VISIBLE);
         }
 
 

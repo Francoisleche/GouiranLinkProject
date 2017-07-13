@@ -1,12 +1,10 @@
 package com.gouiranlink.franois.gouiranlinkproject.Rendezvous;
 
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +37,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class PrendreRdV2 extends Fragment{
 
     private Double prix;
-    private int duree;
+    private String duree;
     private CalendarView calendar;
     ArrayList<String> horaires_indisponibilites;
     private ArrayList<String> recup;
@@ -113,7 +111,7 @@ public class PrendreRdV2 extends Fragment{
             courante_liste_prestations = (Professional_Product[]) getArguments().getSerializable("courante_liste_prestations");
             customer = (Customer) getArguments().getSerializable("Customer");
             prix = (Double) getArguments().getDouble("prix");
-            duree = (int) getArguments().getInt("duree");
+            duree = (String) getArguments().getString("duree");
             ResourceProfessional = (Resource[])getArguments().getSerializable("ResourceProfessional");
         }
 
@@ -121,6 +119,7 @@ public class PrendreRdV2 extends Fragment{
             System.out.println("PRENDRERDV222222 : "+liste_prestations_selectionne.get(i).getName());
         }
 
+        System.out.println("Dureeeeeeeeeeeeeeee : "+duree);
 
     }
 
@@ -171,7 +170,7 @@ public class PrendreRdV2 extends Fragment{
 
 
 
-        final int dureetotal = duree;
+        //final int dureetotal = duree;
         int heuretotal = 0 ;
         int minutetotal = 0;
 
@@ -1151,16 +1150,7 @@ public class PrendreRdV2 extends Fragment{
             @Override
             public void onClick(View v) {
                 //Si l'utilisateur n'a pas renseigné de numéro de téléphone
-                if (customer.getMobilephone().equals("null")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Erreur, vous devez d'abord renseigner un numéro de téléphone !").setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                } else{
+
                     if (button_clique2 != null && dday!=null) {
                         Fragment fragment = null;
                         Bundle args = new Bundle();
@@ -1212,7 +1202,7 @@ public class PrendreRdV2 extends Fragment{
                         buton03.setError("Selectionner une heure");
                         Toast.makeText(getApplicationContext(), "Veuillez selectionner une date et une heure", Toast.LENGTH_LONG).show();
                     }
-                }
+
 
             }
         });

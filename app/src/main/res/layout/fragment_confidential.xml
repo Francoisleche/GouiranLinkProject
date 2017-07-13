@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Confidentialité"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="3"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:background="@color/GouiranLightPink"
+            android:textColor="@color/white"
+            android:textSize="25sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_confidential_choix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_modifier_mot_de_passe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Modifier mon mot de passe"/>
+
+        <TextView
+            android:id="@+id/text_cgu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lire les Conditions Générales d'Utilisation (CGU)"/>
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/layout_confidential_mdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Complétez les champs ci-dessous pour modifier votre mot de passe"/>
+
+        <EditText
+            android:id="@+id/mot_passe_actuel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Mot de passe actuel"/>
+
+        <EditText
+            android:id="@+id/nouveau_mot_passe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Nouveau mot de passe"/>
+
+        <EditText
+            android:id="@+id/nouveau_mot_passe_verif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Nouveau mot de passe (vérification)"/>
+
+        <Button
+            android:id="@+id/boutton_valider_nouveau_mdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="#d16677"
+            android:textColor="@color/white"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Valider" />
+
+    </LinearLayout>
+
+</LinearLayout>

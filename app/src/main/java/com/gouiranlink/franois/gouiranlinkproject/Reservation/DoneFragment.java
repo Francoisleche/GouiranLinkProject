@@ -123,9 +123,10 @@ public class DoneFragment extends Fragment {
                             !arr.getJSONObject(i).getJSONObject("professional").isNull("post_code") &&
                             !arr.getJSONObject(i).getJSONObject("professional").isNull("city")) {
 
-                        reservation.adress = arr.getJSONObject(i).getJSONObject("professional").getString("address") +
-                                arr.getJSONObject(i).getJSONObject("professional").getString("post_code") +
-                                arr.getJSONObject(i).getJSONObject("professional").getString("city");
+                        reservation.adress = arr.getJSONObject(i).getJSONObject("professional").getString("address") + " - " +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("post_code") + " - " +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("city") + " - " +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("country");
                     }
 
                     if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").has("url") &&

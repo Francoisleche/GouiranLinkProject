@@ -26,19 +26,32 @@
         android:id="@+id/layout_confidential_choix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp">
 
         <TextView
             android:id="@+id/text_modifier_mot_de_passe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Modifier mon mot de passe"/>
+            android:text="Modifier mon mot de passe"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <View
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="fill_parent"
+            android:layout_height="5px"
+            android:background="#FF909090" />
 
         <TextView
             android:id="@+id/text_cgu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lire les Conditions Générales d'Utilisation (CGU)"/>
+            android:text="Lire les Conditions Générales d'Utilisation (CGU)"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 

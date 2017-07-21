@@ -25,9 +25,9 @@ import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.R;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.DownloadImageTask;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetCustomerProfile;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PutRequest;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -46,6 +46,9 @@ public class EditAccountFragment extends Fragment {
 
     private Customer customer;
 
+    String name2;
+    String name;
+    String surname;
     String birth_date;
     String email;
     String phone;
@@ -56,6 +59,8 @@ public class EditAccountFragment extends Fragment {
     String address;
     String profession = "Profession";
     String[] gender;
+
+    String json_profession;
 
     private OnFragmentInteractionListener mListener;
 
@@ -83,7 +88,7 @@ public class EditAccountFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.fragment_edit_account, container, false);
+        final View root = inflater.inflate(R.layout.fragment_edit_account2, container, false);
 
 
         final Spinner spinnerprofession = (Spinner) root.findViewById(R.id.spinnerprofession);
@@ -91,8 +96,9 @@ public class EditAccountFragment extends Fragment {
         liste_profession.add("Chef d'entreprise");
         liste_profession.add("Profession libérale");
         liste_profession.add("Salarié(e) du privé ou du public");
+        liste_profession.add("Etudiant");
         liste_profession.add("Retraité");
-        liste_profession.add("Autres");
+        liste_profession.add("Autre");
         ArrayAdapter<String> adapter_services = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item,liste_profession);
         adapter_services.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerprofession.setAdapter(adapter_services);
@@ -108,7 +114,7 @@ public class EditAccountFragment extends Fragment {
                 String msupplier=spinnerprofession.getSelectedItem().toString();
                 //Log.e("Selected item : ",msupplier);
                 //System.out.println("Ooooooooooooh"+spinnerprofession.getSelectedItem().toString());
-                if(msupplier.equals("Autres")){
+                if(msupplier.equals("Autre")){
                     editText2.setVisibility(true ? View.VISIBLE : View.GONE);
                     editText3.setVisibility(true ? View.VISIBLE : View.GONE);
                 }else{
@@ -132,23 +138,27 @@ public class EditAccountFragment extends Fragment {
 
 
         customer = new GetCustomerProfile().getCustomerProfile(customer.getToken());
-        ImageView imageView = (ImageView) root.findViewById(R.id.profile_picture);
-        new DownloadImageTask(imageView).execute(customer.getImage().getThumbnails().get(0)[2]);
-        TextView textView = (TextView) root.findViewById(R.id.name);
-        String name = "";
+        //ImageView imageView = (ImageView) root.findViewById(R.id.profile_picture);
+        //new DownloadImageTask(imageView).execute(customer.getImage().getThumbnails().get(0)[2]);
+        //Picasso.with(root.getContext()).load(customer.getImage().getThumbnails().get(0)[2]).into(imageView);
+
+
+
+        TextView textView_name = (TextView) root.findViewById(R.id.name);
+        String name2 = "";
         if (customer.getSurname().equals("null"))
-            name += getString(R.string.not_known);
+            name2 += getString(R.string.not_known);
         else
-            name += customer.getSurname();
-        name += " ";
+            name2 += customer.getSurname();
+        name2 += " ";
         if (customer.getName().equals("null"))
-            name += getString(R.string.not_known);
+            name2 += getString(R.string.not_known);
         else
-            name += customer.getName();
+            name2 += customer.getName();
 
-        textView.setText(name);
+        textView_name.setText(name2);
 
-        textView = (TextView) root.findViewById(R.id.value_gender);
+        /*TextView textView = (TextView) root.findViewById(R.id.value_gender);
         switch (customer.getGender()) {
             case "M":
                 textView.setText(R.string.male);
@@ -160,11 +170,13 @@ public class EditAccountFragment extends Fragment {
                 textView.setText(getString(R.string.not_known));
                 break;
         }
-        textView = (TextView) root.findViewById(R.id.value_birth_date);
+
+
+        TextView textView = (TextView) root.findViewById(R.id.value_birth_date);
         if (customer.getBirthday_date().equals("null")){
 
         }
-            //textView.setText(getString(R.string.not_known));
+
         else
             textView.setText(customer.getBirthday_date());
         textView = (TextView) root.findViewById(R.id.value_email);
@@ -199,11 +211,13 @@ public class EditAccountFragment extends Fragment {
         else
             textView.setText(customer.getPost_code());
 
+        */
 
-        imageView = (ImageView) root.findViewById(R.id.edit_profile_picture);
-        new DownloadImageTask(imageView).execute(customer.getImage().getThumbnails().get(0)[2]);
-        textView = (TextView) root.findViewById(R.id.edit_name);
-        name = "";
+        ImageView imageView = (ImageView) root.findViewById(R.id.edit_profile_picture);
+        //new DownloadImageTask(imageView).execute(customer.getImage().getThumbnails().get(0)[2]);
+        Picasso.with(root.getContext()).load(customer.getImage().getThumbnails().get(0)[2]).into(imageView);
+        /*TextView textView = (TextView) root.findViewById(R.id.edit_name);
+        String name = "";
         if (customer.getSurname().equals("null"))
             name += getString(R.string.not_known);
         else
@@ -263,7 +277,7 @@ public class EditAccountFragment extends Fragment {
             textView.setText(getString(R.string.not_known));
         else
             textView.setText(customer.getPost_code());
-
+    */
 
 
         /*Button modify = (Button) root.findViewById(R.id.modify);
@@ -275,14 +289,16 @@ public class EditAccountFragment extends Fragment {
             }
         });*/
 
-        Button backEdit = (Button) root.findViewById(R.id.edit_modify);
-        backEdit.setOnClickListener(new View.OnClickListener() {
+
+        //Bouton annuler les modification
+       /*Button backEdit = (Button) root.findViewById(R.id.edit_modify);
+       backEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 root.findViewById(R.id.scrollViewEdit).setVisibility(View.VISIBLE);
                 root.findViewById(R.id.edit_profile_action).setVisibility(View.GONE);
             }
-        });
+        });*/
 
         Button editImage = (Button) root.findViewById(R.id.edit_image);
         editImage.setOnClickListener(new View.OnClickListener() {
@@ -315,48 +331,132 @@ public class EditAccountFragment extends Fragment {
         editText.setHint(((TextView) root.findViewById(R.id.value_gender)).getText());
 
         final String gender = editText.getText().toString();*/
-        EditText editText = (EditText) root.findViewById(R.id.edit_value_birth_date);
-        EditText editTex2 = (EditText) root.findViewById(R.id.edit_value_birth_date2);
-        EditText editTex3 = (EditText) root.findViewById(R.id.edit_value_birth_date3);
-        editText.setHint(((TextView) root.findViewById(R.id.value_birth_date)).getText());
-        birth_date = editText.getText().toString()+"/"+editTex2.getText().toString()+"/"+editTex3.getText().toString();
+        EditText editText_yyyy = (EditText) root.findViewById(R.id.edit_value_birth_date);
+        EditText editText2_mm = (EditText) root.findViewById(R.id.edit_value_birth_date2);
+        EditText editText3_dd = (EditText) root.findViewById(R.id.edit_value_birth_date3);
+        //editText.setHint(((TextView) root.findViewById(R.id.value_birth_date)).getText());
+        birth_date = editText_yyyy.getText().toString()+"/"+editText2_mm.getText().toString()+"/"+editText3_dd.getText().toString();
 
         System.out.println("Birthdayyyyyy : "+ customer.getBirthday_date());
 
         if(customer.getBirthday_date().equals("null")){
 
         }else{
-            editText.setHint(customer.getBirthday_date().substring(0,4));
-            editTex2.setHint(customer.getBirthday_date().substring(5,7));
-            editTex3.setHint(customer.getBirthday_date().substring(8,10));
-            editText.setText(customer.getBirthday_date().substring(0,4));
-            editTex2.setText(customer.getBirthday_date().substring(5,7));
-            editTex3.setText(customer.getBirthday_date().substring(8,10));
+            editText_yyyy.setHint(customer.getBirthday_date().substring(0,4));
+            editText2_mm.setHint(customer.getBirthday_date().substring(5,7));
+            editText3_dd.setHint(customer.getBirthday_date().substring(8,10));
+            //editText_yyyy.setText(customer.getBirthday_date().substring(0,4));
+            //editText2_mm.setText(customer.getBirthday_date().substring(5,7));
+            //editText3_dd.setText(customer.getBirthday_date().substring(8,10));
         }
 
 
+        EditText editText_name = (EditText) root.findViewById(R.id.edit_name2);
+        if(customer.getName().equals("null"))
+            editText_name.setHint("");
+        else
+            editText_name.setHint(customer.getName());
+        name = editText_name.getText().toString();
+        EditText editText_surname = (EditText) root.findViewById(R.id.edit_surname2);
+        if(customer.getSurname().equals("null"))
+            editText_surname.setHint("");
+        else
+            editText_surname.setHint(customer.getSurname());
+        surname = editText_surname.getText().toString();
 
-        editText = (EditText) root.findViewById(R.id.edit_value_email);
-        editText.setHint(((TextView) root.findViewById(R.id.value_email)).getText());
-        email = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_phone);
-        editText.setHint(((TextView) root.findViewById(R.id.value_phone)).getText());
-        phone = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_mobile_phone);
-        editText.setHint(((TextView) root.findViewById(R.id.value_mobile_phone)).getText());
-        mobile_phone = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_country);
-        editText.setHint(((TextView) root.findViewById(R.id.value_country)).getText());
-        country = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_city);
-        editText.setHint(((TextView) root.findViewById(R.id.value_city)).getText());
-        city = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_post_code);
-        editText.setHint(((TextView) root.findViewById(R.id.value_post_code)).getText());
-        post_code = editText.getText().toString();
-        editText = (EditText) root.findViewById(R.id.edit_value_address);
-        editText.setHint(((TextView) root.findViewById(R.id.value_address)).getText());
-        address = editText.getText().toString();
+
+        EditText editText_email = (EditText) root.findViewById(R.id.edit_value_email);
+        if(customer.getEmail().equals("null"))
+            editText_email.setHint("");
+        else
+            editText_email.setHint(customer.getEmail());
+        email = editText_email.getText().toString();
+
+        EditText editText_phone = (EditText) root.findViewById(R.id.edit_value_phone);
+        if(customer.getPhone().equals("null"))
+            editText_phone.setHint("");
+        else
+            editText_phone.setHint(customer.getPhone());
+        phone = editText_phone.getText().toString();
+
+        EditText editText_mobilephone = (EditText) root.findViewById(R.id.edit_value_mobile_phone);
+        if(customer.getMobilephone().equals("null"))
+            editText_mobilephone.setHint("");
+        else
+            editText_mobilephone.setHint(customer.getMobilephone());
+        mobile_phone = editText_mobilephone.getText().toString();
+
+        EditText editText_country = (EditText) root.findViewById(R.id.edit_value_country);
+        if(customer.getCountry().equals("null"))
+            editText_country.setHint("");
+        else
+            editText_country.setHint(customer.getCountry());
+        country = editText_country.getText().toString();
+
+        EditText editText_city = (EditText) root.findViewById(R.id.edit_value_city);
+        if(customer.getCity().equals("null"))
+            editText_city.setHint("");
+        else
+            editText_city.setHint(customer.getCity());
+        city = editText_city.getText().toString();
+
+        EditText editText_postcode = (EditText) root.findViewById(R.id.edit_value_post_code);
+        if(customer.getPost_code().equals("null"))
+            editText_postcode.setHint("");
+        else
+            editText_postcode.setHint(customer.getPost_code());
+        post_code = editText_postcode.getText().toString();
+
+        EditText editText_address = (EditText) root.findViewById(R.id.edit_value_address);
+        if(customer.getAddress().equals("null"))
+            editText_address.setHint("");
+        else
+            editText_address.setHint(customer.getAddress());
+        address = editText_address.getText().toString();
+
+
+
+        json_profession = "{\n" +
+                "\"id\":";
+        System.out.println("Prooooooooofessionnnnnn : "+customer.getProfession());
+        if(customer.getProfession() == null){
+            spinnerprofession.setSelection(5);
+            editText2.setVisibility(true ? View.VISIBLE : View.GONE);
+            editText3.setVisibility(true ? View.VISIBLE : View.GONE);
+            editText2.setText("");
+            json_profession += "6," +  "\"name\":\"" + "Autre \" }";
+        }else {
+            if (customer.getProfession().getName().equals("Chef d'entreprise")) {
+                json_profession += "1," + "\"name\":\"" + "Chef d'entreprise \" }";
+                spinnerprofession.setSelection(0);
+            }
+            else if (customer.getProfession().getName().equals("Profession libérale")) {
+                json_profession += "2," + "\"name\":\"" + "Profession libérale \" }";
+                spinnerprofession.setSelection(1);
+            }
+            else if (customer.getProfession().getName().equals("Salarié(e) du privé ou du public")) {
+                json_profession += "3," + "\"name\":\"" + "Salarié(e) du privé ou du public \" }";
+                spinnerprofession.setSelection(2);
+            }
+            else if (customer.getProfession().getName().equals("Etudiant")) {
+                json_profession += "4," + "\"name\":\"" + "Etudiant \" }";
+                spinnerprofession.setSelection(3);
+            }
+            else if (customer.getProfession().getName().equals("Retraité")){
+                json_profession += "5," + "\"name\":\"" + "Retraité \" }";
+                spinnerprofession.setSelection(4);
+            }
+            else if (customer.getProfession().getName().equals("Autre")) {
+                json_profession += "6," + "\"name\":\"" + "Autre \" }";
+                spinnerprofession.setSelection(5);
+                editText2.setVisibility(true ? View.VISIBLE : View.GONE);
+                editText3.setVisibility(true ? View.VISIBLE : View.GONE);
+                editText2.setText(customer.getProfession_other());
+            } else
+                Toast.makeText(getActivity(), "GENDER=[" + customer.getProfession().getName() + "]", Toast.LENGTH_SHORT).show();
+        }
+
+
         //editText = (EditText) root.findViewById(R.id.edit_value_profession);
         //editText.setHint(((TextView) root.findViewById(R.id.value_profession)).getText());
         //profession = editText.getText().toString();
@@ -384,6 +484,7 @@ public class EditAccountFragment extends Fragment {
         if (gender[0] == null || gender[0].isEmpty() || gender[0].equals(""))
             gender[0] = customer.getGender();
         Toast.makeText(getActivity(), "2- gender = [" + gender[0] + "]", Toast.LENGTH_SHORT).show();
+
         Button confirm = (Button) root.findViewById(R.id.confirm);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -433,9 +534,10 @@ public class EditAccountFragment extends Fragment {
                             "\"country\":\"" + country + "\",\n" +
                             "\"city\":\"" + city + "\",\n" +
                             "\"address\":\"" + address + "\",\n" +
-                            //TODO "\"profession\":\"" + profession + "\",\n" +
+                            "\"profession\":" + json_profession + ",\n" +
                             "\"post_code\":\"" + post_code + "\"\n" +
                             "}\n";
+                    System.out.println("Puuuuuuuuut : "+json);
                     String resp;
                     PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json, "Authorization", "Token " + customer.getToken());
                     resp = putRequest.execute().get();
@@ -447,6 +549,19 @@ public class EditAccountFragment extends Fragment {
                     Log.d("reponse", resp);
                     customer = new GetCustomerProfile().getCustomerProfile(customer.getToken(), customer);
                     onCreateView(inflater, container, savedInstanceState);
+
+                    //Fragment
+                    Fragment fragment = null;
+                    Bundle args = new Bundle();
+                    args.putSerializable("Customer", customer);
+                    fragment = new AccountFragment();
+                    fragment.setArguments(args);
+                    FragmentManager frgManager = getFragmentManager();
+                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+
+                    getActivity().getSupportFragmentManager().beginTransaction().remove(EditAccountFragment.this).commit();
+
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }

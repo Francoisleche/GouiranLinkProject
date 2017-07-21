@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.gouiranlink.franois.gouiranlinkproject.GouiranStart;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
 
@@ -27,6 +26,7 @@ public class SignUp extends AppCompatActivity {
     private String password = null;
     private String passwordConfirmation = null;
     private String phoneNumber = null;
+    private String codepostal = null;
     private PostRequest postRequest = null;
 
     private EditText surnameEditText;
@@ -35,11 +35,20 @@ public class SignUp extends AppCompatActivity {
     private EditText passwordEditText;
     private EditText passwordConfirmationEditText;
     private EditText phoneNumberEditText;
+    private EditText codepostalEditText;
 
     private boolean isEmailValid(String email) {
         String EmailPattern = "[_A-Za-z0-9-\\\\+.]+@[A-Za-z0-9-]+\\.[A-Za-z]+";
         final Pattern pattern = Pattern.compile(EmailPattern);
         final Matcher matcher = pattern.matcher(email);
+
+        return (matcher.matches());
+    }
+
+    private boolean isCodePostalValid(String codepostal) {
+        String CodePostalPattern = "[0-9]+";
+        final Pattern pattern = Pattern.compile(CodePostalPattern);
+        final Matcher matcher = pattern.matcher(codepostal);
 
         return (matcher.matches());
     }
@@ -56,6 +65,7 @@ public class SignUp extends AppCompatActivity {
         passwordEditText = (EditText) findViewById(R.id.password);
         passwordConfirmationEditText = (EditText) findViewById(R.id.password_confirmation);
         phoneNumberEditText = (EditText) findViewById(R.id.phone_number);
+        codepostalEditText = (EditText) findViewById(R.id.post_code);
     }
 
     public void onClick(View v) {
@@ -69,6 +79,7 @@ public class SignUp extends AppCompatActivity {
         password = passwordEditText.getText().toString();
         passwordConfirmation = passwordConfirmationEditText.getText().toString();
         phoneNumber = phoneNumberEditText.getText().toString();
+        codepostal = codepostalEditText.getText().toString();
 
         if (!isEmailValid(email)) {
             emailEditText.setError(getString(R.string.invalid_email));
@@ -84,6 +95,12 @@ public class SignUp extends AppCompatActivity {
         }
         if (password == null || password.equals("")) {
             passwordEditText.setError(getString(R.string.necessary_field));
+            cancel = true;
+            focusView = passwordEditText;
+            focusView.requestFocus();
+        }
+        if (password.length()<4) {
+            passwordEditText.setError("Pas moins de 4 caractères");
             cancel = true;
             focusView = passwordEditText;
             focusView.requestFocus();
@@ -112,6 +129,21 @@ public class SignUp extends AppCompatActivity {
             focusView = phoneNumberEditText;
             focusView.requestFocus();
         }
+        if (!isCodePostalValid(codepostal)){
+            codepostalEditText.setError("Ce code postal est invalide.");
+            focusView = codepostalEditText;
+            cancel = true;
+            focusView.requestFocus();
+        }
+        if (codepostal.length()!=5){
+            codepostalEditText.setError("Ce code postal est invalide.");
+            focusView = codepostalEditText;
+            cancel = true;
+            focusView.requestFocus();
+        }
+
+
+
 
         String gender ="";
         RadioGroup radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);

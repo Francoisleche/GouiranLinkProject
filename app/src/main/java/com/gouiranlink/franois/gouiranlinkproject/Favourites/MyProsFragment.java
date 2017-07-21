@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -121,14 +121,38 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
 
         List<String> imagesUrl = new ArrayList<String>();
         List<String> names = new ArrayList<String>();
-        List<Integer> ids = new ArrayList<Integer>();
+        List<String> ids = new ArrayList<String>();
+        List<String> avis = new ArrayList<String>();
+        List<String> favoris = new ArrayList<String>();
 
         for (int i = 0; i < datas.size(); i++) {
             imagesUrl.add(datas.get(i).shop_image);
             names.add(datas.get(i).name);
-            ids.add(datas.get(i).id);
+            ids.add(String.valueOf(datas.get(i).id));
         }
-        final GridView gridview = (GridView) root.findViewById(R.id.gridviewPros);
+
+        //Recuperation des avis et favoris
+        for (int i = 0; i < datas.size(); i++) {
+
+            ArrayList<String> tous_les_avis = avis_jsonparser(recherche_avis(ids.get(i)));
+            double moyenne = 0;
+            if (tous_les_avis.size() == 0) {
+
+            } else {
+                for (int y = 0; y < tous_les_avis.size(); y++) {
+                    moyenne = moyenne + Double.parseDouble(tous_les_avis.get(y));
+                }
+                moyenne = moyenne / tous_les_avis.size();
+            }
+            String ss = String.format("%1$s", moyenne(String.valueOf(moyenne)));
+            avis.add(String.valueOf(ss));
+
+            favoris.add(recherche_favoris(ids.get(i)));
+
+        }
+
+        //final GridView gridview = (GridView) root.findViewById(R.id.gridviewPros);
+        final ListView gridview = (ListView) root.findViewById(R.id.gridviewPros);
         int layout = R.layout.grid_single_pros;
         int id = R.id.grid_text;
         String[] items = new String[ids.size()];
@@ -140,11 +164,20 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
             items2[i] = String.valueOf(imagesUrl.get(i));
         }
 
-        final FavouritesImageAdapter favouritesImageAdapter = new FavouritesImageAdapter(getActivity(),items,items1,items2);
+        /*final FavouritesImageAdapter favouritesImageAdapter = new FavouritesImageAdapter(getActivity(),items,items1,items2);
         gridview.setAdapter(favouritesImageAdapter);
         favouritesImageAdapter.setmThumbPictures(imagesUrl);
         favouritesImageAdapter.setmThumbNames(names);
-        favouritesImageAdapter.setmIds(ids);
+        favouritesImageAdapter.setmIds(ids);*/
+
+        RechercheResultatAdapter resultatAdapter = new RechercheResultatAdapter(getActivity());
+        resultatAdapter.setId(ids);
+        resultatAdapter.setInstitutesNames(names);
+        resultatAdapter.setAvis(avis);
+        resultatAdapter.setFavoris(favoris);
+        resultatAdapter.setPictures(imagesUrl);
+
+        gridview.setAdapter(resultatAdapter);
 
 
 
@@ -1304,6 +1337,25 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
+    }
+
+
+    public String moyenne(String moy){
+        String moyenn = null;
+
+        System.out.println(moy.substring(0,1));
+        System.out.println(moy.substring(1,2));
+        System.out.println(moy.substring(2,3));
+        if(Integer.parseInt(moy.substring(2,3)) <= 3){
+            moyenn = moy.substring(0,1);
+        }else if(Integer.parseInt(moy.substring(2,3)) >= 4 && Integer.parseInt(moy.substring(2,3)) <= 7){
+            moyenn = moy.substring(0,1) + ".5";
+        }else if(Integer.parseInt(moy.substring(2,3)) >= 8){
+            moyenn = String.valueOf(Integer.parseInt(moy.substring(0,1))+1);
+        }
+
+
+        return moyenn;
     }
 
 

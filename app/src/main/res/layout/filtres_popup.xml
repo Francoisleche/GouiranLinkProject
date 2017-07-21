@@ -64,7 +64,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Beaute"
+                            android:text="Beauté"
                             android:gravity="center"/>
 
                         <CheckBox
@@ -139,7 +139,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Bien-etre"
+                            android:text="Bien-être"
                             android:gravity="center"/>
                         <CheckBox
                             android:id="@+id/bien1"
@@ -262,7 +262,7 @@
                     android:id="@+id/acceptation_auto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Acceptation Automatique RDV" />
+                    android:text="Acceptation Automatique de RDVs" />
                 <CheckBox
                     android:id="@+id/plusreserve"
                     android:layout_width="wrap_content"
@@ -277,8 +277,8 @@
                 android:orientation="vertical"
                 android:weightSum="1.0">
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="SPECIALITE"
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="10dp"
@@ -328,7 +328,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="JOUR D'OUVERTURE"
+                android:text="JOURS D'OUVERTURE"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="10dp"
                 style="@style/TitleFilter"
@@ -345,7 +345,7 @@
                 android:id="@+id/accepter_filtre"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Accepter"
+                android:text="Appliquer"
                 android:gravity="center"
                 android:layout_marginTop="10dp"/>
 

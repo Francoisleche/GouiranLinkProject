@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment">
 
-    <GridView
+    <!--<GridView
         android:id="@+id/gridviewCrushes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,6 +18,13 @@
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="horizontal"
         android:stretchMode="none"
-        android:verticalSpacing="1dp" />
+        android:verticalSpacing="1dp" />-->
+    
+    
+    <ListView
+        android:id="@+id/gridviewCrushes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ListView>
 
 </FrameLayout>

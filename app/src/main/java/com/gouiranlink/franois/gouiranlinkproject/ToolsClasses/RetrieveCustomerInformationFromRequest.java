@@ -48,7 +48,7 @@ public class RetrieveCustomerInformationFromRequest implements Serializable {
         String geoloc_longitude;
         boolean sms;
         boolean newsletter;
-        Customer_Profession profession;
+        Customer_Profession profession = null;
         String profession_other;
         String language;
         Image_N image_customer;
@@ -126,7 +126,18 @@ public class RetrieveCustomerInformationFromRequest implements Serializable {
             geoloc_longitude = user.getString("geoloc_longitude");
             sms = user.getBoolean("sms");
             newsletter = user.getBoolean("newsletter");
-            profession = null;
+
+            String s = user.getString("profession");
+            System.out.println("Professsssssionnnnn : " +s);
+            if (s.equals("null")){
+                profession = null;
+            }else{
+                profession = new Customer_Profession();
+                profession.setId(Integer.parseInt(user.getJSONObject("profession").getString("id")));
+                profession.setName(user.getJSONObject("profession").getString("name"));
+            }
+
+
             profession_other = user.getString("profession_other");
             language = user.getString("language");
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <GridView
+    <!--<GridView
         android:id="@+id/gridviewPros"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,6 +17,12 @@
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="horizontal"
         android:stretchMode="none"
-        android:verticalSpacing="1dp" />
+        android:verticalSpacing="1dp" />-->
+
+    <ListView
+        android:id="@+id/gridviewPros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ListView>
 
 </FrameLayout>

@@ -239,6 +239,8 @@ public class InformationsProfessional extends Fragment {
                 Intent email = new Intent(Intent.ACTION_SEND);
                 email.setType("text/plain");
                 //email.putExtra(android.content.Intent.EXTRA_EMAIL,"meynardfrancois@gmail.com");
+                //email.putExtra(Intent.EXTRA)
+                email.putExtra(Intent.EXTRA_EMAIL, new String[]{professional.getShop_email()});
                 email.putExtra(Intent.EXTRA_SUBJECT, "Contact");
                 email.putExtra(Intent.EXTRA_TEXT, "Saisir votre demande ici...");
                 email.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

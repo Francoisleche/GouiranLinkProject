@@ -644,6 +644,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
         listView = (ListView) view.findViewById(R.id.mesresultats);
 
 
+        final LinearLayout myRoot = (LinearLayout) view.findViewById(R.id.vue_listview);
         boutton_recherche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -673,7 +674,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                     final List<String> geoloc_longitude = new ArrayList<String>();
                     final ArrayList<ArrayList<String>> tableau_image = new ArrayList<ArrayList<String>>();
 
-                    final LinearLayout myRoot = (LinearLayout) view.findViewById(R.id.vue_listview);
+
                     final List<View> list = new ArrayList<View>();
 
                     final ProgressDialog ringProgressDialog2 = ProgressDialog.show(getActivity(), "Svp Veuillez patienter ...", "chargement des données...", true);
@@ -1124,6 +1125,13 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) deux_bouton.getLayoutParams();
                 params.setMargins(0, 20, 0, 50); //substitute parameters for left, top, right, bottom
                 deux_bouton.setLayoutParams(params);
+
+                //Supprimer la list des resultats
+                int nombre = myRoot.getChildCount();
+                System.out.println("Combien ya de resultat : "+myRoot.getChildCount());
+                myRoot.removeAllViews();
+
+
 
             }
         });

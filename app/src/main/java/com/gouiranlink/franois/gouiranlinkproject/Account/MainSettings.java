@@ -23,6 +23,8 @@ Fragment which shows the settings' page
 
 public class MainSettings extends Fragment {
     private Customer customer;
+    private String token;
+    private String[] place,autocomplete;
 
     FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;

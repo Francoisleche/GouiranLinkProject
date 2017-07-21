@@ -1,13 +1,19 @@
 package com.gouiranlink.franois.gouiranlinkproject.Object;
 
+import java.io.Serializable;
+
 /**
  * Created by François on 20/01/2017.
  */
 
-public class Customer_Profession {
+public class Customer_Profession implements Serializable {
 
     private int id;
     private String name;
+
+    public Customer_Profession(){
+
+    }
 
     public Customer_Profession(int id,String name){
         this.setId(id);

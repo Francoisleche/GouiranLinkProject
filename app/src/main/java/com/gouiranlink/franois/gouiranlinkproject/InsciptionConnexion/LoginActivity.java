@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -245,7 +247,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                if(mPasswordView.getText().toString().equals("") && mEmailView.getText().toString().equals("")){
+                    mPasswordView.setError("Ce champ est vide !");
+                    mEmailView.setError("Ce champ est vide !");
+                }else if( mEmailView.getText().toString().equals("")){
+                    mEmailView.setError("Ce champ est vide !");
+                }else if(mPasswordView.getText().toString().equals("")){
+                    mPasswordView.setError("Ce champ est vide !");
+                }else {
+                    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo ni = cm.getActiveNetworkInfo();
+                    if(ni == null){
+                        Toast.makeText(getApplicationContext(), "Erreur : vous êtes actuellement hors ligne !", Toast.LENGTH_LONG).show();
+                    }else
+                        attemptLogin();
+
+                }
+
             }
         });
 
@@ -770,6 +788,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 onPostExecute(results);
 
             } catch (InterruptedException | ExecutionException e) {
+                new ParserTask(query,limit);
                 e.printStackTrace();
             }
             response = resp;
@@ -1117,12 +1136,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
+
+
+        if(mPasswordView.getText().toString().equals("")){
+            mPasswordView.setError("Ce champ est vide !");
+        }else if( mEmailView.getText().toString().equals("")){
+            mEmailView.setError("Ce champ est vide !");
+        }else if(mPasswordView.getText().toString().equals("") && mEmailView.getText().toString().equals("")){
+            mPasswordView.setError("Ce champ est vide !");
+            mEmailView.setError("Ce champ est vide !");
+        }else{
+            // Check for a valid password, if the user entered one.
+            if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+                mPasswordView.setError(getString(R.string.error_invalid_password));
+                focusView = mPasswordView;
+                cancel = true;
+            }
         }
+
+
 
         // Check for a valid email address.
         /*if (TextUtils.isEmpty(email)) {

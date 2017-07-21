@@ -24,6 +24,8 @@ Fragment which contains every others Settings' Fragments
 
 public class AccountFragment extends Fragment implements View.OnClickListener{
     private Customer customer;
+    private String token;
+    private String[] place,autocomplete;
 
 
     private OnFragmentInteractionListener mListener;
@@ -50,6 +52,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         }
         Fragment fragment = new MainSettings();
         Bundle args = new Bundle();
+
         args.putSerializable("Customer", customer);
         fragment.setArguments(args);
         fragmentTransaction.replace(R.id.frameLayout, fragment).commit();

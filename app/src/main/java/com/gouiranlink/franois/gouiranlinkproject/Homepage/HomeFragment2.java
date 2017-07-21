@@ -11,11 +11,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,15 +29,22 @@ import com.google.android.gms.location.LocationServices;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.Recherche.Research2Fragment;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
+import static android.content.ContentValues.TAG;
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.BaseFragment.ARGS_INSTANCE;
 
 /**
@@ -52,6 +63,10 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
     private String token;
 
     private String[] place,autocomplete;
+
+    private String[] articleIdList = new String[10];
+    private String[] articleTextList = new String[10];
+    private String[] articlePhotoList = new String[10];
 
     private HomeFragment2.OnFragmentInteractionListener mListener;
 
@@ -112,6 +127,7 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
             mGoogleApiClient.connect();
         } else
             Toast.makeText(getActivity(), "Not connected...", Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -243,8 +259,65 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
 
 
 
+        final LinearLayout myRoot = (LinearLayout) view.findViewById(R.id.articles);
+        final List<Button> list = new ArrayList<Button>();
+
+        json_parser_article(article_api());
+
+        for (int i = 0; i < articleIdList.length; i++) {
+            System.out.println("COMBIEN DE FOIS : " + i);
+            final View view2 = LayoutInflater.from(getActivity()).inflate(R.layout.services_layout_article, null);
+            Button button1 = (Button) view2.findViewById(R.id.lire_plus);
+            view2.setId(i);
+            myRoot.setId(i);
+            TextView text_article = (TextView) view2.findViewById(R.id.text_article);
+            final ImageView image_article = (ImageView) view2.findViewById(R.id.image_article);
 
 
+            if (articlePhotoList[i] == "") {
+                image_article.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.unknown));
+            } else {
+                Picasso.with(view2.getContext()).load(articlePhotoList[i])
+                        .into(image_article);
+            }
+
+            text_article.setText(articleTextList[i]);
+            button1.setId(i);
+            list.add(button1);
+            myRoot.addView(view2);
+        }
+
+
+        for (final Button button11111 : list) {
+            button11111.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+
+                    Fragment fragment = null;
+                    FragmentTransaction ft = null;
+                    Bundle args = new Bundle();
+                    FragmentManager fm = getFragmentManager();
+                    //FragmentTransaction ft = fm.beginTransaction();
+                    ft = fm.beginTransaction();
+                    //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+                    args.putSerializable("numero", button11111.getId());
+                    fragment = new ArticleFragment();
+                    fragment.setArguments(args);
+                    ft.replace(R.id.content_frame, fragment).addToBackStack("article");
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.commit();
+
+
+                }
+            });
+        }
+
+
+
+
+
+
+        //Bouton retour
         view.setFocusableInTouchMode(true);
         view.requestFocus();
         view.setOnKeyListener(new View.OnKeyListener() {
@@ -369,6 +442,53 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
         public void onStatusChanged(String provider,
                                     int status, Bundle extras) {
         }
+
+    }
+
+
+    public String article_api(){
+        GetRequest getRequest = new GetRequest("http://gouiran.link.free.fr/getallphotos.php");
+        String resp = null;
+        try {
+            resp = getRequest.execute().get();
+            System.out.println("Reeeeeeeeeeeeeeeeeeeeeeesp");
+            System.out.println(resp.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return resp;
+    }
+
+
+
+
+    public void json_parser_article(String str){
+
+        if (str != null) {
+            try {
+
+                JSONObject jsonObj = new JSONObject(str);
+                JSONArray nb_article = jsonObj.getJSONArray("data");
+                articleIdList = new String[nb_article.length()];
+                articleTextList = new String[nb_article.length()];
+                articlePhotoList = new String[nb_article.length()];
+
+                for (int i = 0; i < nb_article.length(); i++) {
+
+                    JSONObject c = nb_article.getJSONObject(i);
+
+                    articleIdList[i]=c.getString("id");
+                    articleTextList[i]=c.getString("text");
+                    articlePhotoList[i]=c.getString("photo");
+                }
+
+            } catch (final JSONException e) {
+                Log.e(TAG, "Json parsing error: " + e.getMessage());
+            }
+        }
+
 
     }
 

@@ -1,4 +1,4 @@
-package com.gouiranlink.franois.gouiranlinkproject.Recherche;
+package com.gouiranlink.franois.gouiranlinkproject.Favourites;
 
 import android.content.Context;
 import android.view.LayoutInflater;

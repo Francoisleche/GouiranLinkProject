@@ -2,8 +2,6 @@ package com.gouiranlink.franois.gouiranlinkproject.ToolsClasses;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 

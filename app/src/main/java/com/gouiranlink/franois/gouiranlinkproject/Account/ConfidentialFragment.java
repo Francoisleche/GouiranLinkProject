@@ -1,5 +1,8 @@
 package com.gouiranlink.franois.gouiranlinkproject.Account;
 
+import android.content.Intent;
+import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,6 +22,8 @@ import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetCustomerProfile;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PutRequest;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -127,6 +133,51 @@ public class ConfidentialFragment extends Fragment{
             @Override
             public void onClick(View v) {
 
+                AssetManager assetManager=getActivity().getAssets();
+                InputStream inputStream = null;
+                try {
+                    System.out.println("gg");
+                    inputStream = assetManager.open("CGU_APPLICATION_GOUIRAN_LINK.pdf");
+                } catch (IOException e) {
+                    System.out.println("non");
+                    e.printStackTrace();
+                }
+
+                //Uri path2 = Uri.parse("file:///android_asset/CGU_APPLICATION_GOUIRAN_LINK.pdf");
+                Uri path = Uri.parse("http://gouiran.link.free.fr/CGU_APPLICATION_GOUIRAN_LINK.pdf");
+                Intent intent = new Intent();
+                intent.setAction(android.content.Intent.ACTION_VIEW);
+                intent.setDataAndType(path, "application/pdf");
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+
+
+
+
+
+                /*Intent intent = new Intent();
+                intent.setAction(android.content.Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.fromFile(file),getMimeType(file.getAbsolutePath()));
+                startActivity(intent);*/
+
+
+
+
+
+
+
+
+
+                /*try {
+                        startActivity(intent);
+                    }
+                    catch (ActivityNotFoundException e) {
+                        Toast.makeText(getActivity(), "No Application Available to View PDF",
+                                Toast.LENGTH_SHORT).show();
+                    }*/
+
+
 
             }
         });
@@ -134,6 +185,19 @@ public class ConfidentialFragment extends Fragment{
 
         return root;
 
+    }
+
+
+    private String getMimeType(String url)
+    {
+        String parts[]=url.split("\\.");
+        String extension=parts[parts.length-1];
+        String type = null;
+        if (extension != null) {
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            type = mime.getMimeTypeFromExtension(extension);
+        }
+        return type;
     }
 
 }

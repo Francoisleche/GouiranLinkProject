@@ -58,7 +58,7 @@
         </LinearLayout>
 
         <LinearLayout xmlns:tools="http://schemas.android.com/tools"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -76,10 +76,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:text="%1$s FAVORIS"/>
+                android:text=" %1$s FAVORIS"/>
 
             </LinearLayout>
-
 
     </LinearLayout>
 

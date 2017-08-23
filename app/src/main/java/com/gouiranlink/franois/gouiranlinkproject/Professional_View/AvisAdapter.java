@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -164,6 +162,7 @@ public class AvisAdapter extends ArrayAdapter<String> {
                 //s = s + comment[position].getProfessional_products()[i].getName() + "\n";
                 s = s + comment[position].getProfessional_products()[i].getName() + ", ";
             }
+            s = s.substring(0,s.length()-2);
             textviewprestation.setText(s);
             textviewtext.setText(comment[position].getText());
 

@@ -4,8 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -17,16 +19,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.R;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses2.AndroidCameraApi4;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by François on 25/06/2017.
@@ -35,7 +38,7 @@ import java.util.ArrayList;
 public class FragmentGallery2 extends Fragment {
     public static ArrayList<Model_images> al_images = new ArrayList<>();
 
-    ArrayAdapter adapter_image;
+    //ArrayAdapter adapter_image;
 
     boolean boolean_folder;
     Adapter_PhotosFolder obj_adapter;
@@ -44,7 +47,8 @@ public class FragmentGallery2 extends Fragment {
     private static final int REQUEST_PERMISSIONS = 100;
     Cursor cursor;
     private static int RESULT_LOAD_IMAGE = 1;
-
+    private static final int CAMERA_REQUEST = 1888;
+    ImageAdapter adapter_image;
 
     public FragmentGallery2() {
         // Required empty public constructor
@@ -97,11 +101,109 @@ public class FragmentGallery2 extends Fragment {
         Button selfie = (Button) view.findViewById(R.id.selfie);
         selfie.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                //NE MARCHE PAS
                 //Intent intent = new Intent(getActivity(), AndroidCameraApi.class);
                 //getActivity().startActivity(intent);
 
-                Intent intent = new Intent(getActivity(), AndroidCameraApi4.class);
-                getActivity().startActivity(intent);
+
+                //MARCHE A MOITIE
+                //Intent intent = new Intent(getActivity(), AndroidCameraApi4.class);
+                //getActivity().startActivity(intent);
+
+
+                File file = null;
+
+
+                boolean trouve = false;
+                String trouve_Folder = "";
+                String trouve_Column = "";
+                int column_index_data, column_index_folder_name;
+                Cursor cursor = null;
+                String absolutePathOfImage = null;
+                Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
+                final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+                cursor = getActivity().getContentResolver().query(uri, projection, null, null, orderBy + " ASC");
+                column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+                column_index_folder_name = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+                while (cursor.moveToNext()) {
+                    absolutePathOfImage = cursor.getString(column_index_data);
+                    Log.e("Column", absolutePathOfImage);
+                    Log.e("Folder", cursor.getString(column_index_folder_name));
+                    if (absolutePathOfImage.contains(Environment.getExternalStorageDirectory() + "/GouiranLinkPhoto/images/")) {
+                        System.out.println("TROUVER : " + cursor.getString(column_index_folder_name));
+
+
+                        trouve = true;
+                        trouve_Folder = cursor.getString(column_index_folder_name);
+                        trouve_Column = absolutePathOfImage;
+                    }
+                }
+                cursor.close();
+
+
+                if (trouve) {
+                    String str = trouve_Column.replace(Environment.getExternalStorageDirectory() + "/GouiranLinkPhoto/images/image", "");
+                    String s = str.replace(".jpg", "");
+                    //System.out.println("SSSSSSSSSSSSSSSSS"+ s);
+                    int nombre = Integer.parseInt(s);
+
+
+                    //final String appDirectoryName = "/GouiranLinkPhoto/images";
+                    String imageRoot = Environment.getExternalStorageDirectory() + "/GouiranLinkPhoto/images/";
+                    file = new File(imageRoot, "/image" + (nombre + 1) + ".jpg");
+                    //System.out.println("Nom du fichier :" + file.getAbsolutePath());
+
+                } else {
+                    //si le dossier GouiranLinkPhoto/images exist
+                    //si le fichier n'existe pas tu arrives ici.
+                    System.out.println("je passe 1");
+
+                    //System.out.println("PasTrouuuuuuuuuuuuuuve");
+                    final String appDirectoryName = "GouiranLinkPhoto";
+                    //final File imageRoot = new File(Environment.getExternalStoragePublicDirectory(
+                    //Environment.DIRECTORY_PICTURES), appDirectoryName);
+                    //System.out.println("PasTrouuuuuuuuuuuuuuve" + imageRoot.getAbsolutePath());
+                    File imageRoot = new File(Environment.getExternalStorageDirectory() + "/GouiranLinkPhoto/images/");
+                    boolean success = false;
+                    if (!imageRoot.exists()) {
+                        Log.d("", "EXISTE PAS");
+                        success = imageRoot.mkdirs();
+                    }
+                    if (!success) {
+                        Log.d("", "Folder not created.");
+                    } else {
+                        Log.d("", "Folder created!");
+                    }
+
+
+                    //file = new File(Environment.getExternalStorageDirectory()+"GouiranLinkPhoto/pic0.jpg");
+                    //imageRoot.mkdirs();
+                    file = new File(imageRoot, "image1.jpg");
+
+                }
+
+
+                //Uri imageUri = Uri.fromFile(file);
+
+
+                String path = file.getAbsolutePath();
+                System.out.println("PATH photo:" + path);
+                //String path = Environment.getExternalStorageDirectory() + "/GouiranLinkPhoto/images/photo1.jpg";
+                System.out.println("PATH photo:" + path);
+
+
+                Uri uriSavedImage = Uri.fromFile(new File(path));
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraIntent.putExtra("return-data", true);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                getActivity().sendBroadcast(new Intent(
+                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri
+                        .parse(path)));
+
+                System.out.println("ildevrait passer par la");
+                fn_imagespath();
             }
         });
 
@@ -109,14 +211,15 @@ public class FragmentGallery2 extends Fragment {
 
         if ((ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(getContext(),
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(getContext(),Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)){
             if ((ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) && (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE))) {
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) && (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.CAMERA))) {
 
             } else {
                 ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA},
                         REQUEST_PERMISSIONS);
             }
         }else {
@@ -152,6 +255,7 @@ public class FragmentGallery2 extends Fragment {
 
 
     public ArrayList<Model_images> fn_imagespath() {
+        System.out.println("ildevrait passer par la2");
         al_images.clear();
 
         int int_position = 0;
@@ -271,13 +375,30 @@ public class FragmentGallery2 extends Fragment {
         }else{
             gv_folder.setVisibility(true ? View.VISIBLE : View.GONE);
             tv_folder.setVisibility(true ? View.GONE : View.VISIBLE);
-            ImageAdapter adapter_image = new ImageAdapter(getContext(),al_images.get(0).getAl_imagepath());
+            //ImageAdapter adapter_image = new ImageAdapter(getContext(),al_images.get(0).getAl_imagepath());
+            adapter_image = new ImageAdapter(getContext(),al_images.get(0).getAl_imagepath());
             //adapter_image = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item,al_images.get(0).getAl_imagepath());
             gv_folder.setAdapter(adapter_image);
         }
 
         return al_images;
     }
+
+
+
+
+
+
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+            Bitmap mphoto = (Bitmap) data.getExtras().get("data");
+            //mimageView.setImageBitmap(mphoto);
+        }
+    }
+
+
 
 
 

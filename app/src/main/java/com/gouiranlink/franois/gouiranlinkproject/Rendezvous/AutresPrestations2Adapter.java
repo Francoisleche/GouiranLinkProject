@@ -113,6 +113,7 @@ public class AutresPrestations2Adapter extends BaseExpandableListAdapter {
         if (getListe_selection().size()>0) {
             for(int i = 0; i< getListe_selection().size(); i++){
                 String[] separated2_position = getListe_selection().get(i).split("////");
+                System.out.println("OOOOoooooooooh :"+getListe_selection().get(i));
                 if(listPosition == Integer.parseInt(separated2_position[0]) && expandedListPosition== Integer.parseInt(separated2_position[1])){
                     trouve[0] = true;
                 }
@@ -125,12 +126,13 @@ public class AutresPrestations2Adapter extends BaseExpandableListAdapter {
                 if(separated[2].substring(0,2).equals("00")){
                     duree_expandedListItem.setText(separated[2].substring(3,5) +" min");
                 }else if(!separated[2].substring(0,2).equals("00") && separated[2].substring(3,5).equals("00")){
-                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h");
+                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +"h");
                 }else{
-                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h" + separated[2].substring(3,5) +" min");
+                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +"h" + separated[2].substring(3,5) +"");
                 }
                 text_expandedListItem.setText(separated[3]);
                 plus.setImageResource(R.drawable.ic_check_circle_pink_24dp);
+                discount_expandedListItem.setText(separated[4]);
                 //list_item2_linear.setBackgroundColor(Color.BLUE);
                 notifyDataSetChanged();
             }else{
@@ -141,12 +143,13 @@ public class AutresPrestations2Adapter extends BaseExpandableListAdapter {
                 if(separated[2].substring(0,2).equals("00")){
                     duree_expandedListItem.setText(separated[2].substring(3,5) +" min");
                 }else if(!separated[2].substring(0,2).equals("00") && separated[2].substring(3,5).equals("00")){
-                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h");
+                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +"h");
                 }else{
-                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h" + separated[2].substring(3,5) +" min");
+                    duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +"h" + separated[2].substring(3,5) +"");
                 }
                 text_expandedListItem.setText(separated[3]);
                 plus.setImageResource(R.drawable.ic_plus_24dp);
+                discount_expandedListItem.setText(separated[4]);
                 //list_item2_linear.setBackgroundColor(Color.WHITE);
                 notifyDataSetChanged();
             }
@@ -158,12 +161,13 @@ public class AutresPrestations2Adapter extends BaseExpandableListAdapter {
             if(separated[2].substring(0,2).equals("00")){
                 duree_expandedListItem.setText(separated[2].substring(3,5) +" min");
             }else if(!separated[2].substring(0,2).equals("00") && separated[2].substring(3,5).equals("00")){
-                duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h");
+                duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +"h");
             }else{
-                duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h" + separated[2].substring(3,5) +" min");
+                duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +"h" + separated[2].substring(3,5) +"");
             }
             text_expandedListItem.setText(separated[3]);
             plus.setImageResource(R.drawable.ic_plus_24dp);
+            discount_expandedListItem.setText(separated[4]);
             //list_item2_linear.setBackgroundColor(Color.WHITE);
             notifyDataSetChanged();
         }

@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:background="@color/GouiranLightPink">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/GouiranLightPink"
+            android:gravity="center"
+            android:text="Ma Galerie"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:layout_weight="2.76" />
+
+        <Button
+            android:id="@+id/capture_btn1"
+            android:layout_marginRight="10dp"
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.29"
+            android:background="@drawable/ic_photo_camera_white_24dp"
+            android:clickable="true" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="?attr/actionBarSize"
+        android:id="@+id/RelativeGridLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent" >
+
+        <GridView
+            android:id="@+id/gridviewimg"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:numColumns="2"
+            android:scrollbarStyle="outsideInset"
+            android:smoothScrollbar="true"
+            android:verticalSpacing="10dp"
+            android:paddingBottom="50dp"
+            android:paddingTop="10dp"
+            />
+    </RelativeLayout>
+
+    <!--<RelativeLayout
+        android:id="@+id/RelativeLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/RelativeGridLayout"
+        >
+
+        <Button
+            android:id="@+id/capture_btn1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Camera" />
+    </RelativeLayout>-->
+
+</RelativeLayout>

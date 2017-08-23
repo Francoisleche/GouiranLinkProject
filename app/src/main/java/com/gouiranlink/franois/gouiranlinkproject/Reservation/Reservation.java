@@ -14,6 +14,7 @@ public class Reservation implements Serializable {
     public String id;
     String picture;
     String institute;
+    String professional_type;
     List<String> type;
     ArrayList<String> products = new ArrayList<>();
     String date;
@@ -26,6 +27,7 @@ public class Reservation implements Serializable {
     public Reservation() {
         picture = "";
         institute = "";
+        setProfessional_type("");
         type = new ArrayList<String>();
         date = "";
         hour = "";
@@ -118,5 +120,13 @@ public class Reservation implements Serializable {
 
     public void setBoolean_commentaires_date_ok(Boolean boolean_commentaires_date_ok) {
         this.boolean_commentaires_date_ok = boolean_commentaires_date_ok;
+    }
+
+    public String getProfessional_type() {
+        return professional_type;
+    }
+
+    public void setProfessional_type(String professional_type) {
+        this.professional_type = professional_type;
     }
 }

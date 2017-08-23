@@ -78,9 +78,9 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         if(separated[2].substring(0,2).equals("00")){
             duree_expandedListItem.setText(separated[2].substring(3,5) +" min");
         }else if(!separated[2].substring(0,2).equals("00") && separated[2].substring(3,5).equals("00")){
-            duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h");
+            duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +"h");
         }else{
-            duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +" h" + separated[2].substring(3,5) +" min");
+            duree_expandedListItem.setText(Integer.parseInt(separated[2].substring(0,2)) +"h" + separated[2].substring(3,5) +"");
         }
 
 
@@ -89,6 +89,10 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         //duree_expandedListItem.setLayoutParams(new LinearLayout.LayoutParams(500, LinearLayout.LayoutParams.MATCH_PARENT));
 
         text_expandedListItem.setText(separated[3]);
+
+
+
+        discount_expandedListItem.setText(separated[4]);
 
 
         /*int s =0;

@@ -447,11 +447,14 @@ public class EditAccountFragment extends Fragment {
                 spinnerprofession.setSelection(4);
             }
             else if (customer.getProfession().getName().equals("Autre")) {
-                json_profession += "6," + "\"name\":\"" + "Autre \" }";
+                json_profession += "6," + "\"name\":\"" + "Autre\" }";
                 spinnerprofession.setSelection(5);
                 editText2.setVisibility(true ? View.VISIBLE : View.GONE);
                 editText3.setVisibility(true ? View.VISIBLE : View.GONE);
-                editText2.setText(customer.getProfession_other());
+                if(customer.getProfession_other().equals("null")){
+                    editText2.setText("");
+                }else
+                    editText2.setText(customer.getProfession_other());
             } else
                 Toast.makeText(getActivity(), "GENDER=[" + customer.getProfession().getName() + "]", Toast.LENGTH_SHORT).show();
         }
@@ -496,7 +499,7 @@ public class EditAccountFragment extends Fragment {
                     EditText editText2 = (EditText) root.findViewById(R.id.edit_value_birth_date2);
                     EditText editText3 = (EditText) root.findViewById(R.id.edit_value_birth_date3);
                     birth_date = editText.getText().toString()+"-"+editText2.getText().toString()+"-"+editText3.getText().toString();
-                    if (birth_date.isEmpty() || birth_date.equals("") || birth_date == null){
+                    if (birth_date.isEmpty() || birth_date.equals("--") || birth_date == null){
                         birth_date = customer.getBirthday_date();
                     }
 
@@ -522,6 +525,12 @@ public class EditAccountFragment extends Fragment {
                         gender[0] = "M";
                     else if (gender != null && gender[0].equals("Femme"))
                         gender[0] = "F";
+
+                    editText2 = (EditText) root.findViewById(R.id.edit_value_profession);
+                    System.out.println("profession other : " +editText2.getText());
+                    if(!editText2.getText().equals("")){
+                        json_profession = json_profession + ",\"profession_other\" : \""+editText2.getText()+"\"";
+                    }
 
                     String json = "{\n" +
                             "\"email\":\"" + email + "\",\n" +

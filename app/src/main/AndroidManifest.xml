@@ -179,8 +179,8 @@
         <activity android:name="com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginGoogleActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
-        <!--<activity android:name=".Gallery.ActivityGallery"></activity>-->
-        <!--<activity android:name=".Gallery.PhotosActivity"></activity>-->
+        <activity android:name=".Gallery.FragmentGallery4"></activity>
+        <activity android:name=".Gallery.Camera_Activity_Test_Fragment"></activity>
     </application>
 
 </manifest>

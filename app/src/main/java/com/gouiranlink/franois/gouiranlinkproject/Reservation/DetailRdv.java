@@ -3,9 +3,12 @@ package com.gouiranlink.franois.gouiranlinkproject.Reservation;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
@@ -72,6 +76,8 @@ public class DetailRdv extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_monrdv, container, false);
+        final TextView text_jairdvchez = (TextView) v.findViewById(R.id.jairdvchez);
+        final TextView text_texte_adomicile = (TextView) v.findViewById(R.id.texte_adomicile);
         final TextView text_nom_prestataire = (TextView) v.findViewById(R.id.monrdv_nomprestataire);
         final TextView text_daterdv = (TextView) v.findViewById(R.id.monrdv_daterdv);
         final TextView text_adresse = (TextView) v.findViewById(R.id.monrdv_adresse);
@@ -90,6 +96,7 @@ public class DetailRdv extends Fragment {
             upcoming.setVisibility(true ? View.GONE : View.VISIBLE);
             done.setVisibility(true ? View.VISIBLE : View.GONE);
 
+            text_jairdvchez.setText("Mon RdV a eu lieu chez : ");
             traitementcommentaire(recupcommentaire(String.valueOf(customer.getId())));
             boolean trouve = false;
             if(reser.boolean_commentaires_date_ok.equals(true)){
@@ -108,6 +115,12 @@ public class DetailRdv extends Fragment {
             }
 
 
+        }
+
+        if(reser.professional_type.contains("domicile")){
+            text_texte_adomicile.setVisibility(true ? View.VISIBLE : View.GONE);
+        }else{
+            text_texte_adomicile.setVisibility(true ? View.GONE : View.VISIBLE);
         }
 
 
@@ -164,12 +177,19 @@ public class DetailRdv extends Fragment {
                 final LinearLayout root = (LinearLayout) contentView2.findViewById(R.id.Layout_comment);
                 //recupcommentaire(String.valueOf(customer.getId()));
 
+                RatingBar ratingBar = (RatingBar) contentView2.findViewById(R.id.ratingbar_commentaire);
+                LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+                stars.getDrawable(1).setColorFilter(ContextCompat.getColor(getContext(), R.color.GouiranDarkBlue), PorterDuff.Mode.SRC_ATOP);
+                stars.getDrawable(2).setColorFilter(ContextCompat.getColor(getContext(), R.color.GouiranDarkBlue), PorterDuff.Mode.SRC_ATOP);
+
+
                 dialog_commentaire.setContentView(root);
                 dialog_commentaire.show();
 
                 contentView2.findViewById(R.id.comment_valid).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        System.out.println("OOOooooooooooooh J'ai écriiiiiiiis :" + customer.getId());
                         EditText edit = (EditText)contentView2.findViewById(R.id.description_comment);
                         String s = edit.getText().toString();
                         faire_un_commentaire(String.valueOf(customer.getId()),s);
@@ -312,7 +332,7 @@ public class DetailRdv extends Fragment {
         String headerKey;
         String headerValue;
         String resp;
-        String json,json2;
+        String json,json2,json3;
 
             String format = "dd/MM/yyyy HH:mm:ss.SS";
 
@@ -329,11 +349,11 @@ public class DetailRdv extends Fragment {
 
 
         System.out.println("Pas poli : " + annee1+"/"+mois1+"/"+jour1+"T"+formater.format(date).toString().substring(11,19) + "Z");
-        String date2 = annee1+"/"+mois1+"/"+jour1+"T"+formater.format(date).toString().substring(11,19) + "Z";
+        String date2 = annee1+"-"+mois1+"-"+jour1+"T"+formater.format(date).toString().substring(11,19) + "Z";
         System.out.println("Pas poli2 : "+ date2);
 
         json2 = "{\n" +
-                "\"id\":\"" + String.valueOf(customer.getId()) + "\"," +
+                "\"id\":" + customer.getId() + "," +
                 "\"name\":\"" + customer.getName() + "\"," +
                 "\"surname\":\"" + customer.getSurname() + "\""+
                 "}\n";
@@ -349,12 +369,24 @@ public class DetailRdv extends Fragment {
                 "\"customer\":" + json2 +
                 "}\n"+"}";
 
+        json3 = "{\n" +
+                "\"booking\":{\"" +
+                "begin_date\":\"" + date2 + "\"," +
+                "\"products\":\n" + reser.products_json +
+
+                "}\n"+"," +
+                "\"grade\":" + 5 + "," +
+                "\"text\":\"" + text + "\"," +
+                "\"customer\":" + json2
+
+                +"}";
+
 
         System.out.println("JSOOOOOOOOOOOOOOn :"+json);
         headerKey = "Authorization";
         headerValue = "Token " + String.valueOf(customer.getToken());
         System.out.println("headerValue = Token " + String.valueOf(customer.getToken()));
-        PostRequest postRequest = new PostRequest("https://www.gouiran-beaute.com/link/api/v1/comment/customer/"+id+ "/", json, headerKey, headerValue);
+        PostRequest postRequest = new PostRequest("https://www.gouiran-beaute.com/link/api/v1/comment/customer/"+id+ "/", json3, headerKey, headerValue);
         try {
             resp = postRequest.execute().get();
             System.out.println("POST : " + resp);

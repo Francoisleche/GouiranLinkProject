@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -206,4 +207,32 @@ public class SignUp extends AppCompatActivity {
 
 
 }
+
+
+    //Retour arrière géré
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent KEvent)
+    {
+        System.out.println("Pourquoijepassepasparla");
+        int keyaction = KEvent.getAction();
+
+        if(keyaction == KeyEvent.KEYCODE_BACK)
+        {
+            int keycode = KEvent.getKeyCode();
+            int keyunicode = KEvent.getUnicodeChar(KEvent.getMetaState() );
+            char character = (char) keyunicode;
+
+            System.out.println("DEBUG MESSAGE KEY=" + character + " KEYCODE=" +  keycode);
+
+            //finish();
+        }
+
+
+        return super.dispatchKeyEvent(KEvent);
+    }
+
+
+
+
+
 }

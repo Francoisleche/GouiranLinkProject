@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="30dp"
     android:layout_marginLeft="25dp">
 
@@ -12,13 +13,16 @@
         android:layout_marginTop="5dp"/>
 
     <TextView
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:id="@+id/textprendrerdv1"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="bonjoureeeeeeeeeeeeee"
-        android:gravity="center"/>
+        android:layout_width="wrap_content"
+        android:text="bonjoureeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        android:gravity="left"
+        android:layout_alignParentBottom="true"/>
+
+
 
 
     <Button
@@ -26,7 +30,7 @@
         android:id="@+id/button_prendrerdv1"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="15dp"
         android:layout_alignParentRight="true"
         android:background="@drawable/ic_cancel" />
 

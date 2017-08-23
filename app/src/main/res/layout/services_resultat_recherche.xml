@@ -5,6 +5,24 @@
     android:layout_marginBottom="20dp"
     android:layout_marginTop="20dp">
 
+    <View
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"/>
+
+    <LinearLayout
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/back3">
+
+        <View
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"/>
+
     <ImageView
         android:id="@+id/image_recherche"
         android:layout_width="400dp"
@@ -16,7 +34,6 @@
         android:id="@+id/shopname_resultat"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:theme="@style/result_research"
         android:textSize="20sp"
         android:gravity="center"
         android:layout_marginLeft="10dp"
@@ -82,10 +99,24 @@
 
     </LinearLayout>
 
+        <View
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"/>
+
+
+
+    </LinearLayout>
+
     <View
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
+        android:layout_height="5dp"/>
+
+    <!--<View
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/black"/>
+        android:background="@color/black"/>-->
 
 </LinearLayout>

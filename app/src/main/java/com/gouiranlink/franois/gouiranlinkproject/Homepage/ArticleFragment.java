@@ -56,7 +56,7 @@ public class ArticleFragment extends Fragment{
                              Bundle savedInstanceState) {
         View root;
         // Inflate the layout for this fragment
-        root = inflater.inflate(R.layout.fragment_article, null);
+        root = inflater.inflate(R.layout.gabarit_a0_article, null);
 
 
         ImageView image1_article = (ImageView) root.findViewById(R.id.image1_article);

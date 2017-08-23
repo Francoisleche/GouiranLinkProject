@@ -64,6 +64,7 @@ public class Recapitulatif extends Fragment {
     private String[] recap;
 
     private String employe_selectionne;
+    private String date,date2,horaire;
 
 
     private ResearchFragment.ResearchTask mAuthTask = null;
@@ -215,6 +216,9 @@ public class Recapitulatif extends Fragment {
 
         //horairedateprestation.setText(part_5[0]+" "+part_5[1]+ " à "+part_5[2].substring(0,5));
         horairedateprestation.setText(part_5[0]+" "+part_5[1]+ " à "+ recap[6]);
+        date=part_5[1];
+        date2=recap[6];
+        horaire=recap[2];
 
 
         nomemploye.setText(resource.getName());
@@ -516,7 +520,7 @@ public class Recapitulatif extends Fragment {
         //private final Boolean connected;
 
         //private final String mEmail;
-        private String json;
+        private String json,json2,res_json;
         private final PostRequest postRequest;
         //private String resp;
         String headerKey;
@@ -534,10 +538,42 @@ public class Recapitulatif extends Fragment {
                     prestDetails += ",\n";
             }
             //String[] informations = getDateInformations(recap[5], recap[6]);
-            String[] informations = new String[2];
-            informations[0] = "2017-05-27T12:00:00Z";
-            informations[1] = "2017-05-27T14:00:00Z";
 
+
+            String s = date;
+            String s2 = date2;
+
+            String[] informations = new String[2];
+            //informations[0] = "2017-05-27T12:00:00Z";
+            //informations[1] = "2017-05-27T14:00:00Z";
+
+            String[] separated = horaire.split("h");
+            int heure = Integer.parseInt(date2.substring(0,2))+Integer.parseInt(separated[0]);
+            int min = Integer.parseInt(date2.substring(3,5))+Integer.parseInt(separated[1].substring(0,2));
+
+
+
+            int dureetotal = heure*60+min;
+            //dureetotal = dureetotal + Integer.parseInt(horaire.substring(0,2))*60+Integer.parseInt(horaire.substring(3,4));
+            int heuretotal = (int) dureetotal/60;
+            int minutetotal = (int) dureetotal%60;
+            String heuret = String.valueOf(heuretotal);
+            String minutet = String.valueOf(minutetotal);
+
+
+            informations[0] = date.substring(6,10)+"-"+date.substring(3,5)+"-"+date.substring(0,2)+"T"+date2.substring(0,2)+":"+date2.substring(3,5)+":00Z";
+            if(minutetotal<10){
+                minutet = new String("0"+String.valueOf(minutetotal));
+            }
+            if(heuretotal<10){
+                heuret = new String("0"+String.valueOf(heuretotal));
+            }
+                informations[1] = date.substring(6, 10) + "-" + date.substring(3, 5) + "-" + date.substring(0, 2) + "T" + heuret + ":" + minutet + ":00Z";
+
+            System.out.println("DEBUT RESOURCE");
+            System.out.println("DATE :::::: "+informations[0]);
+            System.out.println("DATE :::::: "+informations[1]);
+            System.out.println("FIN RESOURCE");
 
             System.out.println("DEBUT RESOURCE");
             ressource_jsonparser(recherche_ressource(String.valueOf(professional.getId())));
@@ -553,6 +589,24 @@ public class Recapitulatif extends Fragment {
                     "\"end_date\":\"" + informations[1] + "\"," +
                     "\"phone\":\"" + customer.getMobilephone() + "\"," +
                     "\"resource\":" + employe_selectionne + "\n," +
+                    "\"products\":[\n" + prestDetails +
+                    "]\n" +
+                    "}\n";
+
+            res_json = "{\n" +
+                    "\"id\":" + resource.getId() + "," +
+                    "\"type\":" + "{" +
+                    "\"id\":" + resource.getType().getId() + "," +
+                    "\"name\": \"" + resource.getType().getName() + "\"" +
+                    "}," +
+                    "\"surname\":\"" + resource.getSurname() + "\""+
+                    "}\n";
+
+            json2 = "{\n" +
+                    "\"begin_date\":\"" + informations[0] + "\"," +
+                    "\"end_date\":\"" + informations[1] + "\"," +
+                    "\"phone\":\"" + customer.getMobilephone() + "\"," +
+                    "\"resource\":" + res_json + "\n," +
                     "\"products\":[\n" + prestDetails +
                     "]\n" +
                     "}\n";
@@ -580,9 +634,9 @@ public class Recapitulatif extends Fragment {
 
 
             headerKey = "Authorization";
-            System.out.println("bigJson=" + json);
+            System.out.println("bigJson=" + json2);
             headerValue = "Token " + String.valueOf(customer.getToken());
-            postRequest = new PostRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/professional/" + String.valueOf(customer.getId()) + "/" + String.valueOf(professional.getId()) + "/", json, headerKey, headerValue);
+            postRequest = new PostRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/professional/" + String.valueOf(customer.getId()) + "/" + String.valueOf(professional.getId()) + "/", json2, headerKey, headerValue);
             String resp = null;
             try {
                 resp = postRequest.execute().get();

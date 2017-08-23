@@ -74,7 +74,8 @@
                 android:layout_marginBottom="25dp"
                 android:textSize="15sp"
                 android:text="Avis 1: mon coiffeur était super :) mon lissage brésilien est parfait. Prête pour ma soirée :)"
-                android:textColor="#918c8d" />
+                android:textColor="#918c8d"
+                android:textStyle="bold"/>
         </LinearLayout>
 
 
@@ -96,7 +97,7 @@
             android:gravity="right"
             android:text="Reponse pro"
             android:textColor="@color/black"
-            android:textStyle="italic"/>
+            android:textStyle="italic|bold"/>
 
         <TextView
             android:layout_marginTop="8dp"

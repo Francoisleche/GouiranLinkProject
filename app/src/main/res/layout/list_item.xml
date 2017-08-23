@@ -17,7 +17,7 @@
         android:text="Coiffure / Attache / Tresses"/>
 
     <LinearLayout
-        android:layout_width="400dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="5dp"
@@ -33,29 +33,34 @@
 
         <TextView
             android:id="@+id/duree_expandedListItem"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:gravity="center"
+            android:layout_marginLeft="10dp"
             android:layout_alignParentLeft="true"/>
 
         <TextView
             android:id="@+id/prix_expandedListItem"
-            android:layout_width="100dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:textColor="@color/GouiranDarkBlue"
+            android:id="@+id/discount_expandedListItem"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_alignParentLeft="true"/>
 
     </LinearLayout>
-    <TextView
-        android:textColor="#2ECCFA"
-        android:id="@+id/discount_expandedListItem"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:layout_alignParentLeft="true"/>
+
 </LinearLayout>

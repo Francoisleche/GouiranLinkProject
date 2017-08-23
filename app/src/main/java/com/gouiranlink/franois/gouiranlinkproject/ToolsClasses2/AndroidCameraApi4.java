@@ -42,7 +42,7 @@ public class AndroidCameraApi4 extends AppCompatActivity {
 
 
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ) {
             if (getFromPref(this, ALLOW_KEY)) {
                 showSettingsAlert();
             } else if ((ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)&& (ContextCompat.checkSelfPermission(this,
@@ -96,9 +96,12 @@ public class AndroidCameraApi4 extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        ActivityCompat.requestPermissions(AndroidCameraApi4.this,
+                        /*ActivityCompat.requestPermissions(AndroidCameraApi4.this,
                                 new String[]{Manifest.permission.CAMERA},
                                 MY_PERMISSIONS_REQUEST_CAMERA);
+                        finish();*/
+                        System.out.println("On passe bien par la");
+                        finish();
                     }
                 });
         alertDialog.show();
@@ -265,6 +268,9 @@ public class AndroidCameraApi4 extends AppCompatActivity {
             startActivityForResult(intent, 0);
 
         }
+
+
+
 
 
 

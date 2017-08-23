@@ -53,6 +53,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/jairdvchez"
                     android:textSize="17sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -102,8 +103,22 @@
                         android:layout_gravity="center"
                         android:id="@+id/monrdv_adresse"
                         android:textSize="17sp"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"/>
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:id="@+id/texte_adomicile"
+                        android:text="A DOMICILE"
+                        android:background="@color/GouiranDarkBlue"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -209,9 +224,10 @@
                         android:layout_height="wrap_content"
                         android:text="Dites-nous tout en publiant un avis !"/>
                     <ImageView
+                        android:layout_marginTop="15dp"
                         android:id="@+id/commentaire"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:src="@drawable/ic_commentaire"
                         android:layout_gravity="center"/>
                 </LinearLayout>

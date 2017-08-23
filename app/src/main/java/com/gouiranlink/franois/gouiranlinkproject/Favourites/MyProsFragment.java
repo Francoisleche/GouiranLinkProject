@@ -562,9 +562,13 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
                             Log.d("TITI", data.name);
                         }
 
-                        if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").getString("url") != null)
-                            data.shop_image = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
+                        //if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").getString("url") != null)
+                            //data.shop_image = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
 
+                        ArrayList<String> shop_image = shop_image_jsonparser2(recherche_shop_image(String.valueOf(data.id)));
+                        if(shop_image.size()!=0){
+                            data.shop_image = shop_image.get(0);
+                        }
 
 
                         datas.add(data);
@@ -584,6 +588,7 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
         } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
         }
+
 
         return (datas);
     }
@@ -635,24 +640,26 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
 
                             Shop_image = new ArrayList<>();
                             //ProfessionnalGenericSchedule = new Professional_Schedule[Professional_Schedule.length()];
-                            for (int j = 0; j < Professional_Shop_image.length(); j++) {
-                                //Professional_Schedule pro_schedule = new Professional_Schedule();
-                                JSONObject p2 = Professional_Shop_image.getJSONObject(j);
-                                String url = p2.getJSONObject("image").getString("url");
-                                //String weekeday_schedule = p2.getString("weekday");
-                                //String begin_time_schedule = p2.getString("begin_time");
-                                //String end_time_schedule = p2.getString("end_time");
 
-                                //Remplissage des horaires d'ouverture
+                                for (int j = 0; j < Professional_Shop_image.length(); j++) {
+                                    //Professional_Schedule pro_schedule = new Professional_Schedule();
+                                    JSONObject p2 = Professional_Shop_image.getJSONObject(j);
+                                    String url = p2.getJSONObject("image").getString("url");
+                                    //String weekeday_schedule = p2.getString("weekday");
+                                    //String begin_time_schedule = p2.getString("begin_time");
+                                    //String end_time_schedule = p2.getString("end_time");
+
+                                    //Remplissage des horaires d'ouverture
                     /*pro_schedule.setId(Integer.parseInt(id_schedule));
                     pro_schedule.setWeekday(Integer.parseInt(weekeday_schedule));
                     pro_schedule.setBegin_time(begin_time_schedule);
                     pro_schedule.setEnd_time(end_time_schedule);
                     ProfessionnalGenericSchedule[j] = pro_schedule;*/
 
-                                Shop_image.add(url);
+                                    Shop_image.add(url);
+                                }
                             }
-                        }
+
 
                     } catch (final JSONException e) {
                         Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -660,6 +667,7 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
                 }
 
             }
+
 
 
             public ArrayList<String> shop_image_jsonparser2(String jsonStr) {

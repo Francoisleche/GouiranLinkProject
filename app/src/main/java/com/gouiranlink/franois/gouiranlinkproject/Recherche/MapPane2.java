@@ -38,6 +38,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
@@ -562,7 +563,7 @@ public class MapPane2 extends Fragment{
                         }
 
                         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-                        mMap.setMyLocationEnabled(true);
+                        //mMap.setMyLocationEnabled(true);
                         criteria = new Criteria();
                         bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
                         Location location1 = locationManager.getLastKnownLocation(bestProvider);
@@ -570,13 +571,15 @@ public class MapPane2 extends Fragment{
                         longitude = location1.getLongitude();
 
                         LatLng latLng = new LatLng(latitude, longitude);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+                       //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
 
                         System.out.println("latitude " + latitude + " longitude " + longitude);
                         //recherche_autour(latitude,longitude);
                         //shopImageList = new String[5];
                         //shopNameList = new String[5];
 
+                        LatLngBounds zoneMarqueurs = null;
+                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
                         for (int i = 0; i < shopIdList.length; i++) {
 
@@ -587,7 +590,7 @@ public class MapPane2 extends Fragment{
                                 System.out.println("LATITUDE de " + i + " : " + tableau_latitude[i]);
                                 System.out.println("Longitude de " + i + " : " + tableau_longitude[i]);
                                 LatLng premier_trouve = new LatLng(Double.parseDouble(tableau_latitude[i]), Double.parseDouble(tableau_longitude[i]));
-
+                                builder.include(premier_trouve);
                                 //Marche bien, ne pas supprimer
                                 //mMap.addMarker(new MarkerOptions().position(premier_trouve).title(tableau_shop_name[i]));
                                 mMap.addMarker(new MarkerOptions().position(premier_trouve)
@@ -820,6 +823,7 @@ public class MapPane2 extends Fragment{
 
                             }
                         }
+
 
                     }
 

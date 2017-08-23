@@ -109,7 +109,7 @@ public class InformationsProfessional extends Fragment {
         address.setText(professional.getAddress());
 
         TextView post_code_city=(TextView) view.findViewById(R.id.post_code_city);
-        String code_postale_ville = professional.getPost_code()+" - "+professional.getCity();
+        String code_postale_ville = professional.getPost_code()+" "+professional.getCity();
         post_code_city.setText(code_postale_ville);
 
 
@@ -461,6 +461,7 @@ public class InformationsProfessional extends Fragment {
                     data.id = arr.getJSONObject(i).getInt("id");
 
                 for (int j = 0; j < arr.getJSONObject(i).getJSONArray("shop_images").length(); j++) {
+                    //if("shop_images==null)....
                     if (arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url") != null) {
                         data.shop_image = arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
                     }

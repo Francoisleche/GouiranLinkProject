@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titre_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Titre"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
+            <ImageView
+                android:id="@+id/image1_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/cb650f"/>
+
+            <TextView
+                android:id="@+id/text1_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="texte 1 article"/>
+
+            <TextView
+                android:id="@+id/soustitre1_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="soustitre 1 article"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/text2_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="texte 2 article"/>
+
+            <ImageView
+                android:id="@+id/image2_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/cb650f"/>
+
+
+
+            <!--   SIGNATURE    -->
+
+            <TextView
+                android:id="@+id/credit_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="credit article"
+                android:textStyle="italic"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image_editeur"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/cb650f"/>
+
+                <TextView
+                    android:id="@+id/nom_prenom_editeur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="texte 4 article"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

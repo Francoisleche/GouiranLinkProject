@@ -34,29 +34,38 @@
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:gravity="center"/>
+            android:gravity="left"/>
 
         <TextView
             android:id="@+id/duree_expandedListItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/text_expandedListItem"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:gravity="center"
-            android:textStyle="bold"/>
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/prix_expandedListItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/duree_expandedListItem"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/discount_expandedListItem"
+            android:layout_toRightOf="@id/prix_expandedListItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:layout_marginLeft="15dp"
             android:gravity="center"
-            android:textStyle="bold"/>
+            android:textColor="@color/GouiranDarkBlue"/>
 
         <ImageView
             android:layout_marginTop="7dp"
@@ -67,11 +76,5 @@
             android:src="@drawable/ic_plus_24dp"/>
 
     </RelativeLayout>
-    <TextView
-        android:textColor="#2ECCFA"
-        android:id="@+id/discount_expandedListItem"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp" />
+
 </LinearLayout>

@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
@@ -278,7 +277,7 @@ public class Horaires extends Fragment{
         currentDate.set(Calendar.MONTH, 11);
 
 
-        listView = (ListView) v.findViewById(R.id.meshoraires);
+        /*listView = (ListView) v.findViewById(R.id.meshoraires);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -316,7 +315,7 @@ public class Horaires extends Fragment{
 
 
                }
-         });
+         });*/
 
 
 

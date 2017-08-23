@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -21,6 +23,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +41,7 @@ import com.gouiranlink.franois.gouiranlinkproject.Account.AccountFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Account.NestedSettingsFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Favourites.Favoris2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.Favourites.FavouritesFragment;
-import com.gouiranlink.franois.gouiranlinkproject.Gallery.FragmentGallery2;
+import com.gouiranlink.franois.gouiranlinkproject.Gallery.FragmentGallery3;
 import com.gouiranlink.franois.gouiranlinkproject.Gallery.GalleryFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2;
@@ -49,6 +52,15 @@ import com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Reservation.Reservation2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.Reservation.ReservationFragment;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.CircleTransform;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import static android.Manifest.permission.SEND_SMS;
 
@@ -98,6 +110,97 @@ public class ParentActivity2 extends AppCompatActivity
         }
 
         System.out.println("Booooooooooooooooonjour" + token);
+
+
+
+
+
+
+
+
+        //CONFIGURATION
+
+        StringBuilder builder = new StringBuilder();
+        AssetManager assetManager= getAssets();
+        InputStream inputStream = null;
+        try {
+            System.out.println("gg");
+            inputStream = assetManager.open("configuration.txt");
+        } catch (IOException e) {
+            System.out.println("non");
+            e.printStackTrace();
+        }
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        String line;
+        try {
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+                builder.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("Configuration : " + builder.toString());
+
+        //FichierConfig fichierconfig = new FichierConfig();
+
+        // FIN CONFIGURATION
+
+
+
+        //CONFIGURATION 2
+        String fichier = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "configuration_test"+ File.separator +"configuration.txt";
+        BufferedReader In=null;
+        try{
+            In = new BufferedReader(new FileReader(fichier));
+            System.out.println("Le fichier exist !");
+            //si le fichier existe, les instructions qui suivent seront exécutées.
+            String line2 = null;
+            try {
+                while ((line2 = In.readLine()) != null) {
+                    System.out.println(line2);
+                    builder.append(line2);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException fnfe) {
+            //si le fichier n'existe pas tu arrives ici.
+            File myFile = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "configuration_test","configuration.txt"); //on déclare notre futur fichier
+
+            File myDir = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "configuration_test"); //pour créer le repertoire dans lequel on va mettre notre fichier
+            Boolean success=true;
+            if (!myDir.exists()) {
+                success = myDir.mkdir(); //On crée le répertoire (s'il n'existe pas!!)
+            }
+            if (success){
+
+                String data= "Ce que je veux ecrire dans mon fichier \r\n";
+
+                try {
+                    FileOutputStream output = new FileOutputStream(myFile, true); //le true est pour écrire en fin de fichier, et non l'écraser
+                    output.write(data.getBytes());
+                }catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                Log.e("TEST1","ERROR DE CREATION DE DOSSIER");
+            }
+
+        }
+        //FIN CONFIGURATION 2
+
+
+
+
 
 
 
@@ -333,9 +436,23 @@ public class ParentActivity2 extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_gallery) {
-
+            //ABANDONNE
             //fragment = new ActivityGallery();
-            fragment = new FragmentGallery2();
+
+            //Marchepresque
+            fragment = new FragmentGallery3();
+
+            //Intent gallery = new Intent(this,FragmentGallery4.class);
+            //startActivity(gallery);
+
+            //Fonctionne
+            //fragment = new FragmentTransitionGallery4();
+
+            //Essaie
+            //fragment = new FragmentGallery5();
+
+            //Essaie2
+            //fragment = new FragmentGallery6();
 
         } else if (id == R.id.nav_compte) {
             if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {
@@ -363,7 +480,7 @@ public class ParentActivity2 extends AppCompatActivity
             startActivity(Intent.createChooser(emailIntent, "Send mail..."));*/
 
             AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
-            builder2.setMessage("Choississez votre méthode d'envoie !");
+            builder2.setMessage("Choisissez votre méthode d'envoi !");
             builder2.setPositiveButton("SMS", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

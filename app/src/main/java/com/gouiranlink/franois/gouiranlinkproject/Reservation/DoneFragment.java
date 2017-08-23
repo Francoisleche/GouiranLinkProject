@@ -116,6 +116,10 @@ public class DoneFragment extends Fragment {
                         reservation.id = arr.getJSONObject(i).getString("id");
                     }
 
+                    if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").has("name") && !arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").isNull("name")){
+                        reservation.professional_type = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").getString("name");
+                    }
+
                     if (arr.getJSONObject(i).getJSONObject("professional").has("address") &&
                             arr.getJSONObject(i).getJSONObject("professional").has("post_code") &&
                             arr.getJSONObject(i).getJSONObject("professional").has("city") &&
@@ -123,9 +127,9 @@ public class DoneFragment extends Fragment {
                             !arr.getJSONObject(i).getJSONObject("professional").isNull("post_code") &&
                             !arr.getJSONObject(i).getJSONObject("professional").isNull("city")) {
 
-                        reservation.adress = arr.getJSONObject(i).getJSONObject("professional").getString("address") + " - " +
-                                arr.getJSONObject(i).getJSONObject("professional").getString("post_code") + " - " +
-                                arr.getJSONObject(i).getJSONObject("professional").getString("city") + " - " +
+                        reservation.adress = arr.getJSONObject(i).getJSONObject("professional").getString("address") + " " +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("post_code") + " " +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("city") + " " +
                                 arr.getJSONObject(i).getJSONObject("professional").getString("country");
                     }
 
@@ -242,7 +246,7 @@ public class DoneFragment extends Fragment {
             default:
                 day = "";
         }
-        return (day + " " + number + " " + month + " " + year);
+        return (day + " " + number + "/" + month + "/" + year);
     }
 
     private String getHour(String complete) {

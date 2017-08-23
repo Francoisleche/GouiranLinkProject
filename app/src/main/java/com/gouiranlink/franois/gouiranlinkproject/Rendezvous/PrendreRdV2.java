@@ -5,12 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
@@ -104,6 +101,8 @@ public class PrendreRdV2 extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        prix = 0.00 ;
+        duree = "" ;
         if (getArguments() != null) {
             horaires_indisponibilites = (ArrayList<String>) getArguments().getSerializable("horaires_indisponibilites");
             professional = (Professional) getArguments().getSerializable("Professionnal");
@@ -288,9 +287,9 @@ public class PrendreRdV2 extends Fragment{
         currentDate.set(Calendar.MONTH, 11);
 
 
-        listView = (ListView) v.findViewById(R.id.meshoraires);
+        //listView = (ListView) v.findViewById(R.id.meshoraires);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
                 System.out.println("ON A CLIQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
@@ -326,7 +325,7 @@ public class PrendreRdV2 extends Fragment{
 
 
             }
-        });
+        });*/
 
 
 
@@ -342,7 +341,7 @@ public class PrendreRdV2 extends Fragment{
         }
 
 
-        adapter = new IndisponibiliteAdapter(getActivity(),layout,id, items,String.valueOf(prix));
+        /*adapter = new IndisponibiliteAdapter(getActivity(),layout,id, items,String.valueOf(prix));
         listView.setAdapter(adapter);
 
 
@@ -358,7 +357,7 @@ public class PrendreRdV2 extends Fragment{
                 if (scrollState == 0)
                     Log.d("scroll", "scrolling stopped");
             }
-        });
+        });*/
 
 
 
@@ -1348,6 +1347,7 @@ public class PrendreRdV2 extends Fragment{
 
                 boolean trouve = false;
 
+
                 for(int y = 0;y<liste_indisponibilite.length;y++) {
                     if (Integer.parseInt(liste_indisponibilite[y].getAnnee()) == year && Integer.parseInt(liste_indisponibilite[y].getMois()) == (month + 1) && Integer.parseInt(liste_indisponibilite[y].getJour()) == day) {
                         trouve = true;
@@ -1633,6 +1633,85 @@ public class PrendreRdV2 extends Fragment{
                         }
                     }
                 }
+
+
+
+
+
+                String format = "dd/MM/yyyy H:mm:ss";
+                java.text.SimpleDateFormat formater = new java.text.SimpleDateFormat( format );
+                java.util.Date date = new java.util.Date();
+                String datedispo =  formater.format( date );
+
+
+                if(year == Integer.parseInt(datedispo.substring(6,10))){
+                    if(month+1 == Integer.parseInt(datedispo.substring(3,5))){
+                        if(day > (Integer.parseInt(datedispo.substring(0,2)))){
+
+                        }else{
+                            buton1.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton2.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton3.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton5.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton6.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton7.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton8.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton9.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton10.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton11.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton12.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton13.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton14.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton15.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton16.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton17.setVisibility(true ? View.GONE : View.VISIBLE);
+                        }
+                    }else if(month > Integer.parseInt(datedispo.substring(3,5))) {
+
+                    }else if(month < Integer.parseInt(datedispo.substring(3,5))){                       {
+                            buton1.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton2.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton3.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton4.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton5.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton6.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton7.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton8.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton9.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton10.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton11.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton12.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton13.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton14.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton15.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton16.setVisibility(true ? View.GONE : View.VISIBLE);
+                            buton17.setVisibility(true ? View.GONE : View.VISIBLE);
+                        }
+                    }
+                }else if(year > Integer.parseInt(datedispo.substring(6,10))){
+
+                }else if(year < Integer.parseInt(datedispo.substring(6,10))){
+                    buton1.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton2.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton3.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton4.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton5.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton6.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton7.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton8.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton9.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton10.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton11.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton12.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton13.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton14.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton15.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton16.setVisibility(true ? View.GONE : View.VISIBLE);
+                    buton17.setVisibility(true ? View.GONE : View.VISIBLE);
+                }
+
+
 
 
 

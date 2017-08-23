@@ -32,7 +32,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -185,6 +187,8 @@ public class PrendreRdV1 extends Fragment {
 
                 liste_service_selectionne = new ArrayList<String>();
                 expandableListAdapter2 = new AutresPrestations2Adapter(getActivity(), expandableListTitle, expandableListDetail,liste_service_selectionne);
+                System.out.println("Espace ou pas : "+expandableListDetail.get("Homme").get(0).toString());
+                System.out.println("Espace ou pas : "+expandableListDetail.get("Homme").get(1).toString());
                 expandableListView.setAdapter(expandableListAdapter2);
 
             }
@@ -281,6 +285,10 @@ public class PrendreRdV1 extends Fragment {
         appuie_horaire.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                tariftotal = 0.00;
+                dureetotal = 0;
+                heurefinal = "";
+
                 Toast.makeText(getApplicationContext(), "on a appuyé", Toast.LENGTH_SHORT).show();
 
                 ArrayList<String> products = new ArrayList<String>();
@@ -335,7 +343,37 @@ public class PrendreRdV1 extends Fragment {
                 ResourceProfessional[0] = pivot;
 
 
-                horaires_jsonparser(recherche_horaires(String.valueOf(professional.getId()), "2017-05-05T00:00:00Z", "2017-08-17T00:00:00Z", String.valueOf(ResourceProfessional[position].getId()), products));
+
+                String format = "dd/MM/yyyy H:mm:ss";
+                java.text.SimpleDateFormat formater = new java.text.SimpleDateFormat( format );
+                java.util.Date date = new java.util.Date();
+                String datedispo =  formater.format( date );
+
+                String date1 = datedispo.substring(6,10)+"-"+datedispo.substring(3,5)+"-"+datedispo.substring(0,2)+"T00:00:00Z";
+                int annee_calcul = Integer.parseInt(datedispo.substring(6,10));
+                int mois_calcul = Integer.parseInt(datedispo.substring(3,5))+3;
+                String annee_cal = "";
+                String mois_cal = "";
+                if(mois_calcul>12){
+                    mois_calcul = (int) mois_calcul/12;
+                    annee_calcul++;
+                }
+                if(mois_calcul<10){
+                    mois_cal = "0" + mois_calcul;
+                }else{
+                    mois_cal = String.valueOf(mois_calcul);
+                }
+                annee_cal = String.valueOf(annee_calcul);
+
+
+                String date2 = annee_cal+"-"+mois_cal+"-"+datedispo.substring(0,2)+"T00:00:00Z";
+
+
+
+                System.out.println("daaaaaaaaaaate 1 : " + date1);
+                System.out.println("daaaaaaaaaaate 2 : " + date2);
+                //horaires_jsonparser(recherche_horaires(String.valueOf(professional.getId()), "2017-05-05T00:00:00Z", "2017-08-17T00:00:00Z", String.valueOf(ResourceProfessional[position].getId()), products));
+                horaires_jsonparser(recherche_horaires(String.valueOf(professional.getId()), date1, date2, String.valueOf(ResourceProfessional[position].getId()), products));
 
 
                 Fragment fragment = null;
@@ -663,11 +701,45 @@ public class PrendreRdV1 extends Fragment {
                 String discounts_resource_manager = p2.getString("discounts");
 
                 System.out.println("AFFICHEEEEEER au moins un truc");
-                String discounts = "";
+                String discounts = " ";
                 System.out.println("AFFICHEEEEEER DISCOUNT :" + discounts_resource_manager);
                 if(!discounts_resource_manager.equals("[]")){
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String currentDateTime = dateFormat.format(new Date());
+
                     JSONArray discounts_tableau = p2.getJSONArray("discounts");
-                    discounts = discounts_tableau.getJSONObject(0).getString("amount");
+                    System.out.println("AFFICHEEEEEER DISCOUNT :"+discounts_tableau.get(0).toString());
+
+                    for (int y = 0; y < discounts_tableau.length(); y++) {
+                        JSONObject p3 = discounts_tableau.getJSONObject(y);
+                        String id_discount = p3.getString("id");
+                        String begin_date_discount = p3.getString("begin_date");
+                        String end_date_discount = p3.getString("end_date");
+                        String is_percentage_discount = p3.getString("is_percentage");
+                        String amount_discount = p3.getString("amount");
+                        String currency_discount = p3.getString("currency");
+
+                        String date1 = currentDateTime.substring(0,10);
+                        String date2 = begin_date_discount.substring(0,10);
+                        String date3 = end_date_discount.substring(0,10);
+
+                        int dat1 = Integer.parseInt(date1.replace("-",""));
+                        int dat2 = Integer.parseInt(date2.replace("-",""));
+                        int dat3 = Integer.parseInt(date3.replace("-",""));
+
+                        System.out.println("AFFICHEEEEEER DISCOUNT1 :" + "dat1="+dat1+"***dat2="+dat2+"***dat3="+dat3);
+                        if(dat1 >= dat2 && dat1 <= dat3) {
+                            System.out.println("AFFICHEEEEEER DISCOUNT2");
+                            if (is_percentage_discount.equals("true")) {
+                                discounts = "- " + amount_discount + "%";
+                            } else {
+                                discounts = "- " + amount_discount + "€";
+                            }
+                        }
+
+
+                    }
+                    //discounts = discounts_tableau.getJSONObject(0).getString("amount");
                     System.out.println("AFFICHEEEEEER DISCOUNT :" + discounts);
                 }
 
@@ -699,6 +771,9 @@ public class PrendreRdV1 extends Fragment {
 
 
                 String description = (String) json2.get("description");
+                if(description.equals("")){
+                    description = " ";
+                }
 
                 JSONObject json3 = json2.getJSONObject("category");
                 int product_category_id = (int) json3.get("id");
@@ -722,16 +797,16 @@ public class PrendreRdV1 extends Fragment {
 
                 // pourquoi //// ? parce que / est deja utiliser dans les noms de products
                 if(product_category_name.equals("Coiffure Femme")){
-                    liste_coifure_femme.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_coifure_femme.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
                    // liste_coifure_femme2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }else if(product_category_name.equals("Bien-Être")){
-                    liste_bien_etre.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_bien_etre.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
                    // liste_bien_etre2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }else if(product_category_name.equals("Beauté")){
-                    liste_beaute.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_beaute.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
                    // liste_beaute2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }else if(product_category_name.equals("Homme")){
-                    liste_homme.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_homme.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
                     //liste_homme2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
                 }
 

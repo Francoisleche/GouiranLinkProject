@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:id="@+id/frameLayout"
-    android:background="@drawable/section1_bg"
+    android:background="@color/white"
     tools:context="com.gouiranlink.franois.gouiranlinkproject.Account.MainSettings">
 
     <FrameLayout
@@ -37,14 +37,11 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="5px"
-                android:background="#FF909090" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -57,27 +54,36 @@
                     app:civ_border_width="5dp"
                     app:civ_border_color="#d16677"/>
 
+                <TextView
+                    android:textColor="@color/black"
+                    android:id="@+id/identifiantcustomer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_gravity="center"
+                    android:text="text"/>
+
                 <Button
+                    android:layout_marginTop="10dp"
                     android:layout_gravity="bottom"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:onClick="onClick"
                     android:id="@+id/edit_profile"
-                    android:background="@drawable/ic_crayon"/>
+                    android:text="EDITER MON PRODFIL"
+                    android:textColor="@color/white"
+                    android:background="@color/GouiranDarkPink"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"/>
                     <!--android:background="@drawable/ic_border_color_black_24dp"/>-->
 
             </LinearLayout>
 
 
-            <TextView
-                android:textColor="@color/black"
-                android:id="@+id/identifiantcustomer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="17dp"
-                android:layout_marginTop="15dp"/>
+
 
             <TextView
                 android:textColor="@color/black"
@@ -85,8 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
-
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="5dp"/>
 
 
 
@@ -133,7 +138,8 @@
                     <View
                         android:layout_width="5px"
                         android:layout_height="fill_parent"
-                        android:background="#FF909090" />
+                        android:background="#FF909090"
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:layout_width="150dp"
@@ -168,7 +174,8 @@
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="5px"
-                    android:background="#FF909090" />
+                    android:background="#FF909090"
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -208,7 +215,8 @@
                     <View
                         android:layout_width="5px"
                         android:layout_height="fill_parent"
-                        android:background="#FF909090" />
+                        android:background="#FF909090"
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:layout_marginTop="10dp"

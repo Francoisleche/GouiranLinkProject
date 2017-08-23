@@ -33,6 +33,7 @@ public class Professional extends PublicProfessional implements Serializable {
     private Discount_Exclusivity discount_exclusivity;
     private Resource_Type preference_resource_type;
     private String sponsoring_key;
+    private Boolean booking_enabled;
 
     public Professional(){
     }
@@ -278,7 +279,11 @@ public class Professional extends PublicProfessional implements Serializable {
     }
 
 
+    public Boolean getBooking_enabled() {
+        return booking_enabled;
+    }
 
-
-
+    public void setBooking_enabled(Boolean booking_enabled) {
+        this.booking_enabled = booking_enabled;
+    }
 }

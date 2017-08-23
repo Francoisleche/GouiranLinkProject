@@ -14,6 +14,8 @@ public class Resource_Type {
         this.setName(name);
     }
 
+    public Resource_Type(){}
+
     public int getId() {
         return id;
     }

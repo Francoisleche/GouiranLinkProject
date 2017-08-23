@@ -282,6 +282,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     private void nextActivity(String resp) {
+        System.out.println("Onnnnnnnnnnnnnnnnnnnnnnnndevraitpasserparla");
+
         //cacher le clavier
         hideKeyBoard(this);
 
@@ -870,6 +872,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     private void nextActivity(Profile profile, String accessToken) {
+
         if (profile != null) {
             Intent main = new Intent(LoginActivity.this, ParentActivity2.class);
             myCustomer.setmFacebook(true);
@@ -1000,6 +1003,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
         } else {
+            System.out.println("Onnnnnnnnnnnnnnnnnnnnnnnndevraitpasserparla2");
             showProgressDialog();
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
@@ -1028,6 +1032,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     private void showProgressDialog() {
+        System.out.println("Onnnnnnnnnnnnnnnnnnnnnnnndevraitpasserparla3");
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMessage(getString(R.string.loading));
@@ -1396,7 +1401,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Toast.makeText(this, "Creating account", Toast.LENGTH_LONG);
                 i = new Intent(this, SignUp.class);
                 startActivity(i);
-                finish();
+                //finish();
                 break;
             case R.id.ignorer_pour_l_instant:
                 Bundle b = new Bundle();
@@ -1512,6 +1517,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
                 0);
     }
+
+
+    /*@Override
+    public void onBackPressed() {
+        LinearLayout drawer = (LinearLayout) findViewById(R.id.visible);
+        super.onBackPressed();
+    }*/
 
 
 

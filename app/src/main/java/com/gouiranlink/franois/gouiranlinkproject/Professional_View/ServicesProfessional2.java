@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * Created by François on 04/05/2017.
  */
@@ -98,7 +100,8 @@ public class ServicesProfessional2 extends Fragment{
 
         View v = inflater.inflate(R.layout.fragment_services_professional2, container, false);
 
-
+        System.out.println("Espace ou pas : "+expandableListDetail.get("Homme").get(0).toString());
+        System.out.println("Espace ou pas : "+expandableListDetail.get("Homme").get(1).toString());
         /*v.setFocusableInTouchMode(true);
         v.requestFocus();
         v.setOnKeyListener(new View.OnKeyListener() {
@@ -141,8 +144,13 @@ public class ServicesProfessional2 extends Fragment{
 
 
 
-        Picasso.with(v.getContext()).load(Shop_image.get(0))
-                .into(image);
+        if(Shop_image.size()==0){
+            image.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.unknown));
+        }else{
+            Picasso.with(v.getContext()).load(Shop_image.get(0))
+                    .into(image);
+        }
+
         //new DownloadImageTask(image).execute(Shop_image.get(0));
 
 
@@ -192,6 +200,9 @@ public class ServicesProfessional2 extends Fragment{
             }
         });
 
+        //Si le profesionnel refuse les rendez-vous
+
+
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
@@ -201,62 +212,69 @@ public class ServicesProfessional2 extends Fragment{
                         Toast.LENGTH_SHORT).show();
                 return false;*/
 
-
-                if(!customer.getName().equals("")){
-
-                    if(groupPosition != (0)) {
+                if (professional.getBooking_enabled()) {
 
 
-                        System.out.println("ON A CLIQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-                        Toast.makeText(getContext(), "An item of the ListView is clicked.", Toast.LENGTH_LONG).show();
+                    if (!customer.getName().equals("")) {
 
+                        if (groupPosition != (0)) {
+
+
+                            System.out.println("ON A CLIQUEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                            Toast.makeText(getContext(), "An item of the ListView is clicked.", Toast.LENGTH_LONG).show();
+
+                            Bundle args = new Bundle();
+                            args.putSerializable("Professionnal", professional);
+                            args.putSerializable("ProfessionnalProduct", professional_product);
+                            args.putSerializable("ResourceProfessional", ResourceProfessional);
+                            args.putSerializable("Customer", customer);
+                            args.putSerializable("service", "ServicesProfessional");
+
+                            String CurrentString = expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition);
+                            String[] separated = CurrentString.split("////");
+                            //args.putSerializable("service_selectionne_expandablelistview", (Serializable) expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition));
+                            args.putSerializable("service_selectionne_expandablelistview", (Serializable) separated[0]);
+                            args.putSerializable("position_list_clique", groupPosition);
+
+
+                            //Deuxieme HashMap car sinon probleme d'identifiant
+                            args.putSerializable("ExpandableListDetail", groupPosition + "////" + childPosition);
+                            FragmentManager fm = getFragmentManager();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
+                            Fragment fragment = null;
+                            fragment = new PrendreRdV1();
+                            fragment.setArguments(args);
+                            ft.replace(R.id.content_frame, fragment).addToBackStack(null);
+                            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                            ft.commit();
+                        } else {
+                            Toast.makeText(getActivity(), "Ne pas appuyer sur le premier", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
                         Bundle args = new Bundle();
-                        args.putSerializable("Professionnal", professional);
-                        args.putSerializable("ProfessionnalProduct", professional_product);
-                        args.putSerializable("ResourceProfessional", ResourceProfessional);
-                        args.putSerializable("Customer", customer);
-                        args.putSerializable("service", "ServicesProfessional");
-
-                        String CurrentString = expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition);
-                        String[] separated = CurrentString.split("////");
-                        //args.putSerializable("service_selectionne_expandablelistview", (Serializable) expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition));
-                        args.putSerializable("service_selectionne_expandablelistview", (Serializable) separated[0]);
-                        args.putSerializable("position_list_clique", groupPosition);
-
-
-                        //Deuxieme HashMap car sinon probleme d'identifiant
-                        args.putSerializable("ExpandableListDetail", groupPosition+"////"+childPosition);
+                        Toast.makeText(getActivity(), "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
                         FragmentManager fm = getFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
-                        //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
-                        Fragment fragment=null;
-                        fragment = new PrendreRdV1();
+                        Fragment fragment = null;
+                        fragment = new HomeFragment2();
                         fragment.setArguments(args);
-                        ft.replace(R.id.content_frame, fragment).addToBackStack(null);
+                        ft.replace(R.id.fragment_remplace, fragment);
+
                         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         ft.commit();
-                    }
-                    else{
-                        Toast.makeText(getActivity(), "Ne pas appuyer sur le premier", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    Bundle args = new Bundle();
-                    Toast.makeText(getActivity(), "Veuillez vous connecter", Toast.LENGTH_SHORT).show();
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    Fragment fragment=null;
-                    fragment = new HomeFragment2();
-                    fragment.setArguments(args);
-                    ft.replace(R.id.fragment_remplace, fragment);
 
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    ft.commit();
+                    }
 
+                } else {
+                    Toast.makeText(getApplicationContext(), "Ce professionnel ne prend pas de rendez-vous.", Toast.LENGTH_LONG).show();
                 }
 
                 return true;
             }
         });
+
+
 
 
         return v;

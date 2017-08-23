@@ -372,8 +372,17 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
 
 
                 for (int j = 0; j < arr.getJSONObject(i).getJSONArray("shop_images").length(); j++) {
-                    if (arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url") != null) {
-                        data.shop_image = arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
+                    System.out.println("allllo : "+arr.getJSONObject(i).getJSONArray("shop_images"));
+
+                    if (!arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getString("image").equals("null")){
+                        if (arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url") != null) {
+                            data.shop_image = arr.getJSONObject(i).getJSONArray("shop_images").getJSONObject(j).getJSONObject("image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
+                        }
+                    }else{
+                        ArrayList<String> shop_image = shop_image_jsonparser2(recherche_shop_image(String.valueOf(data.id)));
+                        if(shop_image.size()!=0){
+                            data.shop_image = shop_image.get(0);
+                        }
                     }
                 }
                 for (int j = 0; j < arr.getJSONObject(i).getJSONArray("product_categories").length(); j++) {

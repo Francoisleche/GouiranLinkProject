@@ -57,6 +57,7 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Schedule;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Subscription_Type;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Type;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Resource_Type;
 import com.gouiranlink.franois.gouiranlinkproject.Professional_View.InformationsProfessional;
 import com.gouiranlink.franois.gouiranlinkproject.Professional_View.ProfessionalView;
 import com.gouiranlink.franois.gouiranlinkproject.R;
@@ -68,8 +69,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -2859,12 +2862,48 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                 String product_resource_manager = p2.getString("product");
                 String discounts_resource_manager = p2.getString("discounts");
 
+
+
                 System.out.println("AFFICHEEEEEER au moins un truc");
-                String discounts = "";
+                String discounts = " ";
                 System.out.println("AFFICHEEEEEER DISCOUNT :" + discounts_resource_manager);
                 if(!discounts_resource_manager.equals("[]")){
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String currentDateTime = dateFormat.format(new Date());
+
                     JSONArray discounts_tableau = p2.getJSONArray("discounts");
-                    discounts = discounts_tableau.getJSONObject(0).getString("amount");
+                    System.out.println("AFFICHEEEEEER DISCOUNT :"+discounts_tableau.get(0).toString());
+
+                    for (int y = 0; y < discounts_tableau.length(); y++) {
+                        JSONObject p3 = discounts_tableau.getJSONObject(y);
+                        String id_discount = p3.getString("id");
+                        String begin_date_discount = p3.getString("begin_date");
+                        String end_date_discount = p3.getString("end_date");
+                        String is_percentage_discount = p3.getString("is_percentage");
+                        String amount_discount = p3.getString("amount");
+                        String currency_discount = p3.getString("currency");
+
+                        String date1 = currentDateTime.substring(0,10);
+                        String date2 = begin_date_discount.substring(0,10);
+                        String date3 = end_date_discount.substring(0,10);
+
+                        int dat1 = Integer.parseInt(date1.replace("-",""));
+                        int dat2 = Integer.parseInt(date2.replace("-",""));
+                        int dat3 = Integer.parseInt(date3.replace("-",""));
+
+                        System.out.println("AFFICHEEEEEER DISCOUNT1 :" + "dat1="+dat1+"***dat2="+dat2+"***dat3="+dat3);
+                        if(dat1 >= dat2 && dat1 <= dat3) {
+                            System.out.println("AFFICHEEEEEER DISCOUNT2");
+                            if (is_percentage_discount.equals("true")) {
+                                discounts = "- " + amount_discount + "%";
+                            } else {
+                                discounts = "- " + amount_discount + "€";
+                            }
+                        }
+
+
+                    }
+                    //discounts = discounts_tableau.getJSONObject(0).getString("amount");
                     System.out.println("AFFICHEEEEEER DISCOUNT :" + discounts);
                 }
 
@@ -2880,7 +2919,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                 PremierProfessionalProduct2.setCurrency(currency_resource_manager);
                 PremierProfessionalProduct2.setDuration(duration_resource_manager);
                 PremierProfessionalProduct2.setDescription(description_resource_manager);
-                PremierProfessionalProduct2.setDescription(description_resource_manager);
+                //PremierProfessionalProduct2.setDescription(description_resource_manager);
                 PremierProfessionalProduct2.setDeleted_at(deleted_at_resource_manager);
                 PremierProfessionalProduct2.setCreated_at(created_at_resource_manager);
                 PremierProfessionalProduct2.setUpdated_at(updated_at_resource_manager);
@@ -2896,6 +2935,10 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
 
                 String description = (String) json2.get("description");
+                if(description.equals("")){
+                    description = " ";
+                }
+
 
                 JSONObject json3 = json2.getJSONObject("category");
                 int product_category_id = (int) json3.get("id");
@@ -2921,17 +2964,17 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
                 // pourquoi //// ? parce que / est deja utiliser dans les noms de products
                 if(product_category_name.equals("Coiffure Femme")){
-                    liste_coifure_femme.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
-                    liste_coifure_femme2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_coifure_femme.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
+                    liste_coifure_femme2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
                 }else if(product_category_name.equals("Bien-Être")){
-                    liste_bien_etre.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
-                    liste_bien_etre2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_bien_etre.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
+                    liste_bien_etre2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
                 }else if(product_category_name.equals("Beauté")){
-                    liste_beaute.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
-                    liste_beaute2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_beaute.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
+                    liste_beaute2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
                 }else if(product_category_name.equals("Homme")){
-                    liste_homme.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
-                    liste_homme2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description+"////"+discounts);
+                    liste_homme.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
+                    liste_homme2.add(name_resource_manager+"////"+price_resource_manager+"////"+duration_resource_manager+"////"+description_resource_manager+"////"+discounts);
                 }
 
 
@@ -2940,18 +2983,26 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
             if(!liste_coifure_femme.isEmpty()) {
                 expandableListDetail.put("Coiffure Femme", liste_coifure_femme);
                 expandableListDetailAutrePrestation.put("Coiffure Femme", liste_coifure_femme2);
+                System.out.println("coiffure Femme :" + liste_coifure_femme.get(0));
+                System.out.println("coiffure Femme :" + liste_coifure_femme2.get(0));
             }
             if(!liste_bien_etre.isEmpty()) {
                 expandableListDetail.put("Bien-Être", liste_bien_etre);
                 expandableListDetailAutrePrestation.put("Bien-Être", liste_bien_etre2);
+                System.out.println("Bien-Être :" + liste_bien_etre.get(0));
+                System.out.println("Bien-Être :" + liste_bien_etre2.get(0));
             }
             if(!liste_beaute.isEmpty()) {
                 expandableListDetail.put("Beauté", liste_beaute);
                 expandableListDetailAutrePrestation.put("Beauté", liste_beaute2);
+                System.out.println("Beauté :" + liste_beaute.get(0));
+                System.out.println("Beauté :" + liste_beaute2.get(0));
             }
             if(!liste_homme.isEmpty()) {
                 expandableListDetail.put("Homme", liste_homme);
                 expandableListDetailAutrePrestation.put("Homme", liste_homme2);
+                System.out.println("Homme :" + liste_homme.get(0));
+                System.out.println("Homme :" + liste_homme2.get(0));
             }
             expandableListDetail.put("PHOTOOOOOOOO TEAMS", photo);
 
@@ -3120,6 +3171,9 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                             premierprofessionel.add(shop_description);
                             premierprofessionel.add(specialty);
                             premierprofessionel.add(address);
+
+                            String booking_enabled = c.getString("booking_enabled");
+                            PremierProfessionnal.setBooking_enabled(Boolean.parseBoolean(booking_enabled));
 
                             String post_code = c.getString("post_code");
                             String city = c.getString("city");
@@ -3689,10 +3743,14 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
                         JSONObject p2 = Professional_Shop_image.getJSONObject(j);
                         String id = p2.getString("id");
                         String type = p2.getJSONObject("type").getString("name");
+                        Resource_Type ry = new Resource_Type();
+                        ry.setId(Integer.parseInt(p2.getJSONObject("type").getString("id")));
+                        ry.setName(p2.getJSONObject("type").getString("name"));
                         String name = p2.getString("name");
                         String surname = p2.getString("surname");
 
                         resource.setId(Integer.parseInt(id));
+                        resource.setType(ry);
                         resource.setName(name);
                         resource.setSurname(surname);
 
@@ -3862,7 +3920,9 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
                     //premiere image uniquement
                     ArrayList<String> tableau_image = new ArrayList<String>();
                     tableau_image = shop_image_jsonparser2(recherche_shop_image(id));
-                    shopImageList[i] = tableau_image.get(0);
+                    if(tableau_image.size()!=0) {
+                        shopImageList[i] = tableau_image.get(0);
+                    }
 
                     LatitudeList[i] = arr.getJSONObject(i).getString("geoloc_latitude");
                     LongitudeList[i] = arr.getJSONObject(i).getString("geoloc_longitude");
@@ -3884,7 +3944,6 @@ public class ParserTask extends AsyncTask<Void, Void, Boolean> {
                     //System.out.println("moyeeeeeeennne : "+moyenne);
                     //ratingbar.setRating(Float.parseFloat(moyenne(String.valueOf(moyenne))));
                     //System.out.println("moyeeeeeeennne : "+Float.parseFloat(moyenne(String.valueOf(moyenne))));
-
 
                 }
 

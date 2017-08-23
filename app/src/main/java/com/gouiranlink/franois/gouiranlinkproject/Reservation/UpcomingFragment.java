@@ -138,14 +138,20 @@ public class UpcomingFragment extends Fragment {
 //                if (arr.getJSONObject(i).has("confirmed") && arr.getJSONObject(i).getBoolean("confirmed")) {
                     if (arr.getJSONObject(i).getJSONObject("professional").has("shop_name") && !arr.getJSONObject(i).getJSONObject("professional").isNull("shop_name")) {
                         reservation.institute = arr.getJSONObject(i).getJSONObject("professional").getString("shop_name");
+                        reservation.id = arr.getJSONObject(i).getString("id");
                     }
+
+                    if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").has("name") && !arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").isNull("name")){
+                        reservation.professional_type = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").getString("name");
+                    }
+
                     if (arr.getJSONObject(i).getJSONObject("professional").has("address") && !arr.getJSONObject(i).getJSONObject("professional").isNull("address")
                             && arr.getJSONObject(i).getJSONObject("professional").has("post_code") && !arr.getJSONObject(i).getJSONObject("professional").isNull("post_code")
                             && arr.getJSONObject(i).getJSONObject("professional").has("city") && !arr.getJSONObject(i).getJSONObject("professional").isNull("city")
                             && arr.getJSONObject(i).getJSONObject("professional").has("country") && !arr.getJSONObject(i).getJSONObject("professional").isNull("country")) {
-                        reservation.adress = arr.getJSONObject(i).getJSONObject("professional").getString("address") + " - " +
-                                arr.getJSONObject(i).getJSONObject("professional").getString("post_code") + " - " +
-                                arr.getJSONObject(i).getJSONObject("professional").getString("city") + " - " +
+                        reservation.adress = arr.getJSONObject(i).getJSONObject("professional").getString("address") + " " +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("post_code") + " " +
+                                arr.getJSONObject(i).getJSONObject("professional").getString("city") + " " +
                                 arr.getJSONObject(i).getJSONObject("professional").getString("country");
                     }
                     if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").has("url") &&
@@ -253,7 +259,7 @@ public class UpcomingFragment extends Fragment {
             default:
                 day = "";
         }
-        return (day + " " + number + " " + month + " " + year);
+        return (day + " " + number + "/" + month + "/" + year);
     }
 
     private String getHour(String complete) {

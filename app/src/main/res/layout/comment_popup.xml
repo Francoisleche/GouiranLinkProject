@@ -26,7 +26,8 @@
                     android:gravity="center"
                     android:textSize="25sp"
                     android:background="@color/GouiranLightPink"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    android:textColor="@color/white"/>
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="5px"
@@ -41,20 +42,47 @@
                     style="@style/TitleFilter"
                     android:gravity="left"/>-->
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:text="Note"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="25sp"
+                        android:textColor="@color/black"/>
+
+                    <RatingBar
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ratingbar_commentaire"/>
+
+                </LinearLayout>
+
+
                 <TextView
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Rédigez votre avis !"
-                    android:textSize="25sp" />
+                    android:text="Commentaires"
+                    android:textSize="25sp"
+                    android:textColor="@color/black"/>
 
 
                 <EditText
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:id="@+id/description_comment"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/back"
+                    android:background="@drawable/back3"
                     android:gravity="top|left"
                     android:inputType="textMultiLine"
                     android:lines="8"
@@ -64,9 +92,10 @@
                     android:scrollbars="vertical" />
 
                 <LinearLayout
+                    android:layout_marginTop="30dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:layout_gravity="center">
 
 
@@ -75,16 +104,20 @@
                         android:id="@+id/comment_valid"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Valider"
+                        android:text="ENVOYER"
                         android:gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="left"/>
-
-
-
+                        android:layout_gravity="left"
+                        android:background="#d16677"
+                        android:textColor="@color/white"
+                        android:paddingRight="60dp"
+                        android:paddingLeft="60dp"/>
 
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="10dp"></View>
 
             </LinearLayout>
 

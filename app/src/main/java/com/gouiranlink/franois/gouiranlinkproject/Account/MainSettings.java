@@ -85,7 +85,7 @@ public class MainSettings extends Fragment {
                 emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.gouiran_link_invitation));
                 emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.gouiran_link_invite_mail));
                 getContext().startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));*/
-                Fragment fragment = new FaqFragment();
+                Fragment fragment = new FaqFragment3();
                 Bundle args = new Bundle();
                 args.putSerializable("Customer", customer);
                 fragment.setArguments(args);

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/visible"
     android:layout_width="match_parent"
-    android:layout_height="620dp"
+    android:layout_height="1200px"
     android:background="@drawable/connexion_inscription"
     android:gravity="center_horizontal"
     android:orientation="vertical"

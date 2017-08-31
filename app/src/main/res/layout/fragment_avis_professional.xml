@@ -90,14 +90,14 @@
             android:layout_height="match_parent"
             android:text="Soyez le premier !"/>
 
-        <TextView
+        <!--<TextView
             android:layout_marginTop="15dp"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="N'hésitez pas à prendre RdV chez ce professionnel pour faire entendre votre voix."/>
+            android:text="N'hésitez pas à prendre RdV chez ce professionnel pour faire entendre votre voix."/>-->
 
      </LinearLayout>
 

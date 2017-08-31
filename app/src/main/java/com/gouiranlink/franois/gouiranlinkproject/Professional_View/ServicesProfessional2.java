@@ -100,8 +100,8 @@ public class ServicesProfessional2 extends Fragment{
 
         View v = inflater.inflate(R.layout.fragment_services_professional2, container, false);
 
-        System.out.println("Espace ou pas : "+expandableListDetail.get("Homme").get(0).toString());
-        System.out.println("Espace ou pas : "+expandableListDetail.get("Homme").get(1).toString());
+        //System.out.println("Espace ou pas : "+expandableListDetail.get("Homme").get(0).toString());
+        //System.out.println("Espace ou pas : "+expandableListDetail.get("Homme").get(1).toString());
         /*v.setFocusableInTouchMode(true);
         v.requestFocus();
         v.setOnKeyListener(new View.OnKeyListener() {
@@ -166,7 +166,7 @@ public class ServicesProfessional2 extends Fragment{
                 new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                if(iterateur_image<Shop_image.size()){
+                /*if(iterateur_image<Shop_image.size()){
                     Picasso.with(getContext()).load(Shop_image.get(iterateur_image))
                             .into(image);
                     iterateur_image++;
@@ -175,7 +175,7 @@ public class ServicesProfessional2 extends Fragment{
                     Picasso.with(getContext()).load(Shop_image.get(iterateur_image))
                                 .into(image);
 
-                }
+                }*/
             }
         });
 
@@ -228,7 +228,7 @@ public class ServicesProfessional2 extends Fragment{
                             args.putSerializable("ProfessionnalProduct", professional_product);
                             args.putSerializable("ResourceProfessional", ResourceProfessional);
                             args.putSerializable("Customer", customer);
-                            args.putSerializable("service", "ServicesProfessional");
+                            args.putSerializable("service", "ServicesProfessional2");
 
                             String CurrentString = expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition);
                             String[] separated = CurrentString.split("////");

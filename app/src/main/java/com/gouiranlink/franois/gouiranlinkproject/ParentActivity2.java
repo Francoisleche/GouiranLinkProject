@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.ContactsContract;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.multidex.MultiDex;
 import android.support.v4.app.ActivityCompat;
@@ -40,17 +39,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.gouiranlink.franois.gouiranlinkproject.Account.AccountFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Account.NestedSettingsFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Favourites.Favoris2Fragment;
-import com.gouiranlink.franois.gouiranlinkproject.Favourites.FavouritesFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Gallery.FragmentGallery3;
 import com.gouiranlink.franois.gouiranlinkproject.Gallery.GalleryFragment;
-import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2;
 import com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Recherche.Research2Fragment;
-import com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment;
 import com.gouiranlink.franois.gouiranlinkproject.Reservation.Reservation2Fragment;
-import com.gouiranlink.franois.gouiranlinkproject.Reservation.ReservationFragment;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.CircleTransform;
 
 import java.io.BufferedReader;
@@ -71,8 +66,8 @@ import static android.Manifest.permission.SEND_SMS;
 public class ParentActivity2 extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
 
-        HomeFragment.OnFragmentInteractionListener, HomeFragment2.OnFragmentInteractionListener, ResearchFragment.OnFragmentInteractionListener, Research2Fragment.OnFragmentInteractionListener,
-        ReservationFragment.OnFragmentInteractionListener, FavouritesFragment.OnFragmentInteractionListener,
+        HomeFragment2.OnFragmentInteractionListener, Research2Fragment.OnFragmentInteractionListener,
+        Reservation2Fragment.OnFragmentInteractionListener, Favoris2Fragment.OnFragmentInteractionListener,
         GalleryFragment.OnFragmentInteractionListener, AccountFragment.OnFragmentInteractionListener {
 
 
@@ -218,7 +213,8 @@ public class ParentActivity2 extends AppCompatActivity
         imgProfile = (ImageView) navHeader.findViewById(R.id.imageView);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        //ACTION FLOATING BUTTON
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -236,7 +232,7 @@ public class ParentActivity2 extends AppCompatActivity
                 email.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(Intent.createChooser(email, "Choisir le logiciel"));
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -424,7 +420,6 @@ public class ParentActivity2 extends AppCompatActivity
         } else if (id == R.id.nav_favourites) {
 
             if (customer != null && (customer.ismFacebook() || customer.ismGoogle() || customer.ismGouiranLink())) {
-                //fragment = new FavouritesFragment();
                 args.putSerializable("Retour","");
                 fragment = new Favoris2Fragment();
                 fragment.setArguments(args);
@@ -439,8 +434,31 @@ public class ParentActivity2 extends AppCompatActivity
             //ABANDONNE
             //fragment = new ActivityGallery();
 
+
+
+
+            //fragment = new FragmentGallery7();
+
+
+
+
             //Marchepresque
             fragment = new FragmentGallery3();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             //Intent gallery = new Intent(this,FragmentGallery4.class);
             //startActivity(gallery);

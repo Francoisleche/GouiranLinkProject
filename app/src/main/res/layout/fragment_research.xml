@@ -3,15 +3,13 @@
     android:id="@+id/fragment_remplace"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment">
+    android:orientation="vertical">
 
     <FrameLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/fragment_research"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment">
+        android:orientation="vertical">
 
 
         <RelativeLayout

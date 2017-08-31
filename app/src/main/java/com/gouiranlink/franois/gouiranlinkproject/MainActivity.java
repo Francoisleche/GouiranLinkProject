@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        Intent i = new Intent(MainActivity.this, ParentActivity.class);
+        Intent i = new Intent(MainActivity.this, ParentActivity2.class);
         startActivity(i);
     }
     /**

@@ -31,7 +31,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion.LoginActivity;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.R;
-import com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment;
+import com.gouiranlink.franois.gouiranlinkproject.Recherche.Research2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.ShakeListener;
 
 import java.io.BufferedReader;
@@ -94,27 +94,35 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
         mySwitch2 = (Switch) root.findViewById(R.id.notifications);
 
 
-        lectureFichier();
-        //lire_fichier_config();
+
+        //LIRE FICHIER CONFIGURATION
+        //lectureFichier();
+
+
 
         //Si la fonction secouer est checked à oui alors on peut utiliser la fonction secouer pour rechercher
-        if(mySwitch.isChecked()){
+
+            System.out.println("secoueeeeer");
+            Toast.makeText(getActivity(), "Shake " , Toast.LENGTH_LONG).show();
             mShaker = new ShakeListener(getActivity());
             mShaker.setOnShakeListener(new ShakeListener.OnShakeListener (){
                 public void onShake()
                 {
-                    //Toast.makeText(getActivity(), "Shake " , Toast.LENGTH_LONG).show();
-                    Fragment fragment = null;
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
-                    fragment = new ResearchFragment();
-                    ft.replace(R.id.frameLayout, fragment);
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    ft.commit();
+                    if(mySwitch.isChecked()) {
+                        Toast.makeText(getActivity(), "Shake ", Toast.LENGTH_LONG).show();
+                        Fragment fragment = null;
+                        FragmentManager fm = getFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
+                        fragment = new Research2Fragment();
+                        //ft.replace(R.id.frameLayout, fragment);
+                        ft.replace(R.id.content_frame, fragment);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        ft.commit();
+                    }
                 }
             });
-        }
+
 
         //set the switch to ON
         //mySwitch.setChecked(true);
@@ -131,13 +139,12 @@ public class NestedSettingsFragment extends Fragment implements GoogleApiClient.
                     System.out.println("Switch is currently OFF");
                 }
 
-                ajouter("hello");
+                //ajouter("hello");
 
 
 
             }
         });
-
 
 
 

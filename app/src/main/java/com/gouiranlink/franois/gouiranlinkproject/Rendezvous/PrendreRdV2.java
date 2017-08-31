@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
@@ -21,12 +20,10 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Schedule;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * Created by François on 15/06/2017.
  */
@@ -126,11 +123,9 @@ public class PrendreRdV2 extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //recup = new ArrayList<String>();
+        // Date
 
-        //int dayofweek3 = calendar.getFirstDayOfWeek();
-        //System.out.println("44444444444444444444 :::: "+ dayofweek3);
-        SimpleDateFormat sdf_ = new SimpleDateFormat("EEEE");
+        /*SimpleDateFormat sdf_ = new SimpleDateFormat("EEEE");
         Date date = new Date();
         dayName = sdf_.format(date);
         System.out.println("" + dayName);
@@ -167,8 +162,6 @@ public class PrendreRdV2 extends Fragment{
 
         System.out.println("Oooooooooooooooooooh" + jour_semaine + " "+debut+" "+fin + " duréééééééé : "+duree);
 
-
-
         //final int dureetotal = duree;
         int heuretotal = 0 ;
         int minutetotal = 0;
@@ -184,7 +177,15 @@ public class PrendreRdV2 extends Fragment{
             }
             s = s + ":00";
             recup.add(String.valueOf(s));
-        }
+        }*/
+
+
+
+
+
+
+
+
         /*Professional_Schedule[] schedule = professional.getSchedule();
         for(int j =0 ;j<schedule.length;j++){
             String s = "";
@@ -314,7 +315,6 @@ public class PrendreRdV2 extends Fragment{
                 FragmentTransaction ft = fm.beginTransaction();
                 //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
 
-                fragment = new PrendreRdv();
                 fragment.setArguments(args);
 
                 ft.replace(R.id.fragment_remplace, fragment);
@@ -334,11 +334,17 @@ public class PrendreRdV2 extends Fragment{
 
 
 
-        String[] items = new String[recup.size()];
+        /*String[] items = new String[recup.size()];
         for(int i =0;i<recup.size();i++){
             items[i]=recup.get(i);
             System.out.println("  items[i] :"+  items[i] +"/ "+recup.get(i));
-        }
+        }*/
+
+
+
+
+
+
 
 
         /*adapter = new IndisponibiliteAdapter(getActivity(),layout,id, items,String.valueOf(prix));
@@ -1171,7 +1177,7 @@ public class PrendreRdV2 extends Fragment{
                         String date = dayName +"////" +dday + "/" + mmonth + "/" + yyear + "////"+heure1+"-"+heure2;
                         args.putSerializable("horaire",date);
 
-
+                        System.out.println("recap[5] : " + date);
                         recap[5] = date;
                         recap[6] = heure1;
                         /*recap[5] = horaires_date[1];
@@ -1199,7 +1205,7 @@ public class PrendreRdV2 extends Fragment{
                         buton01.setError("Selectionner une heure");
                         buton02.setError("Selectionner une heure");
                         buton03.setError("Selectionner une heure");
-                        Toast.makeText(getApplicationContext(), "Veuillez selectionner une date et une heure", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Veuillez selectionner une date et une heure", Toast.LENGTH_LONG).show();
                     }
 
 
@@ -1245,9 +1251,21 @@ public class PrendreRdV2 extends Fragment{
                 int dayofweek3 = calendar.getFirstDayOfWeek();
                 System.out.println("44444444444444444444 :::: "+ dayofweek3);
                 SimpleDateFormat sdf_ = new SimpleDateFormat("EEEE");
-                //Date date = new Date();
-                dayName = sdf_.format(calendar.getDate());
-                System.out.println("" + dayName + " " + year+month+day + "");
+
+                String str = year+"/"+(month+1)+"/"+day;
+                System.out.println("Le jour selectionne : "+str);
+                java.text.SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                java.util.Date dte = null;
+                try {
+                    dte = sdf.parse(str);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                sdf = new SimpleDateFormat("EEEE");
+                System.out.println("Le jour selectionne : "+sdf.format(dte));
+                dayName = sdf_.format(dte);
+                System.out.println("Le jour selectionne : " + dayName + " " + year+"/"+(month+1)+"/"+day + "     ");
+
 
                 int jour_semaine = 0;
                 if(dayName.equals("lundi")){
@@ -1723,12 +1741,12 @@ public class PrendreRdV2 extends Fragment{
                 if((month+1)<10)
                     mmonth=0+String.valueOf(month+1);
                 else
-                    mmonth=0+String.valueOf(month+1);
+                    mmonth=String.valueOf(month+1);
 
                 yyear = String.valueOf(year);
 
 
-                Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), day + "/" + month + "/" + year, Toast.LENGTH_LONG).show();
 
                 long daaaate = calendar.getDate();
                 System.out.println("Daaaaaaaate : "+ daaaate);

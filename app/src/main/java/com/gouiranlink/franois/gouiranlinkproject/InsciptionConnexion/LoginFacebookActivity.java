@@ -7,26 +7,19 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
-import com.gouiranlink.franois.gouiranlinkproject.ParentActivity;
-import com.gouiranlink.franois.gouiranlinkproject.R;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.RetrieveCustomerInformationFromRequest;
-import com.facebook.FacebookSdk;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
@@ -34,6 +27,13 @@ import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
+import com.gouiranlink.franois.gouiranlinkproject.ParentActivity2;
+import com.gouiranlink.franois.gouiranlinkproject.R;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.RetrieveCustomerInformationFromRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -190,7 +190,7 @@ public class LoginFacebookActivity extends AppCompatActivity implements LoaderMa
 
     private void nextActivity(Profile profile, String accessToken) {
         if (profile != null) {
-            Intent main = new Intent(LoginFacebookActivity.this, ParentActivity.class);
+            Intent main = new Intent(LoginFacebookActivity.this, ParentActivity2.class);
             myCustomer.setmFacebook(true);
             myCustomer.setmGoogle(false);
             myCustomer.setmGouiranLink(false);

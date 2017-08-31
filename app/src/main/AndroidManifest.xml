@@ -156,12 +156,6 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.gouiranlink.franois.gouiranlinkproject.ParentActivity"
-            android:label="@string/title_activity_parent"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name="com.gouiranlink.franois.gouiranlinkproject.ParentActivity2"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
@@ -180,6 +174,7 @@
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
         <activity android:name=".Gallery.FragmentGallery4"></activity>
+        <activity android:name=".Gallery.SecondActivity"></activity>
         <activity android:name=".Gallery.Camera_Activity_Test_Fragment"></activity>
     </application>
 

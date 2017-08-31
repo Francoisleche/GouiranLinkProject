@@ -1,6 +1,7 @@
 package com.gouiranlink.franois.gouiranlinkproject.Gallery;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -38,15 +39,46 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
-
 
 /**
  * Created by François on 25/06/2017.
  */
 
 public class FragmentGallery3 extends Fragment {
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("omg10");
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("omg10");
+        switch (requestCode) {
+            case 1:
+                if (resultCode == Activity.RESULT_OK) {
+                    System.out.println("omg10");
+                    /*if (imageLocation != null) {
+                        ViewGroup layout = (ViewGroup) getActivity().findViewById(R.id.basic_camera_display_layout);
+                        if (layout != null) {
+                            layout.removeAllViews();
+                            ImageView img = new ImageView(getActivity());
+                            img.setImageDrawable(Drawable.createFromPath(imageLocation.getPath()));
+                            layout.addView(img);
+                        }
+                    }*/
+                }
+        }
+        System.out.println("omg11");
+    }
+
+
+
+
+
+
+
+
     public static ArrayList<Model_images> al_images = new ArrayList<>();
+
+    private Uri imageLocation;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     //ArrayAdapter adapter_image;
@@ -82,7 +114,6 @@ public class FragmentGallery3 extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //new ActivityGallery();
-
     }
 
 
@@ -223,21 +254,26 @@ public class FragmentGallery3 extends Fragment {
                 Uri uriSavedImage = Uri.fromFile(new File(path));
                 System.out.println("omg1");
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent cameraIntent2 =  new Intent(getActivity(), SecondActivity.class);
                 System.out.println("omg2");
                 cameraIntent.putExtra("return-data", true);
                 System.out.println("omg3");
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
                 System.out.println("omg4");
-                //getActivity().startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, 11111);
+                //startActivityForResult(cameraIntent,1);
+                //getActivity().startActivityForResult(cameraIntent2,1);
+                //cameraIntent2.putExtra("adapter", adapter_image);
+
+                startActivity(cameraIntent2);
+
+
                 System.out.println("omg5");
                 /*getActivity().sendBroadcast(new Intent(
                         Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri
                         .parse(path)));*/
-
-                System.out.println("ildevrait passer par la");
                 System.out.println("omg6");
                 fn_imagespath();
+                adapter_image.notifyDataSetChanged();
             }
         });
 
@@ -415,7 +451,7 @@ public class FragmentGallery3 extends Fragment {
             //adapter_image = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item,al_images.get(0).getAl_imagepath());
             gv_folder.setAdapter(adapter_image);
         }
-
+        adapter_image.notifyDataSetChanged();
         return al_images;
     }
 
@@ -433,17 +469,33 @@ public class FragmentGallery3 extends Fragment {
         }
     }*/
 
-    @Override
+
+
+    //ICIIIIIIIIIIIIIIIIIIII
+    //A TESTER, ça devrait être bon
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println("omg8");
-        if (requestCode == 11111 && resultCode == RESULT_OK) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             System.out.println("omg9");
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            adapter_image.notifyDataSetChanged();
 
         }
-    }
+        adapter_image.notifyDataSetChanged();
+    }*/
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -38,6 +38,12 @@
             </LinearLayout>
 
 
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,14 +51,14 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_marginStart="36dp"
                     android:layout_marginTop="10dp"
                     android:id="@+id/profile_image"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:src="@drawable/image_inconnu"
                     app:civ_border_width="5dp"
-                    app:civ_border_color="#d16677"/>
+                    app:civ_border_color="#d16677"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:textColor="@color/black"
@@ -66,7 +72,7 @@
 
                 <Button
                     android:layout_marginTop="10dp"
-                    android:layout_gravity="bottom"
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -80,7 +86,7 @@
                     android:paddingRight="30dp"/>
                     <!--android:background="@drawable/ic_border_color_black_24dp"/>-->
 
-            </LinearLayout>
+
 
 
 
@@ -92,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="17dp"
                 android:layout_marginTop="5dp"/>
+
 
 
 
@@ -251,8 +258,9 @@
                 </LinearLayout>
 
             </LinearLayout>
+            </LinearLayout>
 
-
+            </ScrollView>
 
 
         </LinearLayout>

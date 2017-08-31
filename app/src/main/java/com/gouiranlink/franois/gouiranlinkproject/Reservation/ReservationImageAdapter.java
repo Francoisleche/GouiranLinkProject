@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.R;
@@ -207,13 +206,13 @@ public class ReservationImageAdapter extends BaseAdapter {
         ImageView button = (ImageView) grid.findViewById(R.id.button);
         ((Activity) mContext).getFragmentManager();//use this
 
-        button.setOnClickListener(new View.OnClickListener() {
+        /*button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getmContext(), "ooooooh" + position,Toast.LENGTH_SHORT).show();
 
             }
-        });
+        });*/
 
 
 

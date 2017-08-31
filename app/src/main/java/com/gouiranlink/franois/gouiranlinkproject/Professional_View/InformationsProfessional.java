@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -448,7 +447,7 @@ public class InformationsProfessional extends Fragment {
         GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/customer/favoris/customer/" + String.valueOf(customer.getId()) + "/", headerKey, headerValue);
         try {
             resp = getRequest.execute().get();
-            Toast.makeText(getActivity(), "CRUSHED", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "CRUSHED", Toast.LENGTH_SHORT).show();
             JSONObject jsonObject = new JSONObject(resp);
             JSONArray arr = jsonObject.getJSONArray("data");
             for (int i = 0; i < arr.length(); i++) {

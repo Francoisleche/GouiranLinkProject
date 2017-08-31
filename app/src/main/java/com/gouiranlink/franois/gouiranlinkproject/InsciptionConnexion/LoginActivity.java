@@ -1352,14 +1352,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                /*Intent i = new Intent(LoginActivity.this, ParentActivity.class);
-                Bundle b = new Bundle();
-                b.putBoolean("connected", true);
-                b.putString("token_access", "token_access");
-                b.putString("email", mEmail);
-                i.putExtras(b);
-                startActivity(i);
-                finish();*/
                 nextActivity(resp);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -1408,7 +1400,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 b.putBoolean("connected", false);
                 String mEmail = "";
                 b.putString("email", mEmail);
-                //i = new Intent(LoginActivity.this, ParentActivity.class);
                 i = new Intent(LoginActivity.this, ParentActivity2.class);
                 i.putExtras(b);
                 startActivity(i);

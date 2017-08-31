@@ -11,89 +11,101 @@
         <LinearLayout
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/titre_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Titre"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 android:gravity="center"/>
 
             <ImageView
+                android:layout_gravity="center"
                 android:id="@+id/image1_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:src="@drawable/cb650f"/>
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/text1_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="texte 1 article"/>
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/soustitre1_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="soustitre 1 article"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/text2_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="texte 2 article"/>
 
             <ImageView
+                android:layout_gravity="center"
                 android:id="@+id/image2_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:src="@drawable/cb650f"/>
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/soustitre2_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="soustitre 2 article"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/text3_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="texte 3 article"/>
 
             <ImageView
+                android:layout_gravity="center"
                 android:id="@+id/image3_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:src="@drawable/cb650f"/>
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/soustitre3_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="soustitre 3 article"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
 
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/text4_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="texte 4 article"/>
 
             <ImageView
+                android:layout_gravity="center"
                 android:id="@+id/image4_article"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:src="@drawable/cb650f"/>
 
 
@@ -103,27 +115,56 @@
                 android:id="@+id/credit_article"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="credit article"
+                android:text=""
                 android:textStyle="italic"/>
 
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginEnd="10dp">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/image_editeur"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/image_inconnu"
+                    app:civ_border_width="0dp"
+                    app:civ_border_color="#d16677"
+                    android:layout_gravity="center"/>
+
+                <!--<ImageView
                     android:id="@+id/image_editeur"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/cb650f"/>
+                    android:src="@drawable/cb650f"/>-->
 
-                <TextView
-                    android:id="@+id/nom_prenom_editeur"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="texte 4 article"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/nom_prenom_editeur"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="texte 4 article"/>
+
+                    <TextView
+                        android:id="@+id/poste_editeur"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="texte 4 article"/>
+                </LinearLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="10dp"
+                android:text=""/>
 
         </LinearLayout>
 

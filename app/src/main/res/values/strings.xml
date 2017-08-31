@@ -258,7 +258,7 @@ Gouiran Link est disponible sur PC, Mac, tablette et smartphone.
     <string name="my_pros">Mes Pros</string>
     <string name="my_crushes">Mes Coups de Coeur</string>
     <string name="invitation_gouiran_link">Invitation Gouiran Link</string>
-    <string name="invation_text">Hey, je viens de découvrir l\'application Gouiran Link, elle est géniale ! \n\n Toi aussi, réserves gratuitement tes rendez-vous beauté en quelques clics ! \n\n Pour l\'essayer c\'est ici : \n www.gouiran-link.com \n\n Accro à ton mobile ? Télécharges directement l\'application Gouiran Link en cliquant ici</string>
+    <string name="invation_text">Hey, je viens de découvrir l\'application Gouiran Link, elle est géniale ! \n\n Toi aussi, réserves gratuitement tes rendez-vous beauté en quelques clics ! \n\n Pour l\'essayer c\'est ici : \n <a href="https://www.gouiran-beaute.com/link/">https://www.gouiran-beaute.com/link/</a> \n\n Accro à ton mobile ? Télécharges directement l\'application Gouiran Link en cliquant ici</string>
 
 
     <string name="gender_prompt">Sexe</string>

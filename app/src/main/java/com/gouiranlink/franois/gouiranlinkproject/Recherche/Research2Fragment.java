@@ -35,6 +35,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,6 +63,8 @@ import com.gouiranlink.franois.gouiranlinkproject.Professional_View.Informations
 import com.gouiranlink.franois.gouiranlinkproject.Professional_View.ProfessionalView;
 import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses4.Object2;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses4.RootAdapter2;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -194,7 +197,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
      * //* @param param1 Parameter 1.
      * //* @param param2 Parameter 2.
      *
-     * @return A new instance of fragment ResearchFragment.
+     * @return A new instance of fragment Research2Fragment.
      */
     // TODO: Rename and change types and number of parameters
     public static Research2Fragment newInstance(int instance) {
@@ -845,6 +848,7 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                                     TextView textViewshopname = (TextView) view2.findViewById(R.id.shopname_resultat);
                                     TextView textViewavis = (TextView) view2.findViewById(R.id.resultat_avis);
                                     TextView textViewfavoris = (TextView) view2.findViewById(R.id.resultat_favoris);
+                                    TextView textViewpasdavis = (TextView) view2.findViewById(R.id.pasdavis);
                                     final ImageView imageView = (ImageView) view2.findViewById(R.id.image_recherche);
                                     RatingBar ratingbar = (RatingBar) view2.findViewById(R.id.rtbProductRating);
 
@@ -865,17 +869,27 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
 
                                     //Moyenne des avis
                                     double moyenne = 0;
+                                    System.out.println("PASD4AVIS : "+avis.size());
                                     if (avis.size() == 0) {
 
                                     } else {
-                                        for (int y = 0; y < avis.size(); y++) {
+                                        /*for (int y = 0; y < avis.size(); y++) {
                                             moyenne = moyenne + Double.parseDouble(avis.get(y));
                                         }
-                                        moyenne = moyenne / avis.size();
+                                        moyenne = moyenne / avis.size();*/
                                     }
-                                    ratingbar.setRating(Float.parseFloat(moyenne(String.valueOf(moyenne))));
-                                    String ss = String.format("%1$s/5", moyenne(String.valueOf(moyenne)));
-                                    textViewavis.setText(ss);
+                                    if(Double.parseDouble(avis.get(i)) == 0){
+                                        System.out.println("PASD4AVIS");
+                                        textViewpasdavis.setVisibility(true ? View.VISIBLE : View.GONE);
+                                        ratingbar.setVisibility(true ? View.GONE : View.VISIBLE);
+                                        textViewavis.setVisibility(true ? View.GONE : View.VISIBLE);
+                                    }else{
+                                        ratingbar.setRating(Float.parseFloat(avis.get(i)));
+                                        String ss = String.format("%1$s/5", String.valueOf(avis.get(i)));
+                                        textViewavis.setText(ss);
+                                    }
+
+
 
                                     String s = String.format("%1$s FAVORIS", favoris.get(i));
                                     textViewfavoris.setText(s);
@@ -1492,10 +1506,152 @@ public class Research2Fragment extends Fragment implements ProfessionalView.OnFr
                 final CheckBox type2 = (CheckBox) contentView.findViewById(R.id.type2);
                 final CalendarView jourouverture = (CalendarView) contentView.findViewById(R.id.jourouverture);
 
+
+                Button liste_prestations = (Button) contentView.findViewById(R.id.liste_prestations);
+                liste_prestations.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        final Dialog dialog2 = new Dialog(getContext());
+                        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                        View contentView2 = layoutInflater.inflate(R.layout.filtres_popup2, null);
+                        final LinearLayout root = (LinearLayout) contentView2.findViewById(R.id.proRootLayout2);
+                        System.out.println("Ooooooooooooooooooh filtres ?");
+
+                        dialog2.setContentView(root);
+                        dialog2.show();
+
+
+                        // EXPANDABLE LIST VIEW FILTER
+                        Object2 obj = new Object2();
+                        Filter_constant o = new Filter_constant();
+                        obj.children = new ArrayList<Object2>();
+                        for (int i = 0; i < o.filtreTitretitreList.length/*Constant.state.length*/; i++) {
+                            Object2 root2 = new Object2();
+                            root2.title = o.filtreTitretitreList[i];/*Constant.state[i]*/
+                            ;
+                            root2.children = new ArrayList<Object2>();
+                            System.out.println("root2.title : " + root2.title);
+                            for (int j = 0; j < o.filtreTitreList[i].length/*Constant.parent[i].length*/; j++) {
+                                Object2 parent = new Object2();
+                                parent.title = o.filtreTitreList[i][j];/*Constant.parent[i][j];*/
+                                parent.children = new ArrayList<Object2>();
+                                System.out.println("parent.title : " + parent.title);
+                                for (int k = 0; k < o.filtreTexteList[i][j].length/*Constant.child[i][j].length*/; k++) {
+                                    Object2 child = new Object2();
+                                    child.title = o.filtreTexteList[i][j][k];/*Constant.child[i][j][k]*/
+                                    ;
+                                    System.out.println("child.title : " + child.title);
+
+
+                                    if (child.title != null) {
+                                        if (!child.title.equals("")) {
+                                            parent.children.add(child);
+                                        }
+                                    }
+                                }
+
+                                //Enlever ceux qui n'ont rien
+                                if (parent.title != null) {
+                                    if (!parent.title.equals("")) {
+                                        root2.children.add(parent);
+                                    }
+                                }
+                                //root.children.add(parent);
+                            }
+
+                            if (root2.title != null) {
+                                if (!root2.title.equals("")) {
+                                    obj.children.add(root2);
+                                }
+                            }
+                        }
+
+                        if (!obj.children.isEmpty()) {
+                            final ExpandableListView elv = (ExpandableListView) contentView2.findViewById(R.id.expandableListViewFilter);
+                            elv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
+                                @Override
+                                public boolean onGroupClick(ExpandableListView parent, View v,
+                                                            int groupPosition, long id) {
+
+                                    return false; /* or false depending on what you need */
+                                }
+                            });
+
+
+                            ExpandableListView.OnGroupClickListener grpLst = new ExpandableListView.OnGroupClickListener() {
+                                @Override
+                                public boolean onGroupClick(ExpandableListView eListView, View view, int groupPosition,
+                                                            long id) {
+
+                                    return false/* or false depending on what you need */;
+                                }
+                            };
+
+
+                            ExpandableListView.OnChildClickListener childLst = new ExpandableListView.OnChildClickListener() {
+                                @Override
+                                public boolean onChildClick(ExpandableListView eListView, View view, int groupPosition,
+                                                            int childPosition, long id) {
+
+                                    return false/* or false depending on what you need */;
+                                }
+                            };
+
+                            ExpandableListView.OnGroupExpandListener grpExpLst = new ExpandableListView.OnGroupExpandListener() {
+                                @Override
+                                public void onGroupExpand(int groupPosition) {
+
+                                }
+                            };
+
+                            final RootAdapter2 adapter = new RootAdapter2(getActivity(), obj, grpLst, childLst, grpExpLst);
+                            elv.setAdapter(adapter);
+
+
+                            View contentchilditem = layoutInflater.inflate(R.layout.filtre_child_expandable_item, null);
+                            TextView textViewChild = (TextView) contentchilditem.findViewById(R.id.itemChildFilter);
+                            elv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                                @Override
+                                public boolean onChildClick(ExpandableListView parent, View v,
+                                                            int groupPosition, int childPosition, long id) {
+
+                                    TextView textViewChild2 = (TextView) v.findViewById(R.id.itemChildFilter);
+                                    textViewChild2.setBackgroundColor(getResources().getColor(R.color.GouiranDarkBlue));
+                                    //obj.children.get(groupPosition).children.get(childPosition).children;
+
+                                    return true;
+                                }
+                            });
+
+
+                        }
+                        //FIN EXPANDABLE LIST VIEW FILTER
+
+
+
+
+                        Button ok_filtre = (Button) contentView2.findViewById(R.id.ok_filtre);
+                        ok_filtre.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog2.cancel();
+                            }
+                        });
+
+                    }
+
+                });
+
+
+
+
                 Button accepter_filtre = (Button) contentView.findViewById(R.id.accepter_filtre);
                 accepter_filtre.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
 
                         if (acceptation_automatique_rdv.isChecked()) {
                             filter.setAcceptation_Automatique_RDV(true);

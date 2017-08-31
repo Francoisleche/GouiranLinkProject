@@ -407,7 +407,7 @@ public class EditAccountFragment extends Fragment {
             editText_postcode.setHint(customer.getPost_code());
         post_code = editText_postcode.getText().toString();
 
-        EditText editText_address = (EditText) root.findViewById(R.id.edit_value_address);
+        final EditText editText_address = (EditText) root.findViewById(R.id.edit_value_address);
         if(customer.getAddress().equals("null"))
             editText_address.setHint("");
         else
@@ -509,15 +509,19 @@ public class EditAccountFragment extends Fragment {
                     if (city.isEmpty() || city.equals("") || city == null)
                         city = customer.getCity();
 
+                    //Adresse
+                    if(editText_address.getText().toString().equals("")){
+                        address = customer.getAddress();
+                    }
+                    else{
+                        address = editText_address.getText().toString();
+                    }
 
                     //PostCode
                     editText = (EditText) root.findViewById(R.id.edit_value_post_code);
                     post_code = editText.getText().toString();
                     if (post_code.isEmpty() || post_code.equals("") || post_code == null)
                         post_code = customer.getPost_code();
-
-
-
 
 
                     Toast.makeText(getActivity(), "3- gender = [" + gender[0] + "]", Toast.LENGTH_SHORT).show();

@@ -16,7 +16,7 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.R;
-import com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment;
+import com.gouiranlink.franois.gouiranlinkproject.Recherche.Research2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 
 import org.json.JSONArray;
@@ -34,7 +34,7 @@ import static android.content.ContentValues.TAG;
 public class AvisProfessional extends Fragment{
 
     private GetRequest getRequest;
-    private ResearchFragment.ResearchTask mAuthTask = null;
+    private Research2Fragment.ResearchTask mAuthTask = null;
     private Professional professional;
     private Customer customer;
     private String accessToken;
@@ -202,7 +202,6 @@ public class AvisProfessional extends Fragment{
             }else{
                 commentaires=null;
             }
-
         } catch (final JSONException e) {
             Log.e(TAG, "Json parsing error: " + e.getMessage());
         }

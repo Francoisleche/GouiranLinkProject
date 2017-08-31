@@ -20,13 +20,14 @@ public class FilterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_filtres);
 
+
+        Filter_constant o = new Filter_constant();
+
         Spinner spinner = (Spinner)findViewById(R.id.liste_specialite);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,specialite);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
-
-
 
     }
 

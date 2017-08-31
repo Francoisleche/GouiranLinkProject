@@ -73,7 +73,6 @@ public class ProfessionalView extends Fragment {
         args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
         args.putSerializable("ResourceProfessional", ResourceProfessional);
         args.putSerializable("Retour",fragment_precedent);
-        //fragment = new ServicesProfessional();
         fragment = new ServicesProfessional2();
         fragment.setArguments(args);
 
@@ -127,7 +126,6 @@ public class ProfessionalView extends Fragment {
                 Log.i("TAG", "onTabSelected: " + tab.getPosition());
                 switch (tab.getPosition()) {
                     case 0:
-                        //fragment = new ServicesProfessional();
                         fragment = new ServicesProfessional2();
                         fragment.setArguments(args);
                         break;
@@ -178,7 +176,6 @@ public class ProfessionalView extends Fragment {
         args.putSerializable("expandableListDetailAutrePrestation", expandableListDetailAutrePrestation);
         args.putSerializable("ResourceProfessional", ResourceProfessional);
         args.putSerializable("Fragment",fragment_precedent);
-        //fragment = new ServicesProfessional();
         fragment = new ServicesProfessional2();
         fragment.setArguments(args);
 

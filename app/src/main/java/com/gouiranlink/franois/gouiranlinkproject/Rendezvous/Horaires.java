@@ -304,7 +304,6 @@ public class Horaires extends Fragment{
                    FragmentTransaction ft = fm.beginTransaction();
                    //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
 
-                   fragment = new PrendreRdv();
                    fragment.setArguments(args);
 
                    ft.replace(R.id.fragment_remplace, fragment);
@@ -1161,7 +1160,6 @@ public class Horaires extends Fragment{
                 FragmentTransaction ft = fm.beginTransaction();
                 //getActivity().findViewById(R.id.fragment_services_professional).setVisibility(View.GONE);
 
-                fragment = new PrendreRdv();
                 fragment.setArguments(args);
 
                 ft.replace(R.id.fragment_remplace, fragment);

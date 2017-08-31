@@ -7,11 +7,11 @@
     android:orientation="vertical">
     <ImageView
         android:layout_gravity="center"
-        android:layout_width="390dp"
-        android:layout_height="370dp"
+        android:layout_width="match_parent"
+        android:layout_height="750px"
         android:id="@+id/background"
         android:background="@drawable/ouverture"/>
-        <!--android:background="@drawable/ouverture"/-->
+        <!--android:background="@drawable/ouverture"/ 370-->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

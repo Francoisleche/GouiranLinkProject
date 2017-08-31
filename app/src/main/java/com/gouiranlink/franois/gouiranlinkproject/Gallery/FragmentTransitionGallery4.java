@@ -23,8 +23,6 @@ public class FragmentTransitionGallery4 extends Fragment {
         //new ActivityGallery();
         Fragment fragment = null;
         Bundle args = new Bundle();
-
-        //fragment = new ServicesProfessional();
         Intent gallery = new Intent(getActivity(),FragmentGallery4.class);
         startActivity(gallery);
 

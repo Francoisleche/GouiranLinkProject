@@ -12,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.R;
@@ -165,10 +165,19 @@ public class DoneFragment extends Fragment {
                 }
             }
 
+            //PAGINATION
+            String stttt = jsonObject.getString("pager");
+            System.out.println("sttttt : "+stttt);
+            JSONObject jsonObject2 = new JSONObject(stttt);
+            String sttttt = jsonObject.getString("next_url");
+            System.out.println("sttttt : "+sttttt);
+            //FIN PAGINATION
+
 
         } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
         }
+        System.out.println("Reservation list : "+reservationList.size());
         return (reservationList);
     }
 
@@ -266,21 +275,20 @@ public class DoneFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         reservations = getReservationList();
+        System.out.println("reservationsoooooh : "+reservations.size());
         layoutdone = (LinearLayout) getActivity().findViewById(R.id.layoutdone);
         textdone = (TextView) getActivity().findViewById(R.id.textdone);
         listviewDone = (ListView) getActivity().findViewById(R.id.listviewDone);
 
-        if(reservations.size()==0){
+        if (reservations.size() == 0) {
             layoutdone.setVisibility(true ? View.VISIBLE : View.GONE);
             listviewDone.setVisibility(true ? View.GONE : View.VISIBLE);
             String s = "Vous n'avez aucune réservation passée pour le moment... \n \n Mais pas de panique, si ce n'est pas encore fait, réservez sans plus attendre votre prochain moment beauté depuis l'onglet \"Recherche\" ";
             textdone.setText(s);
-        }else{
+        } else {
             layoutdone.setVisibility(true ? View.GONE : View.VISIBLE);
             listviewDone.setVisibility(true ? View.VISIBLE : View.GONE);
         }
-
-
 
 
         List<String> institutesNames = new ArrayList<String>();
@@ -291,7 +299,9 @@ public class DoneFragment extends Fragment {
         List<String> adress = new ArrayList<String>();
         List<String> id = new ArrayList<String>();
 
-        for (int i = 0; i < reservations.size(); i++) {
+
+
+        /*for (int i = 0; i < reservations.size(); i++) {
             institutesNames.add(reservations.get(i).getInstitute());
             id.add(reservations.get(i).getId());
             types.add(reservations.get(i).getProducts());
@@ -299,7 +309,54 @@ public class DoneFragment extends Fragment {
             dates.add(reservations.get(i).getDate());
             hours.add(reservations.get(i).getHour());
             adress.add(reservations.get(i).getAdress());
+        }*/
+
+        System.out.println("reservationsoooooh1 : "+reservations.size());
+        List<Reservation> datessss = new ArrayList<Reservation>();
+        final List<Reservation> reservations2 = new ArrayList<Reservation>();
+        datessss = reservations;
+        System.out.println("reservationsoooooh11 : "+reservations.size());
+        while(datessss.size()!=0){
+            int plus_recent = 0;
+            int date_plus_recent = 0;
+
+            for (int i = 0; i < reservations.size(); i++) {
+                String date = reservations.get(i).getDate();
+                String[] separated = date.split("/");
+                String s = separated[2] + separated[1] + separated[0].substring(separated[0].length() - 2, separated[0].length());
+
+                if (Integer.parseInt(s) > date_plus_recent) {
+                    date_plus_recent = Integer.parseInt(s);
+                        plus_recent = i;
+                }
+            }
+            reservations2.add(reservations.get(plus_recent));
+            datessss.remove(plus_recent);
         }
+
+        System.out.println("reservationsoooooh111 : "+reservations.size());
+        System.out.println("reservationsoooooh111 : "+reservations2.size());
+        for (int i = 0; i < reservations2.size(); i++){
+            System.out.println("Bavure : " + i+"   "+reservations2.get(i).getDate());
+            institutesNames.add(reservations2.get(i).getInstitute());
+            id.add(reservations2.get(i).getId());
+            types.add(reservations2.get(i).getProducts());
+            pictures.add(reservations2.get(i).getPicture());
+            dates.add(reservations2.get(i).getDate());
+            hours.add(reservations2.get(i).getHour());
+            adress.add(reservations2.get(i).getAdress());
+        }
+        System.out.println("reservationsoooooh1111 : "+reservations.size());
+        /*for (int i = (reservations.size()-1); i>=0  ; i--) {
+            System.out.println("Bavure : " + i+"   "+reservations.get(i).getDate());
+            institutesNames.add(reservations.get(i).getInstitute());
+            id.add(reservations.get(i).getId());
+            types.add(reservations.get(i).getProducts());
+            pictures.add(reservations.get(i).getPicture());
+            dates.add(reservations.get(i).getDate());
+            hours.add(reservations.get(i).getHour());
+            adress.add(reservations.get(i).getAdress());
+        }*/
 
 
 
@@ -317,6 +374,8 @@ public class DoneFragment extends Fragment {
         reservationImageAdapter.setBoolean_Commentaire(boolean_commentaires);
         reservationImageAdapter.setProducts_json(products_json);
 
+        System.out.println("reservationsoooooh11111 : "+reservations.size());
+
         System.out.println("RESERVATIONNNNNNNNNNNNNNNS2 : " + institutesNames.size() + " "+types.size()+"   "+adress.size());
         for(int i =0;i<dates.size();i++){
             System.out.println("RESERVATIONNNNNNNNNNNNNNNS3 :"+id.get(i)+"      "+ institutesNames.get(i).toString()+"   "+dates.get(i).toString());
@@ -332,16 +391,45 @@ public class DoneFragment extends Fragment {
             }
         });*/
 
+        System.out.println("reservationsoooooh2 : "+reservations.size());
+        System.out.println("reservationsoooooh2 : "+reservations2.size());
+
         listviewDone.setAdapter(reservationImageAdapter);
         listviewDone.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(getActivity(), "" + position,
-                        Toast.LENGTH_SHORT).show();
+                                    final int position, long id) {
+
+                ImageView button = (ImageView) v.findViewById(R.id.button);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Fragment fragment = null;
+                        FragmentTransaction ft = null;
+                        Bundle args = new Bundle();
+                        reser = reservations2.get(position);
+                        args.putSerializable("Reservation", reser);
+                        args.putSerializable("Fragment","DoneFragment");
+                        args.putSerializable("Customer",customer);
+                        FragmentManager fm = getFragmentManager();
+                        //FragmentTransaction ft = fm.beginTransaction();
+                        ft = fm.beginTransaction();
+                        //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                        fragment = new DetailRdv();
+                        fragment.setArguments(args);
+
+                        ft.replace(R.id.content_frame, fragment).addToBackStack("DoneFragment");
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        ft.commit();
+                        getActivity().findViewById(R.id.fragment_reservations).setVisibility(View.GONE);
+                    }
+                });
+
+                //Toast.makeText(getActivity(), "" + position,Toast.LENGTH_SHORT).show();
                 Fragment fragment = null;
                 FragmentTransaction ft = null;
                 Bundle args = new Bundle();
-                reser = reservations.get(position);
+                reser = reservations2.get(position);
                 args.putSerializable("Reservation", reser);
                 args.putSerializable("Fragment","DoneFragment");
                 args.putSerializable("Customer",customer);

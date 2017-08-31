@@ -47,7 +47,7 @@
                 <ImageView
                     android:id="@+id/home_coiffure"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="350px"
                     android:src="@drawable/home_coiffure"
                     android:alpha=".75"
                     android:clickable="true"/>
@@ -76,7 +76,7 @@
                 <ImageView
                     android:id="@+id/home_manucure"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="350px"
                     android:src="@drawable/home_manucure"
                     android:alpha=".75"/>
                 <LinearLayout
@@ -104,7 +104,7 @@
                 <ImageView
                     android:id="@+id/home_epilation"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="350px"
                     android:src="@drawable/home_epilation"
                     android:alpha=".75"/>
                 <LinearLayout
@@ -132,7 +132,7 @@
                 <ImageView
                     android:id="@+id/home_coloration"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="350px"
                     android:src="@drawable/home_coloration"
                     android:alpha=".75"/>
                 <LinearLayout
@@ -160,7 +160,7 @@
                 <ImageView
                     android:id="@+id/home_maquillage"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="350px"
                     android:src="@drawable/home_maquillage"
                     android:alpha=".75"/>
                 <LinearLayout
@@ -188,7 +188,7 @@
                 <ImageView
                     android:id="@+id/home_soins_visage"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="350px"
                     android:src="@drawable/home_soins_visage"
                     android:alpha=".75"/>
                 <LinearLayout
@@ -216,7 +216,7 @@
                 <ImageView
                     android:id="@+id/home_barbier"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="350px"
                     android:src="@drawable/home_barbier"
                     android:alpha=".75"/>
                 <LinearLayout

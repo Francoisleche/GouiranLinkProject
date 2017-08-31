@@ -2,19 +2,12 @@ package com.gouiranlink.franois.gouiranlinkproject.InsciptionConnexion;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
-import com.gouiranlink.franois.gouiranlinkproject.ParentActivity;
-import com.gouiranlink.franois.gouiranlinkproject.R;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
-import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.RetrieveCustomerInformationFromRequest;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -25,6 +18,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
+import com.gouiranlink.franois.gouiranlinkproject.ParentActivity2;
+import com.gouiranlink.franois.gouiranlinkproject.R;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.MyCustomer;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
+import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.RetrieveCustomerInformationFromRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,7 +69,7 @@ public class LoginGoogleActivity extends AppCompatActivity implements GoogleApiC
 
     private void nextActivity(GoogleSignInAccount acct) {
         if (acct != null) {
-            Intent main = new Intent(LoginGoogleActivity.this, ParentActivity.class);
+            Intent main = new Intent(LoginGoogleActivity.this, ParentActivity2.class);
             myCustomer.setmFacebook(false);
             myCustomer.setmGoogle(true);
             myCustomer.setmGouiranLink(false);

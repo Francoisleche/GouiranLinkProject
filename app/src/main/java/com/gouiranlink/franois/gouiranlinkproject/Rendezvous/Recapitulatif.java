@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Homepage.HomeFragment2;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Comment;
@@ -30,7 +29,7 @@ import com.gouiranlink.franois.gouiranlinkproject.Object.Professional;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Professional_Product;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Resource;
 import com.gouiranlink.franois.gouiranlinkproject.R;
-import com.gouiranlink.franois.gouiranlinkproject.Recherche.ResearchFragment;
+import com.gouiranlink.franois.gouiranlinkproject.Recherche.Research2Fragment;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetCustomerProfile;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetRequest;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PostRequest;
@@ -46,7 +45,6 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by François on 03/02/2017.
@@ -67,7 +65,7 @@ public class Recapitulatif extends Fragment {
     private String date,date2,horaire;
 
 
-    private ResearchFragment.ResearchTask mAuthTask = null;
+    private Research2Fragment.ResearchTask mAuthTask = null;
     private GetRequest getRequest;
 
 
@@ -228,7 +226,8 @@ public class Recapitulatif extends Fragment {
             public void onClick(View v) {
 
                 //A DOMICILE SANS ADRESSE
-                if (customer.getAddress().equals("null") && professional.getType().getName().contains("domicile")) {
+                System.out.println("On arrete les betises : " + customer.getAddress() +" / "+ professional.getType().getName());
+                if ((customer.getAddress().equals("null") || customer.getAddress().equals("")) && professional.getType().getName().contains("domicile")) {
 
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
                     builder2.setMessage("Erreur, vous devez d'abord renseigner votre adresse !").setNeutralButton("Ok", new DialogInterface.OnClickListener() {
@@ -250,6 +249,7 @@ public class Recapitulatif extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     m_Text = input.getText().toString();
+                                    System.out.println("Puuuuuuuuut : "+m_Text);
 
                                     try{
 
@@ -262,11 +262,12 @@ public class Recapitulatif extends Fragment {
                                         String resp;
                                         PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json, "Authorization", "Token " + customer.getToken());
                                         resp = putRequest.execute().get();
+                                        System.out.println("Puuuuuuuuut : "+resp);
                                         //System.out.println("Puuuuuuuuut : "+city);
                                         //System.out.println("Puuuuuuuuut : "+birth_date);
                                         //System.out.println("Puuuuuuuuut : "+resp);
-                                        Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
-                                        Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_LONG).show();
                                         Log.d("reponse", resp);
                                         customer = new GetCustomerProfile().getCustomerProfile(customer.getToken(), customer);
                                         //onCreateView(inflater, container, savedInstanceState);
@@ -302,31 +303,31 @@ public class Recapitulatif extends Fragment {
 
 
 
-                //SANS NUMERO DE TELEPHONE
-                if (customer.getMobilephone().equals("null")) {
+                    //SANS NUMERO DE TELEPHONE
+                    if (customer.getMobilephone().equals("null")) {
 
-                    AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
-                    builder2.setMessage("Erreur, vous devez d'abord renseigner un numéro de téléphone !").setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
+                        builder2.setMessage("Erreur, vous devez d'abord renseigner un numéro de téléphone !").setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setTitle("Entrez votre numéro de téléphone portable !");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setTitle("Entrez votre numéro de téléphone portable !");
 
-                            // Set up the input
-                            final EditText input = new EditText(getActivity());
-                            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                            //input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                            input.setInputType(InputType.TYPE_CLASS_PHONE);
-                            builder.setView(input);
+                                // Set up the input
+                                final EditText input = new EditText(getActivity());
+                                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                                //input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                                input.setInputType(InputType.TYPE_CLASS_PHONE);
+                                builder.setView(input);
 
-                            // Set up the buttons
-                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    m_Text = input.getText().toString();
+                                // Set up the buttons
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        m_Text = input.getText().toString();
 
-                                    try{
+                                        try {
 
                                     /*String json = "{\n" +
                                             "\"email\":\"" + customer.getEmail() + "\",\n" +
@@ -343,105 +344,108 @@ public class Recapitulatif extends Fragment {
                                             "\"post_code\":\"" + customer.getPost_code() + "\"\n" +
                                             "}\n";*/
 
-                                        String json = "{\n" +
-                                                "\"email\":\"" + customer.getEmail() + "\",\n" +
-                                                "\"name\":\"" + customer.getName() + "\",\n" +
-                                                "\"surname\":\"" + customer.getSurname() + "\",\n" +
-                                                "\"mobilephone\":\"" + m_Text + "\""+
-                                                "}\n";
-                                        String resp;
-                                        PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json, "Authorization", "Token " + customer.getToken());
-                                        resp = putRequest.execute().get();
-                                        //System.out.println("Puuuuuuuuut : "+city);
-                                        //System.out.println("Puuuuuuuuut : "+birth_date);
-                                        //System.out.println("Puuuuuuuuut : "+resp);
-                                        Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
-                                        Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_LONG).show();
-                                        Log.d("reponse", resp);
-                                        customer = new GetCustomerProfile().getCustomerProfile(customer.getToken(), customer);
-                                        //onCreateView(inflater, container, savedInstanceState);
-                                    } catch (InterruptedException | ExecutionException e) {
-                                        e.printStackTrace();
+                                            String json = "{\n" +
+                                                    "\"email\":\"" + customer.getEmail() + "\",\n" +
+                                                    "\"name\":\"" + customer.getName() + "\",\n" +
+                                                    "\"surname\":\"" + customer.getSurname() + "\",\n" +
+                                                    "\"mobilephone\":\"" + m_Text + "\"" +
+                                                    "}\n";
+                                            String resp;
+                                            PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json, "Authorization", "Token " + customer.getToken());
+                                            resp = putRequest.execute().get();
+                                            System.out.println("Puuuuuuuuut : "+resp);
+                                            //System.out.println("Puuuuuuuuut : "+birth_date);
+                                            //System.out.println("Puuuuuuuuut : "+resp);
+                                            //Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
+                                            //Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_LONG).show();
+                                            Log.d("reponse", resp);
+                                            customer = new GetCustomerProfile().getCustomerProfile(customer.getToken(), customer);
+                                            //onCreateView(inflater, container, savedInstanceState);
+                                        } catch (InterruptedException | ExecutionException e) {
+                                            e.printStackTrace();
+                                        }
+
+
                                     }
+                                });
+                                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                                builder.show();
 
 
+                            }
+                        });
+                        AlertDialog dialog = builder2.create();
+                        dialog.show();
 
-
-                                }
-                            });
-                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-
-                            builder.show();
-
-
-                        }
-                    });
-                    AlertDialog dialog = builder2.create();
-                    dialog.show();
-
-                }else {
-
-
-                    // Perform action on click
-                    //Toast.makeText(this,"Yes",Toast.LENGTH_SHORT).show();
-                    //CamTestActivity cam = new CamTestActivity();
-                    //Intent intent = new Intent(getContext(), ReservationFragment.class);
-                    //startActivity(intent);
-
-
-                    CustomerBooking booking = new CustomerBooking();
-                    booking.setId(1000);
-                    booking.setCreated_at("");
-                    booking.setUpdated_at("");
-                    booking.setBegin_date(recap[5]);
-                    booking.setEnd_date(recap[5]);
-                    booking.setPrice(Double.parseDouble(recap[0]));
-                    booking.setCurrency(recap[1]);
-                    booking.setConfirmed(true);
-                    booking.setCancelled(false);
-                    booking.setNo_show(false);
-                    booking.setNo_show_comment("");
-                    booking.setFirst_booking(false);
-                    booking.setFirst_booking_comment("");
-                    booking.setHome_address(professional.getAddress());
-                    booking.setHome_post_code(professional.getPost_code());
-                    booking.setHome_city(professional.getCity());
-                    booking.setHome_country(professional.getCountry());
-                    booking.setPhone(professional.getShop_phone());
-                    booking.setProfessional(professional);
-
-
-                    Comment comment = new Comment();
-
-
-                    booking.setProfessional(professional);
-
-                    ResearchTask researchTask = null;
-                    try {
-                        researchTask = new ResearchTask(booking, customer);
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
-                    String ls2 = "";
-                    ls2 = researchTask.getResponse();
-                    System.out.println("Resultat recapitulatif : " + ls2);
 
 
-                    addNotification();
-                    //Retour à la homepage après avoir validé le rendez vous
-                    Fragment fragment = null;
-                    fragment = new HomeFragment2();
-                    FragmentManager frgManager = getFragmentManager();
-                    frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
+                System.out.println("Pourquoi on passe : " + customer.getAddress() + "    " + customer.getMobilephone() + "     "+professional.getType().getName());
+                    if(((!customer.getAddress().equals("") && !customer.getAddress().equals("null")) && professional.getType().getName().contains("domicile") && (!customer.getMobilephone().equals("null") && !customer.getMobilephone().equals("")))
+                            || (!professional.getType().getName().contains("domicile") && (!customer.getMobilephone().equals("null") && !customer.getMobilephone().equals("")))){
 
-                }
+
+                        // Perform action on click
+                        //Toast.makeText(this,"Yes",Toast.LENGTH_SHORT).show();
+                        //CamTestActivity cam = new CamTestActivity();
+                        //startActivity(intent);
+
+
+                        CustomerBooking booking = new CustomerBooking();
+                        booking.setId(1000);
+                        booking.setCreated_at("");
+                        booking.setUpdated_at("");
+                        booking.setBegin_date(recap[5]);
+                        booking.setEnd_date(recap[5]);
+                        booking.setPrice(Double.parseDouble(recap[0]));
+                        booking.setCurrency(recap[1]);
+                        booking.setConfirmed(true);
+                        booking.setCancelled(false);
+                        booking.setNo_show(false);
+                        booking.setNo_show_comment("");
+                        booking.setFirst_booking(false);
+                        booking.setFirst_booking_comment("");
+                        booking.setHome_address(professional.getAddress());
+                        booking.setHome_post_code(professional.getPost_code());
+                        booking.setHome_city(professional.getCity());
+                        booking.setHome_country(professional.getCountry());
+                        booking.setPhone(professional.getShop_phone());
+                        booking.setProfessional(professional);
+
+
+                        Comment comment = new Comment();
+
+
+                        booking.setProfessional(professional);
+
+                        ResearchTask researchTask = null;
+                        try {
+                            researchTask = new ResearchTask(booking, customer);
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        String ls2 = "";
+                        ls2 = researchTask.getResponse();
+                        System.out.println("Resultat recapitulatif : " + ls2);
+
+
+                        addNotification();
+                        //Retour à la homepage après avoir validé le rendez vous
+                        Fragment fragment = null;
+                        fragment = new HomeFragment2();
+                        FragmentManager frgManager = getFragmentManager();
+                        frgManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
+
+                    }
+
             }
         });
 
@@ -644,6 +648,7 @@ public class Recapitulatif extends Fragment {
                 e.printStackTrace();
             }
             response = resp;
+            System.out.println("POSTTTTT=" + resp);
         }
 
         String getResponse() {
@@ -681,7 +686,7 @@ public class Recapitulatif extends Fragment {
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
 
-            Toast.makeText(getContext(), "Le traitement asynchrone est terminé", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getContext(), "Le traitement asynchrone est terminé", Toast.LENGTH_LONG).show();
 
             if (success) {
                 //Intent i = new Intent();
@@ -717,11 +722,14 @@ public class Recapitulatif extends Fragment {
     private void addNotification() {
         Random random = new Random();
         int m = random.nextInt(9999 - 1000) + 1000;
+
+        //if(professional.getautomatic_booking_confirmation = true);
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(getActivity())
                         .setSmallIcon(R.drawable.icon_gouiranlink_contour)
-                        .setContentTitle("Notifications Example")
-                        .setContentText("This is a test notification");
+                        .setContentTitle("Votre demande de réservation")
+                        .setContentText("Votre demande a bien été pris en compte, elle sera validée dans les 24h.");
+
 
         Intent notificationIntent = new Intent(getActivity(), Recapitulatif.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getActivity(), m, notificationIntent,

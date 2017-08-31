@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -125,8 +124,10 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
 
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
-        } else
-            Toast.makeText(getActivity(), "Not connected...", Toast.LENGTH_SHORT).show();
+        } else{
+            //Toast.makeText(getActivity(), "Not connected...", Toast.LENGTH_SHORT).show();
+        }
+
 
 
     }
@@ -349,7 +350,7 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof HomeFragment.OnFragmentInteractionListener) {
+        if (context instanceof HomeFragment2.OnFragmentInteractionListener) {
             mListener = (HomeFragment2.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
@@ -378,17 +379,17 @@ public class HomeFragment2 extends Fragment implements GoogleApiClient.Connectio
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Toast.makeText(getActivity(), "connect", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "connect", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(getActivity(), "connection suspended", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "connection suspended", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(getActivity(), "Failed to connect", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "Failed to connect", Toast.LENGTH_SHORT).show();
     }
 
 

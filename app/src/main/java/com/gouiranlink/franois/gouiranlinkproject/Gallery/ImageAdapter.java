@@ -12,13 +12,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
 Represents the grid for the gallery
  */
 
-class ImageAdapter extends BaseAdapter {
+class ImageAdapter extends BaseAdapter implements Serializable {
     final private Context mContext;
     final ArrayList<String> mimages;
     static final int PICK_IMAGE_REQUEST = 1;

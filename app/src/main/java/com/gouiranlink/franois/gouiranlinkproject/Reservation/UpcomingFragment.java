@@ -13,10 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.R;
@@ -119,15 +119,27 @@ public class UpcomingFragment extends Fragment {
             String headerValue;
             String resp;
 
-            headerKey = "Authorization";
+
+        //String format = "dd-MM-yyyy H:mm:ss";
+        String format = "yyyy-MM-dd H:mm:ss";
+        java.text.SimpleDateFormat formater = new java.text.SimpleDateFormat( format );
+        java.util.Date date = new java.util.Date();
+        System.out.println( formater.format( date ) );
+        String s = formater.format( date );
+
+
+        headerKey = "Authorization";
             headerValue = "Token " + String.valueOf(customer.getToken());
-            GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/" + String.valueOf(customer.getId()) + "/", headerKey, headerValue);
+            GetRequest getRequest = new GetRequest("https://www.gouiran-beaute.com/link/api/v1/booking/customer/" + String.valueOf(customer.getId()) + "/?query[from_date]=" + s.substring(0,10)+"T"+s.substring(11,19)+"Z", headerKey, headerValue);
             try {
             resp = getRequest.execute().get();
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPP"+resp);
             JSONObject jsonObject = new JSONObject(resp);
             JSONArray arr = jsonObject.getJSONArray("data");
             for (int i = 0; i < arr.length(); i++) {
+
+                System.out.println("arr.getJSONObject(i).getString(confirmed) : "+arr.getJSONObject(i).getString("confirmed"));
+
                 Reservation reservation = new Reservation();
                 System.out.println(String.valueOf(i) + " DATE " + arr.getJSONObject(i).getString("begin_date"));
                 if (arr.getJSONObject(i).has("begin_date") && !arr.getJSONObject(i).isNull("begin_date") && !isPassed(arr.getJSONObject(i).getString("begin_date"))) {
@@ -135,46 +147,51 @@ public class UpcomingFragment extends Fragment {
                         reservation.setId(arr.getJSONObject(i).getString("id"));
                         System.out.println("PPPPPPPPPPPPPOLICE"+reservation.getId());
                     }
-//                if (arr.getJSONObject(i).has("confirmed") && arr.getJSONObject(i).getBoolean("confirmed")) {
-                    if (arr.getJSONObject(i).getJSONObject("professional").has("shop_name") && !arr.getJSONObject(i).getJSONObject("professional").isNull("shop_name")) {
-                        reservation.institute = arr.getJSONObject(i).getJSONObject("professional").getString("shop_name");
-                        reservation.id = arr.getJSONObject(i).getString("id");
-                    }
+                    //SI le rendez vous est confirmé
+                if (arr.getJSONObject(i).has("confirmed") && arr.getJSONObject(i).getBoolean("confirmed")) {
+                    if (arr.getJSONObject(i).getString("confirmed").equals("true")) {
 
-                    if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").has("name") && !arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").isNull("name")){
-                        reservation.professional_type = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").getString("name");
-                    }
 
-                    if (arr.getJSONObject(i).getJSONObject("professional").has("address") && !arr.getJSONObject(i).getJSONObject("professional").isNull("address")
-                            && arr.getJSONObject(i).getJSONObject("professional").has("post_code") && !arr.getJSONObject(i).getJSONObject("professional").isNull("post_code")
-                            && arr.getJSONObject(i).getJSONObject("professional").has("city") && !arr.getJSONObject(i).getJSONObject("professional").isNull("city")
-                            && arr.getJSONObject(i).getJSONObject("professional").has("country") && !arr.getJSONObject(i).getJSONObject("professional").isNull("country")) {
-                        reservation.adress = arr.getJSONObject(i).getJSONObject("professional").getString("address") + " " +
-                                arr.getJSONObject(i).getJSONObject("professional").getString("post_code") + " " +
-                                arr.getJSONObject(i).getJSONObject("professional").getString("city") + " " +
-                                arr.getJSONObject(i).getJSONObject("professional").getString("country");
-                    }
-                    if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").has("url") &&
-                            !arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").isNull("url"))
-                        reservation.picture = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
-                    for (int j = 0; j < arr.getJSONObject(i).getJSONArray("products").length(); j++) {
-                        if (arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").has("name") &&
-                                !arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").isNull("name")) {
-                            reservation.products.add(arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getString("name"));
-                            reservation.type.add(arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").getString("name"));
+                        if (arr.getJSONObject(i).getJSONObject("professional").has("shop_name") && !arr.getJSONObject(i).getJSONObject("professional").isNull("shop_name")) {
+                            reservation.institute = arr.getJSONObject(i).getJSONObject("professional").getString("shop_name");
+                            reservation.id = arr.getJSONObject(i).getString("id");
                         }
+
+                        if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").has("name") && !arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").isNull("name")) {
+                            reservation.professional_type = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("type").getString("name");
+                        }
+
+                        if (arr.getJSONObject(i).getJSONObject("professional").has("address") && !arr.getJSONObject(i).getJSONObject("professional").isNull("address")
+                                && arr.getJSONObject(i).getJSONObject("professional").has("post_code") && !arr.getJSONObject(i).getJSONObject("professional").isNull("post_code")
+                                && arr.getJSONObject(i).getJSONObject("professional").has("city") && !arr.getJSONObject(i).getJSONObject("professional").isNull("city")
+                                && arr.getJSONObject(i).getJSONObject("professional").has("country") && !arr.getJSONObject(i).getJSONObject("professional").isNull("country")) {
+                            reservation.adress = arr.getJSONObject(i).getJSONObject("professional").getString("address") + " " +
+                                    arr.getJSONObject(i).getJSONObject("professional").getString("post_code") + " " +
+                                    arr.getJSONObject(i).getJSONObject("professional").getString("city") + " " +
+                                    arr.getJSONObject(i).getJSONObject("professional").getString("country");
+                        }
+                        if (arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").has("url") &&
+                                !arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").isNull("url"))
+                            reservation.picture = arr.getJSONObject(i).getJSONObject("professional").getJSONObject("logo_image").getJSONObject("thumbnails").getJSONObject("standard").getString("url");
+                        for (int j = 0; j < arr.getJSONObject(i).getJSONArray("products").length(); j++) {
+                            if (arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").has("name") &&
+                                    !arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").isNull("name")) {
+                                reservation.products.add(arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getString("name"));
+                                reservation.type.add(arr.getJSONObject(i).getJSONArray("products").getJSONObject(j).getJSONObject("product").getJSONObject("category").getJSONObject("parent").getString("name"));
+                            }
+                        }
+                        if (arr.getJSONObject(i).has("begin_date") && !arr.getJSONObject(i).isNull("begin_date")) {
+                            reservation.date = getDate(arr.getJSONObject(i).getString("begin_date"));
+                            reservation.hour = getHour(arr.getJSONObject(i).getString("begin_date"));
+                        }
+                        reservation.setCustomer(customer);
+                        Log.d("UPCOMINGDATE=", arr.getJSONObject(i).getString("begin_date"));
+                        reservationList.add(reservation);
                     }
-                    if (arr.getJSONObject(i).has("begin_date") && !arr.getJSONObject(i).isNull("begin_date")) {
-                        reservation.date = getDate(arr.getJSONObject(i).getString("begin_date"));
-                        reservation.hour = getHour(arr.getJSONObject(i).getString("begin_date"));
-                    }
-                    reservation.setCustomer(customer);
-                    Log.d("UPCOMINGDATE=", arr.getJSONObject(i).getString("begin_date"));
-                    reservationList.add(reservation);
-//                }
-/*                else if (arr.getJSONObject(i).has("confirmed") && !arr.getJSONObject(i).getBoolean("confirmed")) {
+                }
+                else if (arr.getJSONObject(i).has("confirmed") && !arr.getJSONObject(i).getBoolean("confirmed")) {
                     // TODO NON CONFIRME
-                }*/
+                }
                 }
             }
 
@@ -305,7 +322,7 @@ public class UpcomingFragment extends Fragment {
 
         for (int i = 0; i < reservations.size(); i++) {
             institutesNames.add(reservations.get(i).getInstitute());
-            types.add(reservations.get(i).getType());
+            types.add(reservations.get(i).getProducts());
             pictures.add(reservations.get(i).getPicture());
             dates.add(reservations.get(i).getDate());
             hours.add(reservations.get(i).getHour());
@@ -336,14 +353,44 @@ public class UpcomingFragment extends Fragment {
             }
         });*/
 
+
+
         //Utiliser une listView pour affichage
 
         listviewupcoming.setAdapter(reservationImageAdapter);
         listviewupcoming.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(getActivity(), "" + position,
-                        Toast.LENGTH_SHORT).show();
+                                    final int position, long id) {
+
+                ImageView button = (ImageView) v.findViewById(R.id.button);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Toast.makeText(getmContext(), "ooooooh" + position,Toast.LENGTH_SHORT).show();
+                        Fragment fragment = null;
+                        FragmentTransaction ft = null;
+                        Bundle args = new Bundle();
+                        reser = reservations.get(position);
+                        args.putSerializable("Reservation", reser);
+                        args.putSerializable("Fragment","UpcomingFragment" );
+                        args.putSerializable("Customer",customer);
+                        FragmentManager fm = getFragmentManager();
+                        //FragmentTransaction ft = fm.beginTransaction();
+                        ft = fm.beginTransaction();
+                        //getActivity().findViewById(R.id.fragment_research).setVisibility(View.GONE);
+
+                        fragment = new DetailRdv();
+                        fragment.setArguments(args);
+
+                        ft.replace(R.id.content_frame, fragment).addToBackStack(null);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        ft.commit();
+                        getActivity().findViewById(R.id.fragment_reservations).setVisibility(View.GONE);
+                    }
+                });
+
+
+                //Toast.makeText(getActivity(), "" + position,Toast.LENGTH_SHORT).show();
                 Fragment fragment = null;
                 FragmentTransaction ft = null;
                 Bundle args = new Bundle();

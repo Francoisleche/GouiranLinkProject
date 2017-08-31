@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -430,7 +429,7 @@ public class MyProsFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         System.out.println("BONJOUR BONJOUR BONJOUR BONJOUR13");
         mMap = googleMap;
-        Toast.makeText(getActivity(), "MAP MARKED", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "MAP MARKED", Toast.LENGTH_SHORT).show();
         mMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin)).anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
                 .position(new LatLng(latitude, longitude)));

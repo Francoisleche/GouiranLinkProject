@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gouiranlink.franois.gouiranlinkproject.Object.Customer;
 import com.gouiranlink.franois.gouiranlinkproject.Object.Product;
@@ -42,7 +41,6 @@ import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by François on 15/06/2017.
@@ -132,7 +130,7 @@ public class PrendreRdV1 extends Fragment {
             s = (String) getArguments().getString("ExpandableListDetail");
 
 
-            if(service_selectionne.equals("ServicesProfessional")){
+            if(service_selectionne.equals("ServicesProfessional2")){
                 System.out.println("1");
                 //expandableListDetail.remove("PHOTOOOOOOOO TEAMS");
                // liste_prestations_selectionne_PrendreRdV1.add(professional_product[position_list_clique]);
@@ -289,7 +287,7 @@ public class PrendreRdV1 extends Fragment {
                 dureetotal = 0;
                 heurefinal = "";
 
-                Toast.makeText(getApplicationContext(), "on a appuyé", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "on a appuyé", Toast.LENGTH_SHORT).show();
 
                 ArrayList<String> products = new ArrayList<String>();
                 for (int i = 0; i < liste_prestations_selectionne_PrendreRdV1.size(); i++) {
@@ -322,11 +320,17 @@ public class PrendreRdV1 extends Fragment {
                 }
                 heuretotal = (int) dureetotal/60;
                 minutetotal = (int) dureetotal%60;
-
-                duree.setText(String.valueOf(heuretotal)+"h"+String.valueOf(minutetotal)+"min");
-                System.out.println("Heure Finaaaaaaaaaal");
-                heurefinal = (String.valueOf(heuretotal)+"h"+String.valueOf(minutetotal)+"min");
-                System.out.println("Heure Finaaaaaaaaaal" + heurefinal);
+                if(minutetotal<10){
+                    duree.setText(String.valueOf(heuretotal) + "h0" + String.valueOf(minutetotal) + "min");
+                    System.out.println("Heure Finaaaaaaaaaal");
+                    heurefinal = (String.valueOf(heuretotal) + "h0" + String.valueOf(minutetotal) + "min");
+                    System.out.println("Heure Finaaaaaaaaaal" + heurefinal);
+                }else {
+                    duree.setText(String.valueOf(heuretotal) + "h" + String.valueOf(minutetotal) + "min");
+                    System.out.println("Heure Finaaaaaaaaaal");
+                    heurefinal = (String.valueOf(heuretotal) + "h" + String.valueOf(minutetotal) + "min");
+                    System.out.println("Heure Finaaaaaaaaaal" + heurefinal);
+                }
                 somme.setText(String.valueOf(tariftotal)+ liste_prestations_selectionne_PrendreRdV1.get(0).getCurrency());
 
                 /////////////////////////////////

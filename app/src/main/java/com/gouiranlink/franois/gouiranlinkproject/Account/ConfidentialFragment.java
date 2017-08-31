@@ -22,6 +22,9 @@ import com.gouiranlink.franois.gouiranlinkproject.R;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.GetCustomerProfile;
 import com.gouiranlink.franois.gouiranlinkproject.ToolsClasses.PutRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
@@ -99,7 +102,11 @@ public class ConfidentialFragment extends Fragment{
                                 "\"new_private_key\":\"" + nouveau_mot_passe.getText() + "\"" +
                                 "}\n";
                         String resp;
-                        PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json, "Authorization", "Token " + customer.getToken());
+                        System.out.println("String json : "+json);
+
+                        PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/authentication/change-credentials/", json, "Authorization", "Token " + customer.getToken());
+                        //PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json, "Authorization", "Token " + customer.getToken());
+                        //PutRequest putRequest = new PutRequest("https://www.gouiran-beaute.com/link/api/v1/customer/" + customer.getId() + "/", json);
                         resp = putRequest.execute().get();
                         //System.out.println("Puuuuuuuuut : "+city);
                         //System.out.println("Puuuuuuuuut : "+birth_date);
@@ -107,9 +114,16 @@ public class ConfidentialFragment extends Fragment{
                         Toast.makeText(getApplicationContext(), json, Toast.LENGTH_LONG).show();
                         Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_LONG).show();
                         Log.d("reponse", resp);
+
+                        JSONObject jsonObj = new JSONObject(resp);
+                        String token = jsonObj.getString("access_token");
+
+                        customer.setToken(token);
                         customer = new GetCustomerProfile().getCustomerProfile(customer.getToken(), customer);
                         //onCreateView(inflater, container, savedInstanceState);
                     } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     mot_passe_actuel.setText("");

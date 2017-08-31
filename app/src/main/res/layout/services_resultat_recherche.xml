@@ -52,6 +52,15 @@
             android:orientation="horizontal"
             android:layout_gravity="left">
 
+            <TextView
+                android:id="@+id/pasdavis"
+                android:text="Pas d'avis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:gravity="center"
+                android:textSize="20sp"/>
+
             <RatingBar
                 android:id="@+id/rtbProductRating"
                 android:layout_height="wrap_content"

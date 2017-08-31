@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -352,7 +351,7 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
         try {
             resp = getRequest.execute().get();
             System.out.println("FAVORIS"+ resp);
-            Toast.makeText(getActivity(), "CRUSHED", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "CRUSHED", Toast.LENGTH_SHORT).show();
             JSONObject jsonObject = new JSONObject(resp);
             JSONArray arr = jsonObject.getJSONArray("data");
             for (int i = 0; i < arr.length(); i++) {
@@ -524,7 +523,7 @@ public class MyCrushes extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        Toast.makeText(getActivity(), "MAP MARKED", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "MAP MARKED", Toast.LENGTH_SHORT).show();
         mMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)).anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
                 .position(new LatLng(latitude, longitude)));
